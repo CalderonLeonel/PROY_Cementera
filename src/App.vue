@@ -2,7 +2,7 @@
   <v-app>
     <v-navigation-drawer v-model="drawer" app>
       <center>
-        <v-toolbar color="blue" dark>
+        <v-toolbar color="#00A1B1" dark>
 
           <v-col class="d-flex justify-space-around">
             <v-toolbar-title>ERP</v-toolbar-title>
@@ -24,6 +24,8 @@
         </v-list-item>
       </v-list>
 
+      <v-divider></v-divider>
+
       <v-list nav dense>
         <v-list-group no-action color="light-blue darken-4" value="true">
           <template v-slot:activator>
@@ -37,12 +39,12 @@
 
           <v-list-item :to="{ name: 'Productos' }">
             <v-list-item-title>
-              <h5>PRODUCTOS</h5>
+              <h6>PRODUCTOS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: '' }">
+          <v-list-item :to="{ name: 'Lineas' }">
             <v-list-item-title>
-              <h5>LINEAS</h5>
+              <h6>LINEAS</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
@@ -50,16 +52,28 @@
 
     </v-navigation-drawer>
 
-    <v-app-bar app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Menú Lateral</v-toolbar-title>
+    <v-app-bar color="#00A1B1" app>
+      <v-app-bar-nav-icon color="black" @click="drawer = !drawer">
+
+      </v-app-bar-nav-icon>
+
     </v-app-bar>
 
     <v-main>
-      <v-container>
-
+      <v-container fluid>
+        <v-slide-y-transition mode="out-in">
+          <router-view />
+        </v-slide-y-transition>
       </v-container>
     </v-main>
+    <v-footer color="primary lighten-1" padless>
+      <v-row justify="center" no-gutters>
+
+        <v-col class="light-blue darken-4 py-4 text-center white--text" cols="12">
+          {{ new Date().getFullYear() }} — <strong>ERP DRYMIX</strong>
+        </v-col>
+      </v-row>
+    </v-footer>
   </v-app>
 </template>
 

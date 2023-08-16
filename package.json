@@ -1,29 +1,57 @@
 {
   "name": "erp_cementera",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "lint": "eslint . --fix --ignore-path .gitignore"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@mdi/font": "7.0.96",
-    "axios": "^1.4.0",
-    "core-js": "^3.29.0",
-    "roboto-fontface": "*",
-    "vue": "^3.2.0",
-    "vue-router": "^4.0.0",
-    "vuetify": "^3.0.0",
-    "webfontloader": "^1.0.0"
+    "@babel/polyfill": "^7.4.4",
+    "@vue/runtime-dom": "^3.3.4",
+    "axios": "^0.27.2",
+    "core-js": "^3.8.3",
+    "jspdf": "^2.5.1",
+    "v-file-upload": "^3.1.7",
+    "vee-validate": "^3.4.14",
+    "vue": "^2.6.14",
+    "vue-axios": "^3.4.1",
+    "vue-axios-cors": "^1.0.1",
+    "vue-html2pdf": "^1.8.0",
+    "vue-qr": "^4.0.9",
+    "vue-qrcode-component": "^2.1.1",
+    "vue-router": "^3.5.1",
+    "vue-simple-upload": "^0.1.6",
+    "vue-upload-image": "^1.1.5",
+    "vueify": "^9.4.1",
+    "vuetify": "^2.6.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.0.0",
-    "eslint": "^8.37.0",
-    "eslint-plugin-vue": "^9.3.0",
-    "sass": "^1.60.0",
-    "vite": "^4.2.0",
-    "vite-plugin-vuetify": "^1.0.0"
-  }
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-service": "^5.0.4",
+    "vue-cli-plugin-vuetify": "~2.4.8",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "@babel/eslint-parser"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
 }
