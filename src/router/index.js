@@ -10,6 +10,11 @@ const routes = [
     name: 'home',
     component:require(/* webpackChunkName: "about" */ '../views/Home.vue').default
     //component: Login
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: require('../components/Login.vue').default
   }
 ]
 

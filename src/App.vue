@@ -79,12 +79,38 @@
 
 <script>
 export default {
-  data() {
-    return {
-      drawer: false
-    };
+  data: () => ({
+      drawer: false,
+      user: { usuario: '', id_cargo: '', nombres: '' }
+    }),
+    components: {
+   // Docente_cv
+  },
+  computed: {
+    logueado() {
+
+      this.user = JSON.parse(sessionStorage.getItem('session'));
+
+      return this.user;
+
+
+    }
+  },created: function () {
+
+this.user = JSON.parse(sessionStorage.getItem('session'));
+//this.user.dispath("autologin");
+if (this.user == null) {
+  this.$router.push("/login");
   }
-};
+},
+methods: {
+  salir() {
+      sessionStorage.clear();
+      this.user = {};
+      this.$router.push("/login");
+    }
+  }
+}
 </script>
 
 
