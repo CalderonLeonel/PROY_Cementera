@@ -15,6 +15,16 @@ const routes = [
     path: 'proveedor',
     name: 'Proveedor',
     component: () => import('@/components/Proveedor.vue'),
+  },
+  {
+    path: 'almacen',
+    name: 'Almacen',
+    component: () => import('@/components/Almacen.vue'),
+  },
+  {
+    path: 'inventario',
+    name: 'Inventario',
+    component: () => import('@/components/Inventario.vue'),
   }
 ]
 
