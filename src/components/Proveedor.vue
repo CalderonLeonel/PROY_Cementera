@@ -1,17 +1,16 @@
 <template>
-   <v-card elevation="5" outlined shaped>
+   <v-card elevation="5" outlined>
         <div>
             <v-alert dense style="color: #ffffff;" color="grey">
                 <h5>Proveedores</h5>
             </v-alert>
         </div>
-
         <div>
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="4">
-                            <!--<v-btn color="success" @click="showModalAgregarProveedor()">NUEVO Proveedor</v-btn>-->
+                            <v-btn color="success" @click="showModalAgregarProveedor()">NUEVO Proveedor</v-btn>
                         </v-col>
                         <v-col cols="12">
                             <v-list-item>
@@ -28,27 +27,29 @@
                             <v-data-table :headers="headerProveedor" :items="datosProveedor" :search="searchProveedor"
                                 :items-per-page="5" class="elevation-1" id="tableId">
 
-                                <template #[`item.act`]="{ item }">
-                                    <v-chip :color="getColor(item.act)" dark>
-                                        {{ item.act }}
+                                <template #[`item.est`]="{ item }">
+                                    <v-chip :color="getColor(item.est)" dark>
+                                        {{ item.est }}
                                     </v-chip>
                                 </template>
 
-
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2"
-                                        title="Activar Proveedor">
-                                        mdi-check-circle-outline
-                                    </v-icon>
-                                    <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2"
-                                        title="Desactivar Proveedor">
-                                        mdi-cancel
-                                    </v-icon>
-                                    <v-icon small class="mr-2"
-                                        title="Actualizar INFORMACION">
+                                    <v-icon class="mr-2" color="primary" x-large  @click="actualizarInfoProveedor(item)"
+                                        title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
                                     </v-icon>
+                                    <v-icon v-if="item.est == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
+                                        title="ACTIVAR PROVEEDOR">
+                                        mdi-check-circle-outline
+                                    </v-icon>
+                                    <v-icon v-if="item.est == 'ACTIVO'" x-large color="error" class="mr-2" @click="desactivar(item)"
+                                        title="DESACTIVAR PROVEEDOR">
+                                        mdi-close-circle
+                                    </v-icon>             
                                 </template>
+
+                              
+
 
                             </v-data-table>
                         </v-col>
@@ -58,7 +59,31 @@
             </v-form>
 
         </div>
+        <v-dialog v-model="agregarProveedorModal" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>Agregar Proveedor</span>
+                </v-card-title>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="editarProductoModal" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>Editar Proveedor</span>
+                </v-card-title>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="confirmacionAnulacionProveedor" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>Confirmación de Eliminacion</span>
+                </v-card-title>
+            </v-card>
+        </v-dialog>
     </v-card>
+    
 
 </template>
 <script>
@@ -73,6 +98,7 @@ export default {
             contactoProveedorecundario: "",
             correoProveedor: "",
             //fechaDeModificacion: "",
+            valid: true,
             nombreRules: [
               (v) => !!v || "Se requiere el nombre del proveedor.",
               (v) =>
@@ -102,11 +128,12 @@ export default {
                 { text: "CONTACTO SECUNDARIO DE PROVEEDOR", value: "cto2pro", sortable: true },
                 { text: "CORREO DE PROVEEDOR", value: "croprov", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false },
+                { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
             searchProveedor: "",
+            agregarProveedorModal: false,
             //#endregion
         }
     },
@@ -140,6 +167,46 @@ export default {
               console.log(error);
             });
         },
+        activar(item) {
+            this.idProveedor = item.idProveedor;
+            this.activarmateria(this.idProveedor);
+        },
+        async activarmateria(idProveedor) {
+            let me = this;
+            /*await axios
+                .post("/carrera/onmateria/" + this.idProveedor).then(function (response) {
+
+                    me.listarMaterias();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });*/
+
+        },
+        desactivar(item) {
+            this.idProveedor = item.idProveedor;
+            this.desactivarproveedor(this.idProveedor);
+        },
+        async desactivarproveedor(idProveedor) {
+            let me = this;
+            /*await axios
+                .post("/carrera/offmateria/" + this.idProveedor).then(function (response) {
+
+                    me.listarMaterias();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });*/
+
+        },
+        
+        llenarCamposProveedores(item) {
+            this.botonEst = 1;
+            this.nombreMateria = item.nom;
+            this.codigoMateria = item.codmat;
+            this.idMateria = item.idmateria;
+
+        },
         //#endregion
         //#region Adicionar
         //#endregion
@@ -147,24 +214,62 @@ export default {
         //#endregion
         //#region Eliminar
         //#region Modals
-        /*showModalAgregarProveedor() {
+        editItem (item) {
+        this.editedIndex = this.desserts.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialog = true
+        },
+
+        deleteItem (item) {
+            this.editedIndex = this.desserts.indexOf(item)
+            this.editedItem = Object.assign({}, item)
+            this.dialogDelete = true
+        },
+
+        deleteItemConfirm () {
+            this.desserts.splice(this.editedIndex, 1)
+            this.closeDelete()
+        },
+
+        close () {
+            this.dialog = false
+            this.$nextTick(() => {
+            this.editedItem = Object.assign({}, this.defaultItem)
+            this.editedIndex = -1
+            })
+        },
+
+        closeDelete () {
+            this.dialogDelete = false
+            this.$nextTick(() => {
+            this.editedItem = Object.assign({}, this.defaultItem)
+            this.editedIndex = -1
+            })
+        },
+
+        save () {
+            if (this.editedIndex > -1) {
+            Object.assign(this.desserts[this.editedIndex], this.editedItem)
+            } else {
+            this.desserts.push(this.editedItem)
+            }
+            this.close()
+        },
+
+
+
+        showModalAgregarProveedor() {
             this.agregarProveedorModal = true;
         },
         closeModalAgregarProveedor() {
             this.agregarProveedorModal = false;
-        },
-        showTipos() {
-            this.tipoProveedorModal = true;
-        },
-        closeTipos() {
-            this.tipoProveedorModal = false;
         },
         showFormato() {
             this.formatoModal = true;
         },
         closeFormato() {
             this.formatoModal = false;
-        },*/
+        },
         //#endregion
       },
 };
