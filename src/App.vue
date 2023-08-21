@@ -18,7 +18,7 @@
               <v-list-item-title class="text-h6">
                 ERP
               </v-list-item-title>
-              <v-list-item-subtitle>HOLA</v-list-item-subtitle>
+              <v-list-item-subtitle></v-list-item-subtitle>
             </center>
           </v-list-item-content>
         </v-list-item>
@@ -37,17 +37,69 @@
             </v-list-item-content>
           </template>
 
-          <v-list-item :to="{ name: 'Productos' }">
+          <v-list-item :to="{ name: 'Proveedor' }">
             <v-list-item-title>
               <h6>PRODUCTOS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Lineas' }">
+          <v-list-item :to="{ name: 'Proveedor' }">
             <v-list-item-title>
               <h6>LINEAS</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
+        <v-list-group no-action color="light-blue darken-4" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>
+                mdi-receipt-text
+              </v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>ADQUISICIONES</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'Proveedor' }">
+            <v-list-item-title>
+              <h6>PROVEEDOR</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Adquisicion' }">
+            <v-list-item-title>
+              <h6>ADQUISICIONES</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+        <v-list-group no-action color="light-blue darken-4" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>
+                mdi-content-paste
+              </v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>INVENTARIOS Y ALMACENAMIENTO</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'Inventario' }">
+            <v-list-item-title>
+              <h6>INVENTARIO</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Almacen' }">
+            <v-list-item-title>
+              <h6>ALMACEN</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Almacenamiento' }">
+            <v-list-item-title>
+              <h6>ALMACENAMIENTO</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+        
       </v-list>
 
     </v-navigation-drawer>
