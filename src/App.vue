@@ -27,7 +27,8 @@
       <v-divider></v-divider>
 
       <v-list nav dense>
-        <v-list-group no-action color="light-blue darken-4" value="true">
+
+        <v-list-group no-action color="#00A1B1" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-package</v-icon>
@@ -47,13 +48,19 @@
               <h6>LINEAS</h6>
             </v-list-item-title>
           </v-list-item>
+          <v-list-item :to="{ name: 'Formatos' }">
+            <v-list-item-title>
+              <h6>FORMATOS</h6>
+            </v-list-item-title>
+          </v-list-item>
         </v-list-group>
+
       </v-list>
 
     </v-navigation-drawer>
 
     <v-app-bar color="#00A1B1" app>
-      <v-app-bar-nav-icon color="#00A1B1" @click="drawer = !drawer">
+      <v-app-bar-nav-icon color="white" @click="drawer = !drawer">
 
       </v-app-bar-nav-icon>
 
@@ -66,10 +73,10 @@
         </v-slide-y-transition>
       </v-container>
     </v-main>
-    <v-footer color="primary lighten-1" padless>
+    <v-footer color="#00A1B1" padless>
       <v-row justify="center" no-gutters>
 
-        <v-col class="light-blue darken-4 py-4 text-center white--text" cols="12">
+        <v-col class="py-4 text-center white--text" cols="12">
           {{ new Date().getFullYear() }} — <strong>ERP DRYMIX</strong>
         </v-col>
       </v-row>
@@ -81,7 +88,7 @@
 export default {
   data() {
     return {
-      drawer: false
+      drawer: false,
     };
   }
 };

@@ -22,6 +22,11 @@ const routes = [
     path: '/lineas',
     name: 'Lineas',
     component: require('../components/Lineas.vue').default
+  },
+  {
+    path: '/formatos',
+    name: 'Formatos',
+    component: require('../components/Formatos.vue').default
   }
 ]
 
