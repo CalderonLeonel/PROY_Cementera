@@ -27,6 +27,21 @@ const routes = [
     path: '/formatos',
     name: 'Formatos',
     component: require('../components/Formatos.vue').default
+  },
+  {
+    path: '/tipos',
+    name: 'Tipos',
+    component: require('../components/TipoProductos.vue').default
+  },
+  {
+    path: '/fabricas',
+    name: 'Fabricas',
+    component: require('../components/Fabrica.vue').default
+  },
+  {
+    path: '/moviminetos',
+    name: 'Movimientos',
+    component: require('../components/Movimiento.vue').default
   }
 ]
 

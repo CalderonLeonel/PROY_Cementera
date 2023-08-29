@@ -40,7 +40,7 @@
                                                     OPCIONES
                                                 </h6>
                                             </v-toolbar-title>
-                                            <v-btn icon v-if="botonact == 1" color="#EE680B" @click="estualizarFormato()"
+                                            <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarFormato()"
                                                 style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px"
                                                 height="28px">
                                                 <v-icon dark> mdi-pencil </v-icon>
@@ -187,7 +187,7 @@
 
                                         <v-card-title>
                                             <v-text-field v-model="buscarFormatos" append-icon="mdi-magnify"
-                                                label="BUSCAR FormatoS" single-line hide-details></v-text-field>
+                                                label="BUSCAR FORMATOS" single-line hide-details></v-text-field>
                                         </v-card-title>
                                         <v-data-table :headers="headersFormatosInh" :items="datosFormatosInh"
                                             :search="buscarFormatos" :items-per-page="5" class="elevation-1" id="tableId">
@@ -263,7 +263,7 @@
                                 </v-list-item>
 
                                 <v-card-title>
-                                    <v-text-field v-model="buscarFormatos" append-icon="mdi-magnify" label="BUSCAR FormatoS"
+                                    <v-text-field v-model="buscarFormatos" append-icon="mdi-magnify" label="BUSCAR FORMATOS"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
 

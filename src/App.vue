@@ -53,6 +53,21 @@
               <h6>FORMATOS</h6>
             </v-list-item-title>
           </v-list-item>
+          <v-list-item :to="{ name: 'Tipos' }">
+            <v-list-item-title>
+              <h6>TIPOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Fabricas' }">
+            <v-list-item-title>
+              <h6>FABRICAS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Movimientos' }">
+            <v-list-item-title>
+              <h6>MOVIMIENTOS</h6>
+            </v-list-item-title>
+          </v-list-item>
         </v-list-group>
 
       </v-list>
