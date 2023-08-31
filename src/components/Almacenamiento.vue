@@ -75,11 +75,13 @@ export default {
     data() {
         return {
             //#region Proveedor
-            idProveedor: "",
-            nombreProveedor: "",
-            contactoProveedorPrincipal: "",
-            contactoProveedorecundario: "",
-            correoProveedor: "",
+            idTransaccion:"",
+            idItem : "",
+            movimiento:"",
+            cantidad:"",
+            costo:"",
+            metodo:"",
+            estado:"",
             //fechaDeModificacion: "",
             valid: true,
             nombreRules: [
