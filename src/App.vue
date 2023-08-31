@@ -68,6 +68,28 @@
               <h6>MOVIMIENTOS</h6>
             </v-list-item-title>
           </v-list-item>
+          <v-list-item :to="{ name: 'Produccion' }">
+            <v-list-item-title>
+              <h6>PRODUCCION</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+
+        <v-list-group no-action color="#00A1B1" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-point-of-sale</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>VENTAS</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'Ventas' }">
+            <v-list-item-title>
+              <h6>VENTAS</h6>
+            </v-list-item-title>
+          </v-list-item>
         </v-list-group>
 
       </v-list>
@@ -78,6 +100,12 @@
       <v-app-bar-nav-icon color="white" @click="drawer = !drawer">
 
       </v-app-bar-nav-icon>
+
+      <v-btn class="mx-2" fab dark x-small color="#00A1B1" @click="salir()" style="float:right;" title="CERRAR SESSION">
+        <v-icon dark>
+          mdi-door-closed-lock
+        </v-icon>
+      </v-btn>
 
     </v-app-bar>
 

@@ -102,7 +102,7 @@
                             <v-row>
                                 <v-col cols="12" md="2"></v-col>
                                 <v-col cols="12" md="8">
-                                    <v-text-field v-model="nombreMovimiento" label="NOMBRE Movimiento" :counter="100"
+                                    <v-text-field v-model="nombreMovimiento" label="NOMBRE MOVIMIENTO" :counter="100"
                                         :rules="nombreMovimientoRules"
                                         @input="nombreMovimiento = nombreMovimiento.toUpperCase()" disabled></v-text-field>
                                 </v-col>
@@ -131,6 +131,9 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+
+        
+
         <div>
             <v-alert dense style="color: #ffffff;" color="grey">
                 <h5>MOVIMIENTOS DE PRODUCCION</h5>

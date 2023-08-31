@@ -14,6 +14,11 @@ const routes = [
     //component: Login
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: require('../components/Login.vue').default
+  },
+  {
     path: '/productos',
     name: 'Productos',
     component: require('../components/Productos.vue').default
@@ -42,6 +47,16 @@ const routes = [
     path: '/moviminetos',
     name: 'Movimientos',
     component: require('../components/Movimiento.vue').default
+  },
+  {
+    path: '/produccion',
+    name: 'Produccion',
+    component: require('../components/Produccion.vue').default
+  },
+  {
+    path: '/ventas',
+    name: 'Ventas',
+    component: require('../components/Ventas.vue').default
   }
 ]
 
