@@ -147,10 +147,10 @@ export default {
              ],
             datosCotizacionAdquisicion: [],
             headerCotizacionAdquisicion: [
-                { text: "COTIZACIÓN", value: "idcotizacion", sortable: true },
-                { text: "EMPLEADO", value: "idusuario", sortable: true },
-                { text: "PROVEEDOR", value: "idproveedor", sortable: true },
-                { text: "NOMBRE COTIZACIÓN", value: "nombrecotizacion", sortable: true },
+                { text: "COTIZACIÓN", value: "idCotizacion", sortable: true },
+                { text: "EMPLEADO", value: "idUsuario", sortable: true },
+                { text: "PROVEEDOR", value: "idProveedor", sortable: true },
+                { text: "NOMBRE COTIZACIÓN", value: "nombreCotizacion", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -158,10 +158,10 @@ export default {
 
             datosCotizacionItem: [],
             headerCotizacionItem: [
-                { text: "COTIZACIÓN ITEM", value: "idcotizacionitem", sortable: true },
-                { text: "COTIZACIÓN", value: "idcotizacion", sortable: true },
-                { text: "ITEM", value: "iditem", sortable: true },
-                { text: "PRECIO UNITARIO", value: "preciounitario", sortable: true },
+                { text: "COTIZACIÓN ITEM", value: "idCotizacionItem", sortable: true },
+                { text: "COTIZACIÓN", value: "idCotizacion", sortable: true },
+                { text: "ITEM", value: "idItem", sortable: true },
+                { text: "PRECIO UNITARIO", value: "precioUnitario", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -178,7 +178,7 @@ export default {
     },
     created: function (){
       this.listarCotizacionAdquisicion();
-      this.listarCotizacion();
+      this.listarCotizacionItem();
     },
     methods: {
         getColor(est) {
@@ -193,7 +193,7 @@ export default {
         async listarCotizacionesAdquisicion() {
           let me = this;
           await axios
-            .get("/adquisicion/listarcotizaciondeadquisicion/")
+            .get("/adquisicion/listarcotizaciondeadquisicionactiva/")
             .then(function (response) {
               if (response.data.resultado == null) {
                 me.datosCotizacionAdquisicion = [];
@@ -215,7 +215,7 @@ export default {
         async listarCotizacionesItem() {
           let me = this;
           await axios
-            .get("/adquisicion/listarcotizacionitem/")
+            .get("/adquisicion/listarcotizacionitemactiva/")
             .then(function (response) {
               if (response.data.resultado == null) {
                 me.datosCotizacionItem = [];
