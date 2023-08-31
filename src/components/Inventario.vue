@@ -10,7 +10,7 @@
                  <v-container>
                      <v-row>
                          <v-col cols="12" md="4">
-                             <v-btn color="success" @click="showModalAgregarProveedor()">NUEVO INVENTARIO</v-btn>
+                             <v-btn color="success" @click="showModalAgregarTransaccion()">NUEVO INVENTARIO</v-btn>
                          </v-col>
                          <v-col cols="12">
                              <v-list-item>
@@ -56,7 +56,7 @@
                      </v-row>
                      <v-row>
                          <v-col cols="12" md="4">
-                             <v-btn color="success" @click="showModalAgregarSeccion()">NUEVO ITEM</v-btn>
+                             <v-btn color="success" @click="showModalAgregarItem()">NUEVO ITEM</v-btn>
                          </v-col>
                          <v-col cols="12">
                              <v-list-item>
@@ -102,7 +102,7 @@
                      </v-row>
                      <v-row>
                          <v-col cols="12" md="4">
-                             <v-btn color="success" @click="showModalAgregarItem()">NUEVO TIPO DE ITEM</v-btn>
+                             <v-btn color="success" @click="showModalAgregarTipoItem()">NUEVO TIPO DE ITEM</v-btn>
                          </v-col>
                          <v-col cols="12">
                              <v-list-item>
@@ -116,7 +116,7 @@
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
-                             <v-data-table :headers="headerItem" :items="datosItem" :search="searchTipoIem"
+                             <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItem" :search="searchTipoIem"
                                  :items-per-page="5" class="elevation-1" id="tableId">
  
                                  <template #[`item.estado`]="{ item }">
@@ -151,7 +151,56 @@
              </v-form>
  
          </div>
-       
+         <v-dialog v-model="agregarTipoItemModal" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>AGREGAR TIPO DE ITEM</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="nombe" label="NOMBRE TIPO ITEM" :counter="60"
+                                        :rules="nombreRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>                         
+                                <v-col cols="12" md="4"> </v-col>
+                                <v-col cols="6"></v-col>
+                                <v-col cols="2">
+                                    <v-btn iconvv v-if="botonActTT == 1" class="mx-4"  dark color="#0A62BF"
+                                            @click="actualizarInfoProveedor()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN">
+                                            <v-icon dark> mdi-pencil </v-icon>
+                                            ACTUALIZAR
+                                        </v-btn>
+                                        <v-btn iconv v-if="botonActTT == 0" class="mx-4"  dark color="#0ABF55"
+                                            @click="registar()" style="float: left" title="REGISTRAR PROVEEDOR">
+                                            <v-icon dark> mdi-content-save </v-icon>
+                                            GUARDAR
+                                        </v-btn>
+                                </v-col>                      
+                                <v-col cols="2">                                        
+                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
+                                        <v-icon dark> mdi-eraser </v-icon>
+                                        LIMPIAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeModalAgregarTipoItem()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
      </v-card>
      
  
@@ -161,13 +210,26 @@
  export default {
      data() {
          return {
-             //#region Proveedor
-             idProveedor: "",
-             nombreProveedor: "",
-             contactoProveedorPrincipal: "",
-             contactoProveedorecundario: "",
-             correoProveedor: "",
-             //fechaDeModificacion: "",
+             //#region 
+             idTransaccion: "",
+             idItem:"",
+             movimiento:"",
+             cantidad:"",
+             costoUnitario:"",
+             metodoValuacion:"",
+             estTranc:"",
+
+
+             nombreItem:"",
+             descripcion:"",
+             medida:"",
+             estIt:"",
+
+             idTipoItem:"",
+             nombreTipoITem: "",
+             estTT: "",
+
+
              valid: true,
              nombreRules: [
                (v) => !!v || "Se requiere el nombre del proveedor.",
@@ -193,12 +255,12 @@
              datosInventario: [],
              headerInventario: [
                  
-                 { text: "NUMERO TRANSACCIÓN", value: "idtransaccion", sortable: true },
-                 { text: "Item", value: "idItem", sortable: true },
+                 { text: "NUMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
+                 { text: "ITEM", value: "iditem", sortable: true },
                  { text: "MOVIMIENTO", value: "movimiento", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
                  { text: "COSTO UNITARIO", value: "costoUnitario", sortable: true },
-                 { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
+                 { text: "METODO DE VALUACIÓN", value: "metodoValuacion", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -210,7 +272,7 @@
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCION", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
-                 { text: "TIPO ITEM", value: "idtipoitem", sortable: true },
+                 { text: "TIPO ITEM", value: "idTipoItem", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -219,7 +281,7 @@
              datosTipoDeItem: [],
              headerTipoDeItem: [
                  
-                 { text: "NOMBRE DE TIPO DE ITEM", value: "nombretipodeitem", sortable: true },
+                 { text: "NOMBRE DE TIPO DE ITEM", value: "nombretipoitem", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -232,7 +294,12 @@
              agregarItemModal: false,
  
              searchTipoIem: "",
-             agregarTipoIemModal: false,
+             agregarTipoItemModal: false,
+
+
+             botonActInv:0,
+             botonActIt:0,
+             botonActTT:0,
              //#endregion
          }
      },
@@ -254,7 +321,7 @@
          async listarInventarios() {
            let me = this;
            await axios
-             .get("/inventario/listarinventario/")
+             .get("/inventario/listarinventarioactivo/")
              .then(function (response) {
                if (response.data.resultado == null) {
                  me.datosInventario = [];
@@ -276,7 +343,7 @@
          async listarItems() {
            let me = this;
            await axios
-             .get("/inventario/listaritem/")
+             .get("/inventario/listaritemactivo/")
              .then(function (response) {
                if (response.data.resultado == null) {
                  me.datosItem = [];
@@ -297,7 +364,7 @@
          async listarTipoItems() {
            let me = this;
            await axios
-             .get("/inventario/listartipodeitem/")
+             .get("/inventario/listartipodeitemactivo/")
              .then(function (response) {
                if (response.data.resultado == null) {
                  me.datosTipoDeItem = [];
@@ -344,13 +411,7 @@
  
          },
          
-         llenarCamposProveedores(item) {
-             this.botonEst = 1;
-             this.nombreMateria = item.nom;
-             this.codigoMateria = item.codmat;
-             this.idMateria = item.idmateria;
- 
-         },
+
          //#endregion
          //#region Adicionar
          //#endregion
@@ -399,21 +460,73 @@
              }
              this.close()
          },
+
+
+         llenarCamposItem(item) {
+            this.botonActAl = 1;
+            this.agregarAlmacenModal = true;
+            this.idAlmacen = item.idalmacen;
+            this.nombreAlmacen = item.nombrealmacen;
+            this.estado = item.est;
+        },
+
+
+
+        llenarCamposTipoItem(item) {
+            this.botonAct = 1;
+            this.agregarSeccionModal = true;
+            this.idSeccion = item.idseccion;
+            this.idAlmacen = item.idalmacen;
+            this.nombreSeccion = item.nombreseccion;
+            this.estado = item.est;
+        },
+
+        llenarCamposItem(item) {
+            this.botonAct = 1;
+            this.agregarStandModal = true;
+            this.idStand = item.idstand;
+            this.idSeccion = item.idseccion;
+            this.nombreStand = item.nombrestand;
+            this.estado = item.est;
+        },
  
- 
- 
-         showModalAgregarProveedor() {
-             this.agregarProveedorModal = true;
-         },
-         closeModalAgregarProveedor() {
-             this.agregarProveedorModal = false;
-         },
-         showFormato() {
-             this.formatoModal = true;
-         },
-         closeFormato() {
-             this.formatoModal = false;
-         },
+
+
+        showModalAgregarTransaccion(){
+            this.agregarInventarioModal = true;
+        },
+
+        closeModalAgregarTransaccion(){
+            this.agregarInventarioModal = false;
+            this.limpiar();
+        },
+
+
+        showModalAgregarItem(){
+            this.agregarItemModal = true;
+        },
+
+        closeModalAgregarItem(){
+            this.agregarItemModal = false;
+            this.limpiar();
+        },
+
+
+        showModalAgregarTipoItem(){
+            this.agregarTipoItemModal = true;
+        },
+
+        closeModalAgregarTipoItem(){
+            this.agregarTipoItemModal = false;
+            this.limpiar();
+        },
+
+
+        limpiar () {
+            this.$refs.form.reset()
+        },
+
+      
          //#endregion
        },
  };
