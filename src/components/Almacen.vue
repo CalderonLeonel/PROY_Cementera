@@ -34,7 +34,7 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon class="mr-2" color="primary" x-large  @click="actualizarInfoAlmacen(item)"
+                                    <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposAlmacen(item)"
                                         title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
                                     </v-icon>
@@ -80,7 +80,7 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon class="mr-2" color="primary" x-large  @click="actualizarInfoSeccion(item)"
+                                    <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposSeccion(item)"
                                         title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
                                     </v-icon>
@@ -126,7 +126,7 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon class="mr-2" color="primary" x-large  @click="actualizarInfoStand(item)"
+                                    <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposStand(item)"
                                         title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
                                     </v-icon>
@@ -189,7 +189,7 @@
                                 </v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeModalAgregarAlmacen()" style="float: right" title="SALIR">
+                                        @click="closeAlmacenModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -761,7 +761,7 @@ export default {
             this.estado = item.est;
         },
 
-        actualizarAlmacen() {
+        actualizarAlmacenes() {
             this.actualizaralmacen(
 
             this.nombreAlmacen,
@@ -801,9 +801,9 @@ export default {
         showModalAgregarStand() {
             this.agregarStandModal = true;
         },
-        closeModalAgregarStand() {
-            this.limpiar();
+        closeModalAgregarStand() {        
             this.agregarStandModal = false;
+            this.limpiar();
         },
         
         llenarCamposStand(item) {
@@ -839,13 +839,13 @@ export default {
         },
 
         openAlmacenModal(){
-            this.almacenModal = true;
+            this.agregarAlmacenModal = true;
             this.listarAlmacenesActivos();
         },
 
         closeAlmacenModal(){
             this.limpiar();
-            this.almacenModal = false;
+            this.agregarAlmacenModal = false;
 
         },
 
