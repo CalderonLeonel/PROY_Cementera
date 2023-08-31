@@ -2,7 +2,7 @@
    <v-card elevation="5" outlined>
         <div>
             <v-alert dense style="color: #ffffff;" color="grey">
-                <h5>Almacenes</h5>
+                <h5>ALMACENES</h5>
             </v-alert>
         </div>
         <div>
@@ -10,12 +10,12 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showModalAgregarProveedor()">NUEVO Almacen</v-btn>
+                            <v-btn color="success" @click="showModalAgregarAlmacen()">NUEVO ALMACEN</v-btn>
                         </v-col>
                         <v-col cols="12">
                             <v-list-item>
                                 <v-list-item-title class="text-center">
-                                    <h5>Almacenes</h5>
+                                    <h5>ALMACEN</h5>
                                 </v-list-item-title>
                             </v-list-item>
 
@@ -61,7 +61,7 @@
                         <v-col cols="12">
                             <v-list-item>
                                 <v-list-item-title class="text-center">
-                                    <h5>Secciones</h5>
+                                    <h5>SECCIONES</h5>
                                 </v-list-item-title>
                             </v-list-item>
 
@@ -85,11 +85,11 @@
                                         mdi-pencil
                                     </v-icon>
                                     <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
-                                        title="ACTIVAR Seccion">
+                                        title="ACTIVAR SECCIÓN">
                                         mdi-check-circle-outline
                                     </v-icon>
                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="desactivar(item)"
-                                        title="DESACTIVAR Seccion">
+                                        title="DESACTIVAR SECCIÓN">
                                         mdi-close-circle
                                     </v-icon>             
                                 </template>
@@ -107,7 +107,7 @@
                         <v-col cols="12">
                             <v-list-item>
                                 <v-list-item-title class="text-center">
-                                    <h5>Stands</h5>
+                                    <h5>STANDS</h5>
                                 </v-list-item-title>
                             </v-list-item>
 
@@ -131,11 +131,11 @@
                                         mdi-pencil
                                     </v-icon>
                                     <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
-                                        title="ACTIVAR Stand">
+                                        title="ACTIVAR STAND">
                                         mdi-check-circle-outline
                                     </v-icon>
                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="desactivar(item)"
-                                        title="DESACTIVAR Stand">
+                                        title="DESACTIVAR STAND">
                                         mdi-close-circle
                                     </v-icon>             
                                 </template>
@@ -151,27 +151,285 @@
             </v-form>
 
         </div>
-        <v-dialog v-model="agregarProveedorModal" max-width="1000px">
+        <v-dialog v-model="agregarAlmacenModal" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>Agregar Proveedor</span>
+                    <span>AGREGAR ALMACEN</span>
                 </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACEN" :counter="60"
+                                        :rules="nombreRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="12"> </v-col>
+                                <v-col cols="6"></v-col>
+                                <v-col cols="2">
+                                    <v-btn iconvv v-if="botonActAl == 1" class="mx-4"  dark color="#0A62BF"
+                                            @click="actualizarInfoAlmacen()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN">
+                                            <v-icon dark> mdi-pencil </v-icon>
+                                            ACTUALIZAR
+                                        </v-btn>
+                                        <v-btn iconv v-if="botonActAl == 0" class="mx-4"  dark color="#0ABF55"
+                                            @click="registar()" style="float: left" title="REGISTRAR ALMACEN">
+                                            <v-icon dark> mdi-content-save </v-icon>
+                                            GUARDAR
+                                        </v-btn>
+                                </v-col>                      
+                                <v-col cols="2">                                        
+                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
+                                        <v-icon dark> mdi-eraser </v-icon>
+                                        LIMPIAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeModalAgregarAlmacen()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="editarProductoModal" max-width="1000px">
-            <v-card elevation="5" outlined>
+        <v-dialog v-model="almacenModal" max-width="900px">
+            <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>Editar Proveedor</span>
+                    <span>LISTA DE ALMACENES ACTIVOS</span>
                 </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="buscarAlmancen" append-icon="mdi-magnify" label="BUSCAR ALMACEN"
+                                        single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <v-data-table :headers="headerAlmacen" :items="datosAlmacenActivos" :search="buscarAlmancen"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon class="mr-2" @click="seleccionarAlmacen(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
+                                    @click="closeAlmacenModal()" style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="confirmacionAnulacionProveedor" max-width="1000px">
+        <v-dialog v-model="agregarSeccionModal" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>Confirmación de Eliminacion</span>
+                    <span>AGREGAR SECCIÓN</span>
                 </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="nombreSeccion" label="NOMBRE SECCIÓN" :counter="60"
+                                        :rules="nombreRules" @input="nombreSeccion = nombreSeccion.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="almacenRules"
+                                        @click="openAlmacenModal()" style="float: right" title="BUSCAR ALMACEN">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="3">
+                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACEN" :counter="60"
+                                        :rules="nombreRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
+                                        disabled required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="12"> </v-col>
+                                
+                                <v-col cols="6"></v-col>
+                                <v-col cols="2">
+                                    <v-btn iconvv v-if="botonActSe == 1" class="mx-4"  dark color="#0A62BF"
+                                            @click="actualizarInfoSeccion()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN">
+                                            <v-icon dark> mdi-pencil </v-icon>
+                                            ACTUALIZAR
+                                        </v-btn>
+                                        <v-btn iconv v-if="botonActSe == 0" class="mx-4"  dark color="#0ABF55"
+                                            @click="registar()" style="float: left" title="REGISTRAR SECCIÓN">
+                                            <v-icon dark> mdi-content-save </v-icon>
+                                            GUARDAR
+                                        </v-btn>
+                                </v-col>                      
+                                <v-col cols="2">                                        
+                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
+                                        <v-icon dark> mdi-eraser </v-icon>
+                                        LIMPIAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeModalAgregarSeccion()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="seccionModal" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA DE SECCIONES ACTIVAS</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="buscarSeccion" append-icon="mdi-magnify" label="BUSCAR SECCIÓN"
+                                        single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <v-data-table :headers="headerSeccion" :items="datosSeccionesActivas" :search="buscarSeccion"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarSeccion(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
+                                    @click="closeSeccionModal()" style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="agregarStandModal" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>AGREGAR STAND</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="nombreStand" label="NOMBRE STAND" :counter="60"
+                                        :rules="nombreRules" @input="nombreStand = nombreStand.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="seccionRules"
+                                        @click="openSeccionModal()" style="float: right" title="BUSCAR SECCIÓN">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="3">
+                                    <v-text-field v-model="nombreSeccion" label="NOMBRE SECCIÓN" :counter="60"
+                                        :rules="nombreRules" @input="nombreSeccion = nombreSeccion.toUpperCase()"
+                                        disabled required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="12"> </v-col>
+                                <v-col cols="6"></v-col>
+                                <v-col cols="2">
+                                    <v-btn iconvv v-if="botonActAl == 1" class="mx-4"  dark color="#0A62BF"
+                                            @click="actualizarInfoAlmacen()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN">
+                                            <v-icon dark> mdi-pencil </v-icon>
+                                            ACTUALIZAR
+                                        </v-btn>
+                                        <v-btn iconv v-if="botonActAl == 0" class="mx-4"  dark color="#0ABF55"
+                                            @click="registar()" style="float: left" title="REGISTRAR STAND">
+                                            <v-icon dark> mdi-content-save </v-icon>
+                                            GUARDAR
+                                        </v-btn>
+                                </v-col>                      
+                                <v-col cols="2">                                        
+                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
+                                        <v-icon dark> mdi-eraser </v-icon>
+                                        LIMPIAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeModalAgregarStand()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="confirmacionAnulacionAlmacen" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>'¿ESTAS SEGURO?</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                            <v-row>
+                                <v-col cols="3"></v-col>
+                                <v-col cols="3">
+                                    <v-btn class="mx-2"  dark x-big color="#BF120A"
+                                        @click="anular()" style="float: right" title="Anular">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        ANULAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3">
+                                    <v-btn class="mx-2"  dark x-big color="#00A1B1"
+                                        @click="closeAnulacion()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3"></v-col>
+                            </v-row>
+                    </v-container>
+                </v-card-text>
             </v-card>
         </v-dialog>
     </v-card>
@@ -183,12 +441,13 @@ import axios from "axios";
 export default {
     data() {
         return {
-            //#region Proveedor
-            idProveedor: "",
-            nombreProveedor: "",
-            contactoProveedorPrincipal: "",
-            contactoProveedorecundario: "",
-            correoProveedor: "",
+            //#region Almacenamiento
+            idAlmacen: "",
+            idSeccion: "",
+            idStand: "",
+            nombreAlmacen: "",
+            nombreSeccion: "",
+            nombreStand: "",
             //fechaDeModificacion: "",
             valid: true,
             nombreRules: [
@@ -249,6 +508,18 @@ export default {
 
             searchStand: "",
             agregarStandModal: false,
+
+
+            datosAlmacenActivos: [],
+            almacenModal: false,
+
+            datosSeccionesActivas: [],
+            seccionModal: false,
+
+
+            botonActAl: 0,
+            botonActSe: 0,
+            botonActSt: 0,
             //#endregion
         }
     },
@@ -270,7 +541,7 @@ export default {
         async listarAlmacenes() {
           let me = this;
           await axios
-            .get("/almacen/listaralmacenes/")
+            .get("/almacen/listaralmacenesactivos/")
             .then(function (response) {
               if (response.data.resultado == null) {
                 me.datosAlmacen = [];
@@ -285,6 +556,42 @@ export default {
             });
         },
 
+        async listarAlmacenesActivos() {
+          let me = this;
+          await axios
+            .get("/almacen/listaralmacenesactivos/")
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosAlmacenActivos = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosAlmacenActivos = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
+        async listarSeccionesActivas() {
+          let me = this;
+          await axios
+            .get("/seccion/listarseccionesactivas/")
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosSeccionesActivas = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosSeccionesActivas = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
 
         listarSeccion() {
             this.listarSecciones();
@@ -292,7 +599,7 @@ export default {
         async listarSecciones() {
           let me = this;
           await axios
-            .get("/seccion/listarsecciones/")
+            .get("/seccion/listarseccionesactivas/")
             .then(function (response) {
               if (response.data.resultado == null) {
                 me.datosSeccion = [];
@@ -313,7 +620,7 @@ export default {
         async listarStands() {
           let me = this;
           await axios
-            .get("/stand/listarstands/")
+            .get("/stand/listarstandsactivos/")
             .then(function (response) {
               if (response.data.resultado == null) {
                 me.datosStand = [];
@@ -418,17 +725,144 @@ export default {
 
 
 
-        showModalAgregarProveedor() {
-            this.agregarProveedorModal = true;
+        showModalAgregarAlmacen() {
+            this.agregarAlmacenModal = true;
         },
-        closeModalAgregarProveedor() {
-            this.agregarProveedorModal = false;
+        closeModalAgregarAlmacen() {
+            limpiar();
+            this.agregarAlmacenModal = false;
         },
-        showFormato() {
-            this.formatoModal = true;
+
+        llenarCamposAlmacen(item) {
+            this.botonActAl = 1;
+            this.agregarAlmacenModal = true;
+            this.idAlmacen = item.idalmacen;
+            this.nombreAlmacen = item.nombrealmacen;
+            this.estado = item.est;
         },
-        closeFormato() {
-            this.formatoModal = false;
+
+
+
+        llenarCamposSeccion(item) {
+            this.botonAct = 1;
+            this.agregarSeccionModal = true;
+            this.idSeccion = item.idseccion;
+            this.idAlmacen = item.idalmacen;
+            this.nombreSeccion = item.nombreseccion;
+            this.estado = item.est;
+        },
+
+        llenarCamposStand(item) {
+            this.botonAct = 1;
+            this.agregarStandModal = true;
+            this.idStand = item.idstand;
+            this.idSeccion = item.idseccion;
+            this.nombreStand = item.nombrestand;
+            this.estado = item.est;
+        },
+
+        actualizarAlmacen() {
+            this.actualizaralmacen(
+
+            this.nombreAlmacen,
+            this.estado,
+
+            );
+            this.botonActAl = 0;
+        },
+
+        showModalAgregarSeccion() {
+            this.agregarSeccionModal = true;
+        },
+        closeModalAgregarSeccion() {
+            limpiar();
+            this.agregarSeccionModal = false;
+        },
+
+        llenarCamposSeccion(item) {
+            this.botonActSe = 1;
+            this.agregarSeccionModal = true;
+            this.nombreSeccion = item.nombreseccion;
+            this.idAlmacen = item.idalmacen;
+            this.estado = item.est;
+        },
+
+        actualizarSeccion() {
+            this.actualizarseccion(
+
+            this.nombreSeccion,
+            this.idAlmacen,
+            this.estado,
+
+            );
+            this.botonActSe = 0;
+        },
+
+        showModalAgregarStand() {
+            this.agregarStandModal = true;
+        },
+        closeModalAgregarStand() {
+            this.limpiar();
+            this.agregarStandModal = false;
+        },
+        
+        llenarCamposStand(item) {
+            this.botonActSt = 1;
+            this.agregarStandModal = true;
+            this.nombreStand = item.nombrestand;
+            this.idSeccion = item.idseccion;
+            this.estado = item.est;
+        },
+
+        actualizarStand() {
+            this.actualizarseccion(
+
+            this.nombreStand,
+            this.idSeccion,
+            this.estado,
+
+            );
+            this.botonActSt = 0;
+        },
+
+        seleccionarAlmacen(item) {
+            this.idAlmacen = item.idalmacen;
+            this.nombreAlmacen = item.nombrealmacen;
+            this.almacenModal = false;
+        },
+
+        seleccionarSeccion(item) {
+            console.log(item);
+            this.idSeccion = item.idseccion;
+            this.nombreSeccion = item.nombreseccion;
+            this.seccionModal = false;
+        },
+
+        openAlmacenModal(){
+            this.almacenModal = true;
+            this.listarAlmacenesActivos();
+        },
+
+        closeAlmacenModal(){
+            this.limpiar();
+            this.almacenModal = false;
+
+        },
+
+
+        openSeccionModal(){
+            this.seccionModal = true;
+            this.listarSeccionesActivas();
+        },
+
+        closeSeccionModal(){
+            this.limpiar();
+            this.seccionModal = false;
+            
+        },
+
+        limpiar () {
+            this.$refs.form.reset()
         },
         //#endregion
       },
