@@ -151,6 +151,64 @@
              </v-form>
  
          </div>
+
+         <v-dialog v-model="agregarItemModal" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>AGREGAR TIPO DE ITEM</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="nombre" label="NOMBRE TIPO ITEM" :counter="60"
+                                        :rules="nombreRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>      
+                                <v-col cols="12" md="4">
+                                    <v-combobox
+                                    label="MEDIDA" nombre="medida" @input="medida = medida.toUpperCase()" required
+                                    :items="['LT', 'KG', 'ML', 'DS', 'UI', 'TN','SOB','MIC','MT','G','UNIDAD']"
+                                    ></v-combobox>
+                                </v-col>                   
+                                <v-col cols="12" md="4"> </v-col>
+                                <v-col cols="6"></v-col>
+                                <v-col cols="2">
+                                    <v-btn iconvv v-if="botonActTT == 1" class="mx-4"  dark color="#0A62BF"
+                                            @click="actualizarInfoProveedor()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN">
+                                            <v-icon dark> mdi-pencil </v-icon>
+                                            ACTUALIZAR
+                                        </v-btn>
+                                        <v-btn iconv v-if="botonActTT == 0" class="mx-4"  dark color="#0ABF55"
+                                            @click="registar()" style="float: left" title="REGISTRAR PROVEEDOR">
+                                            <v-icon dark> mdi-content-save </v-icon>
+                                            GUARDAR
+                                        </v-btn>
+                                </v-col>                      
+                                <v-col cols="2">                                        
+                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
+                                        <v-icon dark> mdi-eraser </v-icon>
+                                        LIMPIAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeModalAgregarTipoItem()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
          <v-dialog v-model="agregarTipoItemModal" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
@@ -272,7 +330,7 @@
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCION", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
-                 { text: "TIPO ITEM", value: "idTipoItem", sortable: true },
+                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -378,38 +436,7 @@
                console.log(error);
              });
          },
-         activar(item) {
-             this.idProveedor = item.idProveedor;
-             this.activarmateria(this.idProveedor);
-         },
-         async activarmateria(idProveedor) {
-             let me = this;
-             /*await axios
-                 .post("/carrera/onmateria/" + this.idProveedor).then(function (response) {
- 
-                     me.listarMaterias();
-                 })
-                 .catch(function (error) {
-                     console.log(error);
-                 });*/
- 
-         },
-         desactivar(item) {
-             this.idProveedor = item.idProveedor;
-             this.desactivarproveedor(this.idProveedor);
-         },
-         async desactivarproveedor(idProveedor) {
-             let me = this;
-             /*await axios
-                 .post("/carrera/offmateria/" + this.idProveedor).then(function (response) {
- 
-                     me.listarMaterias();
-                 })
-                 .catch(function (error) {
-                     console.log(error);
-                 });*/
- 
-         },
+        
          
 
          //#endregion
