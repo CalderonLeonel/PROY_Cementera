@@ -27,11 +27,17 @@
                             <v-data-table :headers="headerProveedor" :items="datosProveedor" :search="searchProveedor"
                                 :items-per-page="5" class="elevation-1" id="tableId">
 
+                                <template #[`item.cto2pro`]="{ item }">
+                                    {{ item.cto2pro=="null"? "-" : item.cto2pro}}
+                                </template>
+
                                 <template #[`item.est`]="{ item }">
                                     <v-chip :color="getColor(item.est)" dark>
                                         {{ item.est }}
                                     </v-chip>
                                 </template>
+
+                              
 
                                 <template #[`item.actions`]="{ item }">
                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposProveedor(item)"
@@ -423,7 +429,13 @@ export default {
             this.idProveedor = item.idprv;
             this.nombreProveedor = item.nomprv;
             this.contactoProveedorPrincipal = item.cto1pro;
-            this.contactoProveedorecundario = item.cto2pro;
+            if(item.cto2pro==""){
+                this.contactoProveedorecundario = "   ";
+
+            }else{
+                this.contactoProveedorecundario = item.cto2pro;
+            }
+            
             this.correoProveedor = item.croprov;
             this.estado = item.est;
         },
