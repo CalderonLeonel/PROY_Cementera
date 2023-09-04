@@ -13,8 +13,18 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'login',
+    name: 'Login',
     component: require('../components/Login.vue').default
+  },
+  {
+    path: '/cargos',
+    name: 'Cargos',
+    component: require('../components/Cargo.vue').default
+  },
+  {
+    path: '/empleados',
+    name: 'Empleados',
+    component: require('../components/Empleado.vue').default
   }
 ]
 

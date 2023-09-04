@@ -1,0 +1,394 @@
+<template>
+    <v-card elevation="5" outlined shaped>
+        <v-dialog v-model="tpostModal" max-width="600">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>
+                        <h5>NUEVO CARGO</h5>
+                    </span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container> </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <div>
+            <v-alert dense color="#00A1B1" style="color: #ffffff">
+                <h5>Cargos</h5>
+            </v-alert>
+        </div>
+        <div>
+            <v-form ref="form" v-model="valid" lazy-validation>
+                <v-container>
+                    <v-row>
+                        <v-col cols="12" md="3"> </v-col>
+                        <!--centreador-->
+                        <v-col cols="12" md="6">
+                            <v-text-field v-model="descripcion" :counter="50" :rules="nombreRules"
+                                @input="descripcion = descripcion.toUpperCase()" label="Nombre del Cargo" required>
+                            </v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="3"> </v-col>
+                        <!--centreadores-->
+                        <v-col cols="12" md="3"> </v-col>
+                        <!--centreadores-->
+                        <v-col cols="12" md="6">
+                            <v-text-field v-model="nombreCargo" :counter="30" :rules="descripcionRules"
+                                @input="descripcion = descripcion.toUpperCase()" label="Descripcion del Cargo"
+                                required></v-text-field>
+                        </v-col>
+
+
+                        <v-col cols="12" md="9"> </v-col>
+                        <v-col cols="12" md="3">
+                            <v-toolbar dense shaped color="#002245">
+                                <v-toolbar-title style="color:#ffffff">
+                                    <h6>OPCIONES</h6>
+                                </v-toolbar-title>
+
+                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="#EE680B"
+                                    @click=actualizarCargo() style="float: left" title="ACTUALIZAR INFORMACIÓN">
+                                    <v-icon dark> mdi-pencil </v-icon>
+                                </v-btn>
+                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="#00A1B1"
+                                    @click="registrarCargo()" style="float: left" title="REGISTRAR CARGO">
+                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                </v-btn>
+                                <v-btn class="mx-2" fab dark x-small color="#00A1B1" @click="limpiar()"
+                                    style="float: left" title="LIMPIAR FORMULARIO">
+                                    <v-icon dark> mdi-eraser </v-icon>
+                                </v-btn>
+
+                            </v-toolbar>
+                        </v-col>
+
+
+
+                        <v-col cols="12" md="1"> </v-col>
+                        <v-col cols="12" md="2"> </v-col>
+                        <v-col cols="12" md="6">
+
+                            <v-col cols="12">
+                                <v-list-item>
+                                    <v-list-item-title class="text-center">
+                                        <h5>CARGOS</h5>
+                                    </v-list-item-title>
+                                </v-list-item>
+
+                                <v-card-title>
+                                    <v-text-field v-model="searchCargo" append-icon="mdi-magnify"
+                                        label="BUSCAR CARGOS" single-line hide-details></v-text-field>
+                                </v-card-title>
+
+                                <v-data-table :headers="headersCargo" :items="datosCargo" :search="searchCargo"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.act`]="{ item }">
+                                        <v-chip :color="getColor(item.act)" dark>
+                                            {{ item.act }}
+                                        </v-chip>
+                                    </template>
+
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
+                                            title="ACTIVAR CARGO">
+                                            mdi-check-circle-outline
+                                        </v-icon>
+                                        <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
+                                            title="DESACTIVAR CARGO">
+                                            mdi-cancel
+                                        </v-icon>
+                                        <v-icon small class="mr-2" @click="llenarCamposCargo(item)"
+                                            title="ACTUALIZAR INFORMACION">
+                                            mdi-pencil
+                                        </v-icon>
+                                      
+
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                        </v-col>
+                    </v-row>
+
+                    <div class="text-center">
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#EE680B"
+                            outlined>
+                            <strong>{{ mensajeSnackbar }}</strong>
+
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+                    <div class="text-center">
+
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                            outlined>
+                            <strong>{{ mensajeSnackbarError }}</strong>
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+                </v-container>
+            </v-form>
+        </div>
+    </v-card>
+</template>
+<script>
+import axios from "axios";
+var XLSX = require("xlsx");
+
+export default {
+    data: () => ({
+        id_cargo: "",
+        nombreCargo: "",
+        descripcion: "",
+        //estado: "",
+        //createDate: "",
+        //lastDate: "",
+        valid: true,
+
+        beneficiarioexp: "",
+        id_beneex: "",
+        tpostModal: "",
+        searchCargo: "",
+        datosexpbeneficiario: [],
+
+
+        snackbarOK: false,
+        mensajeSnackbar: "",
+        snackbarError: false,
+        mensajeSnackbarError: "REGISTRO FALLIDO",
+        timeout: 2000,
+
+        botonAct: 0,
+        idCargo: "",
+
+        nombreRules: [
+            (v) => !!v || "NOMBRE DE CARGO ES REQUERIDO",
+            (v) =>
+                (v && v.length <= 50) ||
+                "EL NOMBRE DE CARGO DEBE TENER 50 CARACTERES COMO MAXIMO",
+        ],
+
+        descripcionRules: [
+            (v) => !!v || "CODIGO DE CARGO REQUERIDO",
+            (v) =>
+                (v && v.length <= 30) ||
+                "CODIGO DE CARGO DEBE TENER 30 CARACTERES COMO MAXIMO",
+        ],
+
+
+        checkbox: false,
+        datosCargo: [],
+
+
+        headersCargo: [
+            { text: "CODIGO DE CARGO", value: "codmat", sortable: false },
+            { text: "CARGO ", value: "nom", sortable: false },
+            { text: "ESTADO", value: "act", sortable: false },
+            { text: "FECHA CREACION", value: "nacdte", sortable: false },
+        ],
+    }),
+
+    created: function () {
+        this.user = JSON.parse(sessionStorage.getItem("session"));
+        this.id_cargo = this.user.id_cargo;
+        this.listarCargos(this.id_cargo);
+    },
+
+    methods: {
+
+        activar(item) {
+            this.idCargo = item.idcargo;
+            this.activarcargo(this.idCargo);
+        },
+        async activarcargo(idCargo) {
+            let me = this;
+            await axios
+                .post("/cargo/addcargo/" + this.idCargo).then(function (response) {
+
+                    me.listarCargos();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        },
+        desactivar(item) {
+            this.idCargo = item.idcargo;
+            this.desactivarcargo(this.idCargo);
+        },
+        async desactivarcargo(idCargo) {
+            let me = this;
+            await axios
+                .post("/cargo/offcargo/" + this.idCargo).then(function (response) {
+
+                    me.listarCargos();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        },
+        getColor(est) {
+            if (est == 'ACTIVO') return 'green'
+            else return 'red'
+        },
+
+
+        llenarCamposCargo(item) {
+            this.botonAct = 1;
+            this.descripcion = item.nom;
+            this.nombreCargo = item.codmat;
+            this.idCargo = item.idcargo;
+
+        },
+        actualizarCargo() {
+            this.actualizarcargo(
+
+                this.descripcion,
+                this.nombreCargo,
+                this.idCargo,
+
+
+            );
+            this.botonAct = 0;
+        },
+        async actualizarcargo(
+            descripcion,
+            nombreCargo,
+            idCargo,
+
+
+        ) {
+            let me = this;
+
+            //let me=this;
+            await axios
+                .post(
+                    "/cargo/actcargo/" +
+                    this.descripcion +
+                    "," +
+                    this.nombreCargo +
+                    "," +
+                    this.idCargo
+
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarCargos(me.id_cargo);
+                    me.limpiar();
+
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+
+                });
+
+
+
+        },
+
+        limpiar() {
+            this.descripcion = "";
+            this.nombreCargo = "";
+        },
+
+        validate() {
+            this.$refs.form.validate();
+        },
+        reset() {
+            this.$refs.form.reset();
+        },
+        resetValidation() {
+            this.$refs.form.resetValidation();
+        },
+
+        showTpostulante() {
+            this.tpostModal = true;
+        },
+        closeTpost() {
+            this.tpostModal = false;
+        },
+
+        listarb() {
+            this.listarCargos(this.id_cargo);
+        },
+
+        async listarCargos(id_cargo) {
+            let me = this;
+            await axios
+                .get("/cargo/listarcargo/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosCargo = [];
+
+                    } else {
+                        //console.log(response.data);
+                        me.datosCargo = response.data.resultado;
+
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        registrarCargo() {
+            this.registrarCargo(
+                this.descripcion,
+                this.nombreCargo,
+                //this.id_cargo
+            );
+        },
+        /*
+        showdocumentoadm() {
+            this.listarregistrado(this.documento, this.emailpost);
+            this.documenadmisionModal = true;
+        },
+        */
+       /*
+        closedocumentoadm() {
+            this.documenadmisionModal = false;
+        },
+        */
+        async registrarCargo(
+            nombreCargo,
+            descripcion,
+        ) {
+            let me = this;
+
+            //let me=this;
+            await axios
+                .post(
+                    "/cargo/addcargo/" +
+                    this.nombreCargo +
+                    "," +
+                    this.descripcion
+
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarCargos(me.id_cargo);
+                    me.limpiar();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+        },
+    },
+};
+</script>
