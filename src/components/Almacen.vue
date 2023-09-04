@@ -42,7 +42,7 @@
                                         title="ACTIVAR Almacen">
                                         mdi-check-circle-outline
                                     </v-icon>
-                                    <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="desactivar(item)"
+                                    <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionAlmacen(item)"
                                         title="DESACTIVAR Almacen">
                                         mdi-close-circle
                                     </v-icon>             
@@ -88,7 +88,7 @@
                                         title="ACTIVAR SECCIÓN">
                                         mdi-check-circle-outline
                                     </v-icon>
-                                    <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="desactivar(item)"
+                                    <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionSeccion(item)"
                                         title="DESACTIVAR SECCIÓN">
                                         mdi-close-circle
                                     </v-icon>             
@@ -134,7 +134,7 @@
                                         title="ACTIVAR STAND">
                                         mdi-check-circle-outline
                                     </v-icon>
-                                    <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="desactivar(item)"
+                                    <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionStand(item)"
                                         title="DESACTIVAR STAND">
                                         mdi-close-circle
                                     </v-icon>             
@@ -169,13 +169,13 @@
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
                                     <v-btn iconvv v-if="botonActAl == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="actualizarInfoAlmacen()" style="float: left"
+                                            @click="editarAlm()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                             ACTUALIZAR
                                         </v-btn>
                                         <v-btn iconv v-if="botonActAl == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registar()" style="float: left" title="REGISTRAR ALMACEN">
+                                            @click="registrarAlm()" style="float: left" title="REGISTRAR ALMACEN">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
                                         </v-btn>
@@ -212,13 +212,13 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="buscarAlmancen" append-icon="mdi-magnify" label="BUSCAR ALMACEN"
+                                    <v-text-field v-model="buscarAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACEN"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headerAlmacen" :items="datosAlmacenActivos" :search="buscarAlmancen"
+                                <v-data-table :headers="headerAlmacen" :items="datosAlmacenActivos" :search="buscarAlmacen"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon class="mr-2" @click="seleccionarAlmacen(item)">
@@ -270,13 +270,13 @@
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
                                     <v-btn iconvv v-if="botonActSe == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="actualizarInfoSeccion()" style="float: left"
+                                            @click="editarSec()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                             ACTUALIZAR
                                         </v-btn>
                                         <v-btn iconv v-if="botonActSe == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registar()" style="float: left" title="REGISTRAR SECCIÓN">
+                                            @click="registrarSec()" style="float: left" title="REGISTRAR SECCIÓN">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
                                         </v-btn>
@@ -290,7 +290,7 @@
                                 </v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeModalAgregarSeccion()" style="float: right" title="SALIR">
+                                        @click="closeModalAgregarSec()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -369,14 +369,14 @@
                                 <v-col cols="12" md="12"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
-                                    <v-btn iconvv v-if="botonActAl == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="actualizarInfoAlmacen()" style="float: left"
+                                    <v-btn iconvv v-if="botonActSt == 1" class="mx-4"  dark color="#0A62BF"
+                                            @click="editarStn()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                             ACTUALIZAR
                                         </v-btn>
-                                        <v-btn iconv v-if="botonActAl == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registar()" style="float: left" title="REGISTRAR STAND">
+                                        <v-btn iconv v-if="botonActSt == 0" class="mx-4"  dark color="#0ABF55"
+                                            @click="registrarStn()" style="float: left" title="REGISTRAR STAND">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
                                         </v-btn>
@@ -390,7 +390,7 @@
                                 </v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeModalAgregarStand()" style="float: right" title="SALIR">
+                                        @click="closeModalAgregarSt()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -403,10 +403,10 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="confirmacionAnulacionAlmacen" max-width="1000px">
+        <v-dialog v-model="confirmacionAnulacionAlm" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>'¿ESTAS SEGURO?</span>
+                    <span>¿ESTAS SEGURO?</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -414,14 +414,77 @@
                                 <v-col cols="3"></v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anular()" style="float: right" title="Anular">
+                                        @click="anularAlmacen()" style="float: right" title="ANULAR ALMACEN">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         ANULAR
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#00A1B1"
-                                        @click="closeAnulacion()" style="float: right" title="SALIR">
+                                        @click="closeAnulacionAlmacen()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3"></v-col>
+                            </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+
+    <v-dialog v-model="confirmacionAnulacionSec" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>¿ESTAS SEGURO?</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                            <v-row>
+                                <v-col cols="3"></v-col>
+                                <v-col cols="3">
+                                    <v-btn class="mx-2"  dark x-big color="#BF120A"
+                                        @click="anularSeccion()" style="float: right" title="Anular">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        ANULAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3">
+                                    <v-btn class="mx-2"  dark x-big color="#00A1B1"
+                                        @click="closeAnulacionSeccion()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3"></v-col>
+                            </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+
+
+    <v-dialog v-model="confirmacionAnulacionSt" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>¿ESTAS SEGURO?</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                            <v-row>
+                                <v-col cols="3"></v-col>
+                                <v-col cols="3">
+                                    <v-btn class="mx-2"  dark x-big color="#BF120A"
+                                        @click="anularStand()" style="float: right" title="ANULAR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        ANULAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3">
+                                    <v-btn class="mx-2"  dark x-big color="#00A1B1"
+                                        @click="closeAnulacionStand()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -433,7 +496,6 @@
             </v-card>
         </v-dialog>
     </v-card>
-    
 
 </template>
 <script>
@@ -448,6 +510,7 @@ export default {
             nombreAlmacen: "",
             nombreSeccion: "",
             nombreStand: "",
+            estado:"ACTIVO",
             //fechaDeModificacion: "",
             valid: true,
             nombreRules: [
@@ -484,7 +547,7 @@ export default {
             headerSeccion: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
                 { text: "NOMBRE DE SECCION", value: "nombreseccion", sortable: true },
-                { text: "ALMACEN", value: "idalmacen", sortable: true },
+                { text: "ALMACEN", value: "nombrealmacen", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -494,20 +557,26 @@ export default {
             headerStand: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
                 { text: "NOMBRE DE STAND", value: "nombrestand", sortable: true },
-                { text: "SECCION", value: "idseccion", sortable: true },
+                { text: "SECCION", value: "nombreseccion", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
             searchAlmacen: "",
+            buscarAlmacen: "",
             agregarAlmacenModal: false,
+            confirmacionAnulacionAlm: false,
 
             searchSeccion: "",
+            buscarSeccion: "",
             agregarSeccionModal: false,
+            confirmacionAnulacionSec: false,
 
             searchStand: "",
+            buscarStand: "",
             agregarStandModal: false,
+            confirmacionAnulacionSt: false,
 
 
             datosAlmacenActivos: [],
@@ -574,6 +643,92 @@ export default {
             });
         },
 
+        registrarAlm() {
+            this.registrarAlmacen(this.nombreAlmacen, this.estado);
+            this.closeModalAgregarAlma();
+            this.listarAlmacenes();
+        },
+        async registrarAlmacen(
+            nombreAlmacen,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/almacen/agregaralmacen/" +
+                    this.nombreAlmacen +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+        editarAlm() {
+            this.editarAlmacen(this.idAlmacen, this.nombreAlmacen, this.estado);
+            this.closeModalAgregarAlma();
+            this.listarAlmacenes();
+        },
+        async editarAlmacen(
+            idAlmacen,
+            nombreAlmacen,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/almacen/editaralmacen/" +
+                    this.idAlmacen +
+                    "," +
+                    this.nombreAlmacen +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
+        confirmacionAnulacionAlmacen(item){
+            this.idAlmacen = item.idalmacen;
+            this.confirmacionAnulacionAlm = true;
+        },
+        closeAnulacionAlmacen(){
+            this.confirmacionAnulacionAlm = false;
+        },
+        anularAlmacen() {
+            this.desactivarAlmacen(this.idAlmacen);
+            this.confirmacionAnulacionAlm = false;
+            this.listarAlmacenes();
+        },
+        async desactivarAlmacen(idAlmacen) {
+            let me = this;
+            await axios
+                .post("/almacen/eliminaralmacen/" + this.idAlmacen).then(function (response) {
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    alert('error')
+                });
+
+        },
+
         async listarSeccionesActivas() {
           let me = this;
           await axios
@@ -614,6 +769,102 @@ export default {
             });
         },
 
+
+        registrarSec() {
+            this.registarSeccion(this.nombreSeccion, this.idAlmacen, this.estado);
+            this.closeModalAgregarSec();
+            this.listarSecciones();
+        },
+        async registarSeccion(
+            nombreSeccion,
+            idAlmacen,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/seccion/agregarseccion/" +
+                    this.nombreSeccion +
+                    "," +
+                    this.idAlmacen +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+        editarSec() {
+            this.editarSeccion(this.idSeccion, this.nombreSeccion,this.idAlmacen, this.estado);
+            this.closeModalAgregarSec();
+            this.listarSecciones();
+            this.botonActSe = 0;
+        },
+        async editarSeccion(
+            idSeccion,
+            nombreSeccion,
+            idAlmacen,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/seccion/actualizarseccion/" +
+                    this.idSeccion +
+                    "," +
+                    this.nombreSeccion +
+                    "," +
+                    this.idAlmacen +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
+        confirmacionAnulacionSeccion(item){
+            this.idSeccion = item.idseccion;
+            this.confirmacionAnulacionSec = true;
+        },
+        closeAnulacionSeccion(){
+            this.confirmacionAnulacionSec = false;
+        },
+        anularSeccion() {
+            this.desactivarAlmacen(this.idSeccion);
+            this.confirmacionAnulacionSec = false;
+            this.listarSecciones();
+        },
+        async desactivarSeccion(idSeccion) {
+            let me = this;
+            await axios
+                .post("/seccion/eliminarseccion/" + this.idSeccion).then(function (response) {
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    alert('error')
+                });
+
+        },
+
+
+
         listarStand() {
             this.listarStands();
         },
@@ -634,46 +885,102 @@ export default {
               console.log(error);
             });
         },
-        activar(item) {
-            this.idProveedor = item.idProveedor;
-            this.activarmateria(this.idProveedor);
-        },
-        async activarmateria(idProveedor) {
-            let me = this;
-            /*await axios
-                .post("/carrera/onmateria/" + this.idProveedor).then(function (response) {
 
-                    me.listarMaterias();
+
+
+       registrarStn() {
+            this.registarStand(this.nombreStand, this.idSeccion, this.estado);
+            this.closeModalAgregarSt();
+            this.listarStands();
+        },
+        async registarStand(
+            nombreStand,
+            idSeccion,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/stand/agregarstand/" +
+                    this.nombreStand +
+                    "," +
+                    this.idSeccion +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+        editarStn() {
+            this.editarStand(this.idStand, this.nombreStand,this.idSeccion, this.estado);
+            this.closeModalAgregarSt();
+            this.listarStands();
+            this.botonActSt = 0;
+        },
+        async editarStand(
+            idStand,
+            nombreStand,
+            idSeccion,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/stand/actualizarstand/" +
+                    this.idStand +
+                    "," +
+                    this.nombreStand +
+                    "," +
+                    this.idSeccion +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
+        confirmacionAnulacionStand(item){
+            this.idStand = item.idStand;
+            this.confirmacionAnulacionSt = true;
+        },
+        closeAnulacionStand(){
+            this.confirmacionAnulacionSt = false;
+        },
+        anularStand() {
+            this.desactivarStand(this.idStand);
+            this.confirmacionAnulacionSt = false;
+            this.listarStands();
+        },
+        async desactivarStand(idStand) {
+            let me = this;
+            await axios
+                .post("/stand/eliminarstand/" + this.idStand).then(function (response) {
                 })
                 .catch(function (error) {
                     console.log(error);
-                });*/
+                    alert('error')
+                });
 
         },
-        desactivar(item) {
-            this.idProveedor = item.idProveedor;
-            this.desactivarproveedor(this.idProveedor);
-        },
-        async desactivarproveedor(idProveedor) {
-            let me = this;
-            /*await axios
-                .post("/carrera/offmateria/" + this.idProveedor).then(function (response) {
 
-                    me.listarMaterias();
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });*/
 
-        },
-        
-        llenarCamposProveedores(item) {
-            this.botonEst = 1;
-            this.nombreMateria = item.nom;
-            this.codigoMateria = item.codmat;
-            this.idMateria = item.idmateria;
-
-        },
         //#endregion
         //#region Adicionar
         //#endregion
@@ -728,37 +1035,39 @@ export default {
         showModalAgregarAlmacen() {
             this.agregarAlmacenModal = true;
         },
-        closeModalAgregarAlmacen() {
-            limpiar();
+        closeModalAgregarAlma() {
             this.agregarAlmacenModal = false;
+            this.limpiar();
         },
 
         llenarCamposAlmacen(item) {
             this.botonActAl = 1;
-            this.agregarAlmacenModal = true;
             this.idAlmacen = item.idalmacen;
             this.nombreAlmacen = item.nombrealmacen;
-            this.estado = item.est;
+            this.estado = item.estado;
+            this.agregarAlmacenModal = true;
         },
 
 
 
         llenarCamposSeccion(item) {
-            this.botonAct = 1;
-            this.agregarSeccionModal = true;
+            this.botonActSe = 1;
             this.idSeccion = item.idseccion;
             this.idAlmacen = item.idalmacen;
+            this.nombreAlmacen = item.nombrealmacen;
             this.nombreSeccion = item.nombreseccion;
-            this.estado = item.est;
+            this.estado = item.estado;
+            this.agregarSeccionModal = true;
         },
 
         llenarCamposStand(item) {
-            this.botonAct = 1;
-            this.agregarStandModal = true;
+            this.botonActSt = 1;
             this.idStand = item.idstand;
             this.idSeccion = item.idseccion;
+            this.nombreSeccion = item.nombreseccion;
             this.nombreStand = item.nombrestand;
-            this.estado = item.est;
+            this.estado = item.estado;
+            this.agregarStandModal = true;
         },
 
         actualizarAlmacenes() {
@@ -774,18 +1083,12 @@ export default {
         showModalAgregarSeccion() {
             this.agregarSeccionModal = true;
         },
-        closeModalAgregarSeccion() {
-            limpiar();
+        closeModalAgregarSec() {
             this.agregarSeccionModal = false;
+            this.limpiar();
         },
 
-        llenarCamposSeccion(item) {
-            this.botonActSe = 1;
-            this.agregarSeccionModal = true;
-            this.nombreSeccion = item.nombreseccion;
-            this.idAlmacen = item.idalmacen;
-            this.estado = item.est;
-        },
+  
 
         actualizarSeccion() {
             this.actualizarseccion(
@@ -801,18 +1104,12 @@ export default {
         showModalAgregarStand() {
             this.agregarStandModal = true;
         },
-        closeModalAgregarStand() {        
+        closeModalAgregarSt() {    
             this.agregarStandModal = false;
-            this.limpiar();
+            this.limpiar();  
         },
         
-        llenarCamposStand(item) {
-            this.botonActSt = 1;
-            this.agregarStandModal = true;
-            this.nombreStand = item.nombrestand;
-            this.idSeccion = item.idseccion;
-            this.estado = item.est;
-        },
+ 
 
         actualizarStand() {
             this.actualizarseccion(
@@ -832,21 +1129,18 @@ export default {
         },
 
         seleccionarSeccion(item) {
-            console.log(item);
             this.idSeccion = item.idseccion;
             this.nombreSeccion = item.nombreseccion;
             this.seccionModal = false;
         },
 
         openAlmacenModal(){
-            this.agregarAlmacenModal = true;
+            this.almacenModal = true;
             this.listarAlmacenesActivos();
         },
 
         closeAlmacenModal(){
-            this.limpiar();
-            this.agregarAlmacenModal = false;
-
+            this.almacenModal = false;
         },
 
 
@@ -856,9 +1150,7 @@ export default {
         },
 
         closeSeccionModal(){
-            this.limpiar();
             this.seccionModal = false;
-            
         },
 
         limpiar () {
