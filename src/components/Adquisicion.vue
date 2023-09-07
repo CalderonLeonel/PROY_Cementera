@@ -172,27 +172,26 @@
             </v-card>
         </v-dialog>
 
-
-        <v-dialog v-model="tipoModal" max-width="900px">
+        <v-dialog v-model="itemModal" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE TIPO DE ITEMS ACTIVOS</span>
+                    <span>LISTA DE ITEMS ACTIVOS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="BUSCAR SECCIÓN"
+                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR SECCIÓN"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItem" :search="searchTipoItem"
+                                <v-data-table :headers="headerItem" :items="datosItem" :search="searchItem"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarTipo(item)">
+                                        <v-icon small class="mr-2" @click="seleccionarItem(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -201,7 +200,86 @@
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
                                 <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeTipoModal()" style="float: right" title="SALIR">
+                                    @click="closeItemModal()" style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>      
+        
+        
+        
+        <v-dialog v-model="cotizacionModal" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA DE COTIZACIONES ACTIVAS</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="searchCotizacion" append-icon="mdi-magnify" label="BUSCAR SECCIÓN"
+                                        single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <v-data-table :headers="headerCotizacionAdquisicion" :items="datosCotizacionAdquisicion" :search="searchCotizacion"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarCotizacion(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
+                                    @click="closeCotizacionModal()" style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog> 
+
+
+        <v-dialog v-model="proveedorModal" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA DE TIPO DE PROVEEDORES ACTIVOS</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="searchProveedor" append-icon="mdi-magnify" label="BUSCAR SECCIÓN"
+                                        single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <v-data-table :headers="headerProveedor" :items="datosProveedor" :search="searchProveedor"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarProveedor(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
+                                    @click="closeProveedorModal()" style="float: right" title="SALIR">
                                     <v-icon dark> mdi-close-circle-outline </v-icon>
                                 </v-btn>
                             </v-col>
@@ -720,8 +798,6 @@ export default {
                     "/adquisicion/actualizarcotizacionitem/" +
                     this.idCotizacionItem +
                     "," +
-                    this.idItem +
-                    "," +
                     this.idCotizacion +
                     "," +
                     this.idItem +
@@ -877,6 +953,55 @@ export default {
             this.limpiar();
 
         },
+
+        openItemModal(){
+            this.listarItems();
+            this.itemModal = true;
+        },
+
+        closeItemModal(){
+            this.itemModal = false;
+        },
+
+        seleccionarItem(item){
+            this.idItem = item.iditem;
+            this.nombreItem = item.nombreitem;
+            this.itemModal = false;
+        },
+
+        openProveedorModal(){
+            this.listarProveedores();
+            this.proveedorModal = true;
+        },
+
+        closeProveedorModal(){
+            this.proveedorModal = false;
+        },
+
+        seleccionarProveedor(item){
+            this.idProveedor = item.idprv;
+            this.nombreProveedor = item.nomprv;
+            this.proveedorModal = false;
+        },
+
+        openCotizacionModal(){
+            this.listarCotizacionAdquisicion();
+            this.cotizacionModal = true;
+        },
+
+        closeCotizacionModal(){
+            this.cotizacionModal = false;
+        },
+
+        seleccionarCotizacion(item){
+            this.idCotizacion = item.idCotizacion;
+            this.nombreCotizacion = item.nombreCotizacion;
+            this.cotizacionModal = false;
+        },
+
+
+
+
 
         limpiar () {
             this.$refs.form.reset()
