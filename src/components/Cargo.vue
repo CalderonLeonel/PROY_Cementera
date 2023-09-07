@@ -1,17 +1,6 @@
 <template>
     <v-card elevation="5" outlined shaped>
-        <v-dialog v-model="tpostModal" max-width="600">
-            <v-card elevation="5" outlined shaped>
-                <v-card-title>
-                    <span>
-                        <h5>NUEVO CARGO</h5>
-                    </span>
-                </v-card-title>
-                <v-card-text>
-                    <v-container> </v-container>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
+
 
         <div>
             <v-alert dense color="#00A1B1" style="color: #ffffff">
@@ -25,8 +14,8 @@
                         <v-col cols="12" md="3"> </v-col>
                         <!--centreador-->
                         <v-col cols="12" md="6">
-                            <v-text-field v-model="descripcion" :counter="50" :rules="nombreRules"
-                                @input="descripcion = descripcion.toUpperCase()" label="Nombre del Cargo" required>
+                            <v-text-field v-model="nombreCargo" :counter="50" :rules="nombreRules"
+                                @input="nombreCargo = nombreCargo.toUpperCase()" label="Nombre del Cargo" required>
                             </v-text-field>
                         </v-col>
                         <v-col cols="12" md="3"> </v-col>
@@ -34,7 +23,7 @@
                         <v-col cols="12" md="3"> </v-col>
                         <!--centreadores-->
                         <v-col cols="12" md="6">
-                            <v-text-field v-model="nombreCargo" :counter="30" :rules="descripcionRules"
+                            <v-text-field v-model="descripcion" :counter="100" :rules="descripcionRules"
                                 @input="descripcion = descripcion.toUpperCase()" label="Descripcion del Cargo"
                                 required></v-text-field>
                         </v-col>
@@ -62,13 +51,9 @@
 
                             </v-toolbar>
                         </v-col>
-
-
-
                         <v-col cols="12" md="1"> </v-col>
                         <v-col cols="12" md="2"> </v-col>
                         <v-col cols="12" md="6">
-
                             <v-col cols="12">
                                 <v-list-item>
                                     <v-list-item-title class="text-center">
@@ -111,7 +96,7 @@
                     </v-row>
 
                     <div class="text-center">
-                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#EE680B"
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
                             outlined>
                             <strong>{{ mensajeSnackbar }}</strong>
 
@@ -143,24 +128,18 @@
 </template>
 <script>
 import axios from "axios";
-var XLSX = require("xlsx");
 
 export default {
     data: () => ({
-        id_cargo: "",
+        idCargo: "",
         nombreCargo: "",
         descripcion: "",
-        //estado: "",
-        //createDate: "",
-        //lastDate: "",
+        estado: "",
+        createDate: "",
+        lastDate: "",
         valid: true,
 
-        beneficiarioexp: "",
-        id_beneex: "",
-        tpostModal: "",
         searchCargo: "",
-        datosexpbeneficiario: [],
-
 
         snackbarOK: false,
         mensajeSnackbar: "",
@@ -179,29 +158,29 @@ export default {
         ],
 
         descripcionRules: [
-            (v) => !!v || "CODIGO DE CARGO REQUERIDO",
+            (v) => !!v || "CARGO REQUERIDO",
             (v) =>
-                (v && v.length <= 30) ||
-                "CODIGO DE CARGO DEBE TENER 30 CARACTERES COMO MAXIMO",
+                (v && v.length <= 100) ||
+                "CARGO DEBE TENER 100 CARACTERES COMO MAXIMO",
         ],
-
 
         checkbox: false,
         datosCargo: [],
 
-
         headersCargo: [
-            { text: "CODIGO DE CARGO", value: "codmat", sortable: false },
-            { text: "CARGO ", value: "nom", sortable: false },
+            { text: "CARGO", value: "carg", sortable: false },
+            { text: "DESCRIPCION ", value: "descrip", sortable: false },
             { text: "ESTADO", value: "act", sortable: false },
-            { text: "FECHA CREACION", value: "nacdte", sortable: false },
+            { text: "FECHA CREACION", value: "credte", sortable: false },
+            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
+            { text: "OPTIONS", value: "actions", sortable: false },
         ],
     }),
 
     created: function () {
         this.user = JSON.parse(sessionStorage.getItem("session"));
-        this.id_cargo = this.user.id_cargo;
-        this.listarCargos(this.id_cargo);
+        this.idCargo = this.user.idCargo;
+        this.listarCargos();
     },
 
     methods: {
@@ -254,30 +233,25 @@ export default {
         actualizarCargo() {
             this.actualizarcargo(
 
-                this.descripcion,
                 this.nombreCargo,
+                this.descripcion,
                 this.idCargo,
-
-
             );
             this.botonAct = 0;
         },
         async actualizarcargo(
-            descripcion,
             nombreCargo,
+            descripcion,
             idCargo,
-
-
         ) {
             let me = this;
 
-            //let me=this;
             await axios
                 .post(
                     "/cargo/actcargo/" +
-                    this.descripcion +
-                    "," +
                     this.nombreCargo +
+                    "," +
+                    this.descripcion +
                     "," +
                     this.idCargo
 
@@ -286,23 +260,18 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarCargos(me.id_cargo);
+                    me.listarCargos(me.idCargo);
                     me.limpiar();
 
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
-
-
                 });
-
-
-
         },
 
         limpiar() {
-            this.descripcion = "";
             this.nombreCargo = "";
+            this.descripcion = "";
         },
 
         validate() {
@@ -323,21 +292,18 @@ export default {
         },
 
         listarb() {
-            this.listarCargos(this.id_cargo);
+            this.listarCargos(this.idCargo);
         },
 
-        async listarCargos(id_cargo) {
+        async listarCargos(idCargo) {
             let me = this;
             await axios
                 .get("/cargo/listarcargo/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
                         me.datosCargo = [];
-
                     } else {
-                        //console.log(response.data);
                         me.datosCargo = response.data.resultado;
-
                     }
                 })
                 .catch(function (error) {
@@ -346,25 +312,13 @@ export default {
         },
         registrarCargo() {
             this.registrarCargo(
-                this.descripcion,
                 this.nombreCargo,
-                //this.id_cargo
+                this.descripcion
             );
         },
-        /*
-        showdocumentoadm() {
-            this.listarregistrado(this.documento, this.emailpost);
-            this.documenadmisionModal = true;
-        },
-        */
-       /*
-        closedocumentoadm() {
-            this.documenadmisionModal = false;
-        },
-        */
         async registrarCargo(
             nombreCargo,
-            descripcion,
+            descripcion
         ) {
             let me = this;
 
@@ -381,7 +335,7 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarCargos(me.id_cargo);
+                    me.listarCargos(me.idCargo);
                     me.limpiar();
                 })
                 .catch(function (error) {
