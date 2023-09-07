@@ -69,6 +69,31 @@ const routes = [
     path: '/empleados',
     name: 'Empleados',
     component: require('../components/Empleado.vue').default
+  },
+  {
+    path: 'proveedor',
+    name: 'Proveedor',
+    component: () => import('@/components/Proveedor.vue'),
+  },
+  {
+    path: 'almacen',
+    name: 'Almacen',
+    component: () => import('@/components/Almacen.vue'),
+  },
+  {
+    path: 'inventario',
+    name: 'Inventario',
+    component: () => import('@/components/Inventario.vue'),
+  },
+  {
+    path: 'almacenamiento',
+    name: 'Almacenamiento',
+    component: () => import('@/components/Almacenamiento.vue'),
+  },
+  {
+    path: 'adquisicion',
+    name: 'Adquisicion',
+    component: () => import('@/components/Adquisicion.vue'),
   }
 ]
 
