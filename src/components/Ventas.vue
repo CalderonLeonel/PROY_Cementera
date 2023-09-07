@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="5" outlined shaped>
 
-        <v-dialog v-model="clientesModal" max-width="500px">
+        <v-dialog v-model="clientesModal" max-width="1000px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>CLIENTES</span><br>
@@ -19,7 +19,8 @@
 
                                     <v-card-title>
                                         <v-text-field v-model="buscarClientes" append-icon="mdi-magnify"
-                                            label="BUSCAR CLIENTES" single-line hide-details></v-text-field>
+                                            label="BUSCAR CLIENTES" single-line hide-details
+                                            @input="buscarClientes = buscarClientes.toUpperCase()"></v-text-field>
                                     </v-card-title>
                                     <v-data-table :headers="headersClientes" :items="datosClientes" :search="buscarClientes"
                                         :items-per-page="5" class="elevation-1" id="tableId">
@@ -97,7 +98,30 @@ import { async } from "regenerator-runtime";
 export default {
     data() {
         return {
-
+            //#region Cliente
+            idCliente: "",
+            nombresCliente: "",
+            paterno: "",
+            materno: "",
+            nit: "",
+            fechaNacimiento: "",
+            correo: "",
+            celular: "",
+            telefono: "",
+            buscarClientes: "",
+            datosClientes: [],
+            headersClientes: [
+                { text: "NOMBRES CLIENTE", value: "nom", sortable: true },
+                { text: "PATERNO", value: "pat", sortable: true },
+                { text: "MATERNO", value: "mat", sortable: true },
+                { text: "NIT", value: "nitcli", sortable: true },
+                { text: "CELULAR", value: "cel", sortable: true },
+                { text: "TELEFONO", value: "tel", sortable: true },
+                { text: "ESTADO", value: "est", sortable: true },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
+            clientesModal: 0,
+            //#endregion
         }
     },
 
@@ -105,15 +129,48 @@ export default {
 
     },
     methods: {
+        colorEstado(est) {
+            if (est == 'ACTIVO') return 'green'
+            else return 'red'
+        },
         //#region Listados
+        listarCliente() {
+            this.listarClientes()
+        },
+        async listarClientes() {
+            let me = this;
+            await axios
+                .get("/cliente/listarclientes")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosClientes = [];
+
+                    } else {
+                        me.datosClientes = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
         //#endregion
         //#region Registros
         //#endregion
         //#region Edicion
         //#endregion
         //#region Modals
+        showClientes() {
+            this.clientesModal = true;
+            this.listarClientes();
+        },
         //#endregion
         //#region Cambios Estado
+        //#endregion
+        //#region Seleccion Datos
+        seleccionarCliente(item){
+            this.nombreCliente = item.nom + " " + item.pat;
+            this.clientesModal = false;
+        },
         //#endregion
     },
 }
