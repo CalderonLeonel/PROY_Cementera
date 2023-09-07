@@ -16,7 +16,7 @@
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headersFormato" :items="datosFormato" :search="buscarFormato"
+                                <v-data-table :headers="headersFormatos" :items="datosFormatos" :search="buscarFormato"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon small class="mr-2" @click="seleccionarFormato(item)">
@@ -76,23 +76,23 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="lineasModal" max-width="900px">
+        <v-dialog v-model="ProductosModal" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE LINEAS</span>
+                    <span>LISTA DE ProductoS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="buscarLinea" append-icon="mdi-magnify" label="BUSCAR LINEA"
+                                    <v-text-field v-model="buscarProducto" append-icon="mdi-magnify" label="BUSCAR Producto"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headersLinea" :items="datosLinea" :search="buscarLineas"
+                                <v-data-table :headers="headersProducto" :items="datosProducto" :search="buscarProductos"
                                     :items-per-page="5" class="elevation-1" id="tableId">
 
                                     <template #[`item.est`]="{ item }">
@@ -103,8 +103,8 @@
 
 
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" color="#001781" @click="seleccionarLinea(item)"
-                                            title="SELECCIONAR LINEA">
+                                        <v-icon small class="mr-2" color="#001781" @click="seleccionarProducto(item)"
+                                            title="SELECCIONAR Producto">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -113,7 +113,7 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6" @click="closeLineas()"
+                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6" @click="closeProductos()"
                                     style="float: right" title="SALIR">
                                     <v-icon dark> mdi-close-circle-outline </v-icon>
                                 </v-btn>
@@ -144,7 +144,7 @@
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="lineaRules"
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="ProductoRules"
                                         @click="showFormato()" style="float: right" title="BUSCAR FORMATO">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -155,25 +155,14 @@
                                         disabled required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="lineaRules"
-                                        @click="showFormato()" style="float: right" title="BUSCAR TIPO PRODUCTO">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="ProductoRules"
+                                        @click="showTipos()" style="float: right" title="BUSCAR TIPO PRODUCTO">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="3">
-                                    <v-text-field v-model="nombreLinea" label="NOMBRE TIPO PRODUCTO" :counter="50"
-                                        :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()" disabled
-                                        required></v-text-field>
-                                </v-col>
-                                <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="lineaRules"
-                                        @click="showLineas()" style="float: right" title="BUSCAR LINEA">
-                                        <v-icon dark> mdi-magnify </v-icon>
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="12" md="3">
-                                    <v-text-field v-model="nombreLinea" label="NOMBRE LINEA" :counter="50"
-                                        :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()" disabled
+                                    <v-text-field v-model="nombreProducto" label="NOMBRE TIPO PRODUCTO" :counter="50"
+                                        :rules="nombreProductoRules" @input="nombreProducto = nombreProducto.toUpperCase()" disabled
                                         required></v-text-field>
                                 </v-col>
 
@@ -263,7 +252,7 @@
                                         title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
                                     </v-icon>
-                                    <v-icon small class="mr-2" color="#001781" @click="showInfoLinea(item)"
+                                    <v-icon small class="mr-2" color="#001781" @click="showInfoProducto(item)"
                                         title="VER INFORMACION">
                                         mdi-eye
                                     </v-icon>
@@ -286,19 +275,6 @@ import axios from "axios";
 export default {
     data() {
         return {
-            //#region Linea
-            idLinea: "",
-            nombreLinea: "",
-            codigoLinea: "",
-
-            datosLinea: [],
-            headersLinea: [
-                { text: "NOMBRE DE LINEA", value: "nomlin", sortable: false },
-                { text: "CODIGO DE LINEA", value: "codlin", sortable: false },
-                { text: "ESTADO", value: "act", sortable: false },
-                { text: "OPCIONES", value: "actions", sortable: false },
-            ],
-            //#endregion
 
             //#region Productos
             idProducto: "",
@@ -317,12 +293,12 @@ export default {
             idFormato: "",
             codigoFormato: "",
             nombreFormato: "",
-            datosFormato: [],
-            headersFormato: [
-                { text: "NOMBRE FORMATO", value: "", sortable: false },
-                { text: "CODIGO FORMATO", value: "", sortable: false },
-                { text: "ESTADO", value: "", sortable: false },
-                { text: "OPCIONES", value: "", sortable: false },
+            datosFormatos: [],
+            headersFormatos: [
+                { text: "NOMBRE FORMATO", value: "nomforma", sortable: false },
+                { text: "CODIGO FORMATO", value: "codforma", sortable: false },
+                { text: "ESTADO", value: "est", sortable: false },
+                { text: "OPCIONES", value: "actions", sortable: false },
             ],
             //#endregion
 
@@ -354,9 +330,9 @@ export default {
 
             //#region Modals
             agregarProductoModal: false,
-            lineasModal: false,
+            ProductosModal: false,
             formatoModal: false,
-            tipoProducto: false,
+            tipoProductoModal: false,
 
             //#endregion
             botonAct: 0,
@@ -397,20 +373,20 @@ export default {
                     console.log(error);
                 });
         },
-        listarLinea() {
-            this.listarLineas();
+        listarProducto() {
+            this.listarProductos();
         },
-        async listarLineas() {
+        async listarProductos() {
             let me = this;
             await axios
-                .get("/linea/listarlineas/")
+                .get("/Producto/listarProductos/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
-                        me.datosLinea = [];
+                        me.datosProducto = [];
 
                     } else {
                         //console.log(response.data);
-                        me.datosLinea = response.data.resultado;
+                        me.datosProducto = response.data.resultado;
 
                     }
                     // me.listarAula(me.id_sede); actualizar tabla esta creando ciclos
@@ -420,22 +396,62 @@ export default {
                 });
         },
         listarFormato() {
-
+            this.listarFormatos();
         },
         async listarFormatos() {
+            let me = this;
+            await axios
+                .get("/formato/listarformatos")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosFormatos = [];
 
+                    } else {
+                        me.datosFormatos = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
-        listarTipoProducto() {
 
+        listarTipo() {
+            this.listarTipos();
         },
-        async listarTipoProductos() {
+        async listarTipos() {
+            let me = this;
+            await axios
+                .get("/tipo/listartipos")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosTipos = [];
 
+                    } else {
+                        me.datosTipos = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
         listarFabrica() {
-
+            this.listarFabricas();
         },
         async listarFabricas() {
+            let me = this;
+            await axios
+                .get("/fabrica/listarfabricas")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosFabricas = [];
 
+                    } else {
+                        me.datosFabricas = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
         //#endregion
         //#region Adicionar
@@ -455,30 +471,20 @@ export default {
         },
         showTipos() {
             this.tipoProductoModal = true;
+            this.listarTipos();
         },
         closeTipos() {
             this.tipoProductoModal = false;
         },
         showFormato() {
             this.formatoModal = true;
+            this.listarFormatos();
         },
         closeFormato() {
             this.formatoModal = false;
         },
-        showLineas() {
-            this.lineasModal = true;
-            this.listarLineas();
-        },
-        closeLineas() {
-            this.lineaModal = false;
-        },
         //#endregion
         //#region Seleccion Datos
-        seleccionarLinea(item) {
-            this.idLinea = item.idlin;
-            this.nombreLinea = item.nomlin;
-            this.lineasModal = false;
-        },
         seleccionarTipoProducto(item) {
             this.idTipoProducto = item.idlin;
             this.nombreTipoProducto = item.nomlin;
@@ -497,7 +503,7 @@ export default {
             this.idProducto = item.idprod;
             this.activarProducto(this.idProducto);
         },
-        async activarLinea(idProducto) {
+        async activarProducto(idProducto) {
             let me = this;
             await axios
                 .post("/producto/onproducto/" + this.idProducto).then(function (response) {
@@ -515,7 +521,7 @@ export default {
             this.idProducto = item.idprod;
             this.desactivarProducto(this.idProducto);
         },
-        async desactivarLinea(idProducto) {
+        async desactivarProducto(idProducto) {
             let me = this;
             await axios
                 .post("/producto/offproducto/" + this.idProducto).then(function (response) {

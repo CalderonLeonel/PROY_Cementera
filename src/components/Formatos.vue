@@ -1,310 +1,306 @@
 <template>
-    <div>
-        <v-card elevation="5" outlined shaped>
-            <v-dialog v-model="agregarFormatoModal" max-width="800px">
-                <v-card elevation="5" outlined shaped>
-                    <v-card-title>
-                        <span>AGREGAR FORMATO</span>
-                    </v-card-title>
-                    <v-card-text>
-                        <v-form ref="form" v-model="valid" lazy-validation>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12" md="4"></v-col>
-                                    <v-col cols="12" md="4">
-                                        <v-text-field v-model="nombreFormato" label="NOMBRE FORMATO" :counter="100"
-                                            :rules="nombreFormatoRules" @input="nombreFormato = nombreFormato.toUpperCase()"
-                                            required></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="4"></v-col>
+    <v-card elevation="5" outlined shaped>
+        <v-dialog v-model="agregarFormatoModal" max-width="800px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>AGREGAR FORMATO</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="4"></v-col>
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="nombreFormato" label="NOMBRE FORMATO" :counter="100"
+                                        :rules="nombreFormatoRules" @input="nombreFormato = nombreFormato.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="4"></v-col>
 
-                                    <v-col cols="12" md="4"></v-col>
-                                    <v-col cols="12" md="4">
-                                        <v-text-field v-model="codigoFormato" label="CODIGO FORMATO" :counter="100"
-                                            :rules="codigoFormatoRules" @input="codigoFormato = codigoFormato.toUpperCase()"
-                                            required></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="4"></v-col>
-                                    <v-col cols="10"></v-col>
-                                    <v-col cols="2">
-                                        <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                            @click="closeAgregarFormato()" style="float: right" title="SALIR">
-                                            <v-icon dark> mdi-close-circle-outline </v-icon>
+                                <v-col cols="12" md="4"></v-col>
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="codigoFormato" label="CODIGO FORMATO" :counter="100"
+                                        :rules="codigoFormatoRules" @input="codigoFormato = codigoFormato.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="4"></v-col>
+                                <v-col cols="10"></v-col>
+                                <v-col cols="2">
+                                    <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
+                                        @click="closeAgregarFormato()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="8"> </v-col>
+                                <v-col cols="12" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarFormato()"
+                                            style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px" height="28px">
+                                            <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                    </v-col>
-                                    <v-col cols="12" md="8"> </v-col>
-                                    <v-col cols="12" md="4">
-                                        <v-toolbar dense shaped>
-                                            <v-toolbar-title>
-                                                <h6>
-                                                    OPCIONES
-                                                </h6>
-                                            </v-toolbar-title>
-                                            <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarFormato()"
-                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px"
-                                                height="28px">
-                                                <v-icon dark> mdi-pencil </v-icon>
-                                            </v-btn>
-                                            <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarFormato()"
-                                                style="float: left" title="REGISTRAR Formato" width="28px" height="28px">
-                                                <v-icon dark> mdi-content-save-plus-outline </v-icon>
-                                            </v-btn>
-                                            <v-btn icon color="#EE680B" @click="limpiar()" style="float: left"
-                                                title="LIMPIAR FORMULARIO">
-                                                <v-icon dark> mdi-eraser </v-icon>
-                                            </v-btn>
-                                        </v-toolbar>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </v-form>
-
-                    </v-card-text>
-                </v-card>
-            </v-dialog>
-
-            <v-dialog v-model="infoFormatoModal" max-width="800px">
-                <v-card elevation="5" outlined shaped>
-                    <v-card-title>
-                        <span>INFORMACION DEL FORMATO:</span><br>
-                        <span>{{ nombreFormato }}</span>
-                    </v-card-title>
-                    <v-card-text>
-                        <v-form ref="form" v-model="valid" lazy-validation>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12" md="2"></v-col>
-                                    <v-col cols="12" md="8">
-                                        <v-text-field v-model="nombreFormato" label="NOMBRE FORMATO" :counter="100"
-                                            :rules="nombreFormatoRules" @input="nombreFormato = nombreFormato.toUpperCase()"
-                                            disabled></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="2"></v-col>
-
-                                    <v-col cols="12" md="2"></v-col>
-                                    <v-col cols="12" md="8">
-                                        <v-text-field v-model="codigoFormato" label="CODIGO Formato" :counter="100"
-                                            :rules="codigoFormatoRules" @input="codigoFormato = codigoFormato.toUpperCase()"
-                                            disabled></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="2"></v-col>
-
-                                    <v-col cols="10"></v-col>
-                                    <v-col cols="2">
-                                        <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                            @click="closeInfoFormatoModal()" style="float: right" title="SALIR">
-                                            <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarFormato()"
+                                            style="float: left" title="REGISTRAR Formato" width="28px" height="28px">
+                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
-                                    </v-col>
-
-                                </v-row>
-                            </v-container>
-                        </v-form>
-
-                    </v-card-text>
-                </v-card>
-            </v-dialog>
-
-            <v-dialog v-model="editFormatoModal" max-width="700px">
-                <v-card elevation="5" outlined shaped>
-                    <v-card-title>
-                        <span>EDITAR FORMATO</span>
-                    </v-card-title>
-                    <v-card-text>
-                        <v-form ref="form" v-model="valid" lazy-validation>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12" md="4"></v-col>
-                                    <v-col cols="12" md="4">
-                                        <v-text-field v-model="nombreFormato" label="NOMBRE FORMATO" :counter="100"
-                                            :rules="nombreFormatoRules" @input="nombreFormato = nombreFormato.toUpperCase()"
-                                            required></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="4"></v-col>
-
-                                    <v-col cols="12" md="4"></v-col>
-                                    <v-col cols="12" md="4">
-                                        <v-text-field v-model="codigoFormato" label="CODIGO FORMATO" :counter="100"
-                                            :rules="codigoFormatoRules" @input="codigoFormato = codigoFormato.toUpperCase()"
-                                            required></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" md="4"></v-col>
-
-                                    <v-col cols="12" md="8"> </v-col>
-                                    <v-col cols="12" md="4">
-                                        <v-toolbar dense shaped>
-                                            <v-toolbar-title>
-                                                <h6>
-                                                    OPCIONES
-                                                </h6>
-                                            </v-toolbar-title>
-                                            <v-btn class="mx-2" fab dark small icon v-if="botonact == 1" color="#EE680B"
-                                                @click="editarFormatos()" style="float: left"
-                                                title="ACTUALIZAR INFORMACIÓN">
-                                                <v-icon dark> mdi-pencil </v-icon>
-                                            </v-btn>
-                                            <v-btn class="mx-2" fab dark small icon v-if="botonact == 0" color="#EE680B"
-                                                @click="registrarFormato()" style="float: left" title="REGISTRAR Formato">
-                                                <v-icon dark> mdi-content-save-plus-outline </v-icon>
-                                            </v-btn>
-                                            <v-btn class="mx-2" fab dark small icon color="#EE680B" @click="limpiar()"
-                                                style="float: left" title="LIMPIAR FORMULARIO">
-                                                <v-icon dark> mdi-eraser </v-icon>
-                                            </v-btn>
-                                        </v-toolbar>
-                                    </v-col>
-
-                                    <v-col cols="10"></v-col>
-                                    <v-col cols="2">
-                                        <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                            @click="closeAgregarFormato()" style="float: right" title="SALIR">
-                                            <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        <v-btn icon color="#EE680B" @click="limpiar()" style="float: left"
+                                            title="LIMPIAR FORMULARIO">
+                                            <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </v-form>
+                                    </v-toolbar>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
 
-                    </v-card-text>
-                </v-card>
-            </v-dialog>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
 
-            <v-dialog v-model="formatosInhabilitadosModal" max-width="800px">
-                <v-card elevation="5" outlined shaped>
-                    <v-card-title>
-                        <span>FORMATOS INACTIVOS</span><br>
-                    </v-card-title>
-                    <v-card-text>
-                        <v-form ref="form" v-model="valid" lazy-validation>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12">
-                                        <v-list-item>
-                                            <v-list-item-title class="text-center">
-                                                <h5>Formatos</h5>
-                                            </v-list-item-title>
-                                        </v-list-item>
+        <v-dialog v-model="infoFormatoModal" max-width="800px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>INFORMACION DEL FORMATO:</span><br>
+                    <span>{{ nombreFormato }}</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="2"></v-col>
+                                <v-col cols="12" md="8">
+                                    <v-text-field v-model="nombreFormato" label="NOMBRE FORMATO" :counter="100"
+                                        :rules="nombreFormatoRules" @input="nombreFormato = nombreFormato.toUpperCase()"
+                                        disabled></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="2"></v-col>
 
-                                        <v-card-title>
-                                            <v-text-field v-model="buscarFormatos" append-icon="mdi-magnify"
-                                                label="BUSCAR FORMATOS" single-line hide-details></v-text-field>
-                                        </v-card-title>
-                                        <v-data-table :headers="headersFormatosInh" :items="datosFormatosInh"
-                                            :search="buscarFormatos" :items-per-page="5" class="elevation-1" id="tableId">
+                                <v-col cols="12" md="2"></v-col>
+                                <v-col cols="12" md="8">
+                                    <v-text-field v-model="codigoFormato" label="CODIGO Formato" :counter="100"
+                                        :rules="codigoFormatoRules" @input="codigoFormato = codigoFormato.toUpperCase()"
+                                        disabled></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="2"></v-col>
 
-                                            <template #[`item.est`]="{ item }">
-                                                <v-chip :color="colorEstado(item.est)" dark>
-                                                    {{ item.est }}
-                                                </v-chip>
-                                            </template>
+                                <v-col cols="10"></v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
+                                        @click="closeInfoFormatoModal()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    </v-btn>
+                                </v-col>
 
+                            </v-row>
+                        </v-container>
+                    </v-form>
 
-                                            <template #[`item.actions`]="{ item }">
-                                                <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
-                                                    @click="activar(item)" title="ACTIVAR FormatoS">
-                                                    mdi-check-circle-outline
-                                                </v-icon>
-                                                <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
-                                                    @click="desactivar(item)" title="DESACTIVAR FormatoS">
-                                                    mdi-cancel
-                                                </v-icon>
-                                                <v-icon small class="mr-2" color="#001781" @click="showInfoFormato(item)"
-                                                    title="VER INFORMACION">
-                                                    mdi-eye
-                                                </v-icon>
-                                            </template>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
 
-                                        </v-data-table>
-                                    </v-col>
-                                    <v-col cols="10"></v-col>
-                                    <v-col cols="2">
-                                        <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                            @click="closeInfoFormatoModal()" style="float: right" title="SALIR">
-                                            <v-icon dark> mdi-close-circle-outline </v-icon>
+        <v-dialog v-model="editFormatoModal" max-width="700px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>EDITAR FORMATO</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="4"></v-col>
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="nombreFormato" label="NOMBRE FORMATO" :counter="100"
+                                        :rules="nombreFormatoRules" @input="nombreFormato = nombreFormato.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="4"></v-col>
+
+                                <v-col cols="12" md="4"></v-col>
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="codigoFormato" label="CODIGO FORMATO" :counter="100"
+                                        :rules="codigoFormatoRules" @input="codigoFormato = codigoFormato.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="4"></v-col>
+
+                                <v-col cols="12" md="8"> </v-col>
+                                <v-col cols="12" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 1" color="#EE680B"
+                                            @click="editarFormatos()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
+                                            <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                    </v-col>
+                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 0" color="#EE680B"
+                                            @click="registrarFormato()" style="float: left" title="REGISTRAR Formato">
+                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                        </v-btn>
+                                        <v-btn class="mx-2" fab dark small icon color="#EE680B" @click="limpiar()"
+                                            style="float: left" title="LIMPIAR FORMULARIO">
+                                            <v-icon dark> mdi-eraser </v-icon>
+                                        </v-btn>
+                                    </v-toolbar>
+                                </v-col>
 
-                                </v-row>
-                            </v-container>
-                        </v-form>
+                                <v-col cols="10"></v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closeAgregarFormato()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
 
-                    </v-card-text>
-                </v-card>
-            </v-dialog>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
 
+        <v-dialog v-model="formatosInhabilitadosModal" max-width="800px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>FORMATOS INACTIVOS</span><br>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-list-item>
+                                        <v-list-item-title class="text-center">
+                                            <h5>Formatos</h5>
+                                        </v-list-item-title>
+                                    </v-list-item>
 
-            <div>
-                <v-alert dense style="color: #ffffff;" color="grey">
-                    <h5>FORMATOS</h5>
-                </v-alert>
-            </div>
-            <div>
-                <v-form ref="form" v-model="valid" lazy-validation>
-                    <v-container>
-                        <v-row>
+                                    <v-card-title>
+                                        <v-text-field v-model="buscarFormatos" append-icon="mdi-magnify"
+                                            label="BUSCAR FORMATOS" single-line hide-details></v-text-field>
+                                    </v-card-title>
+                                    <v-data-table :headers="headersFormatosInh" :items="datosFormatosInh"
+                                        :search="buscarFormatos" :items-per-page="5" class="elevation-1" id="tableId">
 
-                            <v-col cols="12" md="4">
-                                <v-btn color="success" @click="showAgregarFormato()">Nuevo Formato</v-btn>
-                            </v-col>
-                            <v-col cols="12" md="4"></v-col>
-                            <v-col cols="12" md="4"></v-col>
-
-                            <v-col cols="12" md="4">
-                                <v-btn color="success" @click="showFormatosInhabilitados()">Formatos Inactivos</v-btn>
-                            </v-col>
-                            <v-col cols="12" md="4"></v-col>
-                            <v-col cols="12" md="4"></v-col>
-
-                            <v-col cols="12">
-                                <v-list-item>
-                                    <v-list-item-title class="text-center">
-                                        <h5>Formatos</h5>
-                                    </v-list-item-title>
-                                </v-list-item>
-
-                                <v-card-title>
-                                    <v-text-field v-model="buscarFormatos" append-icon="mdi-magnify" label="BUSCAR FORMATOS"
-                                        single-line hide-details></v-text-field>
-                                </v-card-title>
-
-
-                                <v-data-table :headers="headersFormatos" :items="datosFormatos" :search="buscarFormatos"
-                                    :items-per-page="5" class="elevation-1" id="tableId">
-
-                                    <template #[`item.est`]="{ item }">
-                                        <v-chip :color="colorEstado(item.est)" dark>
-                                            {{ item.est }}
-                                        </v-chip>
-                                    </template>
+                                        <template #[`item.est`]="{ item }">
+                                            <v-chip :color="colorEstado(item.est)" dark>
+                                                {{ item.est }}
+                                            </v-chip>
+                                        </template>
 
 
-                                    <template #[`item.actions`]="{ item }">
-                                        <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
-                                            @click="activar(item)" title="ACTIVAR FormatoS">
-                                            mdi-check-circle-outline
-                                        </v-icon>
-                                        <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
-                                            @click="desactivar(item)" title="DESACTIVAR FormatoS">
-                                            mdi-cancel
-                                        </v-icon>
-                                        <v-icon small class="mr-2" color="#001781" @click="showEditFormatoModal(item)"
-                                            title="ACTUALIZAR INFORMACION">
-                                            mdi-pencil
-                                        </v-icon>
-                                        <v-icon small class="mr-2" color="#001781" @click="showInfoFormato(item)"
-                                            title="VER INFORMACION">
-                                            mdi-eye
-                                        </v-icon>
-                                    </template>
+                                        <template #[`item.actions`]="{ item }">
+                                            <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
+                                                @click="activar(item)" title="ACTIVAR FormatoS">
+                                                mdi-check-circle-outline
+                                            </v-icon>
+                                            <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
+                                                @click="desactivar(item)" title="DESACTIVAR FormatoS">
+                                                mdi-cancel
+                                            </v-icon>
+                                            <v-icon small class="mr-2" color="#001781" @click="showInfoFormato(item)"
+                                                title="VER INFORMACION">
+                                                mdi-eye
+                                            </v-icon>
+                                        </template>
 
-                                </v-data-table>
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-form>
-            </div>
-        </v-card>
-    </div>
+                                    </v-data-table>
+                                </v-col>
+                                <v-col cols="10"></v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
+                                        @click="closeInfoFormatoModal()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    </v-btn>
+                                </v-col>
+
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+
+        <div>
+            <v-alert dense style="color: #ffffff;" color="grey">
+                <h5>FORMATOS</h5>
+            </v-alert>
+        </div>
+        <div>
+            <v-form ref="form" v-model="valid" lazy-validation>
+                <v-container>
+                    <v-row>
+
+                        <v-col cols="12" md="4">
+                            <v-btn color="success" @click="showAgregarFormato()">Nuevo Formato</v-btn>
+                        </v-col>
+                        <v-col cols="12" md="4"></v-col>
+                        <v-col cols="12" md="4"></v-col>
+
+                        <v-col cols="12" md="4">
+                            <v-btn color="success" @click="showFormatosInhabilitados()">Formatos Inactivos</v-btn>
+                        </v-col>
+                        <v-col cols="12" md="4"></v-col>
+                        <v-col cols="12" md="4"></v-col>
+
+                        <v-col cols="12">
+                            <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>Formatos</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+
+                            <v-card-title>
+                                <v-text-field v-model="buscarFormatos" append-icon="mdi-magnify" label="BUSCAR FORMATOS"
+                                    single-line hide-details></v-text-field>
+                            </v-card-title>
+
+
+                            <v-data-table :headers="headersFormatos" :items="datosFormatos" :search="buscarFormatos"
+                                :items-per-page="5" class="elevation-1" id="tableId">
+
+                                <template #[`item.est`]="{ item }">
+                                    <v-chip :color="colorEstado(item.est)" dark>
+                                        {{ item.est }}
+                                    </v-chip>
+                                </template>
+
+
+                                <template #[`item.actions`]="{ item }">
+                                    <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
+                                        @click="activar(item)" title="ACTIVAR FormatoS">
+                                        mdi-check-circle-outline
+                                    </v-icon>
+                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
+                                        @click="desactivar(item)" title="DESACTIVAR FormatoS">
+                                        mdi-cancel
+                                    </v-icon>
+                                    <v-icon small class="mr-2" color="#001781" @click="showEditFormatoModal(item)"
+                                        title="ACTUALIZAR INFORMACION">
+                                        mdi-pencil
+                                    </v-icon>
+                                    <v-icon small class="mr-2" color="#001781" @click="showInfoFormato(item)"
+                                        title="VER INFORMACION">
+                                        mdi-eye
+                                    </v-icon>
+                                </template>
+
+                            </v-data-table>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-form>
+        </div>
+    </v-card>
 </template>
 <script>
 import axios from "axios";
@@ -496,7 +492,7 @@ export default {
         showAgregarFormato() {
             this.agregarFormatoModal = true;
         },
-        showEditFormatoModal(item){
+        showEditFormatoModal(item) {
             this.editFormatoModal = true;
             this.botonact = 1;
             this.idFormato = item.idforma;
@@ -518,7 +514,7 @@ export default {
         },
         //#endregion
 
-        limpiar(){
+        limpiar() {
             this.nombreFormato = "";
             this.codigoFormato = "";
             this.idFormato = "";
