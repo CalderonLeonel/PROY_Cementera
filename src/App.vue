@@ -105,27 +105,28 @@
           <v-list-item :to="{ name: 'Clientes' }">
             <v-list-item-title>
               <h6>Clientes</h6>
-              <v-list-group no-action color="light-blue darken-4" value="true">
-                <template v-slot:activator>
-                  <v-list-item-icon>
-                    <v-icon>mdi-package</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title>RRHH</v-list-item-title>
-                  </v-list-item-content>
-                </template>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
 
-                <v-list-item :to="{ name: 'Empleados' }">
-                  <v-list-item-title>
-                    <h6>EMPLEADOS</h6>
-                  </v-list-item-title>
-                </v-list-item>
-                <v-list-item :to="{ name: 'Cargos' }">
-                  <v-list-item-title>
-                    <h6>CARGOS</h6>
-                  </v-list-item-title>
-                </v-list-item>
-              </v-list-group>
+        <v-list-group no-action color="#00A1B1" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-package</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>RRHH</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'Empleados' }">
+            <v-list-item-title>
+              <h6>EMPLEADOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Cargos' }">
+            <v-list-item-title>
+              <h6>CARGOS</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
