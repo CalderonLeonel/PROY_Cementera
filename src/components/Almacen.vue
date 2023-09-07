@@ -189,7 +189,7 @@
                                 </v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeAlmacenModal()" style="float: right" title="SALIR">
+                                        @click="closeModalAgregarAlma()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -1038,6 +1038,7 @@ export default {
         closeModalAgregarAlma() {
             this.agregarAlmacenModal = false;
             this.limpiar();
+            this.botonActAl = 0;
         },
 
         llenarCamposAlmacen(item) {
@@ -1086,6 +1087,7 @@ export default {
         closeModalAgregarSec() {
             this.agregarSeccionModal = false;
             this.limpiar();
+            this.botonActSe = 0;
         },
 
   
@@ -1107,6 +1109,7 @@ export default {
         closeModalAgregarSt() {    
             this.agregarStandModal = false;
             this.limpiar();  
+            this.botonActSt = 0;
         },
         
  
