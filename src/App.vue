@@ -38,12 +38,12 @@
             </v-list-item-content>
           </template>
 
-          <v-list-item :to="{ name: 'Proveedor' }">
+          <v-list-item :to="{ name: 'Productos' }">
             <v-list-item-title>
               <h6>PRODUCTOS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Proveedor' }">
+          <v-list-item :to="{ name: 'Lineas' }">
             <v-list-item-title>
               <h6>LINEAS</h6>
             </v-list-item-title>
