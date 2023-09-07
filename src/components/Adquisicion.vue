@@ -34,7 +34,7 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon class="mr-2" color="primary" x-large  @click="actualizarInfoCotizacionAdquisicion(item)"
+                                    <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposCotizacionAdquisicion(item)"
                                         title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
                                     </v-icon>
@@ -80,7 +80,7 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon class="mr-2" color="primary" x-large  @click="actualizarInfoCotizacionItem(item)"
+                                    <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposCotizacionItem(item)"
                                         title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
                                     </v-icon>
@@ -107,6 +107,191 @@
 
         </div>
 
+        <v-dialog v-model="agregarCotizacionAdquisicionModal" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>AGREGAR COTRIZACION DE ADQUISICION</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
+                                        @click="openProveedorModal()" style="float: right" title="BUSCAR PROVEEDOR">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="3">
+                                    <v-text-field v-model="nombreProveedor" label="NOMBRE PROVEEDOR" :counter="60"
+                                        :rules="nombreRules" @input="nombreProveedor = nombreProveedor.toUpperCase()"
+                                        disabled required></v-text-field>
+                                </v-col>
+
+                                <v-col cols="12" md="8">
+                                    <v-text-field v-model="nombreCotizacion" label="NOMBRE DE LA COTIZACION"  :counter="100"
+                                        :rules="cantidadRules" @input="nombreCotizacion = nombreCotizacion.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>
+                                
+                                <v-col cols="12" md="12"> </v-col>
+                                
+                                <v-col cols="6"></v-col>
+                                <v-col cols="2">
+                                    <v-btn iconvv v-if="botonactCot == 1" class="mx-4"  dark color="#0A62BF"
+                                            @click="editarCotizacionAdq()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN">
+                                            <v-icon dark> mdi-pencil </v-icon>
+                                            ACTUALIZAR
+                                        </v-btn>
+                                        <v-btn iconv v-if="botonactCot == 0" class="mx-4"  dark color="#0ABF55"
+                                            @click="registrarCotizacionAdq()" style="float: left" title="REGISTRAR COTIZACION DE ADQUISICION">
+                                            <v-icon dark> mdi-content-save </v-icon>
+                                            GUARDAR
+                                        </v-btn>
+                                </v-col>                      
+                                <v-col cols="2">                                        
+                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
+                                        <v-icon dark> mdi-eraser </v-icon>
+                                        LIMPIAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeModalAgregarCotizacionAdquisicion()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+
+        <v-dialog v-model="tipoModal" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA DE TIPO DE ITEMS ACTIVOS</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="BUSCAR SECCIÓN"
+                                        single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItem" :search="searchTipoItem"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarTipo(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
+                                    @click="closeTipoModal()" style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>         
+
+
+
+        <v-dialog v-model="agregarCotizacionItemModal" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>AGREGAR COTIZACION DE UN ITEM</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" v-if="botonactCotIt == 0" fab dark x-small color="cyan" :rules="nombreRules"
+                                        @click="openCotizacionModal()" style="float: right" title="BUSCAR COTIZACION">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="3">
+                                    <v-text-field v-model="nombreCotizacion" label="NOMBRE COTIZACION" :counter="60"
+                                        :rules="nombreRules" @input="nombreCotizacion = nombreCotizacion.toUpperCase()"
+                                        disabled required></v-text-field>
+                                </v-col>
+
+                                <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" v-if="botonactCotIt == 0" fab dark x-small color="cyan" :rules="nombreRules"
+                                        @click="openItemModal()" style="float: right" title="BUSCAR ITEM">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="3">
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM" :counter="60"
+                                        :rules="nombreRules" @input="nombreItem = nombreItem.toUpperCase()"
+                                        disabled required></v-text-field>
+                                </v-col>
+
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="precioUnitario" type="number" label="COSTO UNITARIO" 
+                                        :rules="cantidadRules" @input="precioUnitario = precioUnitario.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>
+                                
+                                <v-col cols="12" md="12"> </v-col>
+                                
+                                <v-col cols="6"></v-col>
+                                <v-col cols="2">
+                                    <v-btn iconvv v-if="botonactCotIt == 1" class="mx-4"  dark color="#0A62BF"
+                                            @click="editarCotizacionIt()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN">
+                                            <v-icon dark> mdi-pencil </v-icon>
+                                            ACTUALIZAR
+                                        </v-btn>
+                                        <v-btn iconv v-if="botonactCotIt == 0" class="mx-4"  dark color="#0ABF55"
+                                            @click="registrarCotizacionIt()" style="float: left" title="REGISTRAR COTIZACION DE ITEM">
+                                            <v-icon dark> mdi-content-save </v-icon>
+                                            GUARDAR
+                                        </v-btn>
+                                </v-col>                      
+                                <v-col cols="2">                                        
+                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
+                                        <v-icon dark> mdi-eraser </v-icon>
+                                        LIMPIAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeModalAgregarCotizacionItem()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+
+
     </v-card>
     
 
@@ -116,12 +301,21 @@ import axios from "axios";
 export default {
     data() {
         return {
-            //#region Proveedor
+            
+
+            idcotizacion: "",
+            idUsuario: "1",
             idProveedor: "",
-            nombreProveedor: "",
-            contactoProveedorPrincipal: "",
-            contactoProveedorecundario: "",
-            correoProveedor: "",
+            idItem: "",
+            idCotizacionItem: "",
+
+            precioUnitario: "",
+            nombreCotizacion: "",
+            estado: "ACTIVO",
+
+
+            nombreProveedor:"",
+            nombreItem:"",
             //fechaDeModificacion: "",
             valid: true,
             nombreRules: [
@@ -148,8 +342,8 @@ export default {
             datosCotizacionAdquisicion: [],
             headerCotizacionAdquisicion: [
                 { text: "COTIZACIÓN", value: "idCotizacion", sortable: true },
-                { text: "EMPLEADO", value: "idUsuario", sortable: true },
-                { text: "PROVEEDOR", value: "idProveedor", sortable: true },
+                { text: "EMPLEADO", value: "nombreUsuario", sortable: true },
+                { text: "PROVEEDOR", value: "nombreProveedor", sortable: true },
                 { text: "NOMBRE COTIZACIÓN", value: "nombreCotizacion", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
@@ -159,8 +353,8 @@ export default {
             datosCotizacionItem: [],
             headerCotizacionItem: [
                 { text: "COTIZACIÓN ITEM", value: "idCotizacionItem", sortable: true },
-                { text: "COTIZACIÓN", value: "idCotizacion", sortable: true },
-                { text: "ITEM", value: "idItem", sortable: true },
+                { text: "COTIZACIÓN", value: "nombrecotizacion", sortable: true },
+                { text: "ITEM", value: "nombreitem", sortable: true },
                 { text: "PRECIO UNITARIO", value: "precioUnitario", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
@@ -170,9 +364,56 @@ export default {
 
             searchCotizacionAdquisicion: "",
             agregarCotizacionAdquisicionModal: false,
+            confirmacionAnulacionCotizacionAdq: false,
 
             searchCotizacionItem: "",
             agregarCotizacionItemModal: false,
+            confirmacionAnulacionCotizacionIt: false,
+
+            searchItem:"",
+            itemModal:false,
+            datosItem:[],
+            headerItem: [
+                 
+                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "MEDIDA", value: "medida", sortable: true },
+                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "ESTADO", value: "estado", sortable: true },
+                 { text: "ACCIONES", value: "actions", sortable: false }
+                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+             ],
+
+
+
+
+
+
+            searchCotizacion:"",
+            cotizacionModal: false,
+            datosCotizacion:[],
+
+
+
+            searchProveedor:"",
+            proveedorModal: false,
+            datosProveedor:[],
+            headerProveedor: [
+                //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
+                { text: "NOMBRE DE PROVEEDOR", value: "nomprv", sortable: true },
+                { text: "CONTACTO PRINCIPAL DE PROVEEDOR", value: "cto1pro", sortable: true },
+                { text: "CONTACTO SECUNDARIO DE PROVEEDOR", value: "cto2pro", sortable: true },
+                { text: "CORREO DE PROVEEDOR", value: "croprov", sortable: true },
+                { text: "ESTADO", value: "est", sortable: true },
+                { text: "ACCIONES", value: "actions", sortable: false }
+                //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+            ],
+
+
+
+
+            botonactCotIt: 0,
+            botonactCot: 0,
             //#endregion
         }
     },
@@ -186,6 +427,77 @@ export default {
             else if (est == "INACTIVO") return 'red'
 
         },
+
+        listarProveedor() {
+            this.listarProveedores();
+        },
+        async listarProveedores() {
+          let me = this;
+          await axios
+            .get("/proveedor/listarproveedoresactivos/")
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosProveedor = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosProveedor = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
+
+        listarItem() {
+             this.listarItems();
+         },
+         async listarItems() {
+           let me = this;
+           await axios
+             .get("/inventario/listaritemactivo/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datosItem = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datosItem = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+
+         listarCotizacionAdquisicionActiva() {
+            this.listarCotizacionesAdquisicionActivas();
+        },
+        async listarCotizacionesAdquisicion() {
+          let me = this;
+          await axios
+            .get("/adquisicion/listarcotizaciondeadquisicionactiva/")
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosCotizacion = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosCotizacion = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
+
+
+
+
+
+
         //#region Listar
         listarCotizacionAdquisicion() {
             this.listarCotizacionesAdquisicion();
@@ -208,6 +520,118 @@ export default {
             });
         },
 
+        llenarCamposCotizacionAdquisicion(item) {
+            this.botonactCot = 1;
+            this.idCotizacion = item.idCotizacion;
+            this.idUsuario = item.idUsuario;
+            this.idProveedor = item.idProveedor;
+            this.nombreProveedor = item.nombreProveedor;
+            this.nombreCotizacion = item.nombreCotizacion;
+            this.estado = item.estado;
+            this.agregarCotizacionAdquisicionModal = true;
+        },
+
+        registrarCotizacionAdq() {
+            this.registrarCotizacionAdquisicion(this.idUsuario,this.idProveedor, this.nombreCotizacion,this.estado);
+        },
+        async registrarCotizacionAdquisicion(
+            idUsuario,
+            idProveedor,
+            nombreCotizacion,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/adquisicion/agregarcotizacionadquisicion/" +
+                    this.idUsuario +
+                    "," +
+                    this.idProveedor +
+                    "," +
+                    this.nombreCotizacion +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarCotizacionesAdquisicion();
+                    me.closeModalAgregarCotizacionAdquisicion();
+                    me.limpiar();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+        editarCotizacionAdq() {
+            this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario,this.idProveedor, this.nombreCotizacion,  this.estado);
+            this.botonactCot=0;
+        },
+        async editarCotizacionAdquisicion(
+            idCotizacion,
+            idUsuario,
+            idProveedor,
+            nombreCotizacion,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/adquisicion/actualizarcotizacionadquisicion/" +
+                    this.idCotizacion +
+                    "," +
+                    this.idUsuario +
+                    "," +
+                    this.idProveedor +
+                    "," +
+                    this.nombreCotizacion +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarCotizacionesAdquisicion();
+                    me.closeModalAgregarCotizacionAdquisicion();
+                    me.limpiar();
+
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
+        confirmacionAnulacionCotizacionAdq(item){
+            this.idCotizacion = item.idCotizacion;
+            this.confirmacionAnulacionItem = true;
+        },
+        closeAnulacionCotizacionAdquisicion(){
+            this.confirmacionAnulacionItem = false;
+        },
+        anularCotizacionAdquisicion() {
+            this.desactivarCotizacionAdquisicion(this.idCotizacion);
+        },
+        async desactivarCotizacionAdquisicion(idCotizacion) {
+            let me = this;
+            await axios
+                .post("/inventario/eliminarcotizacionadquisicion/" + this.idCotizacion).then(function (response) {
+                    me.listarCotizacionAdquisicion();
+                    me.closeModalAgregarCotizacionAdquisicion();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    alert('error')
+                });
+
+        },
+
 
         listarCotizacionItem() {
             this.listarCotizacionesItem();
@@ -228,6 +652,122 @@ export default {
             .catch(function (error) {
               console.log(error);
             });
+        },
+
+
+        llenarCamposCotizacionItem(item) {
+            this.botonactCotIt = 1;
+            this.idCotizacionItem = item.idCotizacionItem;
+            this.idCotizacion = item.idCotizacion;
+            this.nombreCotizacion = item.nombrecotizacion;
+            this.idItem = item.idItem;
+            this.nombreItem = item.nombreitem;
+            this.precioUnitario = item.precioUnitario;
+            this.estado = item.estado;
+            this.agregarCotizacionItemModal = true;
+        },
+
+        registrarCotizacionIt() {
+            this.registrarCotizacionItem(this.idCotizacion,this.idItem,this.precioUnitario, this.estado);
+        },
+        async registrarCotizacionItem(
+            idCotizacion,
+            idItem,
+            precioUnitario,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/adquisicion/agregarcotizacionitem/" +
+                    this.idCotizacion +
+                    "," +
+                    this.idItem +
+                    "," +
+                    this.precioUnitario +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarCotizacionesItem();
+                    me.closeModalAgregarCotizacionItem();
+                    me.limpiar();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+        editarCotizacionIt() {
+            this.editarCotizacionItem(this.idCotizacionItem,this.idCotizacion,this.idItem,this.precioUnitario, this.estado);
+            this.botonactCotIt=0;
+        },
+        async editarCotizacionItem(
+            idCotizacionItem,
+            idCotizacion,
+            idItem,
+            precioUnitario,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/adquisicion/actualizarcotizacionitem/" +
+                    this.idCotizacionItem +
+                    "," +
+                    this.idItem +
+                    "," +
+                    this.idCotizacion +
+                    "," +
+                    this.idItem +
+                    "," +
+                    this.precioUnitario +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarCotizacionesItem();
+                    me.closeModalAgregarCotizacionItem();
+                    me.limpiar();
+
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
+        confirmacionAnulacionCotizacionIt(item){
+            this.idCotizacionItem = item.idCotizacionItem;
+            this.confirmacionAnulacionItem = true;
+        },
+        closeAnulacionCotizacionItem(){
+            this.confirmacionAnulacionItem = false;
+        },
+        anularCotizacionItem() {
+            this.desactivarCotizacionItem(this.idCotizacionItem);
+        },
+        async desactivarCotizacionItem(idCotizacionItem) {
+            let me = this;
+            await axios
+                .post("/adquisicion/eliminarcotizacionitem/" + this.idCotizacionItem).then(function (response) {
+                    me.listarCotizacionesItem();
+                    me.closeAnulacionCotizacionItem();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    alert('error')
+                });
+
         },
 
 
@@ -265,13 +805,7 @@ export default {
 
         },
         
-        llenarCamposProveedores(item) {
-            this.botonEst = 1;
-            this.nombreMateria = item.nom;
-            this.codigoMateria = item.codmat;
-            this.idMateria = item.idmateria;
-
-        },
+      
         //#endregion
         //#region Adicionar
         //#endregion
@@ -323,18 +857,31 @@ export default {
 
 
 
-        showModalAgregarProveedor() {
-            this.agregarProveedorModal = true;
+        showModalAgregarCotizacionAdquisicion() {
+            this.agregarCotizacionAdquisicionModal = true;
         },
-        closeModalAgregarProveedor() {
-            this.agregarProveedorModal = false;
+        closeModalAgregarCotizacionAdquisicion() {
+            this.botonactCot = 0;
+            this.agregarCotizacionAdquisicionModal = false;
+            this.limpiar();
+
         },
-        showFormato() {
-            this.formatoModal = true;
+
+        showModalAgregarCotizacionItem() {
+            
+            this.agregarCotizacionItemModal = true;
         },
-        closeFormato() {
-            this.formatoModal = false;
+        closeModalAgregarCotizacionItem() {
+            this.botonactCotIt = 0;
+            this.agregarCotizacionItemModal = false;
+            this.limpiar();
+
         },
+
+        limpiar () {
+            this.$refs.form.reset()
+        },
+       
         //#endregion
       },
 };
