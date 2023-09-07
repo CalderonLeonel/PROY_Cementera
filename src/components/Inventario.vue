@@ -20,7 +20,7 @@
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchInventario" append-icon="mdi-magnify" label="Buscar Almacen"
+                                <v-text-field v-model="searchInventario" append-icon="mdi-magnify" label="BUSCAR INVENTARIO"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
@@ -34,15 +34,15 @@
                                  </template>
  
                                  <template #[`item.actions`]="{ item }">
-                                     <v-icon class="mr-2" color="primary" x-large  @click="actualizarInfoInventario(item)"
+                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposInventario(item)"
                                          title="ACTUALIZAR INFORMACION">
                                          mdi-pencil
                                      </v-icon>
-                                     <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
+                                     <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="confirmarActivacionInv(item)"
                                          title="ACTIVAR Almacen">
                                          mdi-check-circle-outline
                                      </v-icon>
-                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="desactivar(item)"
+                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionInv(item)"
                                          title="DESACTIVAR Almacen">
                                          mdi-close-circle
                                      </v-icon>             
@@ -80,7 +80,7 @@
                                  </template>
  
                                  <template #[`item.actions`]="{ item }">
-                                     <v-icon class="mr-2" color="primary" x-large  @click="actualizarInfoItem(item)"
+                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposItem(item)"
                                          title="ACTUALIZAR INFORMACION">
                                          mdi-pencil
                                      </v-icon>
@@ -88,7 +88,7 @@
                                          title="ACTIVAR Seccion">
                                          mdi-check-circle-outline
                                      </v-icon>
-                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="desactivar(item)"
+                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionIt(item)"
                                          title="DESACTIVAR Seccion">
                                          mdi-close-circle
                                      </v-icon>             
@@ -112,11 +112,11 @@
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchTipoIem" append-icon="mdi-magnify" label="Buscar Item"
+                                <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="Buscar Item"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
-                             <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItem" :search="searchTipoIem"
+                             <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItem" :search="searchTipoItem"
                                  :items-per-page="5" class="elevation-1" id="tableId">
  
                                  <template #[`item.estado`]="{ item }">
@@ -126,7 +126,7 @@
                                  </template>
  
                                  <template #[`item.actions`]="{ item }">
-                                     <v-icon class="mr-2" color="primary" x-large  @click="actualizarInfoStand(item)"
+                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposTipoItem(item)"
                                          title="ACTUALIZAR INFORMACION">
                                          mdi-pencil
                                      </v-icon>
@@ -134,7 +134,7 @@
                                          title="ACTIVAR Stand">
                                          mdi-check-circle-outline
                                      </v-icon>
-                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="desactivar(item)"
+                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionTip(item)"
                                          title="DESACTIVAR Stand">
                                          mdi-close-circle
                                      </v-icon>             
@@ -152,37 +152,99 @@
  
          </div>
 
-         <v-dialog v-model="agregarItemModal" max-width="1000px">
+         <v-dialog v-model="itemModal" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA DE ITEMS ACTIVOS</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR SECCIÓN"
+                                        single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <v-data-table :headers="headerItem" :items="datosItem" :search="searchItem"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarItem(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
+                                    @click="closeItemModal()" style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>         
+
+
+         <v-dialog v-model="agregarInventarioModal" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>AGREGAR TIPO DE ITEM</span>
+                    <span>AGREGAR TRANSACCIÓN</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-container>
                             <v-row>
-                                <v-col cols="12" md="4">
-                                    <v-text-field v-model="nombre" label="NOMBRE TIPO ITEM" :counter="60"
-                                        :rules="nombreRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
+                                <v-col cols="12" md="3">
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM" :counter="60"
+                                        :rules="nombreRules" @input="nombreItem = nombreItem.toUpperCase()"
+                                        disabled required></v-text-field>
+                                </v-col>
+
+                                <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
+                                        @click="openItemModal()" style="float: right" title="BUSCAR ITEM">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>           
+                                <v-col cols="12" md="8">
+                                    <v-text-field v-model="movimiento" label="MOVIMIENTO" :counter="100"
+                                         @input="movimiento = movimiento.toUpperCase()"
                                         required></v-text-field>
-                                </v-col>      
+                                </v-col>   
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :counter="25"
+                                         @input="cantidad = cantidad.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>  
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="costoUnitario" label="COSTO UNITARIO" type="number" :counter="25"
+                                         @input="costoUnitario = costoUnitario.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>    
                                 <v-col cols="12" md="4">
                                     <v-combobox
-                                    label="MEDIDA" nombre="medida" @input="medida = medida.toUpperCase()" required
-                                    :items="['LT', 'KG', 'ML', 'DS', 'UI', 'TN','SOB','MIC','MT','G','UNIDAD']"
+                                    label="METODO VALUACION" v-model="metodoValuacion" @input="metodoValuacion = metodoValuacion.toUpperCase()" required
+                                    :items="['PEPS', 'UEPS', 'PROMEDIO PONDERADO']"
                                     ></v-combobox>
-                                </v-col>                   
-                                <v-col cols="12" md="4"> </v-col>
+                                </v-col>      
+                                    
+                                <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
                                     <v-btn iconvv v-if="botonActTT == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="actualizarInfoProveedor()" style="float: left"
+                                            @click="editarIt()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                             ACTUALIZAR
                                         </v-btn>
                                         <v-btn iconv v-if="botonActTT == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registar()" style="float: left" title="REGISTRAR PROVEEDOR">
+                                            @click="registrarIt()" style="float: left" title="REGISTRAR ITEM">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
                                         </v-btn>
@@ -196,7 +258,123 @@
                                 </v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeModalAgregarTipoItem()" style="float: right" title="SALIR">
+                                        @click="closeModalAgregarTransaccion()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+
+        <v-dialog v-model="tipoModal" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA DE TIPO DE ITEMS ACTIVOS</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="BUSCAR SECCIÓN"
+                                        single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItem" :search="searchTipoItem"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarTipo(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
+                                    @click="closeTipoModal()" style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>         
+
+
+
+
+         <v-dialog v-model="agregarItemModal" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>AGREGAR ITEM</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="12">
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM" :counter="60"
+                                        :rules="nombreRules" @input="nombreItem = nombreItem.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>   
+                                <v-col cols="12" md="12">
+                                    <v-text-field v-model="descripcion" label="DESCRIPCION" :counter="150"
+                                         @input="descripcion = descripcion.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>   
+                                <v-col cols="12" md="4">
+                                    <v-combobox
+                                    label="MEDIDA"  v-model="medida" @input="medida = medida.toUpperCase()" required
+                                    :items="['LT', 'KG', 'ML', 'DS', 'UI', 'TN','SOB','MIC','MT','G','UNIDAD']"
+                                    ></v-combobox>
+                                </v-col>    
+                                <v-col cols="12" md="3">
+                                    <v-text-field v-model="nombreTipoITem" label="NOMBRE TIPO ITEM" :counter="60"
+                                        :rules="nombreRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
+                                        disabled required></v-text-field>
+                                </v-col>
+
+                                <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
+                                        @click="openTipoModal()" style="float: right" title="BUSCAR TIPO ITEM">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>             
+                                <v-col cols="12" md="4"> </v-col>
+                                <v-col cols="6"></v-col>
+                                <v-col cols="2">
+                                    <v-btn iconvv v-if="botonActTT == 1" class="mx-4"  dark color="#0A62BF"
+                                            @click="editarIt()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN">
+                                            <v-icon dark> mdi-pencil </v-icon>
+                                            ACTUALIZAR
+                                        </v-btn>
+                                        <v-btn iconv v-if="botonActTT == 0" class="mx-4"  dark color="#0ABF55"
+                                            @click="registrarIt()" style="float: left" title="REGISTRAR ITEM">
+                                            <v-icon dark> mdi-content-save </v-icon>
+                                            GUARDAR
+                                        </v-btn>
+                                </v-col>                      
+                                <v-col cols="2">                                        
+                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
+                                        <v-icon dark> mdi-eraser </v-icon>
+                                        LIMPIAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeModalAgregarItem()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -219,7 +397,7 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="nombe" label="NOMBRE TIPO ITEM" :counter="60"
+                                    <v-text-field v-model="nombreTipoITem" label="NOMBRE TIPO ITEM" :counter="60"
                                         :rules="nombreRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>                         
@@ -227,13 +405,13 @@
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
                                     <v-btn iconvv v-if="botonActTT == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="actualizarInfoProveedor()" style="float: left"
+                                            @click="editarTipo()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                             ACTUALIZAR
                                         </v-btn>
                                         <v-btn iconv v-if="botonActTT == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registar()" style="float: left" title="REGISTRAR PROVEEDOR">
+                                            @click="registrarTipo()" style="float: left" title="REGISTRAR PROVEEDOR">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
                                         </v-btn>
@@ -259,6 +437,98 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+
+        <v-dialog v-model="confirmacionAnulacionTipo" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>¿ESTAS SEGURO?</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                            <v-row>
+                                <v-col cols="3"></v-col>
+                                <v-col cols="3">
+                                    <v-btn class="mx-2"  dark x-big color="#BF120A"
+                                        @click="anularTipo()" style="float: right" title="ANULAR TIPO ITEM">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        ANULAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3">
+                                    <v-btn class="mx-2"  dark x-big color="#00A1B1"
+                                        @click="closeAnulacionTipo()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3"></v-col>
+                            </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="confirmacionAnulacionItem" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>¿ESTAS SEGURO?</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                            <v-row>
+                                <v-col cols="3"></v-col>
+                                <v-col cols="3">
+                                    <v-btn class="mx-2"  dark x-big color="#BF120A"
+                                        @click="anularItem()" style="float: right" title="ANULAR ITEM">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        ANULAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3">
+                                    <v-btn class="mx-2"  dark x-big color="#00A1B1"
+                                        @click="closeAnulacionItem()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3"></v-col>
+                            </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+
+        <v-dialog v-model="confirmacionAnulacionInventario" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>¿ESTAS SEGURO?</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                            <v-row>
+                                <v-col cols="3"></v-col>
+                                <v-col cols="3">
+                                    <v-btn class="mx-2"  dark x-big color="#BF120A"
+                                        @click="anularInventario()" style="float: right" title="ANULAR INVENTARIO">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        ANULAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3">
+                                    <v-btn class="mx-2"  dark x-big color="#00A1B1"
+                                        @click="closeAnulacionInventario()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3"></v-col>
+                            </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
      </v-card>
      
  
@@ -287,7 +557,7 @@
              nombreTipoITem: "",
              estTT: "",
 
-
+            estado: "ACTIVO",
              valid: true,
              nombreRules: [
                (v) => !!v || "Se requiere el nombre del proveedor.",
@@ -314,7 +584,7 @@
              headerInventario: [
                  
                  { text: "NUMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
-                 { text: "ITEM", value: "iditem", sortable: true },
+                 { text: "ITEM", value: "nombreitem", sortable: true },
                  { text: "MOVIMIENTO", value: "movimiento", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
                  { text: "COSTO UNITARIO", value: "costoUnitario", sortable: true },
@@ -345,14 +615,25 @@
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
  
+             buscarInventario: "",
              searchInventario: "",
              agregarInventarioModal: false,
+             confirmacionAnulacionInventario: false,
  
+             buscarItem: "",
              searchItem: "",
              agregarItemModal: false,
+             confirmacionAnulacionItem: false,
  
-             searchTipoIem: "",
+             buscarTipoItem: "",
+             searchTipoItem: "",
              agregarTipoItemModal: false,
+             confirmacionAnulacionTipo: false,
+
+
+
+             itemModal:false,
+             tipoModal:false,
 
 
              botonActInv:0,
@@ -393,6 +674,128 @@
                console.log(error);
              });
          },
+
+
+         
+
+         registrarInv() {
+            this.registrarInventario(this.idItem, this.movimiento,this.cantidad, this.costounitario,this.metodovaluacion, this.estado);
+        },
+        async registrarInventario(
+            idItem,
+            movimiento,
+            cantidad,
+            costounitario,
+            metodovaluacion,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/agregarinventario/" +
+                    this.idItem +
+                    "," +
+                    this.movimiento +
+                    "," +
+                    this.cantidad +
+                    "," +
+                    this.costounitario +
+                    "," +
+                    this.metodovaluacion +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.closeModalAgregarTransaccion();
+                    me.listarInventarios();
+                    me.limpiar();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+        editarInv() {
+            this.editarInventario(this.idTransaccion,this.idItem, this.movimiento,this.cantidad, this.costounitario,this.metodovaluacion, this.estado);
+
+            this.botonActInv=0;
+        },
+        async editarInventario(
+            idTransaccion,
+            idItem,
+            movimiento,
+            cantidad,
+            costounitario,
+            metodovaluacion,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/actualizarinventario/" +
+                    this.idTransaccion +
+                    "," +
+                    this.idItem +
+                    "," +
+                    this.movimiento +
+                    "," +
+                    this.cantidad +
+                    "," +
+                    this.costounitario +
+                    "," +
+                    this.metodovaluacion +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.closeModalAgregarTransaccion();
+                    me.listarInventarios();
+                    me.limpiar();
+
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
+        confirmacionAnulacionInv(item){
+            this.idTransaccion = item.idTransaccion;
+            this.confirmacionAnulacionInventario = true;
+        },
+        closeAnulacionInventario(){
+            this.confirmacionAnulacionInventario = false;
+        },
+        anularInventario() {
+            this.desactivarInventario(this.idTransaccion);
+            this.confirmacionAnulacionInventario = false;
+            this.listarInventarios();
+        },
+        async desactivarInventario(idTransaccion) {
+            let me = this;
+            await axios
+                .post("/inventario/eliminarinventario/" + this.idTransaccion).then(function (response) {
+                    me.listarInventarios();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    alert('error')
+                });
+
+        },
+
+
+
+
  
  
          listarItem() {
@@ -415,6 +818,120 @@
                console.log(error);
              });
          },
+
+         registrarIt() {
+            this.registrarItem(this.nombreItem,this.cantidad, this.descripcion,this.medida,this.idTipoItem, this.estado);
+        },
+        async registrarItem(
+            nombreItem,
+            cantidad,
+            descripcion,
+            medida,
+            idTipoItem,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/agregarinventario/" +
+                    this.nombreItem +
+                    "," +
+                    this.cantidad +
+                    "," +
+                    this.descripcion +
+                    "," +
+                    this.medida +
+                    "," +
+                    this.estado +
+                    "," +
+                    this.idTipoItem
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarItems();
+                    me.closeModalAgregarItem();
+                    me.limpiar();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+        editarIt() {
+            this.editarItem(this.idItem, this.nombreItem,this.cantidad, this.descripcion,this.medida,this.idTipoItem, this.estado);
+            this.botonActInv=0;
+        },
+        async editarItem(
+            idItem,
+            nombreItem,
+            cantidad,
+            descripcion,
+            medida,
+            idTipoItem,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/actualizarinventario/" +
+                    this.idItem +
+                    "," +
+                    this.nombreItem +
+                    "," +
+                    this.cantidad +
+                    "," +
+                    this.descripcion +
+                    "," +
+                    this.medida +
+                    "," +
+                    this.estado +
+                    "," +
+                    this.idTipoItem
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarItems();
+                    me.closeModalAgregarItem();
+                    me.limpiar();
+
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
+        confirmacionAnulacionIt(item){
+            this.idItem = item.iditem;
+            this.confirmacionAnulacionItem = true;
+        },
+        closeAnulacionItem(){
+            this.confirmacionAnulacionItem = false;
+        },
+        anularItem() {
+            this.desactivarItem(this.idItem);
+        },
+        async desactivarItem(idItem) {
+            let me = this;
+            await axios
+                .post("/inventario/eliminaritem/" + this.idItem).then(function (response) {
+                    me.listarItems();
+                    me.closeModalAgregarItem();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    alert('error')
+                });
+
+        },
+
  
          listarTipoItem() {
              this.listarTipoItems();
@@ -436,6 +953,96 @@
                console.log(error);
              });
          },
+
+
+         registrarTipo() {
+            this.registrarTipo(this.nombreTipoITem, this.estado);            
+        },
+        async registrarTipo(
+            nombreTipoITem,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/agregartipodeitem/" +
+                    this.nombreTipoITem +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarTipoItems();
+                    me.closeModalAgregarTipoItem();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+        editarTipo() {
+            this.editarTipo( this.idTipoItem,this.nombreTipoITem, this.estado);
+            this.botonActTT = 0;
+        },
+        async editarTipo(
+            idTipoItem,
+            nombreTipoITem,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/actualizartipodeitem/" +
+                    this.idTipoItem +
+                    "," +
+                    this.nombreTipoITem +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarTipoItems();
+                    me.closeModalAgregarTipoItem();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
+
+
+        confirmacionAnulacionTip(item){
+            this.idTipoItem = item.idtipodeitem;
+            this.confirmacionAnulacionTipo = true;
+        },
+        closeAnulacionTipo(){
+            this.confirmacionAnulacionTipo = false;
+        },
+        anularTipo() {
+            this.desactivarTipo(this.idTipoItem);
+            this.confirmacionAnulacionTipo = false;
+            this.listarTipoItem();
+        },
+        async desactivarTipo(idTipoItem) {
+            let me = this;
+            await axios
+                .post("/inventario/eliminartipodeitem/" + this.idTipoItem).then(function (response) {
+                    me.listarTipoItems();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    alert('error')
+                });
+
+        },
         
          
 
@@ -490,37 +1097,45 @@
 
 
          llenarCamposItem(item) {
-            this.botonActAl = 1;
-            this.agregarAlmacenModal = true;
-            this.idAlmacen = item.idalmacen;
-            this.nombreAlmacen = item.nombrealmacen;
-            this.estado = item.est;
+            this.botonActIt = 1;
+            this.idItem = item.iditem;
+            this.nombreItem = item.nombreitem;
+            this.descripcion = item.descripcion;
+            this.medida = item.medida;
+            this.idTipoItem = item.idTipoItem;
+            this.nombreTipoITem = item.nombretipoitem;
+            this.estado = item.estado;
+            this.agregarItemModal = true;
         },
 
 
 
         llenarCamposTipoItem(item) {
-            this.botonAct = 1;
-            this.agregarSeccionModal = true;
-            this.idSeccion = item.idseccion;
-            this.idAlmacen = item.idalmacen;
-            this.nombreSeccion = item.nombreseccion;
-            this.estado = item.est;
+            this.botonActTT = 1;
+            this.idTipoItem = item.idtipodeitem;
+            this.nombreTipoITem = item.nombretipoitem;
+            this.estado = item.estado;
+            this.agregarTipoItemModal = true;
         },
 
-        llenarCamposItem(item) {
-            this.botonAct = 1;
-            this.agregarStandModal = true;
-            this.idStand = item.idstand;
-            this.idSeccion = item.idseccion;
-            this.nombreStand = item.nombrestand;
-            this.estado = item.est;
+        llenarCamposInventario(item) {
+            this.botonActInv = 1;
+            this.idTransaccion = item.idTransaccion;
+            this.idItem = item.iditem;
+            this.nombreItem = item.nombreitem;
+            this.movimiento = item.movimiento;
+            this.cantidad = item.cantidad;
+            this.costoUnitario = item.costoUnitario;
+            this.metodoValuacion = item.metodoValuacion;
+            this.estado = item.estado;
+            this.agregarInventarioModal = true;
         },
  
 
 
         showModalAgregarTransaccion(){
             this.agregarInventarioModal = true;
+            this.botonActInv = 0;
         },
 
         closeModalAgregarTransaccion(){
@@ -531,21 +1146,56 @@
 
         showModalAgregarItem(){
             this.agregarItemModal = true;
+            this.botonActIt = 0;
         },
 
         closeModalAgregarItem(){
             this.agregarItemModal = false;
             this.limpiar();
+
+        },
+
+        openItemModal(){
+            this.listarItems();
+            this.itemModal = true;
+        },
+
+        closeItemModal(){
+            this.itemModal = false;
+        },
+
+        seleccionarItem(item) {
+            this.idItem = item.iditem;
+            this.nombreItem = item.nombreitem;
+            this.itemModal = false;
+        },
+
+
+        openTipoModal(){
+            this.listarTipoItems();
+            this.tipoModal = true;
+        },
+
+        closeTipoModal(){
+            this.tipoModal = false;
+        },
+
+        seleccionarTipo(item){
+            this.idTipoItem = item.idtipodeitem;
+            this.nombreTipoITem = item.nombretipoitem;
+            this.tipoModal = false;
         },
 
 
         showModalAgregarTipoItem(){
             this.agregarTipoItemModal = true;
+            this.botonActTT = 0;  
         },
 
         closeModalAgregarTipoItem(){
             this.agregarTipoItemModal = false;
             this.limpiar();
+     
         },
 
 
