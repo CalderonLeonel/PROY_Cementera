@@ -42,7 +42,7 @@
                                         title="ACTIVAR COTIZACION">
                                         mdi-check-circle-outline
                                     </v-icon>
-                                    <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="desactivar(item)"
+                                    <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionCotizacionAdquisicion(item)"
                                         title="DESACTIVAR COTIZACION">
                                         mdi-close-circle
                                     </v-icon>             
@@ -88,7 +88,7 @@
                                         title="ACTIVAR COTIZACION">
                                         mdi-check-circle-outline
                                     </v-icon>
-                                    <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="desactivar(item)"
+                                    <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionCotizacionItem(item)"
                                         title="DESACTIVAR COTIZACION">
                                         mdi-close-circle
                                     </v-icon>             
@@ -367,6 +367,73 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+
+
+
+
+        <v-dialog v-model="confirmacionAnulacionCotizacionAdq" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>¿ESTAS SEGURO?</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                            <v-row>
+                                <v-col cols="3"></v-col>
+                                <v-col cols="3">
+                                    <v-btn class="mx-2"  dark x-big color="#BF120A"
+                                        @click="anularCotizacionAdquisicion()" style="float: right" title="ANULAR ALMACEN">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        ANULAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3">
+                                    <v-btn class="mx-2"  dark x-big color="#00A1B1"
+                                        @click="closeAnulacionCotizacionAdquisicion()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3"></v-col>
+                            </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+
+        
+        <v-dialog v-model="confirmacionAnulacionCotizacionIt" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>¿ESTAS SEGURO?</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                            <v-row>
+                                <v-col cols="3"></v-col>
+                                <v-col cols="3">
+                                    <v-btn class="mx-2"  dark x-big color="#BF120A"
+                                        @click="anularCotizacionItem()" style="float: right" title="ANULAR ALMACEN">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        ANULAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3">
+                                    <v-btn class="mx-2"  dark x-big color="#00A1B1"
+                                        @click="closeAnulacionCotizacionItem()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3"></v-col>
+                            </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+
 
 
 
@@ -686,12 +753,12 @@ export default {
 
         },
 
-        confirmacionAnulacionCotizacionAdq(item){
+        confirmacionAnulacionCotizacionAdquisicion(item){
             this.idCotizacion = item.idCotizacion;
-            this.confirmacionAnulacionItem = true;
+            this.confirmacionAnulacionCotizacionAdq = true;
         },
         closeAnulacionCotizacionAdquisicion(){
-            this.confirmacionAnulacionItem = false;
+            this.confirmacionAnulacionCotizacionAdq = false;
         },
         anularCotizacionAdquisicion() {
             this.desactivarCotizacionAdquisicion(this.idCotizacion);
@@ -822,12 +889,12 @@ export default {
 
         },
 
-        confirmacionAnulacionCotizacionIt(item){
+        confirmacionAnulacionCotizacionItem(item){
             this.idCotizacionItem = item.idCotizacionItem;
-            this.confirmacionAnulacionItem = true;
+            this.confirmacionAnulacionCotizacionIt = true;
         },
         closeAnulacionCotizacionItem(){
-            this.confirmacionAnulacionItem = false;
+            this.confirmacionAnulacionCotizacionIt = false;
         },
         anularCotizacionItem() {
             this.desactivarCotizacionItem(this.idCotizacionItem);
