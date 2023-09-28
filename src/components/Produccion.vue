@@ -16,7 +16,7 @@
                                 </v-col>
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="productoRules"
-                                        @click="showProductos()" style="float: right" title="BUSCAR PRODUCTOS">
+                                        @click="showProductosModal()" style="float: right" title="BUSCAR PRODUCTOS">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -32,6 +32,35 @@
                                         required></v-text-field>
                                 </v-col>
 
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="nombreFabrica" label="FABRICA" :counter="100"
+                                        :rules="nombreFabricaRules" @input="nombreProducto = nombreProducto.toUpperCase()"
+                                        required disabled></v-text-field>
+                                </v-col>
+
+                                <v-col cols="12" md="8"> </v-col>
+                                <v-col cols="12" md="4">
+                                    <v-toolbar dense shaped color="#001781">
+                                        <v-toolbar-title style="color: #ffffff;">
+                                            <h6>
+                                                OPCIONES
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-btn v-if="botonact == 1" class="mx-2" fab dark x-small color="#EE680B"
+                                            @click="actualizarProduccion()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN">
+                                            <v-icon dark> mdi-pencil </v-icon>
+                                        </v-btn>
+                                        <v-btn v-if="botonact == 0" class="mx-2" fab dark x-small color="#EE680B"
+                                            @click="registrarProduccion()" style="float: left" title="REGISTRAR PRODUCCION">
+                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                        </v-btn>
+                                        <v-btn color="#EE680B" class="mx-2" fab dark x-small @click="limpiar()"
+                                            style="float: left" title="LIMPIAR FORMULARIO">
+                                            <v-icon dark> mdi-eraser </v-icon>
+                                        </v-btn>
+                                    </v-toolbar>
+                                </v-col>
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
@@ -39,28 +68,6 @@
                                         @click="closeAgregarProduccion()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
-                                </v-col>
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="12" md="4">
-                                    <v-toolbar dense shaped>
-                                        <v-toolbar-title>
-                                            <h6>
-                                                OPCIONES
-                                            </h6>
-                                        </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarProduccion()"
-                                            style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px" height="28px">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                        </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarProduccion()"
-                                            style="float: left" title="REGISTRAR PRODUCCION" width="28px" height="28px">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
-                                        </v-btn>
-                                        <v-btn icon color="#EE680B" @click="limpiar()" style="float: left"
-                                            title="LIMPIAR FORMULARIO">
-                                            <v-icon dark> mdi-eraser </v-icon>
-                                        </v-btn>
-                                    </v-toolbar>
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -184,6 +191,52 @@
             </v-card>
         </v-dialog>
 
+        <v-dialog v-model="productosModal" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA DE PRODUCTOS</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="buscarproducto" append-icon="mdi-magnify"
+                                        label="BUSCAR PRODUCTOS" single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <v-data-table :headers="headersProductos" :items="datosProductos" :search="buscarproductos"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+
+                                    <template #[`item.est`]="{ item }">
+                                        <v-chip :color="colorEstado(item.est)" dark>
+                                            {{ item.est }}
+                                        </v-chip>
+                                    </template>
+
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" color="#001781" @click="seleccionarProducto(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
+                                    @click="closeproductos()" style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
         <div>
             <v-alert dense style="color: #ffffff;" color="grey">
                 <h5>PRODUCCION</h5>
@@ -219,8 +272,8 @@
                             </v-card-title>
 
 
-                            <v-data-table :headers="headersProduccion" :items="datosProduccion"
-                                :search="buscarProduccions" :items-per-page="5" class="elevation-1" id="tableId">
+                            <v-data-table :headers="headersProduccion" :items="datosProduccion" :search="buscarProduccions"
+                                :items-per-page="5" class="elevation-1" id="tableId">
 
                                 <template #[`item.est`]="{ item }">
                                     <v-chip :color="colorEstado(item.est)" dark>
@@ -230,17 +283,13 @@
 
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
-                                        @click="activar(item)" title="ACTIVAR PRODUCCION">
+                                    <v-icon v-if="item.est == 'EN PRODUCCION'" color="green" small class="mr-2"
+                                        @click="terminar(item)" title="TERMINAR PRODUCCION">
                                         mdi-check-circle-outline
                                     </v-icon>
                                     <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
                                         @click="desactivar(item)" title="CANCELAR PRODUCCION">
                                         mdi-cancel
-                                    </v-icon>
-                                    <v-icon small class="mr-2" color="#001781" @click="showEditProduccionModal(item)"
-                                        title="ACTUALIZAR INFORMACION">
-                                        mdi-pencil
                                     </v-icon>
                                     <v-icon small class="mr-2" color="#001781" @click="showInfoProduccion(item)"
                                         title="VER INFORMACION">
@@ -271,10 +320,12 @@ export default {
             cantidadProduccion: "",
             codigoProduccion: "",
             buscarProduccion: "",
-            datosProduccions: [],
-            headersProduccions: [
-                { text: "NOMBRE Produccion", value: "nomlin", sortable: true },
-                { text: "CODIGO Produccion", value: "codlin", sortable: true },
+            datosProduccion: [],
+            headersProduccion: [
+                { text: "CODIGO PRODUCCION", value: "codprodu", sortable: true },
+                { text: "CANTIDAD", value: "cant", sortable: true },
+                { text: "FABRICA", value: "nomfab", sortable: true },
+                { text: "PRODUCTO", value: "nomprod", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -286,11 +337,49 @@ export default {
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
             //#endregion
+            //#region Fabrica 
+            idFabrica: 1,
+            nombreFabrica: "",
+            codigoFabrica: "",
+            direccionFabrica: "",
+            latitud: "",
+            longitud: "",
+            departamento: "",
+            ciudad: "",
+            datosFabricas: [],
+            headersFabricas: [
+                { text: "NOMBRE FABRICA", value: "nomfab", sortable: false },
+                { text: "CODIGO FABRICA", value: "codfab", sortable: false },
+                { text: "CIUDAD", value: "ciu", sortable: false },
+                { text: "DEPARTAMENTO", value: "depa", sortable: false },
+                { text: "ESTADO", value: "est", sortable: false },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
             //#region Modals
             agregarProduccionModal: 0,
             editProduccionModal: 0,
             infoProduccionModal: 0,
             produccionInhabilitadasModal: 0,
+            productosModal: 0,
+            //#endregion
+            //#region Productos
+            idProducto: "",
+            nombreProducto: "",
+            codigoProducto: "",
+            datosProductos: [],
+            headersProductos: [
+                { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
+                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
+                { text: "ESTADO", value: "est", sortable: false },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
+            datosProductoInh: [],
+            headersProductoInh: [
+                { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
+                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
+                { text: "ESTADO", value: "est", sortable: false },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
             //#endregion
         }
     },
@@ -299,8 +388,8 @@ export default {
     },
     methods: {
         colorEstado(est) {
-            if (est == 'ACTIVO') return 'green'
-            else return 'red'
+            if (est == 'PRODUCIDO') return 'green'
+            else return 'orange'
         },
         //#region Listados
         listarProduccion() {
@@ -342,21 +431,52 @@ export default {
                     console.log(error);
                 });
         },
+
+        listarProducto() {
+            this.listarProductos();
+        },
+        async listarProductos() {
+            let me = this;
+            await axios
+                .get("/producto/listarproductos")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosProductos = [];
+
+                    } else {
+                        //console.log(response.data);
+                        me.datosProductos = response.data.resultado;
+
+                    }
+                    // me.listarAula(me.id_sede); actualizar tabla esta creando ciclos
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
         //#endregion
 
         //#region Adicion
         registrarProduccion() {
-            this.registroProduccion(this.codigoProduccion, this.cantidadProduccion);
+            this.registroProduccion(this.codigoProduccion, this.idFabrica, this.idProducto, this.cantidadProduccion);
         },
         async registroProduccion(
             codigoProduccion,
+            idFabrica,
+            idProducto,
             cantidadProduccion
+            
         ) {
             let me = this;
             await axios
                 .post(
-                    "/Produccion/addProduccion/" +
+                    "/produccion/addproduccion/" +
                     this.codigoProduccion +
+                    "," +
+                    this.idFabrica +
+                    "," +
+                    this.idProducto +
                     "," +
                     this.cantidadProduccion
                 )
@@ -427,9 +547,9 @@ export default {
         },
         showInfoProduccion(item) {
             this.infoProduccionModal = true;
-            this.idProduccion = item.idlin;
-            this.codigoProduccion = item.nomlin;
-            this.cantidadProduccion = item.codlin;
+            this.idProduccion = item.idprodu;
+            this.codigoProduccion = item.codprodu;
+            this.cantidadProduccion = item.cant;
         },
         closeInfoProduccionModal() {
             this.infoProduccionModal = false;
@@ -441,16 +561,23 @@ export default {
         closeProduccionsInhabilitadas() {
             this.produccionInhabilitadasModal = false
         },
+        showProductosModal() {
+            this.productosModal = true;
+            this.listarProductos();
+        },
+        closeProductosModal() {
+            this.productosModal = false;
+        },
         //#endregion
         //#region Cambios Estado
-        activar(item) {
-            this.idProduccion = item.idlin;
-            this.activarProduccion(this.idProduccion);
+        terminar(item) {
+            this.idProduccion = item.idprodu;
+            this.terminarProduccion(this.idProduccion);
         },
-        async activarProduccion(idProduccion) {
+        async terminarProduccion(idProduccion) {
             let me = this;
             await axios
-                .post("/produccion/onproduccion/" + this.idProduccion).then(function (response) {
+                .post("/produccion/terminarproduccion/" + this.idProduccion).then(function (response) {
 
                     me.listarProduccion();
                     me.listarProduccionInh();
@@ -479,10 +606,18 @@ export default {
 
         },
         //#endregion
+        //#region Seleccion Datos
+        seleccionarProducto(item){
+            this.idProducto = item.idprod;
+            this.nombreProducto = item.nomprod;
+            this.productosModal = false;
+        },
+        //#endregion
         limpiar() {
             this.nombreProduccion = "";
             this.codigoProduccion = "";
         },
+
     },
 }
 </script>
