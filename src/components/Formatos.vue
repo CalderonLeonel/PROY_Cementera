@@ -497,7 +497,7 @@ export default {
             this.botonact = 1;
             this.idFormato = item.idforma;
             this.nombreFormato = item.nomforma;
-            this.codigoFormato = item.codigoFormato;
+            this.codigoFormato = item.codforma;
         },
         showFormatosInhabilitados() {
             this.formatosInhabilitadosModal = true

@@ -405,7 +405,7 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="#EE680B"
-                                            @click="actualizarProductos()" style="float: left"
+                                            @click="editarProductos()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
@@ -419,7 +419,7 @@
                                         </v-btn>
                                     </v-toolbar>
                                 </v-col>
-                                
+
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" fab dark x-small color="#b794f6" @click="closeEditarProducto()"
@@ -744,6 +744,37 @@ export default {
         },
         //#endregion
         //#region Editar
+        editarProductos() {
+            this.editarProducto(this.idProducto, this.nombreProducto, this.codigoProducto);
+        },
+        async editarProducto(
+            idProducto,
+            nombreProducto,
+            codigoProducto
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/producto/updproducto/" +
+                    this.idProducto +
+                    "," +
+                    this.nombreProducto +
+                    "," +
+                    this.codigoProducto
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarProductos();
+                    me.editProductoModal = false;
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                });
+
+
+        },
         //#endregion
         //#region Eliminar
         //#region Modals
