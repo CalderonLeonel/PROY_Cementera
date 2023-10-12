@@ -177,6 +177,21 @@
                             </v-data-table>
                         </v-col>
 
+                        <v-col cols="12" md="8"> </v-col>
+                        <v-col cols="12" md="4">
+                            <v-toolbar dense shaped color="#001781">
+                                <v-toolbar-title style="color: #ffffff;">
+                                    <h6>
+                                        OPCIONES
+                                    </h6>
+                                </v-toolbar-title>
+                                <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="registrarVenta()"
+                                    style="float: left" title="REGISTRAR VENTA">
+                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                </v-btn>
+                            </v-toolbar>
+                        </v-col>
+
                     </v-row>
                 </v-container>
             </v-form>
@@ -218,6 +233,7 @@ export default {
             idProducto: "",
             nombreProducto: "",
             codigoProducto: "",
+            precioUnitario: "",
             datosProductos: [],
             headersProductos: [
                 { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
@@ -236,6 +252,10 @@ export default {
 
             //#region Carrito
             productoSeleccionado: "",
+            cantidad: "",
+            idEmpleado: "",
+            razonSocial: "",
+            codigoControl: "",
             datosCarrito: [],
             headersCarrito: [
                 { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
@@ -251,6 +271,20 @@ export default {
             //#region Modals
             clientesModal: 0,
             cantidadModal: 0,
+            //#endregion
+
+            //#region Venta
+            venta: {
+                idProducto: "",
+                cantidad: 0,
+                precioUnitario: 0,
+                total: 0,
+                codigoControl: "",
+                nit: "",
+                razonSocial: "",
+                idCliente: "",
+                idEmpleado: "",
+            },
             //#endregion
         }
     },
@@ -307,6 +341,38 @@ export default {
         },
         //#endregion
         //#region Registros
+        /*registrarVentas() {
+            this.registrarVenta(this.idProducto, this.cantidad, this.precioUnitario, this.total, this.codigoControl, this.nit, this.razonSocial, this.idCliente, this.idEmpleado);
+        },*/
+        async registrarVenta(
+        ) {
+            // Construye un objeto de venta con los datos necesarios
+            let me = this;
+
+            // Envía la venta al servidor o realiza la acción necesaria para registrarla
+            // Puedes usar Axios u otra librería para hacer la solicitud al servidor
+            await axios.post("/venta/registrarventa/",
+                this.venta)
+                .then(response => {
+                    // La venta se registró correctamente
+                    console.log("Venta registrada con éxito:", response.data);
+                    // Reinicia los datos del cliente y el carrito después de la venta
+                    this.resetVenta();
+                })
+                .catch(error => {
+                    // Ocurrió un error al registrar la venta
+                    console.error("Error al registrar la venta:", error);
+                });
+        },
+        resetVenta() {
+            // Restablece los datos del cliente y el carrito
+            this.nombreCliente = "";
+            this.paterno = "";
+            this.materno = "";
+            this.nit = "";
+            this.datosCarrito = [];
+            // Otros campos de reinicio según tus necesidades
+        },
         //#endregion
         //#region Edicion
         //#endregion
@@ -323,24 +389,30 @@ export default {
         //#endregion
         //#region Seleccion Datos
         seleccionarCliente(item) {
+            this.idCliente = item.idcli;
             this.nombreCliente = item.nom;
             this.paterno = item.pat;
             this.materno = item.mat;
             this.nit = item.nitcli;
+            this.razonSocial = item.nom + "" + item.pat + " " + item.mat;
             this.clientesModal = false;
         },
         seleccionarProducto(item) {
-            this.productoSeleccionado = item.nomprod;
+            this.productoSeleccionado = item;
+            this.venta.idProducto = item.idprod;
+            this.venta.precioUnitario = item.precuni;
+            this.venta.total = this.cantidad * item.precuni;
             this.cantidadModal = true;
         },
         agregarProductoAlCarrito() {
             if (this.cantidad > 0) {
                 const productoEnCarrito = {
+                    idprod: this.venta.idProducto,
                     nomprod: this.productoSeleccionado.nomprod,
                     codprod: this.productoSeleccionado.codprod,
                     cant: this.cantidad,
-                    precuni: this.productoSeleccionado.precuni,
-                    total: this.cantidad * this.productoSeleccionado.precuni,
+                    precuni: this.venta.precioUnitario,
+                    total: this.venta.total,
                     est: this.productoSeleccionado.est,
                     // Agrega otros campos necesarios aquí
                 };
