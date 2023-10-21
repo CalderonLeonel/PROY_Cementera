@@ -1,8 +1,8 @@
 <template>
    <v-card elevation="5" outlined>
         <div>
-            <v-alert dense style="color: #ffffff;" color="grey">
-                <h3>Cotizaciones</h3>
+            <v-alert dense style="color: #ffffff;" color="purple">
+                <h3>COTIZACIONES</h3>
             </v-alert>
         </div>
         <div>

@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="5" outlined>
          <div>
-             <v-alert dense style="color: #ffffff;" color="grey">
+             <v-alert dense style="color: #ffffff;" color="indigo">
                  <h3>INVENTARIO</h3>
              </v-alert>
          </div>
