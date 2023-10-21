@@ -311,10 +311,40 @@ export default {
 
         },
         actualizarDocumento(){
-            this.editarDocumento(this.idDocumento,this.documentoArchivo,this.descripcionArchivo,this.codigoArchivo);
+            this.editarDocumento(this.idDocumento,this.documentoArchivo,this.descripcionArchivo,this.codigoArchivo,'ACTIVO');
         },
-        async editarDocumento(){
+        async editarDocumento(id,documento,descripcion,codigo,estado){
+            let me = this;
+            await axios
+                .post(
+                    "/documento/editar/" +
+                    this.id +
+                    "," +
+                    this.documento.name +
+                    "," +
+                    this.documento +
+                    "," +
+                    this.documento.type +
+                    "," +
+                    this.documento.size +
+                    "," +
+                    this.descripcion +
+                    "," +
+                    this.codigo +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
 
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarDocumentos();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
         },
         suprimirDocumento(){
             this.editarDocumento(this.idDocumento);
