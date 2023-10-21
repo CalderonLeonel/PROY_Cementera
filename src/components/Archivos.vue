@@ -170,12 +170,12 @@
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-text-field v-model="codigoArchivo" type="text" label="Codigo" :counter="25"
-                                        :rules="codigoRules" @input="codigoArchivo = codigoArchivo.toUpperCase()"
+                                         @input="codigoArchivo = codigoArchivo.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="descripcionArchivo" type="text" label="Descripción" :counter="150"
-                                        :rules="descripcionRules" @input="descripcionArchivo = descripcionArchivo.toUpperCase()"
+                                         @input="descripcionArchivo = descripcionArchivo.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                
@@ -224,6 +224,7 @@ import axios from "axios";
 export default {
     data() {
         return {
+            idDocumento: 0,
             documentoArchivo: null,
             descripcionArchivo: '',
             codigoArchivo: '',
@@ -244,15 +245,35 @@ export default {
         }
     },
     created: function (){
-      this.listarCotizacionAdquisicion();
-      this.listarCotizacionItem();
+      this.listarDocumento();
     },
     methods: {
+        
         showAgregarDocumento() {
             this.agregarDocumento = true;
         },
         closeAgregarDocumento() {
             this.agregarDocumento = false;
+        },
+        listarDocumento() {
+            this.listarDocumentos();
+        },
+        async listarDocumentos() {
+          let me = this;
+          await axios
+            .get("/documento/listardocumentos/")
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosDocumento = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosDocumento = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
         },
         registrarDocumento(){
             this.guardarDocumento(this.documentoArchivo,this.descripcionArchivo,this.codigoArchivo);
@@ -266,13 +287,13 @@ export default {
             console.log(codigo);
         },
         actualizarDocumento(){
-
+            this.editarDocumento(this.idDocumento,this.documentoArchivo,this.descripcionArchivo,this.codigoArchivo);
         },
         async editarDocumento(){
 
         },
         suprimirDocumento(){
-
+            this.editarDocumento(this.idDocumento);
         },
         async eliminarDocumento(id){
 
