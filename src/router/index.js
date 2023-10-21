@@ -35,6 +35,11 @@ const routes = [
     path: 'adquisicion',
     name: 'Adquisicion',
     component: () => import('@/components/Adquisicion.vue'),
+  },
+  {
+    path: 'archivos',
+    name: 'Archivos',
+    component: () => import('@/components/Archivos.vue'),
   }
 ]
 
