@@ -99,6 +99,26 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
+
+        <v-list-group no-action color="light-blue darken-4" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>
+                mdi-file-multiple
+              </v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>ARCHIVOS</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'Archivos' }">
+            <v-list-item-title>
+              <h6>GESTIÓN DE DOCUMENTOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+        
         
       </v-list>
 
