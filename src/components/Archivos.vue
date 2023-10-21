@@ -276,15 +276,39 @@ export default {
             });
         },
         registrarDocumento(){
-            this.guardarDocumento(this.documentoArchivo,this.descripcionArchivo,this.codigoArchivo);
+            this.guardarDocumento(this.documentoArchivo,this.descripcionArchivo,this.codigoArchivo,'ACTIVO');
         },
-        async guardarDocumento(documento,descripcion,codigo){
-            console.log(documento);
-            alert(documento.name);
-            alert(documento.size);
-            alert(documento.type);
-            console.log(descripcion);
-            console.log(codigo);
+        async guardarDocumento(documento,descripcion,codigo,estado){
+            let me = this;
+            await axios
+                .post(
+                    "/documento/insertar/" +
+                    this.documento.name +
+                    "," +
+                    this.documento +
+                    "," +
+                    this.documento.type +
+                    "," +
+                    this.documento.size +
+                    "," +
+                    this.descripcion +
+                    "," +
+                    this.codigo +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarDocumentos();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
         },
         actualizarDocumento(){
             this.editarDocumento(this.idDocumento,this.documentoArchivo,this.descripcionArchivo,this.codigoArchivo);
