@@ -350,7 +350,23 @@ export default {
             this.editarDocumento(this.idDocumento);
         },
         async eliminarDocumento(id){
+            let me = this;
+            await axios
+                .post(
+                    "/documento/editar/" +
+                    this.id
+                )
+                .then(function (response) {
 
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarDocumentos();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
         },
         limpiar () {
             this.$refs.form.reset()
