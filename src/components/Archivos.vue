@@ -9,149 +9,50 @@
             <v-row>
                 <v-col cols="12" md="4">
                     <v-btn color="success" @click="showAgregarDocumento()">GUARDAR DOCUMENTO</v-btn>
+
                 </v-col>
+                
              </v-row>
-             <!--
              <v-row>
                 <v-col cols="12" md="12">
                     <v-data-table
                         :headers="headerDocumento"
-                        :items="items"
-                        hide-actions
+                        :items="datosDocumento" 
                         class="elevation-1"
                     >
-                        <template slot="items" slot-scope="props">
-                            <td>{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                        </template>
-                    </v-data-table>
-                    <v-data-table
-                        headers="headers"
-                        items="items"
-                        loading="true"
-                        search="search"
-                    >  
+
+                    <template #[`item.archivo`]="{ item }">
+                        <v-btn icon :href="item.archivo" target="_blank">
+                            <v-icon>mdi-file</v-icon> Abrir
+                        </v-btn>
+                    </template>
+                       
+                    <template #[`item.estado`]="{ item }">
+                                    <v-chip :color="getColor(item.estado)" dark>
+                                        {{ item.estado }}
+                                    </v-chip>
+                                </template>
+
+                              
+
+                                <template #[`item.actions`]="{ item }">
+                                    <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposProveedor(item)"
+                                        title="ACTUALIZAR INFORMACION">
+                                        mdi-pencil
+                                    </v-icon>
+                                    <v-icon v-if="item.est == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
+                                        title="ACTIVAR PROVEEDOR">
+                                        mdi-check-circle-outline
+                                    </v-icon>
+                                    <v-icon v-if="item.est == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacion(item)"
+                                        title="DESACTIVAR PROVEEDOR">
+                                        mdi-close-circle
+                                    </v-icon>             
+                                </template>
+
                     </v-data-table>
                 </v-col>
-                <v-col cols="12" md="12">
-                    <v-data-table
-                        :headers="headerDocumento"
-                        :items="items"
-                        hide-actions
-                        class="elevation-1"
-                    >
-                        <template slot="items" slot-scope="props">
-                            <td>{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                        </template>
-                    </v-data-table>
-                    <v-data-table
-                        headers="headers"
-                        items="items"
-                        loading="true"
-                        search="search"
-                    >  
-                    </v-data-table>
-                </v-col>
-                <v-col cols="12" md="12">
-                    <v-data-table
-                        :headers="headerDocumento"
-                        :items="items"
-                        hide-actions
-                        class="elevation-1"
-                    >
-                        <template slot="items" slot-scope="props">
-                            <td>{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                        </template>
-                    </v-data-table>
-                    <v-data-table
-                        headers="headers"
-                        items="items"
-                        loading="true"
-                        search="search"
-                    >  
-                    </v-data-table>
-                </v-col>
-                <v-col cols="12" md="12">
-                    <v-data-table
-                        :headers="headerDocumento"
-                        :items="items"
-                        hide-actions
-                        class="elevation-1"
-                    >
-                        <template slot="items" slot-scope="props">
-                            <td>{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                        </template>
-                    </v-data-table>
-                    <v-data-table
-                        headers="headers"
-                        items="items"
-                        loading="true"
-                        search="search"
-                    >  
-                    </v-data-table>
-                </v-col>           
-                <v-col cols="12" md="12">
-                    <v-data-table
-                        :headers="headerDocumento"
-                        :items="items"
-                        hide-actions
-                        class="elevation-1"
-                    >
-                        <template slot="items" slot-scope="props">
-                            <td>{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                        </template>
-                    </v-data-table>
-                    <v-data-table
-                        headers="headers"
-                        items="items"
-                        loading="true"
-                        search="search"
-                    >  
-                    </v-data-table>
-                </v-col>
-                <v-col cols="12" md="12">
-                    <v-data-table
-                        :headers="headerDocumento"
-                        :items="items"
-                        hide-actions
-                        class="elevation-1"
-                    >
-                        <template slot="items" slot-scope="props">
-                            <td>{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                            <td class="text-xs-right">{{ props.item.key }}</td>
-                        </template>
-                    </v-data-table>
-                    <v-data-table
-                        headers="headers"
-                        items="items"
-                        loading="true"
-                        search="search"
-                    >  
-                    </v-data-table>
-                </v-col>
-            </v-row>-->
+            </v-row>
         </v-container>
         <v-dialog v-model="agregarDocumento" max-width="1000px">
             <v-card elevation="5" outlined>
@@ -159,7 +60,7 @@
                     <span>Agregar Documento</span>
                 </v-card-title>
                 <v-card-text>
-                    <v-form ref="form" v-model="valid" lazy-validation>
+                    <v-form ref="form"  lazy-validation>
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="6">
@@ -225,17 +126,16 @@ export default {
     data() {
         return {
             idDocumento: 0,
-            documentoArchivo: null,
+            documentoArchivo: '',
             descripcionArchivo: '',
             codigoArchivo: '',
 
             datosDocumento: [],
             headerDocumento: [
                 { text: "DOCUMENTO", value: "nombreDocumento", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: false },
                 { text: "DESCRIPCIÓN", value: "descripcionDocumento", sortable: true },
                 { text: "CODIGO", value: "codigoDocumento", sortable: true },
-                { text: "TIPO DE ARCHIVO", value: "tipoArchivo", sortable: true },
-                { text: "TAMAÑO DE ARCHIVO", value: "tamanioArchivo", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
             ],
@@ -276,29 +176,25 @@ export default {
             });
         },
         registrarDocumento(){
-            this.guardarDocumento(this.documentoArchivo,this.descripcionArchivo,this.codigoArchivo,'ACTIVO');
+            this.guardarDocumento(this.documentoArchivo.name,this.documentoArchivo,this.descripcionArchivo,this.codigoArchivo,"ACTIVO");
         },
-        async guardarDocumento(documento,descripcion,codigo,estado){
-            let me = this;
-            await axios
-                .post(
-                    "/documento/insertar/" +
-                    this.documento.name +
-                    "," +
-                    this.documento +
-                    "," +
-                    this.documento.type +
-                    "," +
-                    this.documento.size +
-                    "," +
-                    this.descripcion +
-                    "," +
-                    this.codigo +
-                    "," +
-                    this.estado
-                )
-                .then(function (response) {
+        async guardarDocumento(nombre,documentoArchivo,descripcionArchivo,codigoArchivo,estado){
 
+            let me = this;
+                await axios
+                .post(
+                    "/documento/insertar/"+ 
+                    nombre +
+                    "," +
+                    documentoArchivo +
+                    "," +
+                    descripcionArchivo +
+                    "," +
+                    codigoArchivo +
+                    "," +
+                    estado,)
+                .then(function (response) {
+                    console.log(response);
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.limpiar();
@@ -308,31 +204,26 @@ export default {
                     me.snackbarError = true;
 
                 });
-
         },
         actualizarDocumento(){
-            this.editarDocumento(this.idDocumento,this.documentoArchivo,this.descripcionArchivo,this.codigoArchivo,'ACTIVO');
+            this.editarDocumento(this.idDocumento,this.documentoArchivo.name,this.documentoArchivo,this.descripcionArchivo,this.codigoArchivo,'ACTIVO');
         },
-        async editarDocumento(id,documento,descripcion,codigo,estado){
+        async editarDocumento(id,nombre,documento,descripcion,codigo,estado){
             let me = this;
             await axios
                 .post(
                     "/documento/editar/" +
-                    this.id +
+                    id +
                     "," +
-                    this.documento.name +
+                    nombre +
                     "," +
-                    this.documento +
+                    documento +
                     "," +
-                    this.documento.type +
+                    descripcion +
                     "," +
-                    this.documento.size +
+                    codigo +
                     "," +
-                    this.descripcion +
-                    "," +
-                    this.codigo +
-                    "," +
-                    this.estado
+                    estado
                 )
                 .then(function (response) {
 
@@ -354,7 +245,7 @@ export default {
             await axios
                 .post(
                     "/documento/editar/" +
-                    this.id
+                    id
                 )
                 .then(function (response) {
 
