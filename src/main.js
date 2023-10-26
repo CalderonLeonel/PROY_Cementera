@@ -8,7 +8,7 @@ import '@babel/polyfill'
 
 Vue.use(VueAxios,axios);
 
-axios.defaults.baseURL='http://34.31.174.19:3000/'
+axios.defaults.baseURL='http://34.121.212.171:3000/'
 Vue.config.productionTip = false
 
 new Vue({
