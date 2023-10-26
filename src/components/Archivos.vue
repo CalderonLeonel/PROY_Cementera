@@ -212,10 +212,10 @@ export default {
             this.confirmacionAlmacenamiento = false;
             this.storageState = true;
         },
-        //listarArchivo(){
+        /*listarArchivo(){
             this.listarArchivos();
         },
-        //async listarArchivos(){
+        async listarArchivos(){
             let me = this;
             await axios
                 .get("/documento/listararchivos/")
@@ -231,7 +231,7 @@ export default {
                 .catch(function (error) {
                 console.log(error);
             });
-        },
+        },*/
         registrarDocumento(){
             this.almacenarArchivo(this.documentoArchivo)
             this.guardarDocumento(this.documentoArchivo.name,this.descripcionArchivo,this.codigoArchivo,"ACTIVO");
