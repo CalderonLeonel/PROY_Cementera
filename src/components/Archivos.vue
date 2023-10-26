@@ -170,7 +170,7 @@ export default {
     },
     created: function (){
       this.listarDocumento();
-      this.listarArchivo();
+      //this.listarArchivo();
     },
     methods: {
         
@@ -212,10 +212,10 @@ export default {
             this.confirmacionAlmacenamiento = false;
             this.storageState = true;
         },
-        listarArchivo(){
+        //listarArchivo(){
             this.listarArchivos();
         },
-        async listarArchivos(){
+        //async listarArchivos(){
             let me = this;
             await axios
                 .get("/documento/listararchivos/")
@@ -251,7 +251,7 @@ export default {
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarDocumentos();
-                    me.listarArchivos();
+                    //me.listarArchivos();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -283,7 +283,7 @@ export default {
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarDocumento();
-                    me.listarArchivos();
+                    //me.listarArchivos();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
