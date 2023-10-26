@@ -73,6 +73,11 @@
               <h6>PRODUCCION</h6>
             </v-list-item-title>
           </v-list-item>
+          <v-list-item :to="{ name: 'Transporte' }">
+            <v-list-item-title>
+              <h6>TRANSPORTE</h6>
+            </v-list-item-title>
+          </v-list-item>
         </v-list-group>
 
         <v-list-group no-action color="#00A1B1" value="true">
@@ -105,6 +110,23 @@
           <v-list-item :to="{ name: 'Clientes' }">
             <v-list-item-title>
               <h6>Clientes</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+
+        <v-list-group no-action color="#00A1B1" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-wallet-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>CONTABILIDAD</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'Contabilidad' }">
+            <v-list-item-title>
+              <h6>CONTABILIDAD</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>

@@ -68,15 +68,15 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarMovimiento()"
+                                        <v-btn  v-if="botonact == 1" color="#EE680B" @click="actualizarMovimiento()"
                                             style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px" height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarMovimiento()"
-                                            style="float: left" title="REGISTRAR Movimiento" width="28px" height="28px">
+                                        <v-btn  v-if="botonact == 0" color="#EE680B" @click="registrarMovimiento()"
+                                            style="float: left" title="REGISTRAR MOVIMIENTO" width="28px" height="28px">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
-                                        <v-btn icon color="#EE680B" @click="limpiar()" style="float: left"
+                                        <v-btn  color="#EE680B" @click="limpiar()" style="float: left"
                                             title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>

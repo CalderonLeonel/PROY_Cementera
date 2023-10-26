@@ -62,6 +62,16 @@ const routes = [
     path: '/clientes',
     name: 'Clientes',
     component: require('../components/Clientes.vue').default
+  },
+  {
+    path: '/contabilidad',
+    name: 'Contabilidad',
+    component: require('../components/Contabilidad.vue').default
+  },
+  {
+    path: '/transporte',
+    name: 'Transporte',
+    component: require('../components/Transporte.vue').default
   }
 ]
 
