@@ -9,7 +9,6 @@
             <v-row>
                 <v-col cols="12" md="4">
                     <v-btn color="success" @click="showAgregarDocumento()">GUARDAR DOCUMENTO</v-btn>
-
                 </v-col>
                 
              </v-row>
@@ -53,6 +52,21 @@
                     </v-data-table>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col cols="12" md="12">
+                    <v-data-table
+                        :headers="headerArchivo"
+                        :items="datosArchivo" 
+                        class="elevation-1"
+                    >
+                    <template #[`item.url`]="{ item }">
+                        <v-btn icon :href="`${axios.defaults.baseURL}${item.url}`" target="">
+                            <v-icon>mdi-file</v-icon> Abrir
+                        </v-btn>
+                    </template>
+                    </v-data-table>
+                </v-col>
+            </v-row>
         </v-container>
         <v-dialog v-model="agregarDocumento" max-width="1000px">
             <v-card elevation="5" outlined>
@@ -63,11 +77,12 @@
                     <v-form ref="form"  lazy-validation>
                         <v-container>
                             <v-row>
-                                <v-col cols="12" md="6">
+                                <v-col cols="12" md="7">
                                     <v-file-input v-model="documentoArchivo"
                                         accept=".jpg, .jpeg, .webp, .png, .gif, .bmp, .docx, .xlsx, .pptx, .pdf, .csv, .xml"
-                                        label="Archivo" required
+                                        label="Archivo" required :disabled="storageState" @change="enableButton"
                                     ></v-file-input>
+                                     
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-text-field v-model="codigoArchivo" type="text" label="Codigo" :counter="25"
@@ -117,11 +132,16 @@
             </v-card>
         </v-dialog>
     </v-card>
+
+
+        
+
    
 </template>
 
 <script>
 import axios from "axios";
+
 export default {
     data() {
         return {
@@ -129,6 +149,12 @@ export default {
             documentoArchivo: '',
             descripcionArchivo: '',
             codigoArchivo: '',
+
+            datosArchivo: [],
+            headerArchivo: [
+                { text: "NOMBRE", value: "name", sortable: true },
+                { text: "ARCHIVO", value: "url", sortable: false }
+            ],
 
             datosDocumento: [],
             headerDocumento: [
@@ -140,21 +166,31 @@ export default {
                 { text: "ACCIONES", value: "actions", sortable: false }
             ],
 
+
             agregarDocumento: false,
+            confirmacionAlmacenamiento: false,
             botonAct: 0,
         }
     },
     created: function (){
       this.listarDocumento();
+      this.listarArchivo();
     },
     methods: {
         
         showAgregarDocumento() {
             this.agregarDocumento = true;
+            if(this.documentoArchivo != ''){
+                this.inputState = false;
+            }
+            else{
+                this.inputState = true;
+            }
         },
         closeAgregarDocumento() {
             this.agregarDocumento = false;
         },
+ 
         listarDocumento() {
             this.listarDocumentos();
         },
@@ -163,42 +199,91 @@ export default {
           await axios
             .get("/documento/listardocumentos/")
             .then(function (response) {
-              if (response.data.resultado == null) {
+              if (response.data == null) {
                 me.datosDocumento = [];
                 console.log(response.data);
               } else {
                 console.log(response.data);
-                me.datosDocumento = response.data.resultado;
+                me.datosDocumento = response.data;
               }
             })
             .catch(function (error) {
               console.log(error);
             });
         },
-        registrarDocumento(){
-            this.guardarDocumento(this.documentoArchivo.name,this.documentoArchivo,this.descripcionArchivo,this.codigoArchivo,"ACTIVO");
+        confirmarAlmacenamiento(){
+            alert('ARCHIVO GUARDADO');
+            this.confirmacionAlmacenamiento = false;
+            this.storageState = true;
         },
-        async guardarDocumento(nombre,documentoArchivo,descripcionArchivo,codigoArchivo,estado){
+        listarArchivo(){
+            this.listarArchivos();
+        },
+        async listarArchivos(){
+            let me = this;
+            await axios
+                .get("/documento/listararchivos/")
+                .then(function (response) {
+                if (response.data.resultado == null) {
+                    me.datosArchivo = [];
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                    me.datosArchivo = response.data.resultado;
+                }
+                })
+                .catch(function (error) {
+                console.log(error);
+            });
+        },
+        registrarDocumento(){
+            this.almacenarArchivo(this.documentoArchivo)
+            this.guardarDocumento(this.documentoArchivo.name,this.descripcionArchivo,this.codigoArchivo,"ACTIVO");
+        },
+        async almacenarArchivo(documentoArchivo){
 
+            const formData = new FormData();
+            formData.append('file', documentoArchivo);
             let me = this;
                 await axios
                 .post(
-                    "/documento/insertar/"+ 
-                    nombre +
-                    "," +
-                    documentoArchivo +
-                    "," +
-                    descripcionArchivo +
-                    "," +
-                    codigoArchivo +
-                    "," +
-                    estado,)
+                    "/uploadFile/",formData)
                 .then(function (response) {
                     console.log(response);
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarDocumentos();
+                    me.listarArchivos();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+        },
+
+        async guardarDocumento(documentoArchivo,descripcionArchivo,codigoArchivo,estado){
+            const ext = documentoArchivo.split('.');
+            const date = new Date();
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear();
+            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+ext[1];
+            const formData = new FormData();
+            formData.append('nombreDocumento', ext[0]);
+            formData.append('archivo', nombreArchivo);
+            formData.append('descripcion', descripcionArchivo);
+            formData.append('codigo', codigoArchivo);
+            formData.append('estado', estado);
+            let me = this;
+                await axios
+                .post(
+                    "/documento/insertar/",formData)
+                .then(function (response) {
+                    console.log(response);
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarDocumento();
+                    me.listarArchivos();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -209,21 +294,17 @@ export default {
             this.editarDocumento(this.idDocumento,this.documentoArchivo.name,this.documentoArchivo,this.descripcionArchivo,this.codigoArchivo,'ACTIVO');
         },
         async editarDocumento(id,nombre,documento,descripcion,codigo,estado){
+            const formData = new FormData();
+            formData.append('id', id);
+            formData.append('nombreDocumento', nombre);
+            formData.append('archivo', documento);
+            formData.append('descripcion', descripcion);
+            formData.append('codigo', codigo);
+            formData.append('estado', estado);
             let me = this;
             await axios
                 .post(
-                    "/documento/editar/" +
-                    id +
-                    "," +
-                    nombre +
-                    "," +
-                    documento +
-                    "," +
-                    descripcion +
-                    "," +
-                    codigo +
-                    "," +
-                    estado
+                    "/documento/editar/",formData
                 )
                 .then(function (response) {
 
@@ -259,8 +340,27 @@ export default {
 
                 });
         },
+        async descargarArchivo(nombre){
+            let me = this;
+            await axios
+                .get(
+                    "/documento/descargar/" +
+                    nombre
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+        },
         limpiar () {
             this.$refs.form.reset()
+            
         },
     }
 };
