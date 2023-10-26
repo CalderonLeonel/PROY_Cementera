@@ -20,37 +20,25 @@
                     <v-data-table
                         :headers="headerDocumento"
                         :items="datosDocumento" 
+                        :search="searchDocumento"
                         class="elevation-1"
                     >
 
-                    <template #[`item.archivo`]="{ item }">
-                        <v-btn icon :href="item.archivo" target="_blank">
-                            <v-icon>mdi-file</v-icon> Abrir
+                    <template #[`item.doc`]="{ item }">
+                        <v-btn color="primary" icon :href="`${axios.defaults.baseURL+'documento/descargar/'}${item.doc}`" target="">
+                            <v-icon>mdi-file</v-icon> {{item.doc}}
                         </v-btn>
                     </template>
+                    
                        
                     <template #[`item.estado`]="{ item }">
-                                    <v-chip :color="getColor(item.estado)" dark>
-                                        {{ item.estado }}
+                                    <v-chip :color="getColor(item.est)" dark>
+                                        {{ item.est}}
                                     </v-chip>
                                 </template>
 
                               
 
-                                <template #[`item.actions`]="{ item }">
-                                    <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposProveedor(item)"
-                                        title="ACTUALIZAR INFORMACION">
-                                        mdi-pencil
-                                    </v-icon>
-                                    <v-icon v-if="item.est == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
-                                        title="ACTIVAR PROVEEDOR">
-                                        mdi-check-circle-outline
-                                    </v-icon>
-                                    <v-icon v-if="item.est == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacion(item)"
-                                        title="DESACTIVAR PROVEEDOR">
-                                        mdi-close-circle
-                                    </v-icon>             
-                                </template>
 
                     </v-data-table>
                 </v-col>
@@ -62,10 +50,11 @@
                     <v-data-table
                         :headers="headerArchivo"
                         :items="datosArchivo" 
+                        :search="searchArchivo"
                         class="elevation-1"
                     >
                     <template #[`item.url`]="{ item }">
-                        <v-btn icon :href="`${axios.defaults.baseURL}${item.url}`" target="">
+                        <v-btn color="primary" icon :href="`${axios.defaults.baseURL}${item.url}`" target="">
                             <v-icon>mdi-file</v-icon> Abrir
                         </v-btn>
                     </template>
@@ -165,12 +154,12 @@ export default {
             datosDocumento: [],
             searchDocumento: '',
             headerDocumento: [
-                { text: "DOCUMENTO", value: "nombreDocumento", sortable: true },
-                { text: "ARCHIVO", value: "archivo", sortable: false },
-                { text: "DESCRIPCIÓN", value: "descripcionDocumento", sortable: true },
-                { text: "CODIGO", value: "codigoDocumento", sortable: true },
-                { text: "ESTADO", value: "estado", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                
+                { text: "DOCUMENTO", value: "namedoc", sortable: true },
+                { text: "ARCHIVO", value: "doc", sortable: true },
+                { text: "DESCRIPCIÓN", value: "descrip", sortable: true },
+                { text: "CODIGO", value: "codigo", sortable: true },
+                { text: "ESTADO", value: "est", sortable: true },
             ],
 
 
@@ -208,10 +197,10 @@ export default {
             .then(function (response) {
               if (response.data == null) {
                 me.datosDocumento = [];
-                console.log(response.data);
+                console.log(response.data.resultado);
               } else {
                 console.log(response.data);
-                me.datosDocumento = response.data;
+                me.datosDocumento = response.data.resultado;
               }
             })
             .catch(function (error) {
@@ -273,17 +262,20 @@ export default {
             const ext = documentoArchivo.split('.');
             const date = new Date();
             const fechaHoraActual = date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear();
-            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+ext[1];
-            const formData = new FormData();
-            formData.append('nombreDocumento', ext[0]);
-            formData.append('archivo', nombreArchivo);
-            formData.append('descripcion', descripcionArchivo);
-            formData.append('codigo', codigoArchivo);
-            formData.append('estado', estado);
+            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+'.'+ext[1];
             let me = this;
                 await axios
                 .post(
-                    "/documento/insertar/",formData)
+                    "/documento/insertar/"+
+                    ext[0] +
+                    "," +
+                    nombreArchivo +
+                    "," +
+                    descripcionArchivo +
+                    "," +
+                    codigoArchivo +
+                    "," +
+                    estado)
                 .then(function (response) {
                     console.log(response);
                     me.mensajeSnackbar = response.data.message;
@@ -301,17 +293,25 @@ export default {
             this.editarDocumento(this.idDocumento,this.documentoArchivo.name,this.documentoArchivo,this.descripcionArchivo,this.codigoArchivo,'ACTIVO');
         },
         async editarDocumento(id,nombre,documento,descripcion,codigo,estado){
-            const formData = new FormData();
-            formData.append('id', id);
-            formData.append('nombreDocumento', nombre);
-            formData.append('archivo', documento);
-            formData.append('descripcion', descripcion);
-            formData.append('codigo', codigo);
-            formData.append('estado', estado);
+            const ext = nombre.split('.');
+            const date = new Date();
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear();
+            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+'.'+ext[1];
             let me = this;
             await axios
                 .post(
-                    "/documento/editar/",formData
+                    "/documento/editar/"+
+                    id +
+                    "," +
+                    ext[0] +
+                    "," +
+                    nombreArchivo +
+                    "," +
+                    descripcion +
+                    "," +
+                    estado +
+                    "," +
+                    estado
                 )
                 .then(function (response) {
 
@@ -319,6 +319,7 @@ export default {
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarDocumentos();
+                    me.listarArchivos();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
