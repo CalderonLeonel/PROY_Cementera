@@ -235,6 +235,7 @@ export default {
         registrarDocumento(){
             this.almacenarArchivo(this.documentoArchivo)
             this.guardarDocumento(this.documentoArchivo.name,this.descripcionArchivo,this.codigoArchivo,"ACTIVO");
+            this.agregarDocumento = false;
         },
         async almacenarArchivo(documentoArchivo){
 
