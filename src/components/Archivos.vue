@@ -13,7 +13,10 @@
                 
              </v-row>
              <v-row>
+                         
                 <v-col cols="12" md="12">
+                    <v-text-field v-model="searchDocumento" append-icon="mdi-magnify" label="BUSCAR DOCUMENTO"
+                                    single-line hide-details></v-text-field>
                     <v-data-table
                         :headers="headerDocumento"
                         :items="datosDocumento" 
@@ -54,6 +57,8 @@
             </v-row>
             <v-row>
                 <v-col cols="12" md="12">
+                    <v-text-field v-model="searchArchivo" append-icon="mdi-magnify" label="BUSCAR ARCHIVO"
+                                    single-line hide-details></v-text-field>
                     <v-data-table
                         :headers="headerArchivo"
                         :items="datosArchivo" 
@@ -151,12 +156,14 @@ export default {
             codigoArchivo: '',
 
             datosArchivo: [],
+            searchArchivo: '',
             headerArchivo: [
                 { text: "NOMBRE", value: "name", sortable: true },
                 { text: "ARCHIVO", value: "url", sortable: false }
             ],
 
             datosDocumento: [],
+            searchDocumento: '',
             headerDocumento: [
                 { text: "DOCUMENTO", value: "nombreDocumento", sortable: true },
                 { text: "ARCHIVO", value: "archivo", sortable: false },
