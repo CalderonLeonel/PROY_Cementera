@@ -25,7 +25,7 @@
                     >
 
                     <template #[`item.doc`]="{ item }">
-                        <v-btn color="primary" icon :href="`${axios.defaults.baseURL+'documento/descargar/'}${item.doc}`" >
+                        <v-btn color="primary" icon :href="`${axios.defaults.baseURL+'documento/descargar/'}${item.doc}`" target="_blank">
                             <v-icon>mdi-file</v-icon> ABRIR
                         </v-btn>
                     </template>
@@ -54,7 +54,7 @@
                         class="elevation-1"
                     >
                     <template #[`item.url`]="{ item }">
-                        <v-btn color="primary" icon :href="`${axios.defaults.baseURL}${item.url}`" target="">
+                        <v-btn color="primary" icon :href="`${axios.defaults.baseURL}${item.url}`" target="target="_blank">
                             <v-icon>mdi-file</v-icon> Abrir
                         </v-btn>
                     </template>
