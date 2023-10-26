@@ -25,8 +25,8 @@
                     >
 
                     <template #[`item.doc`]="{ item }">
-                        <v-btn color="primary" icon :href="`${axios.defaults.baseURL+'documento/descargar/'}${item.doc}`" target="">
-                            <v-icon>mdi-file</v-icon> {{item.doc}}
+                        <v-btn color="primary" icon :href="`${axios.defaults.baseURL+'documento/descargar/'}${item.doc}`" >
+                            <v-icon>mdi-file</v-icon> ABRIR
                         </v-btn>
                     </template>
                     
