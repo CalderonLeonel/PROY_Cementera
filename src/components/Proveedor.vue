@@ -1,8 +1,8 @@
 <template>
    <v-card elevation="5" outlined>
         <div>
-            <v-alert dense style="color: #ffffff;" color="grey">
-                <h5>llenarCamposProveedores</h5>
+            <v-alert dense style="color: #ffffff;" color="purple">
+                <h3>PROVEEDORES</h3>
             </v-alert>
         </div>
         <div>

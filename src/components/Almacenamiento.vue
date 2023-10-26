@@ -1,8 +1,8 @@
 <template>
    <v-card elevation="5" outlined>
         <div>
-            <v-alert dense style="color: #ffffff;" color="grey">
-                <h5>ALMACENAMIENTO</h5>
+            <v-alert dense style="color: #ffffff;" color="indigo">
+                <h3>ALMACENAMIENTO</h3>
             </v-alert>
         </div>
         <div>
