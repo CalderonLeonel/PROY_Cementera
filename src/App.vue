@@ -27,7 +27,6 @@
       <v-divider></v-divider>
 
       <v-list nav dense>
-
         <v-list-group no-action color="light-blue darken-4" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
@@ -49,54 +48,26 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
-
-        <v-list-group no-action color="light-blue darken-4" value="true">
+        <v-list-group no-action color="#00A1B1" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
-              <v-icon>mdi-package</v-icon>
+              <v-icon>mdi-chart-bar</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>UAC</v-list-item-title>
+              <v-list-item-title>REPORTES</v-list-item-title>
             </v-list-item-content>
           </template>
 
-          <v-list-item :to="{ name: 'Usuarios' }">
+          <v-list-item :to="{ name: 'Reportes' }">
             <v-list-item-title>
-              <h6>USUARIOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Niveles de Acceso' }">
-            <v-list-item-title>
-              <h6>NIVELES DE ACCESO</h6>
+              <h6>REPORTES</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="light-blue darken-4" value="true">
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon>mdi-package</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>RRHH</v-list-item-title>
-            </v-list-item-content>
-          </template>
-
-          <v-list-item :to="{ name: 'Empleados' }">
-            <v-list-item-title>
-              <h6>EMPLEADOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Cargos' }">
-            <v-list-item-title>
-              <h6>CARGOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list-group>
 
       </v-list>
 
-      </v-list>
 
     </v-navigation-drawer>
 
@@ -127,38 +98,12 @@
 
 <script>
 export default {
-  data: () => ({
-      drawer: false,
-      user: { usuario: '', id_cargo: '', nombres: '' }
-    }),
-    components: {
-   // Docente_cv
-  },
-  computed: {
-    logueado() {
-
-      this.user = JSON.parse(sessionStorage.getItem('session'));
-
-      return this.user;
-
-
-    }
-  },created: function () {
-
-this.user = JSON.parse(sessionStorage.getItem('session'));
-//this.user.dispath("autologin");
-if (this.user == null) {
-  this.$router.push("/login");
+  data() {
+    return {
+      drawer: false
+    };
   }
-},
-methods: {
-  salir() {
-      sessionStorage.clear();
-      this.user = {};
-      this.$router.push("/login");
-    }
-  }
-}
+};
 </script>
 
 
