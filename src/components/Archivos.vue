@@ -25,8 +25,8 @@
                     >
 
                     <template #[`item.doc`]="{ item }">
-                        <v-btn color="primary" icon :href="`${axios.defaults.baseURL+'documento/descargar/'}${item.doc}`" target="">
-                            <v-icon>mdi-file</v-icon> {{item.doc}}
+                        <v-btn color="primary" icon :href="`${axios.defaults.baseURL}${'documento/descargar/'+item.doc}`" target="">
+                            <v-icon>mdi-file</v-icon> ABRIR
                         </v-btn>
                     </template>
                     
@@ -159,7 +159,6 @@ export default {
                 { text: "ARCHIVO", value: "doc", sortable: true },
                 { text: "DESCRIPCIÓN", value: "descrip", sortable: true },
                 { text: "CODIGO", value: "codigo", sortable: true },
-                { text: "ESTADO", value: "est", sortable: true },
             ],
 
 
@@ -169,8 +168,38 @@ export default {
         }
     },
     created: function (){
-      this.listarDocumento();
-      this.listarArchivo();
+        switch (user) {
+            case 'admin':
+            this.listarDocumento();
+            this.listarArchivo();         
+                break;
+            case 'inventario':
+            this.listarDocumento();
+            this.listarArchivo();               
+                break;
+            case 'adquisicion':
+            this.listarDocumento();
+            this.listarArchivo();               
+                break;
+            case 'prod':
+            this.listarDocumento();
+            this.listarArchivo();                
+                break;
+            case 'ventas':
+            this.listarDocumento();
+            this.listarArchivo();            
+                break;
+            case 'cont':
+            this.listarDocumento();
+            this.listarArchivo();
+                break;
+            default:
+            this.listarDocumento();
+            this.listarArchivo();
+                break;
+        }
+
+      alert(axios.defaults.baseURL);
     },
     methods: {
         
@@ -371,6 +400,8 @@ export default {
             this.$refs.form.reset()
             
         },
+
+   
     }
 };
 </script>
