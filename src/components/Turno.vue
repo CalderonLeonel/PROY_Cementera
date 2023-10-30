@@ -1,92 +1,72 @@
 <template>
     <v-card elevation="5" outlined shaped>
-
-
         <div> <!-- Encabezado -->
             <v-alert dense color="#00A1B1" style="color: #ffffff">
-                <h5>CARGOS</h5>
+                <h5>TURNOS</h5>
             </v-alert>
         </div>
         <div>
-            <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo Cargo -->
+            <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo Turno -->
                 <v-container>
                     <v-row>
+                        <v-list-item>
+                            <v-list-item-title class="text-center">
+                                <h5>TURNOS</h5>
+                            </v-list-item-title>
+                        </v-list-item>
+                        
                         <v-col cols="12" md="12">
                             <v-text-field v-model="nombreCargo" :counter="50" :rules="nombreRules"
                                 @input="nombreCargo = nombreCargo.toUpperCase()" label="Nombre del Cargo" required>
                             </v-text-field>
                         </v-col>
-                        <v-col cols="12" md="12">
-                            <v-text-field v-model="descripcion" :counter="200" :rules="descripcionRules" label="Descripcion"
-                                ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="12">
-                            <v-text-field v-model="salario" :counter="10" :rules="salarioRules" label="Salario"
-                                required></v-text-field>
-                        </v-col>
-
-                        <v-col cols="12" md="12">
-                            <v-toolbar dense shaped color="#002245">
-                                <v-toolbar-title style="color:#ffffff">
-                                    <h6>OPCIONES</h6>
-
-                                </v-toolbar-title> <!-- Botones -->
-
-                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="#EE680B"
-                                    @click=actualizarCargo() style="float: left" title="ACTUALIZAR INFORMACIÓN">
-                                    <v-icon dark> mdi-pencil </v-icon>
-                                </v-btn>
-                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="#00A1B1"
-                                    @click="registrarCargo()" style="float: left" title="REGISTRAR CARGO">
-                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
-                                </v-btn>
-                                <v-btn class="mx-2" fab dark x-small color="#00A1B1" @click="limpiar()"
-                                    style="float: left" title="LIMPIAR FORMULARIO">
-                                    <v-icon dark> mdi-eraser </v-icon>
-                                </v-btn>
-                            </v-toolbar>
-                        </v-col>
-                        
-                        <v-col cols="12" md="12">
+                    
                             <v-col cols="12">
-                                <v-list-item>
-                                    <v-list-item-title class="text-center">
-                                        <h5>CARGOS</h5>
-                                    </v-list-item-title>
-                                </v-list-item>
-
-                                <v-card-title>
-                                    <v-text-field v-model="searchCargo" append-icon="mdi-magnify"
-                                        label="BUSCAR CARGOS" single-line hide-details></v-text-field>
+                                
+                                <!--
+                                <v-card-title> BUSCADOR
+                                    <v-text-field v-model="searchTurno" append-icon="mdi-magnify"
+                                        label="BUSCAR TURNOS" single-line hide-details></v-text-field>
                                 </v-card-title>
+                                -->
+                                <div> <!-- Encabezado -->
+                                    <v-alert dense color="#00A1B1" style="color: #ffffff; text-align: center;">
+                                        <h5>TURNOS</h5>
+                                    </v-alert>
+                                </div>
 
-                                <v-data-table :headers="headersCargo" :items="datosCargo" :search="searchCargo"
+                                <v-data-table :headers="headersTurno" :items="datosTurno" :group-by="groupBy"
                                     :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #item.turn="{ item }">
+                                        <tr color="#00A1B1" >
+                                         
+                                       </tr> 
+                                    </template>
                                     <template #[`item.act`]="{ item }">
                                         <v-chip :color="getColor(item.act)" dark>
                                             {{ item.act }}
                                         </v-chip>
                                     </template>
-
+                                    
+                                    <!--
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
-                                            title="ACTIVAR CARGO">
+                                            title="ACTIVAR TURNO">
                                             mdi-check-circle-outline
                                         </v-icon>
                                         <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
-                                            title="DESACTIVAR CARGO">
+                                            title="DESACTIVAR TURNO">
                                             mdi-cancel
                                         </v-icon>
-                                        <v-icon small class="mr-2" @click="llenarCamposCargo(item)"
+                                        <v-icon small class="mr-2" @click="llenarCamposTurno(item)"
                                             title="ACTUALIZAR INFORMACION">
                                             mdi-pencil
                                         </v-icon>
-                                      
-
                                     </template>
+                                     -->
                                 </v-data-table>
                             </v-col>
-                        </v-col>
+
                     </v-row>
 
                     <div class="text-center">
@@ -125,16 +105,17 @@ import axios from "axios";
 
 export default {
     data: () => ({
-        idCargo: "",
-        nombreCargo: "",
-        descripcion: "",
-        salario: "",
+        
+        idTurno: "",
+        turno: "",
         estado: "",
         createDate: "",
         lastDate: "",
         valid: true,
 
-        searchCargo: "",
+
+      
+        //searchTurno: "",
 
         snackbarOK: false,
         mensajeSnackbar: "",
@@ -143,7 +124,7 @@ export default {
         timeout: 2000,
 
         botonAct: 0,
-        idCargo: "",
+        /*
 
         nombreRules: [
             (v) => !!v || "NOMBRE DE CARGO ES REQUERIDO",
@@ -166,30 +147,32 @@ export default {
 
         checkbox: false,
         datosCargo: [],
+*/
+        datosTurno: [],
+        groupBy: "turn",
 
-        headersCargo: [
-            { text: "CARGO", value: "carg", sortable: false },
-            { text: "DESCRIPCION", value: "descrip", sortable: false },
-            { text: "SALARIO", value: "salar", sortable: false },
-            { text: "ESTADO", value: "act", sortable: false },
-            { text: "FECHA CREACION", value: "credte", sortable: false },
-            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
-            { text: "OPTIONS", value: "actions", sortable: false },
+        headersTurno: [
+            { text: "Turno", value: "turn", sortable: false},
+            { text: "DIAS", value: "dias", sortable: false, align: 'end' },
+            { text: "HORA INICIO", value: "hraini", sortable: false, align: 'end'},
+            { text: "HORA FINAL", value: "hrafin", sortable: false, align: 'end'},
+            { text: "OPTIONS", value: "actions", sortable: false, align: 'end'},
         ],
     }),
 
     created: function () {
-        this.user = JSON.parse(sessionStorage.getItem("session"));
-        this.idCargo = this.user.idCargo;
-        this.listarCargos();
+        //this.user = JSON.parse(sessionStorage.getItem("session"));
+        //this.idCargo = this.user.idCargo;
+        this.listarTurnos();
     },
 
     methods: {
-
+        /* ACTIVAR/Desactivar
         activar(item) {
             this.idCargo = item.idcargo;
             this.activarcargo(this.idCargo);
         },
+        
         async activarcargo(idCargo) {
             let me = this;
             await axios
@@ -200,12 +183,12 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 });
-
         },
         desactivar(item) {
             this.idCargo = item.idcargo;
             this.desactivarcargo(this.idCargo);
         },
+        
         async desactivarcargo(idCargo) {
             let me = this;
             await axios
@@ -218,12 +201,14 @@ export default {
                 });
 
         },
+        */
+       /*
         getColor(est) {
             if (est == 'ACTIVO') return 'green'
             else return 'red'
         },
-
-
+*/
+/*
         llenarCamposCargo(item) {
             this.botonAct = 1;
             this.descripcion = item.nom;
@@ -231,6 +216,8 @@ export default {
             this.idCargo = item.idcargo;
 
         },
+        */
+       /*
         actualizarCargo() {
             this.actualizarcargo(
 
@@ -269,12 +256,14 @@ export default {
                     me.snackbarError = true;
                 });
         },
-
+*/
+/*
         limpiar() {
             this.nombreCargo = "";
             this.descripcion = "";
         },
-
+*/
+/*
         validate() {
             this.$refs.form.validate();
         },
@@ -295,28 +284,32 @@ export default {
         listarb() {
             this.listarCargos(this.idCargo);
         },
-
-        async listarCargos(idCargo) {
+*/
+        async listarTurnos(idCargo) {
             let me = this;
             await axios
-                .get("/cargo/listarcargos/")
+                .get("/turno/listarturnos/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
-                        me.datosCargo = [];
+                        me.datosTurno = [];
                     } else {
-                        me.datosCargo = response.data.resultado;
+                        me.datosTurno = response.data.resultado;
+                        console.log(me)
                     }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         },
+/*
         registrarCargo() {
             this.registrarCargo(
                 this.nombreCargo,
                 this.descripcion
             );
         },
+*/
+ /*
         async registrarCargo(
             nombreCargo,
             descripcion
@@ -343,7 +336,9 @@ export default {
                     me.snackbarError = true;
 
                 });
+                
         },
+*/
     },
 };
 </script>
