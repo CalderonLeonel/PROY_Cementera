@@ -99,6 +99,9 @@ const routes = [
     path: 'adquisicion',
     name: 'Adquisicion',
     component: () => import('@/components/Adquisicion.vue'),
+    path: '/reportes',
+    name: 'Reportes',
+    component: require('../components/Reportes.vue').default
   }
 ]
 
