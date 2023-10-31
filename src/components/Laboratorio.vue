@@ -546,7 +546,7 @@ export default {
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.limpiar();
-                    me.listarProductosLabo();
+                    me.listarObservacion();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
