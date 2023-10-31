@@ -267,6 +267,9 @@ export default {
         },
 
         registrarProv() {
+            if(this.contactoProveedorecundario==''){
+                this.contactoProveedorecundario=this.contactoProveedorPrincipal;
+            }
             this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
             this.closeModalAgregarProveedor();
         },
