@@ -143,7 +143,6 @@ export default {
         timeout: 2000,
 
         botonAct: 0,
-        idCargo: "",
 
         nombreRules: [
             (v) => !!v || "NOMBRE DE CARGO ES REQUERIDO",
@@ -160,7 +159,7 @@ export default {
 
         salarioRules: [
             (v) =>
-                (v && v.length <= 100) ||
+                (v && v.length <= 8) ||
                 "SALARIO DEBE TENER 8 CARACTERES COMO MAXIMO",
         ],
 
@@ -179,8 +178,8 @@ export default {
     }),
 
     created: function () {
-        this.user = JSON.parse(sessionStorage.getItem("session"));
-        this.idCargo = this.user.idCargo;
+        //this.user = JSON.parse(sessionStorage.getItem("session"));
+        //this.idCargo = this.user.idCargo;
         this.listarCargos();
     },
 
