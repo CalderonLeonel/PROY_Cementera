@@ -24,6 +24,18 @@
 
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="lineaRules"
+                                        @click="showDepartamentos()" style="float: right" title="BUSCAR DEPARTAMENTOS">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="5">
+                                    <v-text-field v-model="departamento" label="NOMBRE DEPARTAMENTO" :counter="50"
+                                        :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()" disabled
+                                        required></v-text-field>
+                                </v-col>
+
+                                <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="lineaRules"
                                         @click="showCiudades()" style="float: right" title="BUSCAR CIUDAD">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -33,6 +45,74 @@
                                         :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()" disabled
                                         required></v-text-field>
                                 </v-col>
+
+                                <v-col cols="12" md="12">
+                                    <v-text-field v-model="direccionFabrica" label="DIRECCION FABRICA" :counter="100"
+                                        :rules="codigoFabricaRules" @input="codigoFabrica = codigoFabrica.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>
+
+                                <v-col cols="12" md="8"> </v-col>
+                                <v-col cols="12" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-btn v-if="botonact == 1" color="#EE680B" @click="actualizarFabrica()"
+                                            class="mx-2" fab dark x-small style="float: left" title="ACTUALIZAR FABRICA">
+                                            <v-icon dark> mdi-pencil </v-icon>
+                                        </v-btn>
+                                        <v-btn v-if="botonact == 0" color="#EE680B" @click="registroFabrica()" class="mx-2"
+                                            fab dark x-small style="float: left" title="REGISTRAR FABRICA">
+                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                        </v-btn>
+                                        <v-btn @click="limpiar()" color="#EE680B" style="float: left" class="mx-2" fab dark
+                                            x-small title="LIMPIAR FORMULARIO">
+                                            <v-icon dark> mdi-eraser </v-icon>
+                                        </v-btn>
+                                    </v-toolbar>
+                                </v-col>
+
+
+                                <v-col cols="10"></v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" fab dark x-small color="#b794f6" @click="closeAgregarFabrica()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="editarFabricaModal" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>EDITAR FABRICA</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="1"></v-col>
+                                <v-col cols="12" md="5">
+                                    <v-text-field v-model="nombreFabrica" label="NOMBRE FABRICA" :counter="100"
+                                        :rules="nombreFabricaRules" @input="nombreFabrica = nombreFabrica.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="1"></v-col>
+                                <v-col cols="12" md="5">
+                                    <v-text-field v-model="codigoFabrica" label="CODIGO FABRICA" :counter="100"
+                                        :rules="codigoFabricaRules" @input="codigoFabrica = codigoFabrica.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>
+
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="lineaRules"
                                         @click="showDepartamentos()" style="float: right" title="BUSCAR DEPARTAMENTOS">
@@ -47,23 +127,22 @@
 
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="lineaRules"
-                                        @click="showMapa()" style="float: right" title="ABRIR MAPA">
+                                        @click="showCiudades()" style="float: right" title="BUSCAR CIUDAD">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
-                                <v-col cols="12" md="11">
+                                <v-col cols="12" md="5">
+                                    <v-text-field v-model="ciudad" label="NOMBRE CIUDAD" :counter="50"
+                                        :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()" disabled
+                                        required></v-text-field>
+                                </v-col>
+
+                                <v-col cols="12" md="12">
                                     <v-text-field v-model="direccionFabrica" label="DIRECCION FABRICA" :counter="100"
                                         :rules="codigoFabricaRules" @input="codigoFabrica = codigoFabrica.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="10"></v-col>
-                                <v-col cols="2">
-                                    <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                        @click="closeAgregarFabrica()" style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                    </v-btn>
-                                </v-col>
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="12" md="4">
                                     <v-toolbar dense shaped>
@@ -72,44 +151,26 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarFabrica()"
-                                            style="float: left" title="ACTUALIZAR INFabricaCIÓN" width="28px" height="28px">
+                                        <v-btn v-if="botonact == 1" color="#EE680B" @click="actualizarFabrica()"
+                                            class="mx-2" fab dark x-small style="float: left" title="ACTUALIZAR FABRICA">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarFabrica()"
-                                            style="float: left" title="REGISTRAR Fabrica" width="28px" height="28px">
+                                        <v-btn v-if="botonact == 0" color="#EE680B" @click="registroFabrica()" class="mx-2"
+                                            fab dark x-small style="float: left" title="REGISTRAR FABRICA">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
-                                        <v-btn icon color="#EE680B" @click="limpiar()" style="float: left"
-                                            title="LIMPIAR FORMULARIO">
+                                        <v-btn @click="limpiar()" color="#EE680B" style="float: left" class="mx-2" fab dark
+                                            x-small title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
                                     </v-toolbar>
                                 </v-col>
-                            </v-row>
-                        </v-container>
-                    </v-form>
 
-                </v-card-text>
-            </v-card>
-        </v-dialog>
-
-        <v-dialog v-model="mapaModal" max-width="900px">
-            <v-card elevation="5" outlined shaped>
-                <v-card-title>
-                    <span>SELECCIONAR UBICACION</span>
-                </v-card-title>
-                <v-card-text>
-                    <!-- Contenedor para el mapa -->
-                    <div id="map" style="height: 400px;"></div>
-                    <v-form ref="form" v-model="valid" lazy-validation>
-                        <v-container>
-                            <v-row>
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                        @click="closeMapaModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" fab dark x-small color="#b794f6" @click="closeAgregarFabrica()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -215,6 +276,89 @@
             </v-card>
         </v-dialog>
 
+        <v-dialog v-model="departamentosModal" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>DEPARTAMENTOS</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-list-item>
+                                        <v-list-item-title class="text-center">
+                                            <h5>DEPARTAMENTOS</h5>
+                                        </v-list-item-title>
+                                    </v-list-item>
+                                    <v-col cols="12">
+                                        <v-card-title>
+                                            <v-text-field v-model="buscarDepartamentos" append-icon="mdi-magnify"
+                                                label="BUSCAR DEPARTAMENTOS" single-line hide-details></v-text-field>
+                                        </v-card-title>
+                                    </v-col>
+                                    <v-data-table :headers="headersDepartamento" :items="datosDepartamento"
+                                        :search="buscarDepartamentos" :items-per-page="5" class="elevation-1" id="tableId">
+
+                                        <template #[`item.actions`]="{ item }">
+                                            <v-icon small class="mr-2" @click="seleccionarDepartamento(item)"
+                                                color="#0091EA" title="SELECCIONAR DEPARTAMENTO">
+                                                mdi-check-circle
+                                            </v-icon>
+                                        </template>
+                                    </v-data-table>
+                                </v-col>
+
+
+                            </v-row>
+                        </v-container>
+                    </v-form>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="ciudadesModal" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>CIUDADES</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-list-item>
+                                        <v-list-item-title class="text-center">
+                                            <h5>CIUDADES</h5>
+                                        </v-list-item-title>
+                                    </v-list-item>
+                                    <v-col cols="12">
+                                        <v-card-title>
+                                            <v-text-field v-model="buscarDepartamentos" append-icon="mdi-magnify"
+                                                label="BUSCAR CIUDADES" single-line hide-details></v-text-field>
+                                        </v-card-title>
+                                    </v-col>
+                                    <v-data-table :headers="headersCiudad" :items="datosCiudad"
+                                        :search="buscarDepartamentos" :items-per-page="5" class="elevation-1" id="tableId">
+
+                                        <template #[`item.actions`]="{ item }">
+                                            <v-icon small class="mr-2" @click="seleccionarCiudad(item)" color="#0091EA"
+                                                title="SELECCIONAR CIUDAD">
+                                                mdi-check-circle
+                                            </v-icon>
+                                        </template>
+                                    </v-data-table>
+                                </v-col>
+
+
+                            </v-row>
+                        </v-container>
+                    </v-form>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+
         <div>
             <v-alert dense style="color: #ffffff;" color="grey">
                 <h5>Fabricas</h5>
@@ -312,7 +456,7 @@
 </template>
 <script>
 import axios from "axios";
-//import { async } from "regenerator-runtime";
+import { async } from "regenerator-runtime";
 
 export default {
     data() {
@@ -324,26 +468,40 @@ export default {
             direccionFabrica: "",
             latitud: "",
             longitud: "",
+            idDepartamento: "",
             departamento: "",
+            idCiudad: "",
             ciudad: "",
             datosFabricas: [],
             headersFabricas: [
                 { text: "NOMBRE FABRICA", value: "nomfab", sortable: false },
                 { text: "CODIGO FABRICA", value: "codfab", sortable: false },
-                { text: "CIUDAD", value: "ciu", sortable: false },
-                { text: "DEPARTAMENTO", value: "depa", sortable: false },
+                { text: "CIUDAD", value: "nomciu", sortable: false },
+                { text: "DEPARTAMENTO", value: "nomdep", sortable: false },
+                { text: "ESTADO", value: "est", sortable: false },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
+            datosDepartamento: [],
+            headersDepartamento: [
+                { text: "NOMBRE", value: "nomdep", sortable: false },
+                { text: "ESTADO", value: "est", sortable: false },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
+            datosCiudad: [],
+            headersCiudad: [
+                { text: "NOMBRE", value: "nomciu", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
             //#endregion
-            
+
             //#region Modals
             agregarFabricaModal: 0,
-            editFabricaModal: 0,
+            editarFabricaModal: 0,
             infoFabricaModal: 0,
             fabricasInhabilitadosModal: 0,
-            lineasModal: 0,
-            mapaModal: 0,
+            ciudadesModal: 0,
+            departamentosModal: 0,
             //#endregion
             botonact: 0,
             //#region Snackbars
@@ -360,7 +518,7 @@ export default {
 
         }
     },
-    created : function () {
+    created: function () {
         this.listarFabricas();
     },
     methods: {
@@ -414,15 +572,56 @@ export default {
                 });
         },
 
+        listarDepartamento() {
+            this.listarDepartamentos();
+        },
+        async listarDepartamentos() {
+            let me = this;
+            await axios
+                .get("/departamento/listardepartamentos")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosDepartamento = [];
+
+                    } else {
+                        me.datosDepartamento = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+        listarCiudad() {
+            this.listarCiudades();
+        },
+        async listarCiudades() {
+            let me = this;
+            await axios
+                .get("/ciudad/listarciudades/" + this.idDepartamento)
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosCiudad = [];
+
+                    } else {
+                        me.datosCiudad = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
         //#endregion
         //#region Agregar
         registrarFabrica() {
-            this.registroFabrica(this.nombreFabrica, this.codigoFabrica, this.idLinea);
+            this.registroFabrica(this.nombreFabrica, this.codigoFabrica, this.direccionFabrica, this.idDepartamento, this.idCiudad);
         },
         async registroFabrica(
             nombreFabrica,
             codigoFabrica,
-            idLinea
+            direccionFabrica,
+            idDepartamento,
+            idCiudad
         ) {
             let me = this;
             await axios
@@ -432,7 +631,11 @@ export default {
                     "," +
                     this.codigoFabrica +
                     "," +
-                    this.idLinea
+                    this.direccionFabrica +
+                    "," +
+                    this.idDepartamento +
+                    "," +
+                    this.idCiudad
                 )
                 .then(function (response) {
 
@@ -450,13 +653,15 @@ export default {
         //#endregion
         //#region Edicion
         editarFabricas() {
-            this.editarFabrica(this.idFabrica, this.nombreFabrica, this.codigoFabrica, this.idLinea);
+            this.editarFabrica(this.idFabrica, this.nombreFabrica, this.codigoFabrica, this.direccionFabrica,this.idDepartamento, this.idCiudad);
         },
         async editarFabrica(
             idFabrica,
             nombreFabrica,
             codigoFabrica,
-            idLinea
+            direccionFabrica,
+            idDepartamento,
+            idCiudad
         ) {
             let me = this;
             await axios
@@ -468,7 +673,11 @@ export default {
                     "," +
                     this.codigoFabrica +
                     "," +
-                    this.idLinea
+                    this.direccionFabrica +
+                    "," +
+                    this.idDepartamento +
+                    "," +
+                    this.idCiudad
                 )
                 .then(function (response) {
 
@@ -522,17 +731,34 @@ export default {
         },
         //#endregion
         //#region Modals
+        showCiudades() {
+            this.ciudadesModal = true;
+            this.listarCiudades();
+        },
+        closeCiudades() {
+            this.ciudadesModal = false;
+        },
+        showDepartamentos() {
+            this.departamentosModal = true;
+            this.listarDepartamentos();
+        },
+        closeDepartamentos() {
+            this.departamentosModal = false;
+        },
         showAgregarFabrica() {
             this.agregarFabricaModal = true;
         },
         showEditFabricaModal(item) {
-            this.editFabricaModal = true;
+            this.editarFabricaModal = true;
             this.botonact = 1;
-            this.idFabrica = item.idFabrica;
-            this.nombreFabrica = item.nomFabrica;
-            this.codigoFabrica = item.codFabrica;
-            this.idLinea = item.idlin;
-            this.nombreLinea = item.nomlin
+            this.idFabrica = item.idfab;
+            this.nombreFabrica = item.nomfab;
+            this.codigoFabrica = item.codfab;
+            this.direccionFabrica = item.dirfab;
+            this.idDepartamento = item.idep;
+            this.departamento = item.dep;
+            this.idCiudad = item.idciu;
+            this.ciudad = item.ciu;
         },
         showFabricasInhabilitados() {
             this.FabricasInhabilitadosModal = true
@@ -566,6 +792,16 @@ export default {
             this.idLinea = item.idlin;
             this.nombreLinea = item.nomlin;
             this.lineasModal = false;
+        },
+        seleccionarDepartamento(item){
+            this.idDepartamento = item.idep;
+            this.departamento = item.nomdep;
+            this.departamentosModal = false;
+        },
+        seleccionarCiudad(item){
+            this.idCiudad = item.idciu;
+            this.ciudad = item.nomciu;
+            this.ciudadesModal = false;
         },
         //#endregion
     },

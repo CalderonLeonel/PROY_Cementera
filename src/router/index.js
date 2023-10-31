@@ -44,7 +44,7 @@ const routes = [
     component: require('../components/Fabrica.vue').default
   },
   {
-    path: '/moviminetos',
+    path: '/movimientos',
     name: 'Movimientos',
     component: require('../components/Movimiento.vue').default
   },
@@ -72,6 +72,11 @@ const routes = [
     path: '/transporte',
     name: 'Transporte',
     component: require('../components/Transporte.vue').default
+  },
+  {
+    path: '/laboratorio',
+    name: 'Laboratorio',
+    component: require('../components/Laboratorio.vue').default
   }
 ]
 

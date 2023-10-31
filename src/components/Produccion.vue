@@ -128,10 +128,10 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="produccionInhabilitadasModal" max-width="800px">
+        <v-dialog v-model="produccionTerminadaModal" max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>PRODUCCIONES CANCELADAS</span><br>
+                    <span>PRODUCCIONES TERMINADAS</span><br>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -145,11 +145,11 @@
                                     </v-list-item>
 
                                     <v-card-title>
-                                        <v-text-field v-model="buscarProduccions" append-icon="mdi-magnify"
-                                            label="BUSCAR ProduccionS" single-line hide-details></v-text-field>
+                                        <v-text-field v-model="buscarProducciones" append-icon="mdi-magnify"
+                                            label="BUSCAR PRODUCCIONES" single-line hide-details></v-text-field>
                                     </v-card-title>
-                                    <v-data-table :headers="headersProduccionsInh" :items="datosProduccionsInh"
-                                        :search="buscarProduccions" :items-per-page="5" class="elevation-1" id="tableId">
+                                    <v-data-table :headers="headersProduccionTer" :items="datosProduccionTer"
+                                        :search="buscarProducciones" :items-per-page="5" class="elevation-1" id="tableId">
 
                                         <template #[`item.est`]="{ item }">
                                             <v-chip :color="colorEstado(item.est)" dark>
@@ -160,11 +160,11 @@
 
                                         <template #[`item.actions`]="{ item }">
                                             <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
-                                                @click="activar(item)" title="ACTIVAR ProduccionS">
+                                                @click="activar(item)" title="ACTIVAR PRODUCCION">
                                                 mdi-check-circle-outline
                                             </v-icon>
                                             <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
-                                                @click="desactivar(item)" title="DESACTIVAR ProduccionS">
+                                                @click="desactivar(item)" title="DESACTIVAR PRODUCCION">
                                                 mdi-cancel
                                             </v-icon>
                                             <v-icon small class="mr-2" color="#001781" @click="showInfoProduccion(item)"
@@ -178,7 +178,7 @@
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeInfoProduccionModal()" style="float: right" title="SALIR">
+                                        @click="closeProduccionTerminadaModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -254,7 +254,7 @@
                         <v-col cols="12" md="4"></v-col>
 
                         <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showProduccionInhabilitadas()">Produccion Inactivas</v-btn>
+                            <v-btn color="success" @click="showProduccionTerminadaModal()">Produccion Terminada</v-btn>
                         </v-col>
                         <v-col cols="12" md="4"></v-col>
                         <v-col cols="12" md="4"></v-col>
@@ -267,12 +267,12 @@
                             </v-list-item>
 
                             <v-card-title>
-                                <v-text-field v-model="buscarProduccions" append-icon="mdi-magnify"
+                                <v-text-field v-model="buscarProducciones" append-icon="mdi-magnify"
                                     label="BUSCAR PRODUCCION" single-line hide-details></v-text-field>
                             </v-card-title>
 
 
-                            <v-data-table :headers="headersProduccion" :items="datosProduccion" :search="buscarProduccions"
+                            <v-data-table :headers="headersProduccion" :items="datosProduccion" :search="buscarProducciones"
                                 :items-per-page="5" class="elevation-1" id="tableId">
 
                                 <template #[`item.est`]="{ item }">
@@ -329,10 +329,12 @@ export default {
                 { text: "ESTADO", value: "est", sortable: true },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
-            datosProduccionsInh: [],
-            headersProduccionsInh: [
-                { text: "NOMBRE Produccion", value: "nomlin", sortable: true },
-                { text: "CODIGO Produccion", value: "codlin", sortable: true },
+            datosProduccionTer: [],
+            headersProduccionTer: [
+                { text: "CODIGO PRODUCCION", value: "codprodu", sortable: true },
+                { text: "CANTIDAD", value: "cant", sortable: true },
+                { text: "FABRICA", value: "nomfab", sortable: true },
+                { text: "PRODUCTO", value: "nomprod", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -359,7 +361,7 @@ export default {
             agregarProduccionModal: 0,
             editProduccionModal: 0,
             infoProduccionModal: 0,
-            produccionInhabilitadasModal: 0,
+            produccionTerminadaModal: 0,
             productosModal: 0,
             //#endregion
             //#region Productos
@@ -388,7 +390,7 @@ export default {
     },
     methods: {
         colorEstado(est) {
-            if (est == 'PRODUCIDO') return 'green'
+            if (est == 'TERMINADO') return 'green'
             else return 'orange'
         },
         //#region Listados
@@ -412,19 +414,19 @@ export default {
                 });
         },
 
-        listarProduccionInh() {
-            this.listarProduccionInh()
+        listarproduccionT() {
+            this.listarProduccionT()
         },
-        async listarProduccionInh() {
+        async listarProduccionT() {
             let me = this;
             await axios
-                .get("/produccion/listarproduccioninh")
+                .get("/produccion/listarproducciont")
                 .then(function (response) {
                     if (response.data.resultado == null) {
-                        me.datosProduccionInh = [];
+                        me.datosProduccionTer = [];
 
                     } else {
-                        me.datosProduccionInh = response.data.resultado;
+                        me.datosProduccionTer = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
@@ -466,7 +468,7 @@ export default {
             idFabrica,
             idProducto,
             cantidadProduccion
-            
+
         ) {
             let me = this;
             await axios
@@ -554,12 +556,12 @@ export default {
         closeInfoProduccionModal() {
             this.infoProduccionModal = false;
         },
-        showProduccionInhabilitadas() {
-            this.produccionInhabilitadasModal = true;
-            this.listarProduccionsInh();
+        showProduccionTerminadaModal() {
+            this.produccionTerminadaModal = true;
+            this.listarProduccionT();
         },
-        closeProduccionsInhabilitadas() {
-            this.produccionInhabilitadasModal = false
+        closeProduccionTerminadaModal() {
+            this.produccionTerminadaModal = false
         },
         showProductosModal() {
             this.productosModal = true;
@@ -580,7 +582,7 @@ export default {
                 .post("/produccion/terminarproduccion/" + this.idProduccion).then(function (response) {
 
                     me.listarProduccion();
-                    me.listarProduccionInh();
+                    me.listarProduccionT();
 
                 })
                 .catch(function (error) {
@@ -607,7 +609,7 @@ export default {
         },
         //#endregion
         //#region Seleccion Datos
-        seleccionarProducto(item){
+        seleccionarProducto(item) {
             this.idProducto = item.idprod;
             this.nombreProducto = item.nomprod;
             this.productosModal = false;

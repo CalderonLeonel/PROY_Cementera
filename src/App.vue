@@ -83,6 +83,23 @@
         <v-list-group no-action color="#00A1B1" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
+              <v-icon>mdi-test-tube</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>LABORATORIO</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'Laboratorio' }">
+            <v-list-item-title>
+              <h6>NUEVO PRODUCTO</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+
+        <v-list-group no-action color="#00A1B1" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
               <v-icon>mdi-point-of-sale</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
@@ -130,7 +147,6 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
-
       </v-list>
 
     </v-navigation-drawer>
