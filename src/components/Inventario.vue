@@ -200,8 +200,8 @@
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-container>
                             <v-row>
-                                <v-col cols="12" md="3">
-                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM" :counter="60"
+                                <v-col cols="12" md="11">
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM"
                                         :rules="nombreRules" @input="nombreItem = nombreItem.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
@@ -211,22 +211,18 @@
                                         @click="openItemModal()" style="float: right" title="BUSCAR ITEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
-                                </v-col>           
-                                <v-col cols="12" md="8">
-                                    <v-text-field v-model="movimiento" label="MOVIMIENTO" :counter="100"
-                                         @input="movimiento = movimiento.toUpperCase()"
-                                        required></v-text-field>
-                                </v-col>   
+                                </v-col>       
+                                <v-col cols="12" md="4">
+                                    <v-combobox
+                                    label="MOVIMIENTO" v-model="movimiento" @input="movimiento = movimiento.toUpperCase()" required
+                                    :items="['ENTRADA', 'SALIDA']"
+                                    ></v-combobox>
+                                </v-col>     
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :counter="25"
                                          @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
-                                </v-col>  
-                                <v-col cols="12" md="4">
-                                    <v-text-field v-model="costoUnitario" label="COSTO UNITARIO" type="number" :counter="25"
-                                         @input="costoUnitario = costoUnitario.toUpperCase()"
-                                        required></v-text-field>
-                                </v-col>    
+                                </v-col>     
                                 <v-col cols="12" md="4">
                                     <v-combobox
                                     label="METODO VALUACION" v-model="metodoValuacion" @input="metodoValuacion = metodoValuacion.toUpperCase()" required
@@ -238,13 +234,13 @@
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
                                     <v-btn iconvv v-if="botonActTT == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="editarIt()" style="float: left"
+                                            @click="editarInv()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                             ACTUALIZAR
                                         </v-btn>
                                         <v-btn iconv v-if="botonActTT == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarIt()" style="float: left" title="REGISTRAR ITEM">
+                                            @click="registrarInv()" style="float: left" title="REGISTRAR TRANSACCION ">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
                                         </v-btn>
@@ -543,7 +539,6 @@
              idItem:"",
              movimiento:"",
              cantidad:"",
-             costoUnitario:"",
              metodoValuacion:"",
              estTranc:"",
 
@@ -587,7 +582,6 @@
                  { text: "ITEM", value: "nombreitem", sortable: true },
                  { text: "MOVIMIENTO", value: "movimiento", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
-                 { text: "COSTO UNITARIO", value: "costoUnitario", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodoValuacion", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -679,13 +673,12 @@
          
 
          registrarInv() {
-            this.registrarInventario(this.idItem, this.movimiento,this.cantidad, this.costounitario,this.metodovaluacion, this.estado);
+            this.registrarInventario(this.idItem, this.movimiento,this.cantidad,this.metodovaluacion, this.estado);
         },
         async registrarInventario(
             idItem,
             movimiento,
             cantidad,
-            costounitario,
             metodovaluacion,
             estado
         ) {
@@ -699,9 +692,7 @@
                     "," +
                     this.cantidad +
                     "," +
-                    this.costounitario +
-                    "," +
-                    this.metodovaluacion +
+                    this.metodoValuacion +
                     "," +
                     this.estado
                 )
@@ -721,7 +712,7 @@
         },
 
         editarInv() {
-            this.editarInventario(this.idTransaccion,this.idItem, this.movimiento,this.cantidad, this.costounitario,this.metodovaluacion, this.estado);
+            this.editarInventario(this.idTransaccion,this.idItem, this.movimiento,this.cantidad, this.metodovaluacion, this.estado);
 
             this.botonActInv=0;
         },
@@ -730,7 +721,6 @@
             idItem,
             movimiento,
             cantidad,
-            costounitario,
             metodovaluacion,
             estado
         ) {
@@ -745,8 +735,6 @@
                     this.movimiento +
                     "," +
                     this.cantidad +
-                    "," +
-                    this.costounitario +
                     "," +
                     this.metodovaluacion +
                     "," +
@@ -833,7 +821,7 @@
             let me = this;
             await axios
                 .post(
-                    "/inventario/agregarinventario/" +
+                    "/inventario/agregaritem/" +
                     this.nombreItem +
                     "," +
                     this.cantidad +
@@ -877,7 +865,7 @@
             let me = this;
             await axios
                 .post(
-                    "/inventario/actualizarinventario/" +
+                    "/inventario/actualizaritem/" +
                     this.idItem +
                     "," +
                     this.nombreItem +
@@ -1125,7 +1113,6 @@
             this.nombreItem = item.nombreitem;
             this.movimiento = item.movimiento;
             this.cantidad = item.cantidad;
-            this.costoUnitario = item.costoUnitario;
             this.metodoValuacion = item.metodoValuacion;
             this.estado = item.estado;
             this.agregarInventarioModal = true;
