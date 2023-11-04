@@ -139,6 +139,9 @@ import axios from "axios";
 export default {
     data() {
         return {
+
+            user:'admin',
+
             idDocumento: 0,
             documentoArchivo: '',
             descripcionArchivo: '',
@@ -168,7 +171,7 @@ export default {
         }
     },
     created: function (){
-        switch (user) {
+        switch (this.user) {
             case 'admin':
             this.listarDocumento();
             this.listarArchivo();         
@@ -198,8 +201,6 @@ export default {
             this.listarArchivo();
                 break;
         }
-
-      alert(axios.defaults.baseURL);
     },
     methods: {
         
