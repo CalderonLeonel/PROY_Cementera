@@ -21,7 +21,7 @@
                                     single-line hide-details></v-text-field>
                             </v-card-title>
 
-                            <v-data-table :headers="headerCotizacion" :items="datosCotizacionn" :search="searchCotizacion"
+                            <v-data-table :headers="headerCotizacion" :items="datosCotizacion" :search="searchCotizacion"
                                 :items-per-page="5" class="elevation-1" id="tableId">
 
                                 <template #[`item.estado`]="{ item }">
@@ -35,9 +35,9 @@
                                         title="APROBAR">
                                         mdi-check-circle
                                     </v-icon> 
-                                    <v-icon class="mr-2" color="danger" x-large  @click="aprobarAdquisicion(item)"
+                                    <v-icon class="mr-2" color="red" x-large  @click="denegarAdquisicion(item)"
                                         title="DENEGAR">
-                                        mdi-check-circle
+                                        mdi-close-circle
                                     </v-icon>          
                                     <v-icon class="mr-2" color="primary" x-large  @click="mostrarItems(item)"
                                         title="VER ITEMS">
@@ -641,12 +641,13 @@ export default {
         }
     },
     created: function (){
-      this.listarCotizacionAdquisicion();
-      this.listarCotizacionItem();
+        this.listarCotizacionAdquisicionPendiente()
+        this.listarCotizacionAdquisicion();
+        this.listarCotizacionItem();
     },
     methods: {
         getDate(){ 
-            var fecha = new Date().toISOString().substr(0, 10);
+            var fecha = new Date().toISOString();
             return fecha;
         },
 
@@ -706,6 +707,28 @@ export default {
                console.log(error);
              });
          },
+
+         
+        listarCotizacionAdquisicionPendiente() {
+            this.listarCotizacionesAdquisicionPendientes();
+        },
+        async listarCotizacionesAdquisicionPendientes() {
+          let me = this;
+          await axios
+            .get("/adquisicion/listarcotizaciondeadquisicionpendiente/")
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosCotizacion = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosCotizacion = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
 
          listarCotizacionAdquisicionActiva() {
             this.listarCotizacionesAdquisicionActivas();
