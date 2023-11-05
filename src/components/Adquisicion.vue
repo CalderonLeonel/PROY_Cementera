@@ -547,6 +547,20 @@ export default {
               (v) => !!v || "Se requiere el correo electronico del proveedor",
               (v) => /.+@.+\..+/.test(v) || "Debe ser un correo electronico valido",
              ],
+
+            datosCotizacion: [],
+            headerCotizacion: [
+                { text: "COTIZACIÓN", value: "idCotizacion", sortable: true },
+                { text: "EMPLEADO", value: "nombreUsuario", sortable: true },
+                { text: "PROVEEDOR", value: "nombreProveedor", sortable: true },
+                { text: "NOMBRE COTIZACIÓN", value: "nombreCotizacion", sortable: true },
+                { text: "FECHA VENCIMIENTO", value: "date", sortable: true },
+                { text: "ESTADO", value: "estado", sortable: true },
+                { text: "ACCIONES", value: "actions", sortable: false }
+                //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+            ],
+
+
             datosCotizacionAdquisicion: [],
             headerCotizacionAdquisicion: [
                 { text: "COTIZACIÓN", value: "idCotizacion", sortable: true },
@@ -565,6 +579,7 @@ export default {
                 { text: "COTIZACIÓN", value: "nombrecotizacion", sortable: true },
                 { text: "ITEM", value: "nombreitem", sortable: true },
                 { text: "PRECIO UNITARIO", value: "precioUnitario", sortable: true },
+                { text: "CANTIDAD", value: "cantidad", sortable: false },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
