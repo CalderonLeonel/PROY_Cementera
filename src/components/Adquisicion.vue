@@ -9,13 +9,60 @@
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-container>
                     <v-row>
+                        <v-col cols="12">
+                            <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h3>GESTIÓN DE COTIZACIONES</h3>
+                                </v-list-item-title>
+                            </v-list-item>
+
+                            <v-card-title>
+                               <v-text-field v-model="searchCotizacion" append-icon="mdi-magnify" label="BUSCAR COTIZACIONES"
+                                    single-line hide-details></v-text-field>
+                            </v-card-title>
+
+                            <v-data-table :headers="headerCotizacion" :items="datosCotizacionn" :search="searchCotizacion"
+                                :items-per-page="5" class="elevation-1" id="tableId">
+
+                                <template #[`item.estado`]="{ item }">
+                                    <v-chip :color="getColor(item.estado)" dark>
+                                        {{ item.estado }}
+                                    </v-chip>
+                                </template>
+
+                                <template #[`item.actions`]="{ item }">
+                                    <v-icon class="mr-2" color="green" x-large  @click="aprobarAdquisicion(item)"
+                                        title="APROBAR">
+                                        mdi-check-circle
+                                    </v-icon> 
+                                    <v-icon class="mr-2" color="danger" x-large  @click="aprobarAdquisicion(item)"
+                                        title="DENEGAR">
+                                        mdi-check-circle
+                                    </v-icon>          
+                                    <v-icon class="mr-2" color="primary" x-large  @click="mostrarItems(item)"
+                                        title="VER ITEMS">
+                                        mdi-eye
+                                    </v-icon> 
+                                    <v-icon class="mr-2" color="primary" x-large  @click="generatePDF(item)"
+                                        title="VER PDF">
+                                        mdi-file-pdf-box
+                                    </v-icon>              
+                                </template>
+
+                              
+
+
+                            </v-data-table>
+                        </v-col>
+                    </v-row>
+                    <v-row>
                         <v-col cols="12" md="4">
                             <v-btn color="success" @click="showModalAgregarCotizacionAdquisicion()">NUEVA COTIZACION DE ADQUISICIONES</v-btn>
                         </v-col>
                         <v-col cols="12">
                             <v-list-item>
                                 <v-list-item-title class="text-center">
-                                    <h3>Cotizaciones de adquisiciones</h3>
+                                    <h3>COTIZACIONES DE ADQUISICIONES</h3>
                                 </v-list-item-title>
                             </v-list-item>
 
@@ -61,7 +108,7 @@
                         <v-col cols="12">
                             <v-list-item>
                                 <v-list-item-title class="text-center">
-                                    <h3>Cotizacion Items</h3>
+                                    <h3>COTIZACION DE ITEMS</h3>
                                 </v-list-item-title>
                             </v-list-item>
 
@@ -472,7 +519,7 @@ export default {
             precioUnitario: "",
             nombreCotizacion: "",
             fechaVencimiento: "",
-            estado: "ACTIVO",
+            estado: "PENDIENTE",
 
 
             nombreProveedor:"",
@@ -518,7 +565,6 @@ export default {
                 { text: "COTIZACIÓN", value: "nombrecotizacion", sortable: true },
                 { text: "ITEM", value: "nombreitem", sortable: true },
                 { text: "PRECIO UNITARIO", value: "precioUnitario", sortable: true },
-                { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
@@ -592,6 +638,7 @@ export default {
         getColor(est) {
             if (est == "ACTIVO") return 'green'
             else if (est == "INACTIVO") return 'red'
+            else if (est == "PENDIENTE") return 'orange'
 
         },
         getState(estado) {
