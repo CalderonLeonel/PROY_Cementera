@@ -955,17 +955,19 @@ export default {
             this.idItem = item.idItem;
             this.nombreItem = item.nombreitem;
             this.precioUnitario = item.precioUnitario;
+            this.cantidad = item.cantidad;
             this.estado = item.estado;
             this.agregarCotizacionItemModal = true;
         },
 
         registrarCotizacionIt() {
-            this.registrarCotizacionItem(this.idCotizacion,this.idItem,this.precioUnitario, this.estado);
+            this.registrarCotizacionItem(this.idCotizacion,this.idItem,this.precioUnitario, this.cantidad, 'ACTIVO');
         },
         async registrarCotizacionItem(
             idCotizacion,
             idItem,
             precioUnitario,
+            cantidad,
             estado
         ) {
             let me = this;
@@ -977,6 +979,8 @@ export default {
                     this.idItem +
                     "," +
                     this.precioUnitario +
+                    "," +
+                    this.cantidad +
                     "," +
                     this.estado
                 )
@@ -996,7 +1000,7 @@ export default {
         },
 
         editarCotizacionIt() {
-            this.editarCotizacionItem(this.idCotizacionItem,this.idCotizacion,this.idItem,this.precioUnitario, this.estado);
+            this.editarCotizacionItem(this.idCotizacionItem,this.idCotizacion,this.idItem,this.precioUnitario,this.cantidad, 'ACTIVO');
             this.botonactCotIt=0;
         },
         async editarCotizacionItem(
@@ -1004,6 +1008,7 @@ export default {
             idCotizacion,
             idItem,
             precioUnitario,
+            cantidad,
             estado
         ) {
             let me = this;
@@ -1017,6 +1022,8 @@ export default {
                     this.idItem +
                     "," +
                     this.precioUnitario +
+                    "," +
+                    this.cantidad +
                     "," +
                     this.estado
                 )
