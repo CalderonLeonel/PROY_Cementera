@@ -8,53 +8,7 @@
         <div>
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-container>
-                    <v-row>
-                        <v-col cols="12">
-                            <v-list-item>
-                                <v-list-item-title class="text-center">
-                                    <h3>GESTIÓN DE COTIZACIONES</h3>
-                                </v-list-item-title>
-                            </v-list-item>
-
-                            <v-card-title>
-                               <v-text-field v-model="searchCotizacion" append-icon="mdi-magnify" label="BUSCAR COTIZACIONES"
-                                    single-line hide-details></v-text-field>
-                            </v-card-title>
-
-                            <v-data-table :headers="headerCotizacion" :items="datosCotizacion" :search="searchCotizacion"
-                                :items-per-page="5" class="elevation-1" id="tableId">
-
-                                <template #[`item.estado`]="{ item }">
-                                    <v-chip :color="getColor(item.estado)" dark>
-                                        {{ item.estado }}
-                                    </v-chip>
-                                </template>
-
-                                <template #[`item.actions`]="{ item }">
-                                    <v-icon class="mr-2" color="green" x-large  @click="aprobarAdquisicion(item)"
-                                        title="APROBAR">
-                                        mdi-check-circle
-                                    </v-icon> 
-                                    <v-icon class="mr-2" color="red" x-large  @click="denegarAdquisicion(item)"
-                                        title="DENEGAR">
-                                        mdi-close-circle
-                                    </v-icon>          
-                                    <v-icon class="mr-2" color="primary" x-large  @click="mostrarItems(item)"
-                                        title="VER ITEMS">
-                                        mdi-eye
-                                    </v-icon> 
-                                    <v-icon class="mr-2" color="primary" x-large  @click="generatePDF(item)"
-                                        title="VER PDF">
-                                        mdi-file-pdf-box
-                                    </v-icon>              
-                                </template>
-
-                              
-
-
-                            </v-data-table>
-                        </v-col>
-                    </v-row>
+               
                     <v-row>
                         <v-col cols="12" md="4">
                             <v-btn color="success" @click="showModalAgregarCotizacionAdquisicion()">NUEVA COTIZACION DE ADQUISICIONES</v-btn>
@@ -81,18 +35,18 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposCotizacionAdquisicion(item)"
+                                    <v-icon v-if="item.estado == 'PENDIENTE'" class="mr-2" color="primary" x-large  @click="llenarCamposCotizacionAdquisicion(item)"
                                         title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
-                                    </v-icon>
-                                    <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
-                                        title="ACTIVAR COTIZACION">
-                                        mdi-check-circle-outline
-                                    </v-icon>
-                                    <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionCotizacionAdquisicion(item)"
+                                    </v-icon>                                 
+                                    <v-icon v-if="item.estado == 'ACTIVO' || item.estado == 'PENDIENTE'" x-large color="error" class="mr-2" @click="confirmacionAnulacionCotizacionAdquisicion(item)"
                                         title="DESACTIVAR COTIZACION">
                                         mdi-close-circle
-                                    </v-icon>             
+                                    </v-icon>    
+                                    <v-icon v-if="item.estado == 'INACTIVO'" x-large color="primary" class="mr-2" @click="generatePDF(item)"
+                                        title="VER ITEMS">
+                                        mdi-eye
+                                    </v-icon>          
                                 </template>
 
                               
@@ -147,7 +101,53 @@
                             </v-data-table>
                         </v-col>
                     </v-row>
-                    
+                    <v-row>
+                        <v-col cols="12">
+                            <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h3>GESTIÓN DE COTIZACIONES</h3>
+                                </v-list-item-title>
+                            </v-list-item>
+
+                            <v-card-title>
+                               <v-text-field v-model="searchCotizacion" append-icon="mdi-magnify" label="BUSCAR COTIZACIONES"
+                                    single-line hide-details></v-text-field>
+                            </v-card-title>
+
+                            <v-data-table :headers="headerCotizacion" :items="datosCotizacion" :search="searchCotizacion"
+                                :items-per-page="5" class="elevation-1" id="tableId">
+
+                                <template #[`item.estado`]="{ item }">
+                                    <v-chip :color="getColor(item.estado)" dark>
+                                        {{ item.estado }}
+                                    </v-chip>
+                                </template>
+
+                                <template #[`item.actions`]="{ item }">
+                                    <v-icon class="mr-2" color="primary" x-large  @click="mostrarItems(item)"
+                                        title="VER ITEMS">
+                                        mdi-eye
+                                    </v-icon> 
+                                    <v-icon class="mr-2" color="primary" x-large  @click="generatePDF(item)"
+                                        title="VER PDF">
+                                        mdi-file-pdf-box
+                                    </v-icon>         
+                                    <v-icon class="mr-2" color="green" x-large  @click="aprobarAdquisicion(item)"
+                                        title="APROBAR">
+                                        mdi-check-circle
+                                    </v-icon> 
+                                    <v-icon class="mr-2" color="red" x-large  @click="denegarAdquisicion(item)"
+                                        title="DENEGAR">
+                                        mdi-close-circle
+                                    </v-icon>                                             
+                                </template>
+
+                              
+
+
+                            </v-data-table>
+                        </v-col>
+                    </v-row>
 
                 </v-container>
             </v-form>
@@ -273,20 +273,20 @@
         <v-dialog v-model="cotizacionModal" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE COTIZACIONES APROBADAS</span>
+                    <span>LISTA DE COTIZACIONES CREADAS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchCotizacion" append-icon="mdi-magnify" label="BUSCAR COTIZACIONES APROBADAS"
+                                    <v-text-field v-model="searchCotizacion" append-icon="mdi-magnify" label="BUSCAR COTIZACIONES CREADAS"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headerCotizacionAdquisicion" :items="datosCotizacionAdquisicion" :search="searchCotizacion"
+                                <v-data-table :headers="headerCotizacionAdquisicion" :items="datosCotizacion" :search="searchCotizacion"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon small class="mr-2" @click="seleccionarCotizacion(item)">
@@ -764,7 +764,7 @@ export default {
         async listarCotizacionesAdquisicion() {
           let me = this;
           await axios
-            .get("/adquisicion/listarcotizaciondeadquisicionactiva/")
+            .get("/adquisicion/listarcotizaciondeadquisicion/")
             .then(function (response) {
               if (response.data.resultado == null) {
                 me.datosCotizacionAdquisicion = [];
@@ -1173,7 +1173,7 @@ export default {
         },
 
         openCotizacionModal(){
-            this.listarCotizacionAdquisicion();
+            this.listarCotizacionAdquisicionPendiente();
             this.cotizacionModal = true;
         },
 
@@ -1188,6 +1188,44 @@ export default {
         },
 
 
+        mostrarItems(item){
+            this.idCotizacion = item.idCotizacion;
+            alert(this.idCotizacion);
+        },
+        generatePDF(item){
+            this.idCotizacion = item.idCotizacion;
+            alert(this.idCotizacion);
+        },
+
+        /*
+                    headerCotizacion: [
+                { text: "COTIZACIÓN", value: "idCotizacion", sortable: true },
+                { text: "EMPLEADO", value: "nombreUsuario", sortable: true },
+                { text: "PROVEEDOR", value: "nombreProveedor", sortable: true },
+                { text: "NOMBRE COTIZACIÓN", value: "nombreCotizacion", sortable: true },
+                { text: "FECHA VENCIMIENTO", value: "date", sortable: true },
+                { text: "ESTADO", value: "estado", sortable: true },
+                { text: "ACCIONES", value: "actions", sortable: false }
+                //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+            ],
+        */
+        aprobarAdquisicion(item){
+            this.idCotizacion = item.idCotizacion;
+            this.idUsuario = item.idUsuario;
+            this.idProveedor = item.idProveedor;
+            this.nombreCotizacion = item.nombreCotizacion;
+            this.fechaVencimiento = item.fechaVencimiento;
+            this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario,this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'ACTIVO');
+
+        },
+        denegarAdquisicion(item){
+            this.idCotizacion = item.idCotizacion;
+            this.idUsuario = item.idUsuario;
+            this.idProveedor = item.idProveedor;
+            this.nombreCotizacion = item.nombreCotizacion;
+            this.fechaVencimiento = item.fechaVencimiento;
+            this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario,this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'INACTIVO');
+        },
 
 
 
