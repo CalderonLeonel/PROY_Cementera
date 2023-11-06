@@ -506,6 +506,9 @@
 </template>
 <script>
 import axios from "axios";
+import jsPDF from 'jspdf';
+
+
 export default {
     data() {
         return {
@@ -585,6 +588,7 @@ export default {
                 { text: "COTIZACIÓN ITEM", value: "idCotizacionItem", sortable: true },
                 { text: "COTIZACIÓN", value: "nombrecotizacion", sortable: true },
                 { text: "ITEM", value: "nombreitem", sortable: true },
+                { text: "UNIDAD", value: "unidad", sortable: false },
                 { text: "PRECIO UNITARIO", value: "precioUnitario", sortable: true },
                 { text: "CANTIDAD", value: "cantidad", sortable: false },
                 { text: "ACCIONES", value: "actions", sortable: false }
@@ -1224,12 +1228,12 @@ export default {
         mostrarItems(item){
             this.idCotizacion = item.idCotizacion;
             this.listarDetallesCotizacion(this.idCotizacion);
-            console.log(this.datosDetalleCotizacion);
+            
         },
         generatePDF(item){
             this.idCotizacion = item.idCotizacion;
             this.listarDetallesCotizacion(this.idCotizacion);
-            console.log(this.datosDetalleCotizacion);
+            
         },
 
         /*
