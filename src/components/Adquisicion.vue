@@ -507,7 +507,7 @@
 <script>
 import axios from "axios";
 import jsPDF from 'jspdf';
-
+import 'jspdf-autotable';
 
 export default {
     data() {
@@ -1233,7 +1233,24 @@ export default {
         generatePDF(item){
             this.idCotizacion = item.idCotizacion;
             this.listarDetallesCotizacion(this.idCotizacion);
-            
+            console.log(typeof item);
+            console.log(typeof this.datosDetalleCotizacion);
+            const doc = new jsPDF();
+            const header1 = this.headerCotizacionAdquisicion.map(column => column.text);
+            const data1 = this.item;
+            const header2 = this.headerCotizacionItem.map(column => column.text);
+            const data2 = this.datosDetalleCotizacion;
+                doc.autoTable({
+                    head: [header1],
+                    body: data1,
+                });
+                doc.autoTable({
+                    head: [header2],
+                    body: data2,
+                });
+
+            let nombreArchivo = item.nombreCotizacion+'.pdf';
+            doc.save(nombreArchivo);
         },
 
         /*
