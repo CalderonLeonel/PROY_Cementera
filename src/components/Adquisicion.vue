@@ -549,6 +549,7 @@ export default {
              ],
 
             datosCotizacion: [],
+            datosDetalleCotizacion: [],
             headerCotizacion: [
                 { text: "COTIZACIÓN", value: "idCotizacion", sortable: true },
                 { text: "EMPLEADO", value: "nombreUsuario", sortable: true },
@@ -921,6 +922,25 @@ export default {
         },
 
 
+        async listarDetallesCotizacion(idCotizacion) {
+          let me = this;
+          await axios
+            .get("/adquisicion/listardetallecotizacion/"+idCotizacion)
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosDetalleCotizacion = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosDetalleCotizacion = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
+
         llenarCamposCotizacionItem(item) {
             this.botonactCotIt = 1;
             this.idCotizacionItem = item.idCotizacionItem;
@@ -1190,11 +1210,13 @@ export default {
 
         mostrarItems(item){
             this.idCotizacion = item.idCotizacion;
-            alert(this.idCotizacion);
+            this.listarDetallesCotizacion(this.idCotizacion);
+            console.log(this.datosDetalleCotizacion);
         },
         generatePDF(item){
             this.idCotizacion = item.idCotizacion;
-            alert(this.idCotizacion);
+            this.listarDetallesCotizacion(this.idCotizacion);
+            console.log(this.datosDetalleCotizacion);
         },
 
         /*
