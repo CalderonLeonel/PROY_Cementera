@@ -364,7 +364,7 @@
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
-                                <v-col cols="12" md="3">
+                                <v-col cols="12" md="5">
                                     <v-text-field v-model="nombreCotizacion" label="NOMBRE COTIZACION" :counter="60"
                                         :rules="nombreRules" @input="nombreCotizacion = nombreCotizacion.toUpperCase()"
                                         disabled required></v-text-field>
@@ -376,15 +376,20 @@
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
-                                <v-col cols="12" md="3">
+                                <v-col cols="12" md="5">
                                     <v-text-field v-model="nombreItem" label="NOMBRE ITEM" :counter="60"
                                         :rules="nombreRules" @input="nombreItem = nombreItem.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="4">
+                                <v-col cols="12" md="6">
                                     <v-text-field v-model="precioUnitario" type="number" label="COSTO UNITARIO" 
                                         :rules="cantidadRules" @input="precioUnitario = precioUnitario.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="6">
+                                    <v-text-field v-model="cantidad" type="number" label="CANTIDAD" 
+                                        :rules="cantidadRules" @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 
@@ -519,6 +524,7 @@ export default {
             precioUnitario: "",
             nombreCotizacion: "",
             fechaVencimiento: "",
+            cantidad:"",
             estado: "PENDIENTE",
 
 
