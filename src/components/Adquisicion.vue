@@ -497,6 +497,26 @@
         </v-dialog>
 
 
+        <v-dialog
+            v-model="detalleCotizacionDialog"
+            persistent :overlay="false"
+            max-width="900px"
+            transition="dialog-transition"
+        >
+            
+            <v-data-table :headers="headerCotizacionItem" :items="datosDetalleCotizacion"
+                :items-per-page="5" class="elevation-1" >
+            </v-data-table>
+            <v-card>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="closeDetalleCotizacion()">Salir</v-btn>
+                    <v-spacer></v-spacer>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+
 
 
 
@@ -559,6 +579,7 @@ export default {
 
             datosCotizacion: [],
             datosDetalleCotizacion: [],
+            detalleCotizacionDialog: false,
             headerCotizacion: [
                 { text: "COTIZACIÓN", value: "idCotizacion", sortable: true },
                 { text: "EMPLEADO", value: "nombreUsuario", sortable: true },
@@ -1228,8 +1249,12 @@ export default {
         mostrarItems(item){
             this.idCotizacion = item.idCotizacion;
             this.listarDetallesCotizacion(this.idCotizacion);
+            this.detalleCotizacionDialog = true;
             
         },
+
+
+        
         generatePDF(item){
             this.idCotizacion = item.idCotizacion;
             this.listarDetallesCotizacion(this.idCotizacion);
