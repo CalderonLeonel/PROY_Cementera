@@ -185,13 +185,13 @@ export default {
     methods: {
 
         activar(item) {
-            this.idCargo = item.idcargo;
+            this.idCargo = item.idcarg;
             this.activarcargo(this.idCargo);
         },
         async activarcargo(idCargo) {
             let me = this;
             await axios
-                .post("/cargo/addcargo/" + this.idCargo).then(function (response) {
+                .post("/cargo/oncargo/" + this.idCargo).then(function (response) {
 
                     me.listarCargos();
                 })
@@ -201,7 +201,7 @@ export default {
 
         },
         desactivar(item) {
-            this.idCargo = item.idcargo;
+            this.idCargo = item.idcarg;
             this.desactivarcargo(this.idCargo);
         },
         async desactivarcargo(idCargo) {
@@ -312,12 +312,14 @@ export default {
         registrarCargo() {
             this.registrarCargo(
                 this.nombreCargo,
-                this.descripcion
+                this.descripcion,
+                this.salario
             );
         },
         async registrarCargo(
             nombreCargo,
-            descripcion
+            descripcion,
+            salario
         ) {
             let me = this;
 
@@ -327,7 +329,9 @@ export default {
                     "/cargo/addcargo/" +
                     this.nombreCargo +
                     "," +
-                    this.descripcion
+                    this.descripcion +
+                    "," +
+                    this.salario
 
                 )
                 .then(function (response) {
