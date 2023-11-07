@@ -30,7 +30,7 @@
 
                                 <template #[`item.estado`]="{ item }">
                                     <v-chip :color="getColor(item.estado)" dark>
-                                        {{ item.estado }}
+                                        {{getState(item.estado)}}
                                     </v-chip>
                                 </template>
 
@@ -510,7 +510,9 @@
             <v-card>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="closeDetalleCotizacion()">Salir</v-btn>
+                    <v-btn color="red" dark x-big  @click="closeDetalleCotizacion()">
+                        <v-icon dark> mdi-close-circle-outline </v-icon> Salir
+                    </v-btn>
                     <v-spacer></v-spacer>
                 </v-card-actions>
             </v-card>
@@ -690,11 +692,9 @@ export default {
 
         },
         getState(estado) {
-            if (estado == 'ACTIVO') {
-                return 'APROBADO';
-            } else {
-                return 'DENEGADO';
-            }
+            if (estado == 'ACTIVO') return 'APROBADO'
+            else if (estado == "PENDIENTE") return 'PENDIENTE'
+            else return 'DENEGADO'
         },
 
         listarProveedor() {
@@ -1253,8 +1253,10 @@ export default {
             
         },
 
+        closeDetalleCotizacion(){
+            this.detalleCotizacionDialog = false;
+        },
 
-        
         generatePDF(item){
             this.idCotizacion = item.idCotizacion;
             this.listarDetallesCotizacion(this.idCotizacion);
