@@ -143,7 +143,6 @@ export default {
         timeout: 2000,
 
         botonAct: 0,
-
         nombreRules: [
             (v) => !!v || "NOMBRE DE CARGO ES REQUERIDO",
             (v) =>
