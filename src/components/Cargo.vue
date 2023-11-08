@@ -60,19 +60,19 @@
                                         SALIR
                                     </v-btn>
                                 </v-col>
-
+<!--
                         <v-col cols="12" md="12">
                             <v-toolbar dense shaped color="#002245">
                                 <v-toolbar-title style="color:#ffffff">
                                     <h6>OPCIONES</h6>
 
-                                </v-toolbar-title> <!-- Botones -->
-<!--
+                                </v-toolbar-title> 
+
                                 <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="#EE680B"
                                     @click=actualizarCargo() style="float: left" title="ACTUALIZAR INFORMACIÓN">
                                     <v-icon dark> mdi-pencil </v-icon>
                                 </v-btn>
-                                -->
+                                
                                 <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="#EE680B"
                                     @click="registrarCargo()" style="float: left" title="REGISTRAR CARGO">
                                     <v-icon dark> mdi-content-save-plus-outline </v-icon>
@@ -83,7 +83,7 @@
                                 </v-btn>
                             </v-toolbar>
                         </v-col>
-                        
+                    -->
                     </v-row>
 
                     <div class="text-center">
@@ -327,32 +327,32 @@ export default {
         
         actualizarCargo() {
             this.actualizarcargo(
+                this.idCargo,
                 this.nombreCargo,
                 this.descripcion,
                 this.salario,
-                this.idCargo,
             );
         },
         
        
         async actualizarcargo(
+            idCargo,
             nombreCargo,
             descripcion,
             salario,
-            idCargo,
         ) {
             let me = this;
 
             await axios
                 .post(
                     "/cargo/editcargo/" +
+                    this.idCargo +
+                    "," +
                     this.nombreCargo +
                     "," +
                     this.descripcion +
                     "," +
-                    this.salario +
-                    "," +
-                    this.idCargo
+                    this.salario
 
                 )
                 .then(function (response) {
@@ -373,27 +373,7 @@ export default {
             this.descripcion = "";
             this.salario = "";
         },
-/*
-        validate() {
-            this.$refs.form.validate();
-        },
-        */
-       /*
-        reset() {
-            this.$refs.form.reset();
-        },
-        */
-       /*
-        resetValidation() {
-            this.$refs.form.resetValidation();
-        },
-*/
 
-/*
-        listarb() {
-            this.listarCargos(this.idCargo);
-        },
-*/
         async listarCargos(idCargo) {
             let me = this;
             await axios
