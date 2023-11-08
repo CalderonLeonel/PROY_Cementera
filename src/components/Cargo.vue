@@ -1,14 +1,21 @@
 <template>
     <v-card elevation="5" outlined shaped>
 
-
         <div> <!-- Encabezado -->
             <v-alert dense color="#00A1B1" style="color: #ffffff">
                 <h5>CARGOS</h5>
             </v-alert>
         </div>
-        <div>
-            <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo Cargo -->
+
+        <v-dialog v-model="cargoModal" max-width="1080px"> <!-- Modal-->
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span v-if="botonAct == 0">Nuevo Cargo</span>
+                    <span v-if="botonAct == 1">Editar Cargo</span>
+                </v-card-title>
+                <v-card-text>
+
+                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo Cargo / Editar Cargo -->
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="12">
@@ -24,6 +31,35 @@
                             <v-text-field v-model="salario" :counter="10" :rules="salarioRules" label="Salario"
                                 required></v-text-field>
                         </v-col>
+                        <v-col cols="12" md="8"> </v-col>
+                                <v-col cols="6"></v-col>
+                                <v-col cols="2">
+                                    <v-btn iconv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
+                                            @click="actualizarCargo()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN">
+                                            <v-icon dark> mdi-pencil </v-icon>
+                                            ACTUALIZAR
+                                        </v-btn>
+                                        <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
+                                            @click="registrarCargo()" style="float: left" title="REGISTRAR ITEM">
+                                            <v-icon dark> mdi-content-save </v-icon>
+                                            GUARDAR
+                                        </v-btn>
+                                </v-col>                      
+                                <v-col cols="2">                                        
+                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
+                                        <v-icon dark> mdi-eraser </v-icon>
+                                        LIMPIAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeCargo()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
 
                         <v-col cols="12" md="12">
                             <v-toolbar dense shaped color="#002245">
@@ -31,22 +67,66 @@
                                     <h6>OPCIONES</h6>
 
                                 </v-toolbar-title> <!-- Botones -->
-
+<!--
                                 <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="#EE680B"
                                     @click=actualizarCargo() style="float: left" title="ACTUALIZAR INFORMACIÓN">
                                     <v-icon dark> mdi-pencil </v-icon>
                                 </v-btn>
-                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="#00A1B1"
+                                -->
+                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="#EE680B"
                                     @click="registrarCargo()" style="float: left" title="REGISTRAR CARGO">
                                     <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                 </v-btn>
-                                <v-btn class="mx-2" fab dark x-small color="#00A1B1" @click="limpiar()"
+                                <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="limpiar()"
                                     style="float: left" title="LIMPIAR FORMULARIO">
                                     <v-icon dark> mdi-eraser </v-icon>
                                 </v-btn>
                             </v-toolbar>
                         </v-col>
                         
+                    </v-row>
+
+                    <div class="text-center">
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
+                            outlined>
+                            <strong>{{ mensajeSnackbar }}</strong>
+
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+
+                    <div class="text-center">
+
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                            outlined>
+                            <strong>{{ mensajeSnackbarError }}</strong>
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+                </v-container>
+            </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <v-col cols="12" md="4">
+            <v-btn color="success" @click="showAddCargo()">+ Nuevo Cargo</v-btn>
+        </v-col>
+        <div>
+            <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Cargos -->
+                <v-container>
+                    <v-row>
                         <v-col cols="12" md="12">
                             <v-col cols="12">
                                 <v-list-item>
@@ -77,8 +157,8 @@
                                             title="DESACTIVAR CARGO">
                                             mdi-cancel
                                         </v-icon>
-                                        <v-icon small class="mr-2" @click="llenarCamposCargo(item)"
-                                            title="ACTUALIZAR INFORMACION">
+                                        <v-icon small class="mr-2" @click="showEditCargo(item)"
+                                            title="EDITAR INFORMACION">
                                             mdi-pencil
                                         </v-icon>
                                       
@@ -118,6 +198,7 @@
                 </v-container>
             </v-form>
         </div>
+
     </v-card>
 </template>
 <script>
@@ -142,6 +223,7 @@ export default {
         mensajeSnackbarError: "REGISTRO FALLIDO",
         timeout: 2000,
 
+        cargoModal: "",
         botonAct: 0,
         nombreRules: [
             (v) => !!v || "NOMBRE DE CARGO ES REQUERIDO",
@@ -152,7 +234,7 @@ export default {
 
         descripcionRules: [
             (v) =>
-                (v && v.length <= 100) ||
+                (v && v.length <= 200) ||
                 "LA DESCRIPCION DEBE TENER 200 CARACTERES COMO MAXIMO",
         ],
 
@@ -162,7 +244,7 @@ export default {
                 "SALARIO DEBE TENER 8 CARACTERES COMO MAXIMO",
         ],
 
-        checkbox: false,
+        //checkbox: false,
         datosCargo: [],
 
         headersCargo: [
@@ -221,36 +303,54 @@ export default {
             else return 'red'
         },
 
+        showAddCargo() {
+            this.botonAct = 0;
+            this.cargoModal = true;
+        },
+        showEditCargo(item) {
+            this.botonAct = 1;
+            this.llenarCamposCargo(item);
+            this.cargoModal = true;
+        },
+
+        closeCargo() {
+            this.cargoModal = false;
+        },
 
         llenarCamposCargo(item) {
-            this.botonAct = 1;
-            this.descripcion = item.nom;
-            this.nombreCargo = item.codmat;
-            this.idCargo = item.idcargo;
-
+            this.nombreCargo = item.carg;
+            this.descripcion = item.descrip;
+            this.salario = item.salar;
+            
+            this.idCargo = item.idcarg;
         },
+        
         actualizarCargo() {
             this.actualizarcargo(
-
                 this.nombreCargo,
                 this.descripcion,
+                this.salario,
                 this.idCargo,
             );
-            this.botonAct = 0;
         },
+        
+       
         async actualizarcargo(
             nombreCargo,
             descripcion,
+            salario,
             idCargo,
         ) {
             let me = this;
 
             await axios
                 .post(
-                    "/cargo/actcargo/" +
+                    "/cargo/editcargo/" +
                     this.nombreCargo +
                     "," +
                     this.descripcion +
+                    "," +
+                    this.salario +
                     "," +
                     this.idCargo
 
@@ -271,29 +371,29 @@ export default {
         limpiar() {
             this.nombreCargo = "";
             this.descripcion = "";
+            this.salario = "";
         },
-
+/*
         validate() {
             this.$refs.form.validate();
         },
+        */
+       /*
         reset() {
             this.$refs.form.reset();
         },
+        */
+       /*
         resetValidation() {
             this.$refs.form.resetValidation();
         },
+*/
 
-        showTpostulante() {
-            this.tpostModal = true;
-        },
-        closeTpost() {
-            this.tpostModal = false;
-        },
-
+/*
         listarb() {
             this.listarCargos(this.idCargo);
         },
-
+*/
         async listarCargos(idCargo) {
             let me = this;
             await axios
