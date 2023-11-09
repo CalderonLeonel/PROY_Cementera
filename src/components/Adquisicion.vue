@@ -26,8 +26,14 @@
                             </v-card-title>
 
                             <v-data-table :headers="headerCotizacionAdquisicion" :items="datosCotizacionAdquisicion" :search="searchCotizacionAdquisicion"
-                                :items-per-page="5" class="elevation-1" id="tableId">
+                                :items-per-page="5" class="elevation-1"  id="tableId">
 
+
+                                <template #[`item.fechaVencimiento`]="{ item }">
+                                        {{getFormattedDate(item.fechaVencimiento)}}
+                                </template>
+                                
+                               
                                 <template #[`item.estado`]="{ item }">
                                     <v-chip :color="getColor(item.estado)" dark>
                                         {{getState(item.estado)}}
@@ -43,7 +49,7 @@
                                         title="DESACTIVAR COTIZACION">
                                         mdi-close-circle
                                     </v-icon>    
-                                    <v-icon v-if="item.estado == 'INACTIVO'" x-large color="primary" class="mr-2" @click="generatePDF(item)"
+                                    <v-icon v-if="item.estado == 'INACTIVO'" x-large color="primary" class="mr-2" @click="mostrarItems(item)"
                                         title="VER ITEMS">
                                         mdi-eye
                                     </v-icon>          
@@ -117,6 +123,10 @@
                             <v-data-table :headers="headerCotizacion" :items="datosCotizacion" :search="searchCotizacion"
                                 :items-per-page="5" class="elevation-1" id="tableId">
 
+                                <template #[`item.fechaVencimiento`]="{ item }">
+                                        {{getFormattedDate(item.fechaVencimiento)}}
+                                </template>
+
                                 <template #[`item.estado`]="{ item }">
                                     <v-chip :color="getColor(item.estado)" dark>
                                         {{ item.estado }}
@@ -154,7 +164,7 @@
 
         </div>
 
-        <v-dialog v-model="agregarCotizacionAdquisicionModal" max-width="1000px">
+        <v-dialog v-model="agregarCotizacionAdquisicionModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>AGREGAR COTRIZACION DE ADQUISICION</span>
@@ -177,14 +187,14 @@
 
                                 <v-col cols="12" md="8">
                                     <v-text-field v-model="nombreCotizacion" label="NOMBRE DE LA COTIZACION"  :counter="100"
-                                        :rules="cantidadRules" @input="nombreCotizacion = nombreCotizacion.toUpperCase()"
+                                         @input="nombreCotizacion = nombreCotizacion.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-subheader class="text-h5">FECHA DE VENCIMIENTO:</v-subheader>
                                 </v-col>
                                 <v-col cols="12" md="8">                                  
-                                    <v-date-picker required locale="es" :landscape="true" :show-current="false" full-width v-model="fechaVencimiento" :min="getDate()" @input="fechaVencimiento = fechaVencimiento.toUpperCase()" color="blue lighten-1" header-color="primary"></v-date-picker>                                 
+                                    <v-date-picker required locale="es" :landscape="true" :show-current="false" full-width v-model="fechaVencimiento" :min="getDate()" @input="fechaVencimiento = fechaVencimiento" color="blue lighten-1" header-color="primary"></v-date-picker>                                 
                                 </v-col>
                                 
                                 <v-col cols="12" md="12">
@@ -230,7 +240,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="itemModal" max-width="900px">
+        <v-dialog v-model="itemModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE ITEMS ACTIVOS</span>
@@ -270,7 +280,7 @@
         
         
         
-        <v-dialog v-model="cotizacionModal" max-width="900px">
+        <v-dialog v-model="cotizacionModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE COTIZACIONES CREADAS</span>
@@ -288,6 +298,9 @@
                             <v-col cols="12">
                                 <v-data-table :headers="headerCotizacionAdquisicion" :items="datosCotizacion" :search="searchCotizacion"
                                     :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.fechaVencimiento`]="{ item }">
+                                        {{getFormattedDate(item.fechaVencimiento)}}
+                                    </template>
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon small class="mr-2" @click="seleccionarCotizacion(item)">
                                             mdi-check-circle
@@ -309,7 +322,7 @@
         </v-dialog> 
 
 
-        <v-dialog v-model="proveedorModal" max-width="900px">
+        <v-dialog v-model="proveedorModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE TIPO DE PROVEEDORES ACTIVOS</span>
@@ -349,7 +362,7 @@
 
 
 
-        <v-dialog v-model="agregarCotizacionItemModal" max-width="1000px">
+        <v-dialog v-model="agregarCotizacionItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>AGREGAR COTIZACION DE UN ITEM</span>
@@ -384,12 +397,12 @@
 
                                 <v-col cols="12" md="6">
                                     <v-text-field v-model="precioUnitario" type="number" label="COSTO UNITARIO" 
-                                        :rules="cantidadRules" @input="precioUnitario = precioUnitario.toUpperCase()"
+                                         @input="precioUnitario = precioUnitario.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-text-field v-model="cantidad" type="number" label="CANTIDAD" 
-                                        :rules="cantidadRules" @input="cantidad = cantidad.toUpperCase()"
+                                         @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 
@@ -434,7 +447,7 @@
 
 
 
-        <v-dialog v-model="confirmacionAnulacionCotizacionAdq" max-width="1000px">
+        <v-dialog v-model="confirmacionAnulacionCotizacionAdq" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>¿ESTAS SEGURO?</span>
@@ -466,7 +479,7 @@
 
 
         
-        <v-dialog v-model="confirmacionAnulacionCotizacionIt" max-width="1000px">
+        <v-dialog v-model="confirmacionAnulacionCotizacionIt" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>¿ESTAS SEGURO?</span>
@@ -587,11 +600,14 @@ export default {
                 { text: "EMPLEADO", value: "nombreUsuario", sortable: true },
                 { text: "PROVEEDOR", value: "nombreProveedor", sortable: true },
                 { text: "NOMBRE COTIZACIÓN", value: "nombreCotizacion", sortable: true },
-                { text: "FECHA VENCIMIENTO", value: "date", sortable: true },
+                { text: "FECHA VENCIMIENTO", value: "fechaVencimiento", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
+
+
+           
 
 
             datosCotizacionAdquisicion: [],
@@ -600,7 +616,7 @@ export default {
                 { text: "EMPLEADO", value: "nombreUsuario", sortable: true },
                 { text: "PROVEEDOR", value: "nombreProveedor", sortable: true },
                 { text: "NOMBRE COTIZACIÓN", value: "nombreCotizacion", sortable: true },
-                { text: "FECHA VENCIMIENTO", value: "date", sortable: true },
+                { text: "FECHA VENCIMIENTO", value: "fechaVencimiento", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -671,6 +687,28 @@ export default {
 
             botonactCotIt: 0,
             botonactCot: 0,
+
+
+
+
+
+            header1: [
+                { text: "COTIZACIÓN", value: "idCotizacion"},
+                { text: "EMPLEADO", value: "nombreUsuario" },
+                { text: "PROVEEDOR", value: "nombreProveedor"},
+                { text: "NOMBRE COTIZACIÓN", value: "nombreCotizacion"},
+                { text: "FECHA VENCIMIENTO", value: "date" },
+            ],
+
+
+            header2: [
+                { text: "COTIZACIÓN ITEM", value: "idCotizacionItem"},
+                { text: "COTIZACIÓN", value: "nombrecotizacion"},
+                { text: "ITEM", value: "nombreitem"},
+                { text: "UNIDAD", value: "unidad"},
+                { text: "PRECIO UNITARIO", value: "precioUnitario"},
+                { text: "CANTIDAD", value: "cantidad"},
+            ],
             //#endregion
         }
     },
@@ -683,6 +721,33 @@ export default {
         getDate(){ 
             var fecha = new Date().toISOString();
             return fecha;
+        },
+
+
+        getFormattedDate(oldDate){
+            let fecha = new Date(oldDate);
+            let dia = fecha.getDate();
+            let mes = fecha.getMonth() + 1; 
+            let anio = fecha.getFullYear();
+            if (dia < 10) dia = '0' + dia;
+            if (mes < 10) mes = '0' + mes;
+
+            let fechaFormateada =  dia + '-' + mes + '-' + anio;
+
+            return fechaFormateada;
+        },
+
+        changeFormatField(oldDate){
+            let fecha = new Date(oldDate);
+            let dia = fecha.getDate();
+            let mes = fecha.getMonth() + 1; 
+            let anio = fecha.getFullYear();
+            if (dia < 10) dia = '0' + dia;
+            if (mes < 10) mes = '0' + mes;
+
+            let fechaFormateada =  anio + '-' + mes + '-' + dia;
+
+            return fechaFormateada;
         },
 
         getColor(est) {
@@ -818,7 +883,8 @@ export default {
             this.idProveedor = item.idProveedor;
             this.nombreProveedor = item.nombreProveedor;
             this.nombreCotizacion = item.nombreCotizacion;
-            this.fechaVencimiento = item.fechaVencimiento; 
+            var formatted = item.fechaVencimiento; 
+            this.fechaVencimiento = this.changeFormatField(formatted);
             this.estado = item.estado;
             this.agregarCotizacionAdquisicionModal = true;
         },
@@ -1260,21 +1326,35 @@ export default {
         generatePDF(item){
             this.idCotizacion = item.idCotizacion;
             this.listarDetallesCotizacion(this.idCotizacion);
-            console.log(typeof item);
-            console.log(typeof this.datosDetalleCotizacion);
+
+
             const doc = new jsPDF();
-            const header1 = this.headerCotizacionAdquisicion.map(column => column.text);
-            const data1 = this.item;
-            const header2 = this.headerCotizacionItem.map(column => column.text);
+            doc.setFontSize(22)
+            let titulo= 'ADQUISICIÓN: '+item.nombreCotizacion;
+            let margenIzquierdo = 20;
+            let margenDerecho = 20;
+            let anchoMaximo = doc.internal.pageSize.width - margenIzquierdo - margenDerecho;
+            let textoDividido = doc.splitTextToSize(titulo, anchoMaximo);
+            doc.text(textoDividido, margenIzquierdo, 20);
+            let fecha = new Date().toLocaleDateString()
+            doc.setFontSize(16)
+            doc.text(fecha, 20, 45)
+            doc.line(10, 35, 200, 35)
+            const header1 = this.header1.map(column => column.text);
+            const header2 = this.header2.map(column => column.text);
+            const data1 = item => this.header1.map(header => item[header.value]);
             const data2 = this.datosDetalleCotizacion;
-                doc.autoTable({
-                    head: [header1],
-                    body: data1,
-                });
-                doc.autoTable({
-                    head: [header2],
-                    body: data2,
-                });
+            /*doc.autoTable({
+                head: [header1],
+                body: data1,
+                startY: 60,
+            });
+            let finalY = doc.previousAutoTable.finalY;
+            doc.autoTable({
+                head: [header2],
+                body: data2,
+                startY: finalY+20,
+            });*/
 
             let nombreArchivo = item.nombreCotizacion+'.pdf';
             doc.save(nombreArchivo);
