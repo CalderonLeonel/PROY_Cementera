@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" app>
+    <v-navigation-drawer v-model="drawer" app >
       <center>
         <v-toolbar color="#00A1B1" dark>
 
@@ -76,6 +76,11 @@
           <v-list-item :to="{ name: 'Transporte' }">
             <v-list-item-title>
               <h6>TRANSPORTE</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Materia' }">
+            <v-list-item-title>
+              <h6>MATERIA PRIMA</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>

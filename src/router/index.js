@@ -77,6 +77,11 @@ const routes = [
     path: '/laboratorio',
     name: 'Laboratorio',
     component: require('../components/Laboratorio.vue').default
+  },
+  {
+    path: '/materia',
+    name: 'Materia',
+    component: require('../components/MateriasPrimas.vue').default
   }
 ]
 
