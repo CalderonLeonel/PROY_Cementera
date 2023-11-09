@@ -6,21 +6,22 @@
             </v-alert>
         </div>
         <v-container>
-            <v-row>
+            <v-row v-if="user=='admin'">
                 <v-col cols="12" md="4">
                     <v-btn color="success" @click="showAgregarDocumento()">GUARDAR DOCUMENTO</v-btn>
                 </v-col>
                 
              </v-row>
-             <v-row>
+             <v-row v-if="user=='admin'">
                          
                 <v-col cols="12" md="12">
-                    <v-text-field v-model="searchDocumento" append-icon="mdi-magnify" label="BUSCAR DOCUMENTO"
+                    <v-text-field v-if="user=='admin'" v-model="searchDocumento" append-icon="mdi-magnify" label="BUSCAR DOCUMENTO"
                                     single-line hide-details></v-text-field>
                     <v-data-table
                         :headers="headerDocumento"
                         :items="datosDocumento" 
                         :search="searchDocumento"
+                        :custom-filter="customFilter"
                         class="elevation-1"
                     >
 
@@ -43,7 +44,7 @@
                     </v-data-table>
                 </v-col>
             </v-row>
-            <v-row>
+            <v-row v-if="user=='admin'">
                 <v-col cols="12" md="12">
                     <v-text-field v-model="searchArchivo" append-icon="mdi-magnify" label="BUSCAR ARCHIVO"
                                     single-line hide-details></v-text-field>
@@ -61,6 +62,38 @@
                     </v-data-table>
                 </v-col>
             </v-row>
+            <v-row v-if="user!='admin'">
+                         
+                         <v-col cols="12" md="12">
+                             <v-text-field v-if="user=='admin'" v-model="searchDocumento" append-icon="mdi-magnify" label="BUSCAR DOCUMENTO"
+                                             single-line hide-details></v-text-field>
+                             <v-data-table
+                                 :headers="headerDocumento"
+                                 :items="datosDocumento" 
+                                 :search="searchDocumento"
+                                 :custom-filter="customFilter"
+                                 class="elevation-1"
+                             >
+         
+                             <template #[`item.doc`]="{ item }">
+                                 <v-btn color="primary" icon :href="`${axios.defaults.baseURL}${'documento/descargar/'+item.doc}`" target="">
+                                     <v-icon>mdi-file</v-icon> ABRIR
+                                 </v-btn>
+                             </template>
+                             
+                                
+                             <template #[`item.estado`]="{ item }">
+                                             <v-chip :color="getColor(item.est)" dark>
+                                                 {{ item.est}}
+                                             </v-chip>
+                                         </template>
+         
+                                       
+         
+         
+                             </v-data-table>
+                         </v-col>
+                     </v-row>
         </v-container>
         <v-dialog v-model="agregarDocumento" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
@@ -177,22 +210,27 @@ export default {
             this.listarArchivo();         
                 break;
             case 'inventario':
+            searchDocumento =  'inv000'
             this.listarDocumento();
             this.listarArchivo();               
                 break;
             case 'adquisicion':
+            searchDocumento=  'adq000'
             this.listarDocumento();
             this.listarArchivo();               
                 break;
             case 'prod':
+            searchDocumento=  'prd000'
             this.listarDocumento();
             this.listarArchivo();                
                 break;
             case 'ventas':
+            searchDocumento=  'ven000'
             this.listarDocumento();
             this.listarArchivo();            
                 break;
             case 'cont':
+            searchDocumento = 'con000'
             this.listarDocumento();
             this.listarArchivo();
                 break;
