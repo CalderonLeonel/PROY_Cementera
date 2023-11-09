@@ -11,7 +11,7 @@ import '@babel/polyfill'
 
 Vue.use(VueAxios,axios);
 
-axios.defaults.baseURL='http://localhost:3000/'
+axios.defaults.baseURL='http://35.222.66.155:3000/'
 //axios.defaults.baseURL='http://216.158.233.122:3009/'
 //axios.defaults.baseURL='http://192.168.1.10:3000/'
 Vue.config.productionTip = false
