@@ -62,6 +62,42 @@
                     </v-data-table>
                 </v-col>
             </v-row>
+            <v-row v-if="user=='admin'">
+                <v-col cols="12" md="12">
+                    <v-text-field v-model="searchArchivoInv" append-icon="mdi-magnify" label="BUSCAR ARCHIVO"
+                                    single-line hide-details></v-text-field>
+                    <v-data-table
+                        :headers="headerArchivo"
+                        :items="datosArchivoInv" 
+                        :search="searchArchivoInv"
+                        class="elevation-1"
+                    >
+                    <template #[`item.url`]="{ item }">
+                        <v-btn color="primary" icon :href="`${axios.defaults.baseURL}${item.url}`" target="">
+                            <v-icon>mdi-file</v-icon> Abrir
+                        </v-btn>
+                    </template>
+                    </v-data-table>
+                </v-col>
+            </v-row>
+            <v-row v-if="user=='admin'">
+                <v-col cols="12" md="12">
+                    <v-text-field v-model="searchArchivoAdq" append-icon="mdi-magnify" label="BUSCAR ARCHIVO"
+                                    single-line hide-details></v-text-field>
+                    <v-data-table
+                        :headers="headerArchivo"
+                        :items="datosArchivoAdq" 
+                        :search="searchArchivoAdq"
+                        class="elevation-1"
+                    >
+                    <template #[`item.url`]="{ item }">
+                        <v-btn color="primary" icon :href="`${axios.defaults.baseURL}${item.url}`" target="">
+                            <v-icon>mdi-file</v-icon> Abrir
+                        </v-btn>
+                    </template>
+                    </v-data-table>
+                </v-col>
+            </v-row>
             <v-row v-if="user!='admin'">
                          
                          <v-col cols="12" md="12">
@@ -93,7 +129,7 @@
          
                              </v-data-table>
                          </v-col>
-                     </v-row>
+            </v-row>
         </v-container>
         <v-dialog v-model="agregarDocumento" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
@@ -107,7 +143,7 @@
                                 <v-col cols="12" md="7">
                                     <v-file-input v-model="documentoArchivo"
                                         accept=".jpg, .jpeg, .webp, .png, .gif, .bmp, .docx, .xlsx, .pptx, .pdf, .csv, .xml"
-                                        label="Archivo" required :disabled="storageState" @change="enableButton"
+                                        label="Archivo" 
                                     ></v-file-input>
                                      
                                 </v-col>
@@ -181,7 +217,11 @@ export default {
             codigoArchivo: '',
 
             datosArchivo: [],
+            datosArchivoAdq: [],
+            datosArchivoInv: [],
             searchArchivo: '',
+            searchArchivoAdq: '',
+            searchArchivoInv: '',
             headerArchivo: [
                 { text: "NOMBRE", value: "name", sortable: true },
                 { text: "ARCHIVO", value: "url", sortable: false }
@@ -207,17 +247,26 @@ export default {
         switch (this.user) {
             case 'admin':
             this.listarDocumento();
-            this.listarArchivo();         
+            this.listarArchivo();  
+            this.listarArchivosInv();     
+            this.listarArchivosAdq();     
                 break;
             case 'inventario':
             searchDocumento =  'inv000'
             this.listarDocumento();
-            this.listarArchivo();               
+            this.listarArchivo();
+            this.listarArchivosInv();                 
                 break;
             case 'adquisicion':
             searchDocumento=  'adq000'
             this.listarDocumento();
             this.listarArchivo();               
+                break;
+            case 'adqboss':
+            searchDocumento=  'pro000'
+            this.listarDocumento();
+            this.listarArchivo();  
+            this.listarArchivosAdq();               
                 break;
             case 'prod':
             searchDocumento=  'prd000'
@@ -294,6 +343,40 @@ export default {
                 } else {
                     console.log(response.data);
                     me.datosArchivo = response.data.resultado;
+                }
+                })
+                .catch(function (error) {
+                console.log(error);
+            });
+        },
+        async listarArchivosInv(){
+            let me = this;
+            await axios
+                .get("/documento/listararchivosinv/")
+                .then(function (response) {
+                if (response.data.resultado == null) {
+                    me.datosArchivoInv = [];
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                    me.datosArchivoInv = response.data.resultado;
+                }
+                })
+                .catch(function (error) {
+                console.log(error);
+            });
+        },
+        async listarArchivosAdq(){
+            let me = this;
+            await axios
+                .get("/documento/listararchivosadq/")
+                .then(function (response) {
+                if (response.data.resultado == null) {
+                    me.datosArchivoAdq = [];
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                    me.datosArchivoAdq = response.data.resultado;
                 }
                 })
                 .catch(function (error) {
