@@ -1,8 +1,8 @@
 <template>
    <v-card elevation="5" outlined>
         <div>
-            <v-alert dense style="color: #ffffff;" color="grey">
-                <h5>ALMACENAMIENTO</h5>
+            <v-alert dense style="color: #ffffff;" color="indigo">
+                <h3>ALMACENAMIENTO</h3>
             </v-alert>
         </div>
         <div>
@@ -56,7 +56,7 @@
                     </v-row>
                  
 
-            <v-dialog v-model="modalAlmacenamiento" max-width="1000px">
+            <v-dialog v-model="modalAlmacenamiento" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>AGREGAR ALMACENAMIENTO</span>
@@ -134,7 +134,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="modalStand" max-width="900px">
+        <v-dialog v-model="modalStand" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE STANDS ACTIVOS</span>
@@ -172,7 +172,7 @@
             </v-card>
         </v-dialog>   
         
-        <v-dialog v-model="modalItem" max-width="900px">
+        <v-dialog v-model="modalItem" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE ITEMS ACTIVOS</span>

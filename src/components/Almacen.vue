@@ -1,8 +1,8 @@
 <template>
    <v-card elevation="5" outlined>
         <div>
-            <v-alert dense style="color: #ffffff;" color="grey">
-                <h5>ALMACENES</h5>
+            <v-alert dense style="color: #ffffff;" color="indigo">
+                <h3>ALMACENES</h3>
             </v-alert>
         </div>
         <div>
@@ -151,7 +151,7 @@
             </v-form>
 
         </div>
-        <v-dialog v-model="agregarAlmacenModal" max-width="1000px">
+        <v-dialog v-model="agregarAlmacenModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>AGREGAR ALMACEN</span>
@@ -165,6 +165,12 @@
                                         :rules="nombreRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
+                                <v-col cols="12" md="12">
+                                    <v-file-input v-model="documentoArchivo"
+                                        accept=".jpg, .jpeg, .webp, .png, .gif, .bmp, .docx, .xlsx, .pptx, .pdf, .csv, .xml"
+                                        label="DOCUMENTO DE ALMACEN" required :disabled="storageState" @change="enableButton"
+                                    ></v-file-input>
+                                     </v-col>
                                 <v-col cols="12" md="12"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
@@ -202,7 +208,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="almacenModal" max-width="900px">
+        <v-dialog v-model="almacenModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE ALMACENES ACTIVOS</span>
@@ -240,7 +246,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="agregarSeccionModal" max-width="1000px">
+        <v-dialog v-model="agregarSeccionModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>AGREGAR SECCIÓN</span>
@@ -303,7 +309,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="seccionModal" max-width="900px">
+        <v-dialog v-model="seccionModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE SECCIONES ACTIVAS</span>
@@ -341,7 +347,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="agregarStandModal" max-width="1000px">
+        <v-dialog v-model="agregarStandModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>AGREGAR STAND</span>
@@ -403,7 +409,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="confirmacionAnulacionAlm" max-width="1000px">
+        <v-dialog v-model="confirmacionAnulacionAlm" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>¿ESTAS SEGURO?</span>
@@ -434,7 +440,7 @@
         </v-dialog>
 
 
-    <v-dialog v-model="confirmacionAnulacionSec" max-width="1000px">
+    <v-dialog v-model="confirmacionAnulacionSec" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>¿ESTAS SEGURO?</span>
@@ -466,7 +472,7 @@
 
 
 
-    <v-dialog v-model="confirmacionAnulacionSt" max-width="1000px">
+    <v-dialog v-model="confirmacionAnulacionSt" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>¿ESTAS SEGURO?</span>
@@ -503,6 +509,9 @@ import axios from "axios";
 export default {
     data() {
         return {
+
+            documentoArchivo: '',
+
             //#region Almacenamiento
             idAlmacen: "",
             idSeccion: "",
@@ -645,6 +654,8 @@ export default {
 
         registrarAlm() {
             this.registrarAlmacen(this.nombreAlmacen, this.estado);
+            this.almacenarArchivo(this.documentoArchivo)
+            this.guardarDocumento(this.documentoArchivo.name,this.nombreAlmacen,"inv000","ACTIVO");
             this.closeModalAgregarAlma();
             this.listarAlmacenes();
         },
@@ -1160,6 +1171,67 @@ export default {
             this.$refs.form.reset()
         },
         //#endregion
+
+
+
+
+        registrarDocumento(){
+            this.almacenarArchivo(this.documentoArchivo)
+            this.guardarDocumento(this.documentoArchivo.name,this.nombreAlmacen,"inv000","ACTIVO");
+        },
+        async almacenarArchivo(documentoArchivo){
+
+            const formData = new FormData();
+            formData.append('inventory', documentoArchivo);
+            let me = this;
+                await axios
+                .post(
+                    "/uploadFile/",formData)
+                .then(function (response) {
+                    console.log(response);
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarDocumentos();
+                    me.listarArchivos();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+        },
+
+        async guardarDocumento(documentoArchivo,descripcionArchivo,codigoArchivo,estado){
+            const ext = documentoArchivo.split('.');
+            const date = new Date();
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear();
+            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+'.'+ext[1];
+            let me = this;
+                await axios
+                .post(
+                    "/documento/insertar/"+
+                    ext[0] +
+                    "," +
+                    nombreArchivo +
+                    "," +
+                    descripcionArchivo +
+                    "," +
+                    codigoArchivo +
+                    "," +
+                    estado)
+                .then(function (response) {
+                    console.log(response);
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarDocumento();
+                    me.listarArchivos();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+        },
       },
 };
 
