@@ -198,9 +198,9 @@
                                 </v-col>
                                 
                                 <v-col cols="12" md="12">
-                                    <v-file-input
-                                    label="DOCUMENTO DE COTIZACION"
-                                    truncate-length="15"
+                                    <v-file-input v-model="documentoArchivo"
+                                        accept=".jpg, .jpeg, .webp, .png, .gif, .bmp, .docx, .xlsx, .pptx, .pdf, .csv, .xml"
+                                        label="DOCUMENTO DE COTIZACION" 
                                     ></v-file-input>
                                      </v-col>
                                 
@@ -548,7 +548,7 @@ export default {
     data() {
         return {
             
-
+            documentoArchivo: '',
 
 
 
@@ -891,6 +891,8 @@ export default {
 
         registrarCotizacionAdq() {
             this.registrarCotizacionAdquisicion(this.idUsuario,this.idProveedor, this.nombreCotizacion, this.fechaVencimiento,this.estado);
+            this.almacenarArchivo(this.documentoArchivo)
+            this.guardarDocumento(this.documentoArchivo.name,this.nombreCotizacion,"adq000","ACTIVO");
         },
         async registrarCotizacionAdquisicion(
             idUsuario,
@@ -1397,6 +1399,68 @@ export default {
         },
        
         //#endregion
+
+
+
+
+
+        registrarDocumento(){
+            this.almacenarArchivo(this.documentoArchivo)
+            this.guardarDocumento(this.documentoArchivo.name,this.nombreCotizacion,"adq000","ACTIVO");
+        },
+        async almacenarArchivo(documentoArchivo){
+
+            const formData = new FormData();
+            formData.append('adquisition', documentoArchivo);
+            let me = this;
+                await axios
+                .post(
+                    "/uploadFile/",formData)
+                .then(function (response) {
+                    console.log(response);
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarDocumentos();
+                    me.listarArchivos();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+        },
+
+        async guardarDocumento(documentoArchivo,descripcionArchivo,codigoArchivo,estado){
+            const ext = documentoArchivo.split('.');
+            const date = new Date();
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear();
+            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+'.'+ext[1];
+            let me = this;
+                await axios
+                .post(
+                    "/documento/insertar/"+
+                    ext[0] +
+                    "," +
+                    nombreArchivo +
+                    "," +
+                    descripcionArchivo +
+                    "," +
+                    codigoArchivo +
+                    "," +
+                    estado)
+                .then(function (response) {
+                    console.log(response);
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarDocumento();
+                    me.listarArchivos();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+        },
       },
 };
 
