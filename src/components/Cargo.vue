@@ -60,30 +60,6 @@
                                         SALIR
                                     </v-btn>
                                 </v-col>
-<!--
-                        <v-col cols="12" md="12">
-                            <v-toolbar dense shaped color="#002245">
-                                <v-toolbar-title style="color:#ffffff">
-                                    <h6>OPCIONES</h6>
-
-                                </v-toolbar-title> 
-
-                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="#EE680B"
-                                    @click=actualizarCargo() style="float: left" title="ACTUALIZAR INFORMACIÓN">
-                                    <v-icon dark> mdi-pencil </v-icon>
-                                </v-btn>
-                                
-                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="#EE680B"
-                                    @click="registrarCargo()" style="float: left" title="REGISTRAR CARGO">
-                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
-                                </v-btn>
-                                <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="limpiar()"
-                                    style="float: left" title="LIMPIAR FORMULARIO">
-                                    <v-icon dark> mdi-eraser </v-icon>
-                                </v-btn>
-                            </v-toolbar>
-                        </v-col>
-                    -->
                     </v-row>
 
                     <div class="text-center">
@@ -345,7 +321,7 @@ export default {
 
             await axios
                 .post(
-                    "/cargo/editcargo/" +
+                    "/cargo/editarcargo/" +
                     this.idCargo +
                     "," +
                     this.nombreCargo +
