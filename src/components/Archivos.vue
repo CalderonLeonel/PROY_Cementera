@@ -6,21 +6,22 @@
             </v-alert>
         </div>
         <v-container>
-            <v-row>
+            <v-row v-if="user=='admin'">
                 <v-col cols="12" md="4">
                     <v-btn color="success" @click="showAgregarDocumento()">GUARDAR DOCUMENTO</v-btn>
                 </v-col>
                 
              </v-row>
-             <v-row>
+             <v-row v-if="user=='admin'">
                          
                 <v-col cols="12" md="12">
-                    <v-text-field v-model="searchDocumento" append-icon="mdi-magnify" label="BUSCAR DOCUMENTO"
+                    <v-text-field v-if="user=='admin'" v-model="searchDocumento" append-icon="mdi-magnify" label="BUSCAR DOCUMENTO"
                                     single-line hide-details></v-text-field>
                     <v-data-table
                         :headers="headerDocumento"
                         :items="datosDocumento" 
                         :search="searchDocumento"
+                        :custom-filter="customFilter"
                         class="elevation-1"
                     >
 
@@ -43,7 +44,7 @@
                     </v-data-table>
                 </v-col>
             </v-row>
-            <v-row>
+            <v-row v-if="user=='admin'">
                 <v-col cols="12" md="12">
                     <v-text-field v-model="searchArchivo" append-icon="mdi-magnify" label="BUSCAR ARCHIVO"
                                     single-line hide-details></v-text-field>
@@ -61,8 +62,76 @@
                     </v-data-table>
                 </v-col>
             </v-row>
+            <v-row v-if="user=='admin'">
+                <v-col cols="12" md="12">
+                    <v-text-field v-model="searchArchivoInv" append-icon="mdi-magnify" label="BUSCAR ARCHIVO"
+                                    single-line hide-details></v-text-field>
+                    <v-data-table
+                        :headers="headerArchivo"
+                        :items="datosArchivoInv" 
+                        :search="searchArchivoInv"
+                        class="elevation-1"
+                    >
+                    <template #[`item.url`]="{ item }">
+                        <v-btn color="primary" icon :href="`${axios.defaults.baseURL}${item.url}`" target="">
+                            <v-icon>mdi-file</v-icon> Abrir
+                        </v-btn>
+                    </template>
+                    </v-data-table>
+                </v-col>
+            </v-row>
+            <v-row v-if="user=='admin'">
+                <v-col cols="12" md="12">
+                    <v-text-field v-model="searchArchivoAdq" append-icon="mdi-magnify" label="BUSCAR ARCHIVO"
+                                    single-line hide-details></v-text-field>
+                    <v-data-table
+                        :headers="headerArchivo"
+                        :items="datosArchivoAdq" 
+                        :search="searchArchivoAdq"
+                        class="elevation-1"
+                    >
+                    <template #[`item.url`]="{ item }">
+                        <v-btn color="primary" icon :href="`${axios.defaults.baseURL}${item.url}`" target="">
+                            <v-icon>mdi-file</v-icon> Abrir
+                        </v-btn>
+                    </template>
+                    </v-data-table>
+                </v-col>
+            </v-row>
+            <v-row v-if="user!='admin'">
+                         
+                         <v-col cols="12" md="12">
+                             <v-text-field v-if="user=='admin'" v-model="searchDocumento" append-icon="mdi-magnify" label="BUSCAR DOCUMENTO"
+                                             single-line hide-details></v-text-field>
+                             <v-data-table
+                                 :headers="headerDocumento"
+                                 :items="datosDocumento" 
+                                 :search="searchDocumento"
+                                 :custom-filter="customFilter"
+                                 class="elevation-1"
+                             >
+         
+                             <template #[`item.doc`]="{ item }">
+                                 <v-btn color="primary" icon :href="`${axios.defaults.baseURL}${'documento/descargar/'+item.doc}`" target="">
+                                     <v-icon>mdi-file</v-icon> ABRIR
+                                 </v-btn>
+                             </template>
+                             
+                                
+                             <template #[`item.estado`]="{ item }">
+                                             <v-chip :color="getColor(item.est)" dark>
+                                                 {{ item.est}}
+                                             </v-chip>
+                                         </template>
+         
+                                       
+         
+         
+                             </v-data-table>
+                         </v-col>
+            </v-row>
         </v-container>
-        <v-dialog v-model="agregarDocumento" max-width="1000px">
+        <v-dialog v-model="agregarDocumento" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>Agregar Documento</span>
@@ -74,7 +143,7 @@
                                 <v-col cols="12" md="7">
                                     <v-file-input v-model="documentoArchivo"
                                         accept=".jpg, .jpeg, .webp, .png, .gif, .bmp, .docx, .xlsx, .pptx, .pdf, .csv, .xml"
-                                        label="Archivo" required :disabled="storageState" @change="enableButton"
+                                        label="Archivo" 
                                     ></v-file-input>
                                      
                                 </v-col>
@@ -139,13 +208,20 @@ import axios from "axios";
 export default {
     data() {
         return {
+
+            user:'admin',
+
             idDocumento: 0,
             documentoArchivo: '',
             descripcionArchivo: '',
             codigoArchivo: '',
 
             datosArchivo: [],
+            datosArchivoAdq: [],
+            datosArchivoInv: [],
             searchArchivo: '',
+            searchArchivoAdq: '',
+            searchArchivoInv: '',
             headerArchivo: [
                 { text: "NOMBRE", value: "name", sortable: true },
                 { text: "ARCHIVO", value: "url", sortable: false }
@@ -168,28 +244,42 @@ export default {
         }
     },
     created: function (){
-        switch (user) {
+        switch (this.user) {
             case 'admin':
             this.listarDocumento();
-            this.listarArchivo();         
+            this.listarArchivo();  
+            this.listarArchivosInv();     
+            this.listarArchivosAdq();     
                 break;
             case 'inventario':
+            searchDocumento =  'inv000'
             this.listarDocumento();
-            this.listarArchivo();               
+            this.listarArchivo();
+            this.listarArchivosInv();                 
                 break;
             case 'adquisicion':
+            searchDocumento=  'adq000'
             this.listarDocumento();
             this.listarArchivo();               
                 break;
+            case 'adqboss':
+            searchDocumento=  'pro000'
+            this.listarDocumento();
+            this.listarArchivo();  
+            this.listarArchivosAdq();               
+                break;
             case 'prod':
+            searchDocumento=  'prd000'
             this.listarDocumento();
             this.listarArchivo();                
                 break;
             case 'ventas':
+            searchDocumento=  'ven000'
             this.listarDocumento();
             this.listarArchivo();            
                 break;
             case 'cont':
+            searchDocumento = 'con000'
             this.listarDocumento();
             this.listarArchivo();
                 break;
@@ -198,8 +288,6 @@ export default {
             this.listarArchivo();
                 break;
         }
-
-      alert(axios.defaults.baseURL);
     },
     methods: {
         
@@ -260,7 +348,41 @@ export default {
                 .catch(function (error) {
                 console.log(error);
             });
-        },*/
+        },
+        async listarArchivosInv(){
+            let me = this;
+            await axios
+                .get("/documento/listararchivosinv/")
+                .then(function (response) {
+                if (response.data.resultado == null) {
+                    me.datosArchivoInv = [];
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                    me.datosArchivoInv = response.data.resultado;
+                }
+                })
+                .catch(function (error) {
+                console.log(error);
+            });
+        },
+        async listarArchivosAdq(){
+            let me = this;
+            await axios
+                .get("/documento/listararchivosadq/")
+                .then(function (response) {
+                if (response.data.resultado == null) {
+                    me.datosArchivoAdq = [];
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                    me.datosArchivoAdq = response.data.resultado;
+                }
+                })
+                .catch(function (error) {
+                console.log(error);
+            });
+        },
         registrarDocumento(){
             this.almacenarArchivo(this.documentoArchivo)
             this.guardarDocumento(this.documentoArchivo.name,this.descripcionArchivo,this.codigoArchivo,"ACTIVO");
