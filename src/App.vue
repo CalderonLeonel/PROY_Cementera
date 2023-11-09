@@ -148,6 +148,16 @@
               <h6>TURNOS</h6>
             </v-list-item-title>
           </v-list-item>
+          <v-list-item :to="{ name: 'Unidades' }">
+            <v-list-item-title>
+              <h6>UNIDADES</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Areas' }">
+            <v-list-item-title>
+              <h6>AREAS</h6>
+            </v-list-item-title>
+          </v-list-item>
         </v-list-group>
         <v-list-group no-action color="light-blue darken-4" value="true">
           <template v-slot:activator>

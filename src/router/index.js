@@ -76,6 +76,16 @@ const routes = [
     component: require('../components/Turno.vue').default
   },
   {
+    path: '/unidades',
+    name: 'Unidades',
+    component: require('../components/Unidad.vue').default
+  },
+  {
+    path: '/areas',
+    name: 'Areas',
+    component: require('../components/Area.vue').default
+  },
+  {
     path: 'proveedor',
     name: 'Proveedor',
     component: () => import('@/components/Proveedor.vue'),
