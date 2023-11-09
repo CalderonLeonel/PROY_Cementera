@@ -86,6 +86,11 @@ const routes = [
     component: require('../components/Area.vue').default
   },
   {
+    path: '/departamentos',
+    name: 'Departamentos',
+    component: require('../components/Departamento.vue').default
+  },
+  {
     path: 'proveedor',
     name: 'Proveedor',
     component: () => import('@/components/Proveedor.vue'),
