@@ -165,6 +165,12 @@
                                         :rules="nombreRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
+                                <v-col cols="12" md="12">
+                                    <v-file-input v-model="documentoArchivo"
+                                        accept=".jpg, .jpeg, .webp, .png, .gif, .bmp, .docx, .xlsx, .pptx, .pdf, .csv, .xml"
+                                        label="DOCUMENTO DE ALMACEN" required :disabled="storageState" @change="enableButton"
+                                    ></v-file-input>
+                                     </v-col>
                                 <v-col cols="12" md="12"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
@@ -503,6 +509,9 @@ import axios from "axios";
 export default {
     data() {
         return {
+
+            documentoArchivo: '',
+
             //#region Almacenamiento
             idAlmacen: "",
             idSeccion: "",
@@ -645,6 +654,8 @@ export default {
 
         registrarAlm() {
             this.registrarAlmacen(this.nombreAlmacen, this.estado);
+            this.almacenarArchivo(this.documentoArchivo)
+            this.guardarDocumento(this.documentoArchivo.name,this.nombreAlmacen,"inv000","ACTIVO");
             this.closeModalAgregarAlma();
             this.listarAlmacenes();
         },
@@ -1160,6 +1171,67 @@ export default {
             this.$refs.form.reset()
         },
         //#endregion
+
+
+
+
+        registrarDocumento(){
+            this.almacenarArchivo(this.documentoArchivo)
+            this.guardarDocumento(this.documentoArchivo.name,this.nombreAlmacen,"inv000","ACTIVO");
+        },
+        async almacenarArchivo(documentoArchivo){
+
+            const formData = new FormData();
+            formData.append('inventory', documentoArchivo);
+            let me = this;
+                await axios
+                .post(
+                    "/uploadFile/",formData)
+                .then(function (response) {
+                    console.log(response);
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarDocumentos();
+                    me.listarArchivos();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+        },
+
+        async guardarDocumento(documentoArchivo,descripcionArchivo,codigoArchivo,estado){
+            const ext = documentoArchivo.split('.');
+            const date = new Date();
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear();
+            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+'.'+ext[1];
+            let me = this;
+                await axios
+                .post(
+                    "/documento/insertar/"+
+                    ext[0] +
+                    "," +
+                    nombreArchivo +
+                    "," +
+                    descripcionArchivo +
+                    "," +
+                    codigoArchivo +
+                    "," +
+                    estado)
+                .then(function (response) {
+                    console.log(response);
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarDocumento();
+                    me.listarArchivos();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+        },
       },
 };
 
