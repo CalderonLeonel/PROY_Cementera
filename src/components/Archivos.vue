@@ -62,7 +62,7 @@
                 </v-col>
             </v-row>
         </v-container>
-        <v-dialog v-model="agregarDocumento" max-width="1000px">
+        <v-dialog v-model="agregarDocumento" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>Agregar Documento</span>

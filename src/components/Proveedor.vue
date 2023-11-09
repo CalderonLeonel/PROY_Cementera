@@ -65,7 +65,7 @@
             </v-form>
 
         </div>
-        <v-dialog v-model="agregarProveedorModal" max-width="1000px">
+        <v-dialog v-model="agregarProveedorModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>Agregar Proveedor</span>
@@ -131,7 +131,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="confirmacionAnulacionProveedor" max-width="1000px">
+        <v-dialog v-model="confirmacionAnulacionProveedor" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>¿ESTAS SEGURO?</span>

@@ -152,7 +152,7 @@
  
          </div>
 
-         <v-dialog v-model="itemModal" max-width="900px">
+         <v-dialog v-model="itemModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE ITEMS ACTIVOS</span>
@@ -191,7 +191,7 @@
         </v-dialog>         
 
 
-         <v-dialog v-model="agregarInventarioModal" max-width="1000px">
+         <v-dialog v-model="agregarInventarioModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>AGREGAR TRANSACCIÓN</span>
@@ -268,7 +268,7 @@
         </v-dialog>
 
 
-        <v-dialog v-model="tipoModal" max-width="900px">
+        <v-dialog v-model="tipoModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE TIPO DE ITEMS ACTIVOS</span>
@@ -309,7 +309,7 @@
 
 
 
-         <v-dialog v-model="agregarItemModal" max-width="1000px">
+         <v-dialog v-model="agregarItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>AGREGAR ITEM</span>
@@ -383,7 +383,7 @@
             </v-card>
         </v-dialog>
 
-         <v-dialog v-model="agregarTipoItemModal" max-width="1000px">
+         <v-dialog v-model="agregarTipoItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>AGREGAR TIPO DE ITEM</span>
@@ -434,7 +434,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="confirmacionAnulacionTipo" max-width="1000px">
+        <v-dialog v-model="confirmacionAnulacionTipo" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>¿ESTAS SEGURO?</span>
@@ -464,7 +464,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="confirmacionAnulacionItem" max-width="1000px">
+        <v-dialog v-model="confirmacionAnulacionItem" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>¿ESTAS SEGURO?</span>
@@ -495,7 +495,7 @@
         </v-dialog>
 
 
-        <v-dialog v-model="confirmacionAnulacionInventario" max-width="1000px">
+        <v-dialog v-model="confirmacionAnulacionInventario" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>¿ESTAS SEGURO?</span>
