@@ -20,14 +20,19 @@
                     <v-row>
                         <v-col cols="12" md="12">
                             <v-text-field v-model="departamento" :counter="50" :rules="departamentoRules"
-                                @input="departamento = departamento.toUpperCase()" label="Nombre de la Departamento" required>
+                                @input="departamento = departamento.toUpperCase()" label="Nombre del Departamento" required>
                             </v-text-field>
-                            <v-text-field v-model="idUnidad" :counter="50" :rules="departamentoRules"
-                                @input="idUnidad = idUnidad.toUpperCase()" label="Unidad" required>
-                            </v-text-field>
-                            <v-text-field v-model="idArea" :counter="50" :rules="departamentoRules"
-                                @input="idArea = idArea.toUpperCase()" label="Area" required>
-                            </v-text-field>
+                            <v-select v-model="idUnidad" :items="datosUnidad" item-text="unid" item-value="idunid" label="Selecciona una unidad" 
+                                 prepend-icon="mdi-map" required>
+                            </v-select>
+                            <v-select v-model="idArea" :items="datosArea" item-text="nom" item-value="idarea" label="Selecciona una área"
+                                 prepend-icon="mdi-map" required>
+                            </v-select>
+<!--
+                            <v-select v-model="a" :items="unidadDatos" menu-props="auto" label="Select" hide-details
+                            prepend-icon="mdi-map" single-line
+                            ></v-select> -->
+
                         </v-col>
                         <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="6"></v-col>
@@ -191,6 +196,8 @@ export default {
 
         searchDepartamento: "",
         datosDepartamento: [],
+        datosUnidad: [],
+        datosArea: [],
 
         snackbarOK: false,
         mensajeSnackbar: "",
@@ -207,15 +214,14 @@ export default {
                 "EL NOMBRE DE LA DEPARTAMENTO DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
 
-
-
         headersDepartamento: [
-            { text: "DEPARTAMENTO", value: "dep", sortable: false },
+            { text: "DEPARTAMENTO", value: "nom", sortable: false },
             { text: "ESTADO", value: "act", sortable: false },
             { text: "FECHA CREACION", value: "credte", sortable: false },
             { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
             { text: "OPTIONS", value: "actions", sortable: false },
         ],
+
     }),
 
     created: function () {
@@ -265,20 +271,31 @@ export default {
 
         showAddDepartamento() {
             this.botonAct = 0;
+            if(this.datosUnidad.length == 0) this.listarUnidades();
+            if(this.datosArea.length == 0) this.listarAreas();
             this.departamentoModal = true;
         },
         showEditDepartamento(item) {
             this.botonAct = 1;
+            if(this.datosUnidad.length == 0) this.listarUnidades();
+            if(this.datosArea.length == 0) this.listarAreas();
             this.llenarCamposDepartamento(item);
             this.departamentoModal = true;
         },
 
         closeDepartamento() {
             this.departamentoModal = false;
+            this.limpiar();
         },
 
         llenarCamposDepartamento(item) {
-            this.departamento = item.dep;
+            this.departamento = item.nom;
+            console.log("AFTER UNID: "+this.idUnidad);
+            this.idUnidad = item.idunid;
+            console.log("BEFORE UNID: "+this.idUnidad);
+            console.log("BEFORE AR: "+this.idArea);
+            this.idArea = item.idarea;
+            console.log("BEFORE AR: "+this.idArea);
             this.idDepartamento = item.iddep;
         },
         
@@ -319,6 +336,8 @@ export default {
 
         limpiar() {
             this.departamento = "";
+            this.idUnidad = ""; this.datosUnidad = [];
+            this.idArea = ""; this.datosArea = [];
         },
 
         async listarDepartamentos(idDepartamento) {
@@ -330,6 +349,38 @@ export default {
                         me.datosDepartamento = [];
                     } else {
                         me.datosDepartamento = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        async listarUnidades(idUnidad) {
+            let me = this;
+            await axios
+                .get("/unidad/listarunidades/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosUnidad = [];
+                    } else {
+                        me.datosUnidad = response.data.resultado; //console.log(me.datosUnidad);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        async listarAreas(idArea) {
+            let me = this;
+            let auxArea = [{ items: "unid", value: "idunid"}];
+            await axios
+                .get("/area/listarareas/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+
+                        me.datosArea = [];
+                    } else {
+                        me.datosArea = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
