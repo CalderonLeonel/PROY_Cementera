@@ -3,45 +3,43 @@
 
         <div> <!-- Encabezado -->
             <v-alert dense color="#00A1B1" style="color: #ffffff">
-                <h5>CARGOS</h5>
+                <h5>DEPARTAMENTOS</h5>
             </v-alert>
         </div>
 
-        <v-dialog v-model="cargoModal" max-width="1080px"> <!-- Modal-->
+        <v-dialog v-model="departamentoModal" max-width="1080px"> <!-- Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nuevo Cargo</span>
-                    <span v-if="botonAct == 1">Editar Cargo</span>
+                    <span v-if="botonAct == 0">Nuevo Departamento</span>
+                    <span v-if="botonAct == 1">Editar Departamento</span>
                 </v-card-title>
                 <v-card-text>
 
-                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo Cargo / Editar Cargo -->
+                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nueva Departamento / Editar Departamento -->
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <v-text-field v-model="nombreCargo" :counter="50" :rules="nombreRules"
-                                @input="nombreCargo = nombreCargo.toUpperCase()" label="Nombre del Cargo" required>
+                            <v-text-field v-model="departamento" :counter="50" :rules="departamentoRules"
+                                @input="departamento = departamento.toUpperCase()" label="Nombre de la Departamento" required>
                             </v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="12">
-                            <v-text-field v-model="descripcion" :counter="200" :rules="descripcionRules" label="Descripcion"
-                                ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="12">
-                            <v-text-field v-model="salario" :counter="10" :rules="salarioRules" label="Salario"
-                                required></v-text-field>
+                            <v-text-field v-model="idUnidad" :counter="50" :rules="departamentoRules"
+                                @input="idUnidad = idUnidad.toUpperCase()" label="Unidad" required>
+                            </v-text-field>
+                            <v-text-field v-model="idArea" :counter="50" :rules="departamentoRules"
+                                @input="idArea = idArea.toUpperCase()" label="Area" required>
+                            </v-text-field>
                         </v-col>
                         <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
                                     <v-btn iconv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="actualizarCargo()" style="float: left"
+                                            @click="actualizarDepartamento()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                             ACTUALIZAR
                                         </v-btn>
                                         <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarCargo()" style="float: left" title="REGISTRAR ITEM">
+                                            @click="registrarDepartamento()" style="float: left" title="REGISTRAR ITEM">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
                                         </v-btn>
@@ -55,7 +53,7 @@
                                 </v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeCargo()" style="float: right" title="SALIR">
+                                        @click="closeDepartamento()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -97,26 +95,26 @@
         </v-dialog>
 
         <v-col cols="12" md="4">
-            <v-btn color="success" @click="showAddCargo()">+ Nuevo Cargo</v-btn>
+            <v-btn color="success" @click="showAddDepartamento()">+ Nueva Departamento</v-btn>
         </v-col>
         <div>
-            <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Cargos -->
+            <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Departamentos -->
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="12">
                             <v-col cols="12">
                                 <v-list-item>
                                     <v-list-item-title class="text-center">
-                                        <h5>CARGOS</h5>
+                                        <h5>DEPARTAMENTOS</h5>
                                     </v-list-item-title>
                                 </v-list-item>
 
                                 <v-card-title>
-                                    <v-text-field v-model="searchCargo" append-icon="mdi-magnify"
-                                        label="BUSCAR CARGOS" single-line hide-details></v-text-field>
+                                    <v-text-field v-model="searchDepartamento" append-icon="mdi-magnify"
+                                        label="BUSCAR DEPARTAMENTOS" single-line hide-details></v-text-field>
                                 </v-card-title>
 
-                                <v-data-table :headers="headersCargo" :items="datosCargo" :search="searchCargo"
+                                <v-data-table :headers="headersDepartamento" :items="datosDepartamento" :search="searchDepartamento"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.act`]="{ item }">
                                         <v-chip :color="getColor(item.act)" dark>
@@ -126,14 +124,14 @@
 
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
-                                            title="ACTIVAR CARGO">
+                                            title="ACTIVAR DEPARTAMENTO">
                                             mdi-check-circle-outline
                                         </v-icon>
                                         <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
-                                            title="DESACTIVAR CARGO">
+                                            title="DESACTIVAR DEPARTAMENTO">
                                             mdi-cancel
                                         </v-icon>
-                                        <v-icon small class="mr-2" @click="showEditCargo(item)"
+                                        <v-icon small class="mr-2" @click="showEditDepartamento(item)"
                                             title="EDITAR INFORMACION">
                                             mdi-pencil
                                         </v-icon>
@@ -182,16 +180,17 @@ import axios from "axios";
 
 export default {
     data: () => ({
-        idCargo: "",
-        nombreCargo: "",
-        descripcion: "",
-        salario: "",
+        idDepartamento: "",
+        departamento: "",
         estado: "",
         createDate: "",
         lastDate: "",
+        idArea: "",
+        idUnidad: "",
         valid: true,
 
-        searchCargo: "",
+        searchDepartamento: "",
+        datosDepartamento: [],
 
         snackbarOK: false,
         mensajeSnackbar: "",
@@ -199,34 +198,19 @@ export default {
         mensajeSnackbarError: "REGISTRO FALLIDO",
         timeout: 2000,
 
-        cargoModal: "",
+        departamentoModal: "",
         botonAct: 0,
-        nombreRules: [
-            (v) => !!v || "NOMBRE DE CARGO ES REQUERIDO",
+        departamentoRules: [
+            (v) => !!v || "NOMBRE DE DEPARTAMENTO ES REQUERIDO",
             (v) =>
                 (v && v.length <= 50) ||
-                "EL NOMBRE DE CARGO DEBE TENER 50 CARACTERES COMO MAXIMO",
+                "EL NOMBRE DE LA DEPARTAMENTO DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
 
-        descripcionRules: [
-            (v) =>
-                (v && v.length <= 200) ||
-                "LA DESCRIPCION DEBE TENER 200 CARACTERES COMO MAXIMO",
-        ],
 
-        salarioRules: [
-            (v) =>
-                (v && v.length <= 8) ||
-                "SALARIO DEBE TENER 8 CARACTERES COMO MAXIMO",
-        ],
 
-        //checkbox: false,
-        datosCargo: [],
-
-        headersCargo: [
-            { text: "CARGO", value: "carg", sortable: false },
-            { text: "DESCRIPCION", value: "descrip", sortable: false },
-            { text: "SALARIO", value: "salar", sortable: false },
+        headersDepartamento: [
+            { text: "DEPARTAMENTO", value: "dep", sortable: false },
             { text: "ESTADO", value: "act", sortable: false },
             { text: "FECHA CREACION", value: "credte", sortable: false },
             { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
@@ -236,22 +220,22 @@ export default {
 
     created: function () {
         //this.user = JSON.parse(sessionStorage.getItem("session"));
-        //this.idCargo = this.user.idCargo;
-        this.listarCargos();
+        //this.idDepartamento = this.user.idDepartamento;
+        this.listarDepartamentos();
     },
 
     methods: {
 
         activar(item) {
-            this.idCargo = item.idcarg;
-            this.activarcargo(this.idCargo);
+            this.idDepartamento = item.iddep;
+            this.activardepartamento(this.idDepartamento);
         },
-        async activarcargo(idCargo) {
+        async activardepartamento(idDepartamento) {
             let me = this;
             await axios
-                .post("/cargo/oncargo/" + this.idCargo).then(function (response) {
+                .post("/departamento/ondepartamento/" + this.idDepartamento).then(function (response) {
 
-                    me.listarCargos();
+                    me.listarDepartamentos();
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -259,15 +243,15 @@ export default {
 
         },
         desactivar(item) {
-            this.idCargo = item.idcarg;
-            this.desactivarcargo(this.idCargo);
+            this.idDepartamento = item.iddep;
+            this.desactivardepartamento(this.idDepartamento);
         },
-        async desactivarcargo(idCargo) {
+        async desactivardepartamento(idDepartamento) {
             let me = this;
             await axios
-                .post("/cargo/offcargo/" + this.idCargo).then(function (response) {
+                .post("/departamento/offdepartamento/" + this.idDepartamento).then(function (response) {
 
-                    me.listarCargos();
+                    me.listarDepartamentos();
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -279,63 +263,52 @@ export default {
             else return 'red'
         },
 
-        showAddCargo() {
+        showAddDepartamento() {
             this.botonAct = 0;
-            this.cargoModal = true;
+            this.departamentoModal = true;
         },
-        showEditCargo(item) {
+        showEditDepartamento(item) {
             this.botonAct = 1;
-            this.llenarCamposCargo(item);
-            this.cargoModal = true;
+            this.llenarCamposDepartamento(item);
+            this.departamentoModal = true;
         },
 
-        closeCargo() {
-            this.cargoModal = false;
+        closeDepartamento() {
+            this.departamentoModal = false;
         },
 
-        llenarCamposCargo(item) {
-            this.nombreCargo = item.carg;
-            this.descripcion = item.descrip;
-            this.salario = item.salar;
-            
-            this.idCargo = item.idcarg;
+        llenarCamposDepartamento(item) {
+            this.departamento = item.dep;
+            this.idDepartamento = item.iddep;
         },
         
-        actualizarCargo() {
-            this.actualizarcargo(
-                this.idCargo,
-                this.nombreCargo,
-                this.descripcion,
-                this.salario,
+        actualizarDepartamento() {
+            this.actualizardepartamento(
+                this.idDepartamento,
+                this.departamento
             );
         },
         
        
-        async actualizarcargo(
-            idCargo,
-            nombreCargo,
-            descripcion,
-            salario,
+        async actualizardepartamento(
+            idDepartamento,
+            departamento
         ) {
             let me = this;
 
             await axios
                 .post(
-                    "/cargo/editarcargo/" +
-                    this.idCargo +
+                    "/departamento/editardepartamento/" +
+                    this.idDepartamento +
                     "," +
-                    this.nombreCargo +
-                    "," +
-                    this.descripcion +
-                    "," +
-                    this.salario
+                    this.departamento
 
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarCargos(me.idCargo);
+                    me.listarDepartamentos(me.idDepartamento);
                     me.limpiar();
 
                 })
@@ -345,56 +318,54 @@ export default {
         },
 
         limpiar() {
-            this.nombreCargo = "";
-            this.descripcion = "";
-            this.salario = "";
+            this.departamento = "";
         },
 
-        async listarCargos(idCargo) {
+        async listarDepartamentos(idDepartamento) {
             let me = this;
             await axios
-                .get("/cargo/listarcargos/")
+                .get("/departamento/listardepartamentos/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
-                        me.datosCargo = [];
+                        me.datosDepartamento = [];
                     } else {
-                        me.datosCargo = response.data.resultado;
+                        me.datosDepartamento = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         },
-        registrarCargo() {
-            this.registrarCargo(
-                this.nombreCargo,
-                this.descripcion,
-                this.salario
+        registrarDepartamento() {
+            this.registrarDepartamento(
+                this.departamento,
+                this.idUnidad,
+                this.idArea
             );
         },
-        async registrarCargo(
-            nombreCargo,
-            descripcion,
-            salario
+        async registrarDepartamento(
+            departamento,
+            idUnidad,
+            idArea
         ) {
             let me = this;
 
             //let me=this;
             await axios
                 .post(
-                    "/cargo/addcargo/" +
-                    this.nombreCargo +
+                    "/departamento/adddepartamento/" +
+                    this.departamento +
                     "," +
-                    this.descripcion +
+                    this.idUnidad +
                     "," +
-                    this.salario
+                    this.idArea
 
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarCargos(me.idCargo);
+                    me.listarDepartamentos(me.idDepartamento);
                     me.limpiar();
                 })
                 .catch(function (error) {
