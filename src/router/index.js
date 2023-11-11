@@ -71,7 +71,11 @@ const routes = [
     name: "Empleados",
     component: require("../components/Empleado.vue").default,
   },
-
+  {
+    path: '/reportes',
+    name: 'Reportes',
+    component: require('../components/Reportes.vue').default
+  },
   {
     path: "/turnos",
     name: "Turnos",
