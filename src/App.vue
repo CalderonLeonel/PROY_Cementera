@@ -74,7 +74,6 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
-
         <v-list-group no-action color="#00A1B1" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
@@ -84,10 +83,25 @@
               <v-list-item-title>VENTAS</v-list-item-title>
             </v-list-item-content>
           </template>
-
           <v-list-item :to="{ name: 'Ventas' }">
             <v-list-item-title>
               <h6>VENTAS</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+        <v-list-group no-action color="#00A1B1" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-chart-bar</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>REPORTES</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'Reportes' }">
+            <v-list-item-title>
+              <h6>REPORTES</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
@@ -109,7 +123,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="#00A1B1" value="true">
+        <v-list-group no-action color="light-blue darken-4" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-package</v-icon>
@@ -268,12 +282,8 @@ export default {
   },
   computed: {
     logueado() {
-
       this.user = JSON.parse(sessionStorage.getItem('session'));
-
       return this.user;
-
-
     }
   }, created: function () {
 

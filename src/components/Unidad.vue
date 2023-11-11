@@ -3,45 +3,37 @@
 
         <div> <!-- Encabezado -->
             <v-alert dense color="#00A1B1" style="color: #ffffff">
-                <h5>CARGOS</h5>
+                <h5>UNIDADES</h5>
             </v-alert>
         </div>
 
-        <v-dialog v-model="cargoModal" max-width="1080px"> <!-- Modal-->
+        <v-dialog v-model="unidadModal" max-width="1080px"> <!-- Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nuevo Cargo</span>
-                    <span v-if="botonAct == 1">Editar Cargo</span>
+                    <span v-if="botonAct == 0">Nuevo Unidad</span>
+                    <span v-if="botonAct == 1">Editar Unidad</span>
                 </v-card-title>
                 <v-card-text>
 
-                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo Cargo / Editar Cargo -->
+                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nueva Unidad / Editar Unidad -->
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <v-text-field v-model="nombreCargo" :counter="50" :rules="nombreRules"
-                                @input="nombreCargo = nombreCargo.toUpperCase()" label="Nombre del Cargo" required>
+                            <v-text-field v-model="unidad" :counter="50" :rules="nombreRules"
+                                @input="unidad = unidad.toUpperCase()" label="Nombre de la Unidad" required>
                             </v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="12">
-                            <v-text-field v-model="descripcion" :counter="200" :rules="descripcionRules" label="Descripcion"
-                                ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="12">
-                            <v-text-field v-model="salario" :counter="10" :rules="salarioRules" label="Salario"
-                                required></v-text-field>
                         </v-col>
                         <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
                                     <v-btn iconv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="actualizarCargo()" style="float: left"
+                                            @click="actualizarUnidad()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                             ACTUALIZAR
                                         </v-btn>
                                         <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarCargo()" style="float: left" title="REGISTRAR ITEM">
+                                            @click="registrarUnidad()" style="float: left" title="REGISTRAR ITEM">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
                                         </v-btn>
@@ -55,7 +47,7 @@
                                 </v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeCargo()" style="float: right" title="SALIR">
+                                        @click="closeUnidad()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -97,26 +89,26 @@
         </v-dialog>
 
         <v-col cols="12" md="4">
-            <v-btn color="success" @click="showAddCargo()">+ Nuevo Cargo</v-btn>
+            <v-btn color="success" @click="showAddUnidad()">+ Nueva Unidad</v-btn>
         </v-col>
         <div>
-            <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Cargos -->
+            <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Unidades -->
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="12">
                             <v-col cols="12">
                                 <v-list-item>
                                     <v-list-item-title class="text-center">
-                                        <h5>CARGOS</h5>
+                                        <h5>UNIDADES</h5>
                                     </v-list-item-title>
                                 </v-list-item>
 
                                 <v-card-title>
-                                    <v-text-field v-model="searchCargo" append-icon="mdi-magnify"
-                                        label="BUSCAR CARGOS" single-line hide-details></v-text-field>
+                                    <v-text-field v-model="searchUnidad" append-icon="mdi-magnify"
+                                        label="BUSCAR UNIDADES" single-line hide-details></v-text-field>
                                 </v-card-title>
 
-                                <v-data-table :headers="headersCargo" :items="datosCargo" :search="searchCargo"
+                                <v-data-table :headers="headersUnidad" :items="datosUnidad" :search="searchUnidad"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.act`]="{ item }">
                                         <v-chip :color="getColor(item.act)" dark>
@@ -126,14 +118,14 @@
 
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
-                                            title="ACTIVAR CARGO">
+                                            title="ACTIVAR UNIDAD">
                                             mdi-check-circle-outline
                                         </v-icon>
                                         <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
-                                            title="DESACTIVAR CARGO">
+                                            title="DESACTIVAR UNIDAD">
                                             mdi-cancel
                                         </v-icon>
-                                        <v-icon small class="mr-2" @click="showEditCargo(item)"
+                                        <v-icon small class="mr-2" @click="showEditUnidad(item)"
                                             title="EDITAR INFORMACION">
                                             mdi-pencil
                                         </v-icon>
@@ -182,16 +174,15 @@ import axios from "axios";
 
 export default {
     data: () => ({
-        idCargo: "",
-        nombreCargo: "",
-        descripcion: "",
-        salario: "",
+        idUnidad: "",
+        unidad: "",
         estado: "",
         createDate: "",
         lastDate: "",
         valid: true,
 
-        searchCargo: "",
+        searchUnidad: "",
+        datosUnidad: [],
 
         snackbarOK: false,
         mensajeSnackbar: "",
@@ -199,34 +190,19 @@ export default {
         mensajeSnackbarError: "REGISTRO FALLIDO",
         timeout: 2000,
 
-        cargoModal: "",
+        unidadModal: "",
         botonAct: 0,
         nombreRules: [
-            (v) => !!v || "NOMBRE DE CARGO ES REQUERIDO",
+            (v) => !!v || "NOMBRE DE UNIDAD ES REQUERIDO",
             (v) =>
                 (v && v.length <= 50) ||
-                "EL NOMBRE DE CARGO DEBE TENER 50 CARACTERES COMO MAXIMO",
+                "EL NOMBRE DE LA UNIDAD DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
 
-        descripcionRules: [
-            (v) =>
-                (v && v.length <= 200) ||
-                "LA DESCRIPCION DEBE TENER 200 CARACTERES COMO MAXIMO",
-        ],
 
-        salarioRules: [
-            (v) =>
-                (v && v.length <= 8) ||
-                "SALARIO DEBE TENER 8 CARACTERES COMO MAXIMO",
-        ],
 
-        //checkbox: false,
-        datosCargo: [],
-
-        headersCargo: [
-            { text: "CARGO", value: "carg", sortable: false },
-            { text: "DESCRIPCION", value: "descrip", sortable: false },
-            { text: "SALARIO", value: "salar", sortable: false },
+        headersUnidad: [
+            { text: "UNIDAD", value: "unid", sortable: false },
             { text: "ESTADO", value: "act", sortable: false },
             { text: "FECHA CREACION", value: "credte", sortable: false },
             { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
@@ -236,22 +212,22 @@ export default {
 
     created: function () {
         //this.user = JSON.parse(sessionStorage.getItem("session"));
-        //this.idCargo = this.user.idCargo;
-        this.listarCargos();
+        //this.idUnidad = this.user.idUnidad;
+        this.listarUnidades();
     },
 
     methods: {
 
         activar(item) {
-            this.idCargo = item.idcarg;
-            this.activarcargo(this.idCargo);
+            this.idUnidad = item.idunid;
+            this.activarunidad(this.idUnidad);
         },
-        async activarcargo(idCargo) {
+        async activarunidad(idUnidad) {
             let me = this;
             await axios
-                .post("/cargo/oncargo/" + this.idCargo).then(function (response) {
+                .post("/unidad/onunidad/" + this.idUnidad).then(function (response) {
 
-                    me.listarCargos();
+                    me.listarUnidades();
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -259,15 +235,15 @@ export default {
 
         },
         desactivar(item) {
-            this.idCargo = item.idcarg;
-            this.desactivarcargo(this.idCargo);
+            this.idUnidad = item.idunid;
+            this.desactivarunidad(this.idUnidad);
         },
-        async desactivarcargo(idCargo) {
+        async desactivarunidad(idUnidad) {
             let me = this;
             await axios
-                .post("/cargo/offcargo/" + this.idCargo).then(function (response) {
+                .post("/unidad/offunidad/" + this.idUnidad).then(function (response) {
 
-                    me.listarCargos();
+                    me.listarUnidades();
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -279,63 +255,52 @@ export default {
             else return 'red'
         },
 
-        showAddCargo() {
+        showAddUnidad() {
             this.botonAct = 0;
-            this.cargoModal = true;
+            this.unidadModal = true;
         },
-        showEditCargo(item) {
+        showEditUnidad(item) {
             this.botonAct = 1;
-            this.llenarCamposCargo(item);
-            this.cargoModal = true;
+            this.llenarCamposUnidad(item);
+            this.unidadModal = true;
         },
 
-        closeCargo() {
-            this.cargoModal = false;
+        closeUnidad() {
+            this.unidadModal = false;
         },
 
-        llenarCamposCargo(item) {
-            this.nombreCargo = item.carg;
-            this.descripcion = item.descrip;
-            this.salario = item.salar;
-            
-            this.idCargo = item.idcarg;
+        llenarCamposUnidad(item) {
+            this.unidad = item.unid;
+            this.idUnidad = item.idunid;
         },
         
-        actualizarCargo() {
-            this.actualizarcargo(
-                this.idCargo,
-                this.nombreCargo,
-                this.descripcion,
-                this.salario,
+        actualizarUnidad() {
+            this.actualizarunidad(
+                this.idUnidad,
+                this.unidad
             );
         },
         
        
-        async actualizarcargo(
-            idCargo,
-            nombreCargo,
-            descripcion,
-            salario,
+        async actualizarunidad(
+            idUnidad,
+            unidad
         ) {
             let me = this;
 
             await axios
                 .post(
-                    "/cargo/editarcargo/" +
-                    this.idCargo +
+                    "/unidad/editarunidad/" +
+                    this.idUnidad +
                     "," +
-                    this.nombreCargo +
-                    "," +
-                    this.descripcion +
-                    "," +
-                    this.salario
+                    this.unidad
 
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarCargos(me.idCargo);
+                    me.listarUnidades(me.idUnidad);
                     me.limpiar();
 
                 })
@@ -345,56 +310,46 @@ export default {
         },
 
         limpiar() {
-            this.nombreCargo = "";
-            this.descripcion = "";
-            this.salario = "";
+            this.unidad = "";
         },
 
-        async listarCargos(idCargo) {
+        async listarUnidades(idUnidad) {
             let me = this;
             await axios
-                .get("/cargo/listarcargos/")
+                .get("/unidad/listarunidades/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
-                        me.datosCargo = [];
+                        me.datosUnidad = [];
                     } else {
-                        me.datosCargo = response.data.resultado;
+                        me.datosUnidad = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         },
-        registrarCargo() {
-            this.registrarCargo(
-                this.nombreCargo,
-                this.descripcion,
-                this.salario
+        registrarUnidad() {
+            this.registrarUnidad(
+                this.unidad
             );
         },
-        async registrarCargo(
-            nombreCargo,
-            descripcion,
-            salario
+        async registrarUnidad(
+            unidad
         ) {
             let me = this;
 
             //let me=this;
             await axios
                 .post(
-                    "/cargo/addcargo/" +
-                    this.nombreCargo +
-                    "," +
-                    this.descripcion +
-                    "," +
-                    this.salario
+                    "/unidad/addunidad/" +
+                    this.unidad
 
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarCargos(me.idCargo);
+                    me.listarUnidades(me.idUnidad);
                     me.limpiar();
                 })
                 .catch(function (error) {
