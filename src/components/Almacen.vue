@@ -147,6 +147,27 @@
                         </v-col>
                     </v-row>
 
+                    <v-row>
+                        <v-col cols="12" md="12"></v-col>
+                        <v-col cols="12" md="12">
+                               <v-text-field v-model="searchDetalleAlmacenamiento" append-icon="mdi-magnify" label="Buscar Almacen"
+                                    single-line hide-details></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="12">
+                            <v-data-table :headers="headerAlmacen" :items="datosAlmacen" :search="searchDetalleAlmacenamiento"
+                                :items-per-page="5" class="elevation-2">
+                                <template #[`item.actions`]="{ item }">
+                                    <v-icon x-large color="primary" class="mr-2" @click="mostrarDetalleAlmacene(item)"
+                                        title="VER ALMACENES">
+                                        mdi-eye
+                                </v-icon>        
+                                </template>
+                                
+                            </v-data-table>
+                        </v-col>
+                        <v-col cols="12" md="12"></v-col>
+                    </v-row>
+
                 </v-container>
             </v-form>
 
@@ -501,6 +522,87 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+
+
+        <v-dialog
+            v-model="detalleAlmacen"
+            persistent :overlay="false"
+            max-width="900px"
+            transition="dialog-transition"
+        >
+        <v-btn color="green" dark x-big  @click="mostrarDetalleSeccion()">
+                        <v-icon dark> mdi-eye </v-icon> Ver
+        </v-btn>
+                <v-text-field v-model="searchDetalleAlmacen" append-icon="mdi-magnify" label="BUSCAR SECCION"
+                                    single-line hide-details></v-text-field>
+            <v-data-table :headers="headerSeccion" :items="datosDetalleAlmacen" :search="searchDetalleAlmacen"
+                :items-per-page="5" class="elevation-1" >
+            </v-data-table>
+            <v-card>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red" dark x-big  @click="closeDetalleAlmacen()">
+                        <v-icon dark> mdi-close-circle-outline </v-icon> Salir
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+
+        <v-dialog
+            v-model="detalleSeccion"
+            persistent :overlay="false"
+            max-width="900px"
+            transition="dialog-transition"
+        >
+                <v-text-field v-model="searchDetalleSeccion" append-icon="mdi-magnify" label="BUSCAR STAND"
+                                    single-line hide-details></v-text-field>
+        <v-btn color="green" dark x-big  @click="mostrarDetalleStand()">
+                        <v-icon dark> mdi-eye </v-icon> Ver
+        </v-btn>
+            <v-data-table :headers="headerStand" :items="datosDetalleSeccion" :search="searchDetalleSeccion"
+                :items-per-page="5" class="elevation-1" >
+            </v-data-table>
+            <v-card>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red" dark x-big  @click="closeDetalleSeccion()">
+                        <v-icon dark> mdi-arrow-left-bold-circle-outline </v-icon> Atras
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+
+        <v-dialog
+            v-model="detalleStand"
+            persistent :overlay="false"
+            max-width="900px"
+            transition="dialog-transition"
+        >
+                <v-text-field v-model="searchDetalleStand" append-icon="mdi-magnify" label="BUSCAR ITEM"
+                                    single-line hide-details></v-text-field>
+            <v-data-table :headers="headerItem" :items="datosDetalleStand" :search="searchDetalleStand"
+                :items-per-page="5" class="elevation-1" >
+            </v-data-table>
+            <v-card>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red" dark x-big  @click="closeDetalleStand()">
+                        <v-icon dark> mdi-arrow-left-bold-circle-outline </v-icon> Atras
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+
+
+
+
+
     </v-card>
 
 </template>
@@ -598,6 +700,14 @@ export default {
             botonActAl: 0,
             botonActSe: 0,
             botonActSt: 0,
+
+            searchDetalleAlmacenamiento: '',
+            detalleAlmacen : false,
+            searchDetalleAlmacen: '',
+            detalleSeccion : false,
+            searchDetalleSeccion: '',
+            detalleStand : false,
+            searchDetalleStand: '',
             //#endregion
         }
     },
@@ -1165,6 +1275,37 @@ export default {
 
         closeSeccionModal(){
             this.seccionModal = false;
+        },
+
+
+        mostrarDetalleAlmacene(item){
+            this.detalleAlmacen = true;
+        },
+
+
+        closeDetalleAlmacen(){
+            this.detalleAlmacen = false;
+
+        },
+
+
+        mostrarDetalleSeccion(item){
+            this.detalleSeccion = true;
+
+        },
+
+
+        closeDetalleSeccion(){
+            this.detalleSeccion = false;
+        },
+
+        mostrarDetalleStand(item){
+            this.detalleStand = true;
+        },
+
+
+        closeDetalleStand(){
+            this.detalleStand = false;
         },
 
         limpiar () {
