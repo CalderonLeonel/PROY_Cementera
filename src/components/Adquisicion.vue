@@ -1,5 +1,15 @@
 <template>
    <v-card elevation="5" outlined>
+        <v-alert         
+                type="error"
+                color="red darken-2"
+                icon="mdi-alert"
+                >
+                <div class="text-h6">
+                    SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
+                </div>
+                POR FAVOR, COTICE UNA ADQUISICION PARA TENER EXISTENCIAS DE <strong>${nombreitem}</strong> NECESARIAS PARA EL FUNCIONAMIENTO DE LA FABRICA 
+        </v-alert>
         <div>
             <v-alert dense style="color: #ffffff;" color="purple">
                 <h3>COTIZACIONES</h3>
@@ -523,7 +533,7 @@
         </v-card>
         <v-card>
                 <v-data-table :headers="headerCotizacionItem" :items="datosDetalleCotizacion"
-                    :items-per-page="5" class="elevation-1" >
+                    :items-per-page="5" class="elevation-1">
                 </v-data-table>
         </v-card>
         <v-card>
@@ -754,6 +764,10 @@ export default {
             let fechaFormateada =  anio + '-' + mes + '-' + dia;
 
             return fechaFormateada;
+        },
+
+        getTableData(){
+            return this.datosDetalleCotizacion;
         },
 
         getColor(est) {
@@ -1034,10 +1048,10 @@ export default {
             .then(function (response) {
               if (response.data.resultado == null) {
                 me.datosDetalleCotizacion = [];
-                console.log(response.data);
+                //console.log(response.data);
               } else {
-                console.log(response.data);
                 me.datosDetalleCotizacion = response.data.resultado;
+                //console.log(response.data);
               }
             })
             .catch(function (error) {
@@ -1331,7 +1345,7 @@ export default {
             this.detalleCotizacionDialog = false;
         },
 
-        generatePDF(item){
+        async generatePDF(item){
             this.idCotizacion = item.idCotizacion;
             this.listarDetallesCotizacion(this.idCotizacion);
 
@@ -1351,18 +1365,20 @@ export default {
             const header1 = this.header1.map(column => column.text);
             const header2 = this.header2.map(column => column.text);
             const data1 = item => this.header1.map(header => item[header.value]);
-            const data2 = this.datosDetalleCotizacion;
-            /*doc.autoTable({
+            const data2 = JSON.parse(JSON.stringify(this.datosDetalleCotizacion));
+            console.log('datos')
+            console.log(JSON.parse(JSON.stringify(this.datosDetalleCotizacion)));
+            doc.autoTable({
                 head: [header1],
-                body: data1,
+                body: [],
                 startY: 60,
             });
             let finalY = doc.previousAutoTable.finalY;
             doc.autoTable({
                 head: [header2],
-                body: data2,
+                body: [data2],
                 startY: finalY+20,
-            });*/
+            });
 
             let nombreArchivo = item.nombreCotizacion+'.pdf';
             doc.save(nombreArchivo);

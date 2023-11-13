@@ -1,5 +1,16 @@
 <template>
    <v-card elevation="5" outlined>
+        <v-alert  
+                type="error"
+                color="red darken-2"
+                
+                icon="mdi-alert"
+                >
+                <div class="text-h6">
+                    SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
+                </div>
+                POR FAVOR, NOTIFIQUE A ADQUISICIONES PARA ADQUIRIR EXISTENCIAS DE <strong>${nombreitem}</strong>   
+            </v-alert>
         <div>
             <v-alert dense style="color: #ffffff;" color="indigo">
                 <h3>ALMACENES</h3>
