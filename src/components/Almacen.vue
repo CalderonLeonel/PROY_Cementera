@@ -543,6 +543,12 @@
            
             <v-data-table :headers="headerSeccion" :items="datosDetalleAlmacen" :search="searchDetalleAlmacen"
                 :items-per-page="5" class="elevation-1" >
+                    <template #[`item.actions`]="{ item }">
+                        <v-icon x-large color="primary" class="mr-2" @click="mostrarDetalleSeccion(item)"
+                                        title="VER SECCIONES">
+                             mdi-eye
+                        </v-icon>        
+                    </template>
             </v-data-table>
         </v-card>
             <v-card>
@@ -574,6 +580,12 @@
         </v-card>
             <v-data-table :headers="headerStand" :items="datosDetalleSeccion" :search="searchDetalleSeccion"
                 :items-per-page="5" class="elevation-1" >
+                <template #[`item.actions`]="{ item }">
+                        <v-icon x-large color="primary" class="mr-2" @click="mostrarDetalleStand(item)"
+                                        title="VER STANDS">
+                             mdi-eye
+                        </v-icon>        
+                </template>
             </v-data-table>
             <v-card>
                 <v-card-actions>
@@ -1333,7 +1345,7 @@ export default {
         async listarDetallesSeccion(idSeccion) {
           let me = this;
           await axios
-            .get("/seccion/listarstandseccion/"+idSeccion)
+            .get("/stand/listarstandseccion/"+idSeccion)
             .then(function (response) {
               if (response.data.resultado == null) {
                 me.datosDetalleSeccion = [];
