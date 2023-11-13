@@ -157,7 +157,7 @@
                             <v-data-table :headers="headerAlmacen" :items="datosAlmacen" :search="searchDetalleAlmacenamiento"
                                 :items-per-page="5" class="elevation-2">
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon x-large color="primary" class="mr-2" @click="mostrarDetalleAlmacene(item)"
+                                    <v-icon x-large color="primary" class="mr-2" @click="mostrarDetalleAlmacen(item)"
                                         title="VER ALMACENES">
                                         mdi-eye
                                 </v-icon>        
@@ -530,14 +530,21 @@
             max-width="900px"
             transition="dialog-transition"
         >
-        <v-btn color="green" dark x-big  @click="mostrarDetalleSeccion()">
-                        <v-icon dark> mdi-eye </v-icon> Ver
-        </v-btn>
+        <v-card>
+            <v-card-title primary-title>
+                SECCIONES
+            </v-card-title>
+            <v-card-actions>
                 <v-text-field v-model="searchDetalleAlmacen" append-icon="mdi-magnify" label="BUSCAR SECCION"
                                     single-line hide-details></v-text-field>
+            </v-card-actions>
+        </v-card>
+        <v-card>
+           
             <v-data-table :headers="headerSeccion" :items="datosDetalleAlmacen" :search="searchDetalleAlmacen"
                 :items-per-page="5" class="elevation-1" >
             </v-data-table>
+        </v-card>
             <v-card>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -556,11 +563,15 @@
             max-width="900px"
             transition="dialog-transition"
         >
+        <v-card>
+            <v-card-title primary-title>
+                STANDS
+            </v-card-title>
+            <v-card-actions>
                 <v-text-field v-model="searchDetalleSeccion" append-icon="mdi-magnify" label="BUSCAR STAND"
                                     single-line hide-details></v-text-field>
-        <v-btn color="green" dark x-big  @click="mostrarDetalleStand()">
-                        <v-icon dark> mdi-eye </v-icon> Ver
-        </v-btn>
+            </v-card-actions>
+        </v-card>
             <v-data-table :headers="headerStand" :items="datosDetalleSeccion" :search="searchDetalleSeccion"
                 :items-per-page="5" class="elevation-1" >
             </v-data-table>
@@ -582,8 +593,16 @@
             max-width="900px"
             transition="dialog-transition"
         >
+        <v-card>
+            <v-card-title primary-title>
+                ITEMS
+            </v-card-title>
+            <v-card-actions>
                 <v-text-field v-model="searchDetalleStand" append-icon="mdi-magnify" label="BUSCAR ITEM"
                                     single-line hide-details></v-text-field>
+            </v-card-actions>
+        </v-card>
+               
             <v-data-table :headers="headerItem" :items="datosDetalleStand" :search="searchDetalleStand"
                 :items-per-page="5" class="elevation-1" >
             </v-data-table>
@@ -702,10 +721,13 @@ export default {
             botonActSt: 0,
 
             searchDetalleAlmacenamiento: '',
+            datosDetalleAlmacen: [],
             detalleAlmacen : false,
             searchDetalleAlmacen: '',
+            datosDetalleSeccion: [],
             detalleSeccion : false,
             searchDetalleSeccion: '',
+            datosDetalleStand: [],
             detalleStand : false,
             searchDetalleStand: '',
             //#endregion
@@ -1278,7 +1300,26 @@ export default {
         },
 
 
-        mostrarDetalleAlmacene(item){
+        async listarDetallesAlmacen(idAlmacen) {
+          let me = this;
+          await axios
+            .get("/seccion/listarseccionalmacen/"+idAlmacen)
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosDetalleAlmacen = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosDetalleAlmacen = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
+        mostrarDetalleAlmacen(item){
+            this.listarDetallesAlmacen(item.idalmacen)
             this.detalleAlmacen = true;
         },
 
@@ -1289,7 +1330,28 @@ export default {
         },
 
 
+        async listarDetallesSeccion(idSeccion) {
+          let me = this;
+          await axios
+            .get("/seccion/listarstandseccion/"+idSeccion)
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosDetalleSeccion = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosDetalleSeccion = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
+
+
         mostrarDetalleSeccion(item){
+            this.listarDetallesSeccion(item.idseccion);
             this.detalleSeccion = true;
 
         },
@@ -1298,8 +1360,28 @@ export default {
         closeDetalleSeccion(){
             this.detalleSeccion = false;
         },
+        
+
+        async listarDetallesStand(idStand) {
+          let me = this;
+          await axios
+            .get("/inventario/listarstanditem/"+idStand)
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosDetalleStand = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosDetalleStand = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
 
         mostrarDetalleStand(item){
+            this.listarDetallesStand(item.idstand)
             this.detalleStand = true;
         },
 
