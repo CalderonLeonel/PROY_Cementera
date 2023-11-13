@@ -516,19 +516,25 @@
             max-width="900px"
             transition="dialog-transition"
         >
-            
-            <v-data-table :headers="headerCotizacionItem" :items="datosDetalleCotizacion"
-                :items-per-page="5" class="elevation-1" >
-            </v-data-table>
-            <v-card>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="red" dark x-big  @click="closeDetalleCotizacion()">
-                        <v-icon dark> mdi-close-circle-outline </v-icon> Salir
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                </v-card-actions>
-            </v-card>
+        <v-card>
+            <v-card-title primary-title>
+                CONTENIDO
+            </v-card-title>
+        </v-card>
+        <v-card>
+                <v-data-table :headers="headerCotizacionItem" :items="datosDetalleCotizacion"
+                    :items-per-page="5" class="elevation-1" >
+                </v-data-table>
+        </v-card>
+        <v-card>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="red" dark x-big  @click="closeDetalleCotizacion()">
+                    <v-icon dark> mdi-close-circle-outline </v-icon> Salir
+                </v-btn>
+                <v-spacer></v-spacer>
+            </v-card-actions>
+        </v-card>
         </v-dialog>
 
 
