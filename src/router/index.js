@@ -97,6 +97,11 @@ const routes = [
     component: require("../components/Departamento.vue").default,
   },
   {
+    path: "/usuarios",
+    name: "Usuarios",
+    component: require("../components/Usuario.vue").default,
+  },
+  {
     path: "proveedor",
     name: "Proveedor",
     component: () => import("@/components/Proveedor.vue"),

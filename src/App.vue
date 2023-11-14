@@ -167,6 +167,21 @@
         <v-list-group no-action color="light-blue darken-4" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>USUARIOS</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item :to="{ name: 'Usuarios' }">
+            <v-list-item-title>
+              <h6>CUENTAS</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+        <v-list-group no-action color="light-blue darken-4" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
               <v-icon>
                 mdi-receipt-text
               </v-icon>

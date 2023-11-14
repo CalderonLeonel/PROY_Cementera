@@ -23,15 +23,11 @@
                                 @input="departamento = departamento.toUpperCase()" label="Nombre del Departamento" required>
                             </v-text-field>
                             <v-select v-model="idUnidad" :items="datosUnidad" item-text="unid" item-value="idunid" label="Selecciona una unidad" 
-                                 prepend-icon="mdi-map" required>
+                                 prepend-icon="mdi-map" :rules="unidadRules" required>
                             </v-select>
                             <v-select v-model="idArea" :items="datosArea" item-text="nom" item-value="idarea" label="Selecciona una área"
-                                 prepend-icon="mdi-map" required>
+                                 prepend-icon="mdi-map" :rules="areaRules" required>
                             </v-select>
-<!--
-                            <v-select v-model="a" :items="unidadDatos" menu-props="auto" label="Select" hide-details
-                            prepend-icon="mdi-map" single-line
-                            ></v-select> -->
 
                         </v-col>
                         <v-col cols="12" md="8"> </v-col>
@@ -213,13 +209,22 @@ export default {
                 (v && v.length <= 50) ||
                 "EL NOMBRE DE LA DEPARTAMENTO DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
+        unidadRules: [
+            (v) => !!v || "ASIGNAR UNA UNIDAD ES REQUERIDO",
+
+        ],
+        areaRules: [
+            (v) => !!v || "ASIGNAR UN AREA ES REQUERIDO",
+        ],
 
         headersDepartamento: [
             { text: "DEPARTAMENTO", value: "nom", sortable: false },
+            { text: "UNIDAD", value: "unid", sortable: false },
+            { text: "AREA", value: "area", sortable: false },
             { text: "ESTADO", value: "act", sortable: false },
             { text: "FECHA CREACION", value: "credte", sortable: false },
             { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
-            { text: "OPTIONS", value: "actions", sortable: false },
+            { text: "OPCIONES", value: "actions", sortable: false },
         ],
 
     }),
@@ -290,26 +295,26 @@ export default {
 
         llenarCamposDepartamento(item) {
             this.departamento = item.nom;
-            console.log("AFTER UNID: "+this.idUnidad);
             this.idUnidad = item.idunid;
-            console.log("BEFORE UNID: "+this.idUnidad);
-            console.log("BEFORE AR: "+this.idArea);
             this.idArea = item.idarea;
-            console.log("BEFORE AR: "+this.idArea);
             this.idDepartamento = item.iddep;
         },
         
         actualizarDepartamento() {
             this.actualizardepartamento(
                 this.idDepartamento,
-                this.departamento
+                this.departamento,
+                this.idunid,
+                this.idarea
             );
         },
         
        
         async actualizardepartamento(
             idDepartamento,
-            departamento
+            departamento,
+            idUnidad,
+            idArea
         ) {
             let me = this;
 
@@ -318,7 +323,11 @@ export default {
                     "/departamento/editardepartamento/" +
                     this.idDepartamento +
                     "," +
-                    this.departamento
+                    this.departamento +
+                    "," +
+                    this.idUnidad +
+                    "," +
+                    this.idArea
 
                 )
                 .then(function (response) {
@@ -327,6 +336,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarDepartamentos(me.idDepartamento);
                     me.limpiar();
+                    me.closeDepartamento();
 
                 })
                 .catch(function (error) {
@@ -363,7 +373,8 @@ export default {
                     if (response.data.resultado == null) {
                         me.datosUnidad = [];
                     } else {
-                        me.datosUnidad = response.data.resultado; //console.log(me.datosUnidad);
+                        me.datosUnidad = response.data.resultado;
+                        console.log("datosUnidad: "+JSON.stringify(me.datosUnidad.idunid))
                     }
                 })
                 .catch(function (error) {
@@ -372,7 +383,6 @@ export default {
         },
         async listarAreas(idArea) {
             let me = this;
-            let auxArea = [{ items: "unid", value: "idunid"}];
             await axios
                 .get("/area/listarareas/")
                 .then(function (response) {
@@ -400,8 +410,6 @@ export default {
             idArea
         ) {
             let me = this;
-
-            //let me=this;
             await axios
                 .post(
                     "/departamento/adddepartamento/" +
@@ -418,6 +426,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarDepartamentos(me.idDepartamento);
                     me.limpiar();
+                    me.closeDepartamento();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
