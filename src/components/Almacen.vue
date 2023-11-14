@@ -1,5 +1,29 @@
 <template>
    <v-card elevation="5" outlined>
+        <v-alert v-if="existencias==false"  
+                type="error"
+                color="red darken-2"
+                dense
+                prominent
+                icon="mdi-alert"
+                >
+                <div class="text-h6">
+                    SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
+                </div>
+                POR FAVOR, NOTIFIQUE A ADQUISICIONES PARA ADQUIRIR EXISTENCIAS DE <strong>${nombreitem}</strong>   
+        </v-alert>
+        <v-alert v-if="existencias==true"          
+                type="success"
+                color="green darken-2"
+                dismissible
+                dense
+                prominent
+                >
+                <div class="text-h5">
+                    SE TIENE LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
+                </div>
+               
+        </v-alert>
         <div>
             <v-alert dense style="color: #ffffff;" color="indigo">
                 <h3>ALMACENES</h3>
@@ -145,6 +169,27 @@
 
                             </v-data-table>
                         </v-col>
+                    </v-row>
+
+                    <v-row>
+                        <v-col cols="12" md="12"></v-col>
+                        <v-col cols="12" md="12">
+                               <v-text-field v-model="searchDetalleAlmacenamiento" append-icon="mdi-magnify" label="Buscar Almacen"
+                                    single-line hide-details></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="12">
+                            <v-data-table :headers="headerAlmacen" :items="datosAlmacen" :search="searchDetalleAlmacenamiento"
+                                :items-per-page="5" class="elevation-2">
+                                <template #[`item.actions`]="{ item }">
+                                    <v-icon x-large color="primary" class="mr-2" @click="mostrarDetalleAlmacen(item)"
+                                        title="VER ALMACENES">
+                                        mdi-eye
+                                </v-icon>        
+                                </template>
+                                
+                            </v-data-table>
+                        </v-col>
+                        <v-col cols="12" md="12"></v-col>
                     </v-row>
 
                 </v-container>
@@ -501,6 +546,118 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+
+
+        <v-dialog
+            v-model="detalleAlmacen"
+            persistent :overlay="false"
+            max-width="900px"
+            transition="dialog-transition"
+        >
+        <v-card>
+            <v-card-title primary-title>
+                SECCIONES
+            </v-card-title>
+            <v-card-actions>
+                <v-text-field v-model="searchDetalleAlmacen" append-icon="mdi-magnify" label="BUSCAR SECCION"
+                                    single-line hide-details></v-text-field>
+            </v-card-actions>
+        </v-card>
+        <v-card>
+           
+            <v-data-table :headers="headerSeccion" :items="datosDetalleAlmacen" :search="searchDetalleAlmacen"
+                :items-per-page="5" class="elevation-1" >
+                    <template #[`item.actions`]="{ item }">
+                        <v-icon x-large color="primary" class="mr-2" @click="mostrarDetalleSeccion(item)"
+                                        title="VER SECCIONES">
+                             mdi-eye
+                        </v-icon>        
+                    </template>
+            </v-data-table>
+        </v-card>
+            <v-card>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red" dark x-big  @click="closeDetalleAlmacen()">
+                        <v-icon dark> mdi-close-circle-outline </v-icon> Salir
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+
+        <v-dialog
+            v-model="detalleSeccion"
+            persistent :overlay="false"
+            max-width="900px"
+            transition="dialog-transition"
+        >
+        <v-card>
+            <v-card-title primary-title>
+                STANDS
+            </v-card-title>
+            <v-card-actions>
+                <v-text-field v-model="searchDetalleSeccion" append-icon="mdi-magnify" label="BUSCAR STAND"
+                                    single-line hide-details></v-text-field>
+            </v-card-actions>
+        </v-card>
+            <v-data-table :headers="headerStand" :items="datosDetalleSeccion" :search="searchDetalleSeccion"
+                :items-per-page="5" class="elevation-1" >
+                <template #[`item.actions`]="{ item }">
+                        <v-icon x-large color="primary" class="mr-2" @click="mostrarDetalleStand(item)"
+                                        title="VER STANDS">
+                             mdi-eye
+                        </v-icon>        
+                </template>
+            </v-data-table>
+            <v-card>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red" dark x-big  @click="closeDetalleSeccion()">
+                        <v-icon dark> mdi-arrow-left-bold-circle-outline </v-icon> Atras
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+
+        <v-dialog
+            v-model="detalleStand"
+            persistent :overlay="false"
+            max-width="900px"
+            transition="dialog-transition"
+        >
+        <v-card>
+            <v-card-title primary-title>
+                ITEMS
+            </v-card-title>
+            <v-card-actions>
+                <v-text-field v-model="searchDetalleStand" append-icon="mdi-magnify" label="BUSCAR ITEM"
+                                    single-line hide-details></v-text-field>
+            </v-card-actions>
+        </v-card>
+               
+            <v-data-table :headers="headerItem" :items="datosDetalleStand" :search="searchDetalleStand"
+                :items-per-page="5" class="elevation-1" >
+            </v-data-table>
+            <v-card>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red" dark x-big  @click="closeDetalleStand()">
+                        <v-icon dark> mdi-arrow-left-bold-circle-outline </v-icon> Atras
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+
+
+
+
+
     </v-card>
 
 </template>
@@ -509,6 +666,9 @@ import axios from "axios";
 export default {
     data() {
         return {
+
+            existencias: false,
+            datosExistencia:[],
 
             documentoArchivo: '',
 
@@ -598,6 +758,17 @@ export default {
             botonActAl: 0,
             botonActSe: 0,
             botonActSt: 0,
+
+            searchDetalleAlmacenamiento: '',
+            datosDetalleAlmacen: [],
+            detalleAlmacen : false,
+            searchDetalleAlmacen: '',
+            datosDetalleSeccion: [],
+            detalleSeccion : false,
+            searchDetalleSeccion: '',
+            datosDetalleStand: [],
+            detalleStand : false,
+            searchDetalleStand: '',
             //#endregion
         }
     },
@@ -605,8 +776,23 @@ export default {
       this.listarAlmacen();
       this.listarSeccion();
       this.listarStand();
+      this.getAlertas();
     },
     methods: {
+
+        getAlertas(){
+            this.getListaExistencias();
+            if(this.datosExistencia==[]){
+                this.existencias=true;
+            }
+            else{
+                console.log('')
+                console.log(JSON.parse(JSON.stringify(this.datosExistencia)))
+                console.log('')
+                this.existencias=true;
+            }
+        },
+
         getColor(est) {
             if (est == "ACTIVO") return 'green'
             else if (est == "INACTIVO") return 'red'
@@ -1167,12 +1353,119 @@ export default {
             this.seccionModal = false;
         },
 
+
+        async listarDetallesAlmacen(idAlmacen) {
+          let me = this;
+          await axios
+            .get("/seccion/listarseccionalmacen/"+idAlmacen)
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosDetalleAlmacen = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosDetalleAlmacen = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
+        mostrarDetalleAlmacen(item){
+            this.listarDetallesAlmacen(item.idalmacen)
+            this.detalleAlmacen = true;
+        },
+
+
+        closeDetalleAlmacen(){
+            this.detalleAlmacen = false;
+
+        },
+
+
+        async listarDetallesSeccion(idSeccion) {
+          let me = this;
+          await axios
+            .get("/stand/listarstandseccion/"+idSeccion)
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosDetalleSeccion = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosDetalleSeccion = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
+
+
+        mostrarDetalleSeccion(item){
+            this.listarDetallesSeccion(item.idseccion);
+            this.detalleSeccion = true;
+
+        },
+
+
+        closeDetalleSeccion(){
+            this.detalleSeccion = false;
+        },
+        
+
+        async listarDetallesStand(idStand) {
+          let me = this;
+          await axios
+            .get("/inventario/listarstanditem/"+idStand)
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosDetalleStand = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosDetalleStand = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
+        mostrarDetalleStand(item){
+            this.listarDetallesStand(item.idstand)
+            this.detalleStand = true;
+        },
+
+
+        closeDetalleStand(){
+            this.detalleStand = false;
+        },
+
         limpiar () {
             this.$refs.form.reset()
         },
         //#endregion
 
-
+        async getListaExistencias(){
+            let me = this;
+            await axios
+                .get("/inventario/listarexistencias/")
+                .then(function (response) {
+                if (response.data.resultado == null) {
+                    me.datosExistencia = [];
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                    me.datosExistencia = response.data.resultado;
+                }
+                })
+                .catch(function (error) {
+                console.log(error);
+                });
+        },
 
 
         registrarDocumento(){

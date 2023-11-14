@@ -1,5 +1,29 @@
 <template>
     <v-card elevation="5" outlined>
+            <v-alert  v-if="existencias==false" 
+                type="error"
+                color="red darken-2"
+                dense
+                prominent
+                icon="mdi-alert"
+                >
+                <div class="text-h6">
+                    SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
+                </div>
+                POR FAVOR, NOTIFIQUE A ADQUISICIONES PARA ADQUIRIR EXISTENCIAS DE <strong>${nombreitem}</strong>   
+            </v-alert>
+            <v-alert     v-if="existencias==true"      
+                type="success"
+                color="green darken-2"
+                dismissible
+                dense
+                prominent
+                >
+                <div class="text-h5">
+                    SE TIENE LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
+                </div>
+               
+            </v-alert>
          <div>
              <v-alert dense style="color: #ffffff;" color="indigo">
                  <h3>INVENTARIO</h3>
@@ -534,6 +558,10 @@
  export default {
      data() {
          return {
+
+            existencias: false,
+            datosExistencia:[],
+
              //#region 
              idTransaccion: "",
              idItem:"",
@@ -640,8 +668,23 @@
        this.listarInventario();
        this.listarItem();
        this.listarTipoItem();
+       this.getAlertas();
      },
      methods: {
+
+        getAlertas(){
+            this.getListaExistencias();
+            if(this.datosExistencia==[]){
+                this.existencias=true;
+            }
+            else{
+                console.log('')
+                console.log(JSON.parse(JSON.stringify(this.datosExistencia)))
+                console.log('')
+                this.existencias=true;
+            }
+        },
+
          getColor(est) {
              if (est == "ACTIVO") return 'green'
              else if (est == "INACTIVO") return 'red'
@@ -1188,6 +1231,28 @@
 
         limpiar () {
             this.$refs.form.reset()
+        },
+
+
+
+
+        
+        async getListaExistencias(){
+            let me = this;
+            await axios
+                .get("/inventario/listarexistencias/")
+                .then(function (response) {
+                if (response.data.resultado == null) {
+                    me.datosExistencia = [];
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                    me.datosExistencia = response.data.resultado;
+                }
+                })
+                .catch(function (error) {
+                console.log(error);
+                });
         },
 
       
