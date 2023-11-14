@@ -3,7 +3,8 @@
         <v-alert  
                 type="error"
                 color="red darken-2"
-                
+                dense
+                prominent
                 icon="mdi-alert"
                 >
                 <div class="text-h6">
@@ -11,6 +12,18 @@
                 </div>
                 POR FAVOR, NOTIFIQUE A ADQUISICIONES PARA ADQUIRIR EXISTENCIAS DE <strong>${nombreitem}</strong>   
             </v-alert>
+            <v-alert         
+                type="success"
+                color="green darken-2"
+                dismissible
+                dense
+                prominent
+                >
+                <div class="text-h5">
+                    SE TIENE LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
+                </div>
+               
+        </v-alert>
         <div>
             <v-alert dense style="color: #ffffff;" color="indigo">
                 <h3>ALMACENAMIENTO</h3>

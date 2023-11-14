@@ -4,12 +4,26 @@
                 type="error"
                 color="red darken-2"
                 icon="mdi-alert"
+                dense
+                prominent
                 >
                 <div class="text-h6">
                     SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
                 </div>
                 POR FAVOR, COTICE UNA ADQUISICION PARA TENER EXISTENCIAS DE <strong>${nombreitem}</strong> NECESARIAS PARA EL FUNCIONAMIENTO DE LA FABRICA 
         </v-alert>
+        <v-alert         
+                type="success"
+                color="green darken-2"
+                dismissible
+                dense
+                prominent
+                >
+                <div class="text-h5">
+                    SE TIENE LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
+                </div>
+               
+            </v-alert>
         <div>
             <v-alert dense style="color: #ffffff;" color="purple">
                 <h3>PROVEEDORES</h3>
