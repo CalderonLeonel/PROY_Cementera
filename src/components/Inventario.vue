@@ -170,9 +170,40 @@
                              </v-data-table>
                          </v-col>
                      </v-row>
+                     <v-row>
+                        <v-col cols="12">
+                        <v-alert dense style="color: #ffffff;" color="indigo">
+                            <h3>VALORACION</h3>
+                        </v-alert>
+                        </v-col>
+                        <v-col cols="12">
+                        <v-tabs horizontal color="#002245" center-active grow>
+                                        <v-tab>
+                                            MENSUAL
+                                        </v-tab>
+                                        <v-tab>
+                                            TRIMESTRAL
+                                        </v-tab>
+                                        <v-tab>
+                                            SEMESTRAL
+                                        </v-tab>
+                                        <v-tab>
+                                            ANUAL
+                                        </v-tab>
+                                        <v-tab>
+                                            TOTAL
+                                        </v-tab>
+
+                                      
+                                    </v-tabs>
+                    <v-data-table :headers="headerInventario" :items="datosInventario"
+                                            :items-per-page="5" class="elevation-1" id="tableId"></v-data-table>
+                     </v-col>
+                     </v-row>
  
                  </v-container>
              </v-form>
+   
  
          </div>
 
