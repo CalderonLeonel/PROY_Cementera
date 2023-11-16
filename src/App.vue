@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" app >
+    <v-navigation-drawer v-model="drawer"  app>
       <center>
         <v-toolbar color="#00A1B1" dark>
 
@@ -192,6 +192,7 @@ export default {
   data() {
     return {
       drawer: false,
+      logueado: 0,
     };
   }
 };

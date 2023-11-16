@@ -60,8 +60,8 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn v-if="botonact == 1" color="#EE680B" @click="actualizarFabrica()"
-                                            class="mx-2" fab dark x-small style="float: left" title="ACTUALIZAR FABRICA">
+                                        <v-btn v-if="botonact == 1" color="#EE680B" @click="editarFabricas()" class="mx-2"
+                                            fab dark x-small style="float: left" title="ACTUALIZAR FABRICA">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
                                         <v-btn v-if="botonact == 0" color="#EE680B" @click="registroFabrica()" class="mx-2"
@@ -121,7 +121,7 @@
                                 </v-col>
                                 <v-col cols="12" md="5">
                                     <v-text-field v-model="departamento" label="NOMBRE DEPARTAMENTO" :counter="50"
-                                        :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()" disabled
+                                        :rules="departamentoRules" @input="departamento = departamento.toUpperCase()" disabled
                                         required></v-text-field>
                                 </v-col>
 
@@ -151,8 +151,8 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn v-if="botonact == 1" color="#EE680B" @click="actualizarFabrica()"
-                                            class="mx-2" fab dark x-small style="float: left" title="ACTUALIZAR FABRICA">
+                                        <v-btn v-if="botonact == 1" color="#EE680B" @click="editarFabricas()" class="mx-2"
+                                            fab dark x-small style="float: left" title="ACTUALIZAR FABRICA">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
                                         <v-btn v-if="botonact == 0" color="#EE680B" @click="registroFabrica()" class="mx-2"
@@ -212,7 +212,7 @@
                                 </v-col>
                                 <v-col cols="12" md="5">
                                     <v-text-field v-model="ciudad" label="NOMBRE CIUDAD" :counter="50"
-                                        :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()" disabled
+                                        :rules="ciudadRules" @input="ciudad = ciudad.toUpperCase()" disabled
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
@@ -223,7 +223,7 @@
                                 </v-col>
                                 <v-col cols="12" md="5">
                                     <v-text-field v-model="departamento" label="NOMBRE DEPARTAMENTO" :counter="50"
-                                        :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()" disabled
+                                        :rules="departamentoRules" @input="departamento = departamento.toUpperCase()" disabled
                                         required></v-text-field>
                                 </v-col>
 
@@ -235,7 +235,7 @@
                                 </v-col>
                                 <v-col cols="12" md="11">
                                     <v-text-field v-model="direccionFabrica" label="DIRECCION FABRICA" :counter="100"
-                                        :rules="codigoFabricaRules" @input="codigoFabrica = codigoFabrica.toUpperCase()"
+                                        :rules="direccionRules" @input="direccionFabrica = direccionFabrica.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
 
@@ -254,7 +254,7 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarFabrica()"
+                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="editarFabricas()"
                                             style="float: left" title="ACTUALIZAR INFabricaCIÓN" width="28px" height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
@@ -358,6 +358,69 @@
             </v-card>
         </v-dialog>
 
+        <v-dialog v-model="fabricasInhabilitadosModal" max-width="800px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>FABRICAS INACTIVAS</span><br>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-list-item>
+                                        <v-list-item-title class="text-center">
+                                            <h5>FABRICAS</h5>
+                                        </v-list-item-title>
+                                    </v-list-item>
+
+                                    <v-card-title>
+                                        <v-text-field v-model="buscarFabricas" append-icon="mdi-magnify"
+                                            label="BUSCAR FABRICAS" single-line hide-details></v-text-field>
+                                    </v-card-title>
+                                    <v-data-table :headers="headersFabricasInh" :items="datosFabricasInh"
+                                        :search="buscarFabricas" :items-per-page="5" class="elevation-1" id="tableId">
+
+                                        <template #[`item.est`]="{ item }">
+                                            <v-chip :color="colorEstado(item.est)" dark>
+                                                {{ item.est }}
+                                            </v-chip>
+                                        </template>
+
+
+                                        <template #[`item.actions`]="{ item }">
+                                            <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
+                                                @click="activar(item)" title="ACTIVAR FABRICA">
+                                                mdi-check-circle-outline
+                                            </v-icon>
+                                            <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
+                                                @click="desactivar(item)" title="DESACTIVAR FABRICA">
+                                                mdi-cancel
+                                            </v-icon>
+                                            <v-icon small class="mr-2" color="#001781" @click="showInfoFabrica(item)"
+                                                title="VER INFORMACION">
+                                                mdi-eye
+                                            </v-icon>
+                                        </template>
+
+                                    </v-data-table>
+                                </v-col>
+                                <v-col cols="10"></v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closeInfoLineaModal()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    </v-btn>
+                                </v-col>
+
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
 
         <div>
             <v-alert dense style="color: #ffffff;" color="grey">
@@ -389,7 +452,7 @@
                             </v-list-item>
 
                             <v-card-title>
-                                <v-text-field v-model="buscarFabricas" append-icon="mdi-magnify" label="BUSCAR FabricaS"
+                                <v-text-field v-model="buscarFabricas" append-icon="mdi-magnify" label="BUSCAR FABRICA"
                                     single-line hide-details></v-text-field>
                             </v-card-title>
 
@@ -474,6 +537,15 @@ export default {
             ciudad: "",
             datosFabricas: [],
             headersFabricas: [
+                { text: "NOMBRE FABRICA", value: "nomfab", sortable: false },
+                { text: "CODIGO FABRICA", value: "codfab", sortable: false },
+                { text: "CIUDAD", value: "nomciu", sortable: false },
+                { text: "DEPARTAMENTO", value: "nomdep", sortable: false },
+                { text: "ESTADO", value: "est", sortable: false },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
+            datosFabricasInh: [],
+            headersFabricasInh: [
                 { text: "NOMBRE FABRICA", value: "nomfab", sortable: false },
                 { text: "CODIGO FABRICA", value: "codfab", sortable: false },
                 { text: "CIUDAD", value: "nomciu", sortable: false },
@@ -653,7 +725,7 @@ export default {
         //#endregion
         //#region Edicion
         editarFabricas() {
-            this.editarFabrica(this.idFabrica, this.nombreFabrica, this.codigoFabrica, this.direccionFabrica,this.idDepartamento, this.idCiudad);
+            this.editarFabrica(this.idFabrica, this.nombreFabrica, this.codigoFabrica, this.direccionFabrica, this.idDepartamento, this.idCiudad);
         },
         async editarFabrica(
             idFabrica,
@@ -695,7 +767,7 @@ export default {
         //#endregion
         //#region Cambio Estados
         activar(item) {
-            this.idFabrica = item.idFabrica;
+            this.idFabrica = item.idfab;
             this.activarFabrica(this.idFabrica);
         },
         async activarFabrica(idFabrica) {
@@ -713,7 +785,7 @@ export default {
 
         },
         desactivar(item) {
-            this.idFabrica = item.idFabrica;
+            this.idFabrica = item.idfab;
             this.desactivarFabrica(this.idFabrica);
         },
         async desactivarFabrica(idFabrica) {
@@ -755,13 +827,13 @@ export default {
             this.nombreFabrica = item.nomfab;
             this.codigoFabrica = item.codfab;
             this.direccionFabrica = item.dirfab;
-            this.idDepartamento = item.idep;
-            this.departamento = item.dep;
+            this.idDepartamento = item.iddep;
+            this.departamento = item.nomdep;
             this.idCiudad = item.idciu;
-            this.ciudad = item.ciu;
+            this.ciudad = item.nomciu;
         },
         showFabricasInhabilitados() {
-            this.FabricasInhabilitadosModal = true
+            this.fabricasInhabilitadosModal = true
             this.listarFabricasInh();
         },
         showInfoFabrica(item) {
@@ -793,12 +865,12 @@ export default {
             this.nombreLinea = item.nomlin;
             this.lineasModal = false;
         },
-        seleccionarDepartamento(item){
+        seleccionarDepartamento(item) {
             this.idDepartamento = item.idep;
             this.departamento = item.nomdep;
             this.departamentosModal = false;
         },
-        seleccionarCiudad(item){
+        seleccionarCiudad(item) {
             this.idCiudad = item.idciu;
             this.ciudad = item.nomciu;
             this.ciudadesModal = false;

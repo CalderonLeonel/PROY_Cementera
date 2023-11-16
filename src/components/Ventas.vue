@@ -273,18 +273,7 @@ export default {
             cantidadModal: 0,
             //#endregion
 
-            //#region Venta
-            venta: {
-                idProducto: "",
-                cantidad: 0,
-                precioUnitario: 0,
-                total: 0,
-                codigoControl: "",
-                nit: "",
-                razonSocial: "",
-                idCliente: "",
-                idEmpleado: "",
-            },
+            
             //#endregion
         }
     },
@@ -344,25 +333,32 @@ export default {
         /*registrarVentas() {
             this.registrarVenta(this.idProducto, this.cantidad, this.precioUnitario, this.total, this.codigoControl, this.nit, this.razonSocial, this.idCliente, this.idEmpleado);
         },*/
-        async registrarVenta(
-        ) {
-            // Construye un objeto de venta con los datos necesarios
-            let me = this;
+        async registrarVenta() {
+            if (this.datosCarrito.length > 0 && this.idCliente !== "") {
+                const venta = {
+                    idCliente: this.idCliente,
+                    idEmpleado: this.idEmpleado,
+                    razonSocial: this.razonSocial,
+                    nit: this.nit,
+                    productos: this.datosCarrito
+                };
 
-            // Envía la venta al servidor o realiza la acción necesaria para registrarla
-            // Puedes usar Axios u otra librería para hacer la solicitud al servidor
-            await axios.post("/venta/registrarventa/",
-                this.venta)
-                .then(response => {
-                    // La venta se registró correctamente
-                    console.log("Venta registrada con éxito:", response.data);
-                    // Reinicia los datos del cliente y el carrito después de la venta
-                    this.resetVenta();
-                })
-                .catch(error => {
-                    // Ocurrió un error al registrar la venta
-                    console.error("Error al registrar la venta:", error);
-                });
+                try {
+                    const response = await axios.post("venta/registrarventa", venta);//akjdahskdjashdkjashdkjsdsh
+                    if (response.data.message === "VENTA REALIZADA CORRECTAMENTE") {
+                        console.log("Venta registrada con éxito.");
+                        this.resetVenta();
+                    } else {
+                        console.error("Error al registrar la venta:", response.data.message);
+
+                    }
+                } catch (error) {
+                    console.error("Error al comunicarse con el servidor:", error);
+                    console.log(venta)
+                }
+            } else {
+                console.error("Debe seleccionar un cliente y agregar productos al carrito antes de realizar la venta.");
+            }
         },
         resetVenta() {
             // Restablece los datos del cliente y el carrito
@@ -399,20 +395,20 @@ export default {
         },
         seleccionarProducto(item) {
             this.productoSeleccionado = item;
-            this.venta.idProducto = item.idprod;
-            this.venta.precioUnitario = item.precuni;
-            this.venta.total = this.cantidad * item.precuni;
+            this.idProducto = item.idprod;
+            this.precioUnitario = item.precuni;
+            this.total = this.cantidad * item.precuni;
             this.cantidadModal = true;
         },
         agregarProductoAlCarrito() {
             if (this.cantidad > 0) {
                 const productoEnCarrito = {
-                    idprod: this.venta.idProducto,
+                    idprod: this.idProducto,
                     nomprod: this.productoSeleccionado.nomprod,
                     codprod: this.productoSeleccionado.codprod,
                     cant: this.cantidad,
-                    precuni: this.venta.precioUnitario,
-                    total: this.venta.total,
+                    precuni: this.precioUnitario,
+                    total: this.total,
                     est: this.productoSeleccionado.est,
                     // Agrega otros campos necesarios aquí
                 };
@@ -420,6 +416,8 @@ export default {
                 this.cantidadModal = false;
                 this.cantidad = 0; // Reinicia la cantidad
                 this.productoSeleccionado = null; // Reinicia el producto seleccionado
+                console.log(this.datosCarrito)
+
             }
         },
 
