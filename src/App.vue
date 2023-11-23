@@ -292,19 +292,25 @@
 export default {
   data: () => ({
     drawer: false,
-    user: { id_usuario: 0, usuario: '', accesos: '', tipo: '', nombres: '', paterno: '', materno: ''}
+    user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: ''}
   }),
   components: {
     // Empleado_cv
   },
   computed: {
     logueado() {
-      this.user = JSON.parse(sessionStorage.getItem('session'));
+      if(this.user != null) {
+        this.user = JSON.parse(sessionStorage.getItem('session'));
+      }
       return this.user;
     }
   }, created: function () {
+    
+    if(this.user != null) {
+      this.user = JSON.parse(sessionStorage.getItem('session'));
+    }
 
-    this.user = JSON.parse(sessionStorage.getItem('session'));
+    
     //this.user.dispath("autologin");
     if (this.user == null) {
       if (this.$route.path != '/login') {
@@ -316,24 +322,32 @@ export default {
   methods: {
     checkAccess(accesoCorrecto,tipoCorrecto) {
       //this.user = JSON.parse(sessionStorage.getItem('session'));
-      let checkedAccess = false;
-      let checkedType = false;
-      //Si accesoCorrecto es 0, no se requiere ningun acceso para acceder
-      if(accesoCorrecto != 0) {
-        this.user['accesos'].forEach(access => {
-        if(access == accesoCorrecto)
-          checkedAccess = true;
-        });
-      } else checkedAccess = true;
+      if(this.user == null)
+      {
+        return false;
+      }
+      else
+      {
+        let checkedAccess = false;
+        let checkedType = false;
+        //Si accesoCorrecto es 0, no se requiere ningun acceso para acceder
+        if(accesoCorrecto != 0) {
+          this.user['accesos'].forEach(access => {
+          if(access == accesoCorrecto)
+            checkedAccess = true;
+          });
+        } else checkedAccess = true;
 
-      //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
-      if(tipoCorrecto != '0') {
-        if(this.user['tipo'] == tipoCorrecto) {
-          checkedType = true;
-        }
-      } else checkedType = true;
-      if(checkedAccess && checkedType) {return true}
-        else return false;
+        //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
+        if(tipoCorrecto != '0') {
+          if(this.user['tipo'] == tipoCorrecto) {
+            checkedType = true;
+          }
+        } else checkedType = true;
+        if(checkedAccess && checkedType) {return true}
+          else return false;
+      }
+
     },
     salir() {
       sessionStorage.clear();
