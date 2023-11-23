@@ -10,12 +10,12 @@
         <v-dialog v-model="areaModal" max-width="1080px"> <!-- Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nuevo Area</span>
+                    <span v-if="botonAct == 0">Nueva Area</span>
                     <span v-if="botonAct == 1">Editar Area</span>
                 </v-card-title>
                 <v-card-text>
 
-                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo Area / Editar Area -->
+                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nueva Area / Editar Area -->
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="12">
@@ -89,7 +89,7 @@
         </v-dialog>
 
         <v-col cols="12" md="4">
-            <v-btn color="success" @click="showAddArea()">+ Nuevo Area</v-btn>
+            <v-btn color="success" @click="showAddArea()">+ Nueva Area</v-btn>
         </v-col>
         <div>
             <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Areas -->
@@ -173,6 +173,19 @@
 import axios from "axios";
 
 export default {
+    props: { //one
+     value: Boolean
+    },
+    computed: { //one
+        show: {
+        get () {
+            return this.value
+        },
+        set (value) {
+            this.$emit('input', value)
+            }
+        }
+    },
     data: () => ({
         idArea: "",
         nombre: "",

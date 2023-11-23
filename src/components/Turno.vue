@@ -16,8 +16,8 @@
                         </v-list-item>
                         
                         <v-col cols="12" md="12">
-                            <v-text-field v-model="nombreCargo" :counter="50" :rules="nombreRules"
-                                @input="nombreCargo = nombreCargo.toUpperCase()" label="Nombre del Turno" required>
+                            <v-text-field v-model="nombreTurno" :counter="50" :rules="nombreRules"
+                                @input="nombreTurno = nombreTurno.toUpperCase()" label="Nombre del Turno" required>
                             </v-text-field>
                         </v-col>
                     
@@ -144,7 +144,7 @@ export default {
 
     methods: {
     
-        async listarTurnos(idCargo) {
+        async listarTurnos(idTurno) {
             let me = this;
             await axios
                 .get("/turno/listarturnos/")
