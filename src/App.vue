@@ -27,7 +27,8 @@
       <v-divider></v-divider>
 
       <v-list nav dense>
-        <v-list-group no-action color="light-blue darken-4" value="true">
+
+        <v-list-group no-action color="#00A1B1" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-package</v-icon>
@@ -37,14 +38,144 @@
             </v-list-item-content>
           </template>
 
-          <v-list-item :to="{ name: 'Proveedor' }">
+          <v-list-item :to="{ name: 'Productos' }">
             <v-list-item-title>
               <h6>PRODUCTOS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Proveedor' }">
+          <v-list-item :to="{ name: 'Lineas' }">
             <v-list-item-title>
               <h6>LINEAS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Formatos' }">
+            <v-list-item-title>
+              <h6>FORMATOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Tipos' }">
+            <v-list-item-title>
+              <h6>TIPOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Fabricas' }">
+            <v-list-item-title>
+              <h6>FABRICAS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Movimientos' }">
+            <v-list-item-title>
+              <h6>MOVIMIENTOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Produccion' }">
+            <v-list-item-title>
+              <h6>PRODUCCION</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+        <v-list-group no-action color="#00A1B1" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-point-of-sale</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>VENTAS</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item :to="{ name: 'Ventas' }">
+            <v-list-item-title>
+              <h6>VENTAS</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+        <v-list-group no-action color="#00A1B1" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-chart-bar</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>REPORTES</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'Reportes' }">
+            <v-list-item-title>
+              <h6>REPORTES</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+
+        <v-list-group no-action color="#00A1B1" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-account-group</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>CLIENTES</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'Clientes' }">
+            <v-list-item-title>
+              <h6>Clientes</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+
+        <v-list-group no-action color="light-blue darken-4" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-package</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>RRHH</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'Empleados' }">
+            <v-list-item-title>
+              <h6>EMPLEADOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Cargos' }">
+            <v-list-item-title>
+              <h6>CARGOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Turnos' }">
+            <v-list-item-title>
+              <h6>TURNOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Unidades' }">
+            <v-list-item-title>
+              <h6>UNIDADES</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Areas' }">
+            <v-list-item-title>
+              <h6>AREAS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Departamentos' }">
+            <v-list-item-title>
+              <h6>DEPARTAMENTOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+        <v-list-group no-action color="light-blue darken-4" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>USUARIOS</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item :to="{ name: 'Usuarios' }">
+            <v-list-item-title>
+              <h6>CUENTAS</h6>
             </v-list-item-title>
           </v-list-item>
           <v-list-item :to="{ name: 'Formatos' }">
@@ -253,16 +384,22 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
-        
-        
+
+
       </v-list>
 
     </v-navigation-drawer>
 
     <v-app-bar color="#00A1B1" app>
-      <v-app-bar-nav-icon color="black" @click="drawer = !drawer">
+      <v-app-bar-nav-icon color="white" @click="drawer = !drawer">
 
       </v-app-bar-nav-icon>
+
+      <v-btn class="mx-2" fab dark x-small color="#00A1B1" @click="salir()" style="float:right;" title="CERRAR SESSION">
+        <v-icon dark>
+          mdi-door-closed-lock
+        </v-icon>
+      </v-btn>
 
     </v-app-bar>
 
@@ -273,10 +410,10 @@
         </v-slide-y-transition>
       </v-container>
     </v-main>
-    <v-footer color="primary lighten-1" padless>
+    <v-footer color="#00A1B1" padless>
       <v-row justify="center" no-gutters>
 
-        <v-col class="light-blue darken-4 py-4 text-center white--text" cols="12">
+        <v-col class="py-4 text-center white--text" cols="12">
           {{ new Date().getFullYear() }} — <strong>ERP DRYMIX</strong>
         </v-col>
       </v-row>
@@ -286,12 +423,34 @@
 
 <script>
 export default {
-  data() {
-    return {
-      drawer: false
-    };
+  data: () => ({
+    drawer: false,
+    user: { usuario: '', id_cargo: '', nombres: '' }
+  }),
+  components: {
+    // Empleado_cv
+  },
+  computed: {
+    logueado() {
+      this.user = JSON.parse(sessionStorage.getItem('session'));
+      return this.user;
+    }
+  }, created: function () {
+
+    this.user = JSON.parse(sessionStorage.getItem('session'));
+    //this.user.dispath("autologin");
+    if (this.user == null) {
+      this.$router.push("/login");
+    }
+  },
+  methods: {
+    salir() {
+      sessionStorage.clear();
+      this.user = {};
+      this.$router.push("/login");
+    }
   }
-};
+}
 </script>
 
 
