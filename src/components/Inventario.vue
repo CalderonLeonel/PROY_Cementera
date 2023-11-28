@@ -747,9 +747,30 @@
          
 
          registrarInv() {
-            this.registrarInventario(this.idItem, this.movimiento,this.cantidad,this.metodovaluacion, this.estado);
+            if(this.movimiento == 'SALIDA'){
+                alert('SALIDA')
+                if (this.metodoValuacion == 'PEPS')
+                    alert('PEPS SALIDA');
+                else if(this.metodoValuacion == 'UEPS')
+                    alert('UEPS SALIDA');
+                else
+                    alert('PROMEDIO SALIDA');
+            }
+            else{
+                alert('ENTRADA')
+                if (this.metodoValuacion == 'PEPS') {
+                    alert('PEPS ENTRADA');
+                }
+                else if(this.metodoValuacion == 'UEPS'){
+                    alert('UEPS ENTRADA');
+                }
+                else{
+                    alert('PROMEDIO ENTRADA');
+                }
+            }
+            //this.registrarInventario(this.idItem, this.movimiento,this.cantidad,this.metodovaluacion, this.estado);
         },
-        async registrarInventario(
+        async registrarInventarioEntrada(
             idItem,
             movimiento,
             cantidad,
@@ -759,7 +780,43 @@
             let me = this;
             await axios
                 .post(
-                    "/inventario/agregarinventario/" +
+                    "/inventario/agregarinventarioEntrada/" +
+                    this.idItem +
+                    "," +
+                    this.movimiento +
+                    "," +
+                    this.cantidad +
+                    "," +
+                    this.metodoValuacion +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.closeModalAgregarTransaccion();
+                    me.listarInventarios();
+                    me.limpiar();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+        async registrarInventarioSalida(
+            idItem,
+            movimiento,
+            cantidad,
+            metodovaluacion,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/agregarSalida/" +
                     this.idItem +
                     "," +
                     this.movimiento +

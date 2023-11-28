@@ -168,7 +168,7 @@
                                             ACTUALIZAR
                                         </v-btn>
                                         <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarDocumento()" style="float: left" title="REGISTRAR PROVEEDOR">
+                                            @click="registrarDocumento()" style="float: left" title="REGISTRAR DOCUMENTO">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
                                         </v-btn>

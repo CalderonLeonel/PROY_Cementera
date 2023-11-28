@@ -37,11 +37,18 @@ const routes = [
     component: () => import('@/components/Adquisicion.vue'),
   },
   {
+
     path: 'archivos',
     name: 'Archivos',
     component: () => import('@/components/Archivos.vue'),
-  }
-]
+  },
+
+  {
+    path: "/alertas",
+    name: "Alertas",
+    component: require("../components/Alerta.vue").default,
+  },
+];
 
 
 const router = new VueRouter({

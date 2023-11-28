@@ -51,6 +51,12 @@
                             <v-data-table :headers="headerAlmacen" :items="datosAlmacen" :search="searchAlmacen"
                                 :items-per-page="5" class="elevation-1" id="tableId">
 
+                                <template #[`item.codigo`]="{ item }">
+                                    <v-chip dark>
+                                        {{ obtenerCodigoAlmacen(item.idalmacen+item.nombrealmacen) }}
+                                    </v-chip>
+                                </template>
+
                                 <template #[`item.estado`]="{ item }">
                                     <v-chip :color="getColor(item.estado)" dark>
                                         {{ item.estado }}
@@ -172,7 +178,9 @@
                     </v-row>
 
                     <v-row>
-                        <v-col cols="12" md="12"></v-col>
+                        <v-col cols="12" md="12">
+                            <h3>VISUALIZACIÓN DE ALMACENAMIENTO</h3>
+                        </v-col>
                         <v-col cols="12" md="12">
                                <v-text-field v-model="searchDetalleAlmacenamiento" append-icon="mdi-magnify" label="Buscar Almacen"
                                     single-line hide-details></v-text-field>
@@ -180,6 +188,11 @@
                         <v-col cols="12" md="12">
                             <v-data-table :headers="headerAlmacen" :items="datosAlmacen" :search="searchDetalleAlmacenamiento"
                                 :items-per-page="5" class="elevation-2">
+                                <template #[`item.codigo`]="{ item }">
+                                    <v-chip dark>
+                                        {{ obtenerCodigoAlmacen(item.nombrealmacen) }}
+                                    </v-chip>
+                                </template>
                                 <template #[`item.actions`]="{ item }">
                                     <v-icon x-large color="primary" class="mr-2" @click="mostrarDetalleAlmacen(item)"
                                         title="VER ALMACENES">
@@ -271,6 +284,11 @@
                             <v-col cols="12">
                                 <v-data-table :headers="headerAlmacen" :items="datosAlmacenActivos" :search="buscarAlmacen"
                                     :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.codigo`]="{ item }">
+                                    <v-chip dark>
+                                        {{ obtenerCodigoAlmacen(item.nombrealmacen) }}
+                                    </v-chip>
+                                    </template>
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon class="mr-2" @click="seleccionarAlmacen(item)">
                                             mdi-check-circle
@@ -626,7 +644,8 @@
         <v-dialog
             v-model="detalleStand"
             persistent :overlay="false"
-            max-width="900px"
+            min-width="1200px"
+            max-width="1800px"
             transition="dialog-transition"
         >
         <v-card>
@@ -639,7 +658,7 @@
             </v-card-actions>
         </v-card>
                
-            <v-data-table :headers="headerItem" :items="datosDetalleStand" :search="searchDetalleStand"
+            <v-data-table :headers="headerAlmacenamiento" :items="datosDetalleStand" :search="searchDetalleStand"
                 :items-per-page="5" class="elevation-1" >
             </v-data-table>
             <v-card>
@@ -707,6 +726,7 @@ export default {
             headerAlmacen: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
                 { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
+                { text: "CODIGO ALMACEN", value: "codigo", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -729,6 +749,16 @@ export default {
                 { text: "SECCION", value: "nombreseccion", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
+                //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+            ],
+
+            headerAlmacenamiento: [
+                //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
+                { text: "ITEM", value: "nombreitem", sortable: true },
+                { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                { text: "TIPO", value: "nombretipoitem", sortable: true },
+                { text: "MEDIDA", value: "medida", sortable: true },
+                { text: "CANTIDAD", value: "cantidad", sortable: true },
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
@@ -779,6 +809,18 @@ export default {
       this.getAlertas();
     },
     methods: {
+
+        obtenerCodigoAlmacen(nombreAlmacen){
+            let codigo = '';
+            var arrayCode = [];
+            for (let i = 0; i < nombreAlmacen.length; i ++) {
+                arrayCode.push(96-nombreAlmacen.charCodeAt(i) );
+            }
+            for (let j = 0; j < arrayCode.length; j++) {
+                codigo += arrayCode[j].toString(16);
+            }
+            return codigo;
+        },
 
         getAlertas(){
             this.getListaExistencias();
