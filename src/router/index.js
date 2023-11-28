@@ -71,7 +71,11 @@ const routes = [
     name: "Empleados",
     component: require("../components/Empleado.vue").default,
   },
-
+  {
+    path: '/reportes',
+    name: 'Reportes',
+    component: require('../components/Reportes.vue').default
+  },
   {
     path: "/turnos",
     name: "Turnos",
@@ -91,6 +95,11 @@ const routes = [
     path: "/departamentos",
     name: "Departamentos",
     component: require("../components/Departamento.vue").default,
+  },
+  {
+    path: "/usuarios",
+    name: "Usuarios",
+    component: require("../components/Usuario.vue").default,
   },
   {
     path: "proveedor",

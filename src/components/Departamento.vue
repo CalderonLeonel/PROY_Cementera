@@ -191,6 +191,8 @@ export default {
 
         searchDepartamento: "",
         datosDepartamento: [],
+        datosUnidad: [],
+        datosArea: [],
 
         snackbarOK: false,
         mensajeSnackbar: "",
@@ -206,16 +208,24 @@ export default {
                 (v && v.length <= 50) ||
                 "EL NOMBRE DE LA DEPARTAMENTO DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
+        unidadRules: [
+            (v) => !!v || "ASIGNAR UNA UNIDAD ES REQUERIDO",
 
-
+        ],
+        areaRules: [
+            (v) => !!v || "ASIGNAR UN AREA ES REQUERIDO",
+        ],
 
         headersDepartamento: [
-            { text: "DEPARTAMENTO", value: "dep", sortable: false },
+            { text: "DEPARTAMENTO", value: "nom", sortable: false },
+            { text: "UNIDAD", value: "unid", sortable: false },
+            { text: "AREA", value: "area", sortable: false },
             { text: "ESTADO", value: "act", sortable: false },
             { text: "FECHA CREACION", value: "credte", sortable: false },
             { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
-            { text: "OPTIONS", value: "actions", sortable: false },
+            { text: "OPCIONES", value: "actions", sortable: false },
         ],
+
     }),
 
     created: function () {
@@ -265,34 +275,45 @@ export default {
 
         showAddDepartamento() {
             this.botonAct = 0;
+            if(this.datosUnidad.length == 0) this.listarUnidades();
+            if(this.datosArea.length == 0) this.listarAreas();
             this.departamentoModal = true;
         },
         showEditDepartamento(item) {
             this.botonAct = 1;
+            if(this.datosUnidad.length == 0) this.listarUnidades();
+            if(this.datosArea.length == 0) this.listarAreas();
             this.llenarCamposDepartamento(item);
             this.departamentoModal = true;
         },
 
         closeDepartamento() {
             this.departamentoModal = false;
+            this.limpiar();
         },
 
         llenarCamposDepartamento(item) {
-            this.departamento = item.dep;
+            this.departamento = item.nom;
+            this.idUnidad = item.idunid;
+            this.idArea = item.idarea;
             this.idDepartamento = item.iddep;
         },
         
         actualizarDepartamento() {
             this.actualizardepartamento(
                 this.idDepartamento,
-                this.departamento
+                this.departamento,
+                this.idunid,
+                this.idarea
             );
         },
         
        
         async actualizardepartamento(
             idDepartamento,
-            departamento
+            departamento,
+            idUnidad,
+            idArea
         ) {
             let me = this;
 
@@ -301,7 +322,11 @@ export default {
                     "/departamento/editardepartamento/" +
                     this.idDepartamento +
                     "," +
-                    this.departamento
+                    this.departamento +
+                    "," +
+                    this.idUnidad +
+                    "," +
+                    this.idArea
 
                 )
                 .then(function (response) {
@@ -310,6 +335,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarDepartamentos(me.idDepartamento);
                     me.limpiar();
+                    me.closeDepartamento();
 
                 })
                 .catch(function (error) {
@@ -319,6 +345,8 @@ export default {
 
         limpiar() {
             this.departamento = "";
+            this.idUnidad = ""; this.datosUnidad = [];
+            this.idArea = ""; this.datosArea = [];
         },
 
         async listarDepartamentos(idDepartamento) {
@@ -330,6 +358,38 @@ export default {
                         me.datosDepartamento = [];
                     } else {
                         me.datosDepartamento = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        async listarUnidades(idUnidad) {
+            let me = this;
+            await axios
+                .get("/unidad/listarunidades/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosUnidad = [];
+                    } else {
+                        me.datosUnidad = response.data.resultado;
+                        console.log("datosUnidad: "+JSON.stringify(me.datosUnidad.idunid))
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        async listarAreas(idArea) {
+            let me = this;
+            await axios
+                .get("/area/listarareas/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+
+                        me.datosArea = [];
+                    } else {
+                        me.datosArea = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
@@ -350,7 +410,6 @@ export default {
         ) {
             let me = this;
 
-            //let me=this;
             await axios
                 .post(
                     "/departamento/adddepartamento/" +
@@ -367,6 +426,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarDepartamentos(me.idDepartamento);
                     me.limpiar();
+                    me.closeDepartamento();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;

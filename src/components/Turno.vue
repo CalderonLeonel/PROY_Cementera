@@ -124,30 +124,6 @@ export default {
         timeout: 2000,
 
         botonAct: 0,
-        /*
-
-        nombreRules: [
-            (v) => !!v || "NOMBRE DE CARGO ES REQUERIDO",
-            (v) =>
-                (v && v.length <= 50) ||
-                "EL NOMBRE DE CARGO DEBE TENER 50 CARACTERES COMO MAXIMO",
-        ],
-
-        descripcionRules: [
-            (v) =>
-                (v && v.length <= 100) ||
-                "LA DESCRIPCION DEBE TENER 200 CARACTERES COMO MAXIMO",
-        ],
-
-        salarioRules: [
-            (v) =>
-                (v && v.length <= 100) ||
-                "SALARIO DEBE TENER 8 CARACTERES COMO MAXIMO",
-        ],
-
-        checkbox: false,
-        datosCargo: [],
-*/
         datosTurno: [],
         groupBy: "turn",
 
@@ -161,130 +137,11 @@ export default {
     }),
 
     created: function () {
-        //this.user = JSON.parse(sessionStorage.getItem("session"));
-        //this.idCargo = this.user.idCargo;
         this.listarTurnos();
     },
 
     methods: {
-        /* ACTIVAR/Desactivar
-        activar(item) {
-            this.idCargo = item.idcargo;
-            this.activarcargo(this.idCargo);
-        },
-        
-        async activarcargo(idCargo) {
-            let me = this;
-            await axios
-                .post("/cargo/addcargo/" + this.idCargo).then(function (response) {
-
-                    me.listarCargos();
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-        desactivar(item) {
-            this.idCargo = item.idcargo;
-            this.desactivarcargo(this.idCargo);
-        },
-        
-        async desactivarcargo(idCargo) {
-            let me = this;
-            await axios
-                .post("/cargo/offcargo/" + this.idCargo).then(function (response) {
-
-                    me.listarCargos();
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-
-        },
-        */
-       /*
-        getColor(est) {
-            if (est == 'ACTIVO') return 'green'
-            else return 'red'
-        },
-*/
-/*
-        llenarCamposCargo(item) {
-            this.botonAct = 1;
-            this.descripcion = item.nom;
-            this.nombreCargo = item.codmat;
-            this.idCargo = item.idcargo;
-
-        },
-        */
-       /*
-        actualizarCargo() {
-            this.actualizarcargo(
-
-                this.nombreCargo,
-                this.descripcion,
-                this.idCargo,
-            );
-            this.botonAct = 0;
-        },
-        async actualizarcargo(
-            nombreCargo,
-            descripcion,
-            idCargo,
-        ) {
-            let me = this;
-
-            await axios
-                .post(
-                    "/cargo/actcargo/" +
-                    this.nombreCargo +
-                    "," +
-                    this.descripcion +
-                    "," +
-                    this.idCargo
-
-                )
-                .then(function (response) {
-
-                    me.mensajeSnackbar = response.data.message;
-                    me.snackbarOK = true;
-                    me.listarCargos(me.idCargo);
-                    me.limpiar();
-
-                })
-                .catch(function (error) {
-                    me.snackbarError = true;
-                });
-        },
-*/
-/*
-        limpiar() {
-            this.nombreCargo = "";
-            this.descripcion = "";
-        },
-*/
-/*
-        validate() {
-            this.$refs.form.validate();
-        },
-        reset() {
-            this.$refs.form.reset();
-        },
-        resetValidation() {
-            this.$refs.form.resetValidation();
-        },
-
-        showTpostulante() {
-            this.tpostModal = true;
-        },
-        closeTpost() {
-            this.tpostModal = false;
-        },
-
-        listarb() {
-            this.listarCargos(this.idCargo);
-        },
-*/
+    
         async listarTurnos(idCargo) {
             let me = this;
             await axios
@@ -301,44 +158,6 @@ export default {
                     console.log(error);
                 });
         },
-/*
-        registrarCargo() {
-            this.registrarCargo(
-                this.nombreCargo,
-                this.descripcion
-            );
-        },
-*/
- /*
-        async registrarCargo(
-            nombreCargo,
-            descripcion
-        ) {
-            let me = this;
-
-            //let me=this;
-            await axios
-                .post(
-                    "/cargo/addcargo/" +
-                    this.nombreCargo +
-                    "," +
-                    this.descripcion
-
-                )
-                .then(function (response) {
-
-                    me.mensajeSnackbar = response.data.message;
-                    me.snackbarOK = true;
-                    me.listarCargos(me.idCargo);
-                    me.limpiar();
-                })
-                .catch(function (error) {
-                    me.snackbarError = true;
-
-                });
-                
-        },
-*/
     },
 };
 </script>
