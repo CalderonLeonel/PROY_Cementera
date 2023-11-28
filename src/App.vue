@@ -151,6 +151,13 @@
               <h6>CONTABILIDAD</h6>
             </v-list-item-title>
           </v-list-item>
+          
+          <v-list-item :to="{ name: 'Departamentos' }">
+            <v-list-item-title>
+              <h6>DEPARTAMENTOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+
         </v-list-group>
       </v-list>
 

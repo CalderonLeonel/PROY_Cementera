@@ -26,7 +26,7 @@
                                         :items-per-page="5" class="elevation-1" id="tableId">
 
                                         <template #[`item.est`]="{ item }">
-                                            <v-chip :color="colorEstado(item.est)" dark>
+                                            <v-chip :color="colorEstadoCli(item.est)" dark>
                                                 {{ item.est }}
                                             </v-chip>
                                         </template>
@@ -92,110 +92,233 @@
         </v-dialog>
 
 
-        <v-card-title>
-            FORMULARIO DE VENTA
-        </v-card-title>
         <div>
-            <v-form ref="form" v-model="valid" lazy-validation>
-                <v-container>
-                    <v-row>
-                        <v-col cols="12" md="1">
-                            <v-btn class="mx-2" fab dark x-small color="cyan" :rules="clienteRules" @click="showClientes()"
-                                style="float: right" title="BUSCAR CLIENTES">
-                                <v-icon dark> mdi-magnify </v-icon>
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="12" md="5">
-                            <v-text-field v-model="nombreCliente" label="CLIENTE" :counter="100" :rules="nombreClienteRules"
-                                @input="nombreCliente = nombreCliente.toUpperCase()" required disabled></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                            <v-text-field v-model="paterno" label="PATERNO CLIENTE" :counter="100" :rules="paternoRules"
-                                @input="paterno = paterno.toUpperCase()" required disabled></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                            <v-text-field v-model="materno" label="MATERNO CLIENTE" :counter="100" :rules="maternoRules"
-                                @input="materno = materno.toUpperCase()" required disabled></v-text-field>
-                        </v-col>
-
-                        <v-col cols="12" md="1"></v-col>
-                        <v-col cols="12" md="5">
-                            <v-text-field v-model="nit" label="NIT CLIENTE" :counter="100" :rules="nitRules"
-                                @input="nit = nit.toUpperCase()" required disabled></v-text-field>
-                        </v-col>
-
-                        <v-col cols="12">
-                            <v-list-item>
-                                <v-list-item-title class="text-center">
-                                    <h5>Lista de Productos</h5>
-                                </v-list-item-title>
-                            </v-list-item>
-
-                            <v-card-title>
-                                <v-text-field v-model="buscarproducto" append-icon="mdi-magnify" label="BUSCAR PRODUCTOS"
-                                    single-line hide-details></v-text-field>
-                            </v-card-title>
-                        </v-col>
-
-                        <v-col cols="12">
-                            <v-data-table :headers="headersProductos" :items="datosProductos" :search="buscarproductos"
-                                :items-per-page="5" class="elevation-1" id="tableId">
-
-                                <template #[`item.est`]="{ item }">
-                                    <v-chip :color="colorEstado(item.est)" dark>
-                                        {{ item.est }}
-                                    </v-chip>
-                                </template>
-
-                                <template #[`item.actions`]="{ item }">
-                                    <v-icon small class="mr-2" color="#001781" @click="seleccionarProducto(item)">
-                                        mdi-check-circle
-                                    </v-icon>
-                                </template>
-
-                            </v-data-table>
-                        </v-col>
-
-                        <v-col cols="12">
-                            <v-list-item>
-                                <v-list-item-title class="text-center">
-                                    <h5>Detalle Venta</h5>
-                                </v-list-item-title>
-                            </v-list-item>
-                        </v-col>
-
-                        <v-col cols="12">
-                            <v-data-table :headers="headersCarrito" :items="datosCarrito" :items-per-page="12"
-                                class="elevation-1" id="tableId">
-
-                                <template #[`item.actions`]="{ item }">
-                                    <v-icon small class="mr-2" color="#001781" @click="seleccionarProducto()">
-                                        mdi-check-circle
-                                    </v-icon>
-                                </template>
-
-                            </v-data-table>
-                        </v-col>
-
-                        <v-col cols="12" md="8"> </v-col>
-                        <v-col cols="12" md="4">
-                            <v-toolbar dense shaped color="#001781">
-                                <v-toolbar-title style="color: #ffffff;">
-                                    <h6>
-                                        OPCIONES
-                                    </h6>
-                                </v-toolbar-title>
-                                <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="registrarVenta()"
-                                    style="float: left" title="REGISTRAR VENTA">
-                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
-                                </v-btn>
-                            </v-toolbar>
-                        </v-col>
-
-                    </v-row>
-                </v-container>
-            </v-form>
+            <v-alert dense style="color: #ffffff;" color="grey">
+                <h5>VENTAS</h5>
+            </v-alert>
         </div>
+
+        <v-card class="white--text" color="grey lighten-4" max-width="100%">
+            <v-card-actions>
+                <v-row>
+                    <v-col cols="12">
+                        <v-tabs horizontal color="#002245" center-active grow>
+                            <v-tab>
+                                <v-icon left>
+                                    mdi-view-list
+                                </v-icon>
+                                VENTAS
+                                REAL.
+                            </v-tab>
+                            <v-tab>
+                                <v-icon left>
+                                    mdi-cash
+                                </v-icon>
+                                FORM
+                                VENTA.
+                            </v-tab>
+                            <v-tab>
+                                <v-icon left>
+                                    mdi-format-list-checkbox
+                                </v-icon>
+                                EXPE
+                                FORM
+                            </v-tab>
+
+                            <v-tab-item v-if="flag == 1">
+                                <v-card elevation="5" outlined shaped>
+                                    <v-row>
+                                        <v-col cols="12" hidden>
+                                            <v-list-item>
+                                                <v-list-item-title class="text-center">
+                                                    <h5>VENTAS REALIZADAS</h5>
+                                                </v-list-item-title>
+                                            </v-list-item>
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <v-card-title>
+                                                <v-text-field v-model="buscarVenta" append-icon="mdi-magnify"
+                                                    label="BUSCAR VENTA REALIZADA" single-line hide-details></v-text-field>
+                                            </v-card-title>
+
+                                            <v-data-table :headers="headersVentas" :items="datosVentas"
+                                                :search="searchVenta" :items-per-page="5" class="elevation-1" id="tableId">
+
+                                                <template #[`item.est`]="{ item }">
+                                                    <v-chip :color="colorEstado(item.est)" dark>
+                                                        {{ item.est }}
+                                                    </v-chip>
+                                                </template>
+
+                                                <template #[`item.actions`]="{ item }">
+                                                    <v-icon small class="mr-2" color="#001781" @click="showInfoVenta(item)"
+                                                        title="VER INFORMACION">
+                                                        mdi-eye
+                                                    </v-icon>
+                                                </template>
+
+                                            </v-data-table>
+                                        </v-col>
+                                    </v-row>
+                                </v-card>
+                            </v-tab-item>
+
+                            <v-tab-item v-if="flag == 1">
+                                <v-card elevation="5" outlined shaped>
+                                    <v-form ref="form" v-model="valid" lazy-validation>
+                                        <v-container>
+                                            <v-row>
+                                                <v-col cols="12" hidden>
+                                                    <v-list-item>
+                                                        <v-list-item-title class="text-center">
+                                                            <h5>VENTAS REALIZADAS</h5>
+                                                        </v-list-item-title>
+                                                    </v-list-item>
+                                                </v-col>
+
+                                                <v-col cols="12" md="1">
+                                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="clienteRules"
+                                                        @click="showClientes()" style="float: right"
+                                                        title="BUSCAR CLIENTES">
+                                                        <v-icon dark> mdi-magnify </v-icon>
+                                                    </v-btn>
+                                                </v-col>
+                                                <v-col cols="12" md="5">
+                                                    <v-text-field v-model="nombreCliente" label="CLIENTE" :counter="100"
+                                                        :rules="nombreClienteRules"
+                                                        @input="nombreCliente = nombreCliente.toUpperCase()" required
+                                                        disabled></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" md="3">
+                                                    <v-text-field v-model="paterno" label="PATERNO CLIENTE" :counter="100"
+                                                        :rules="paternoRules" @input="paterno = paterno.toUpperCase()"
+                                                        required disabled></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" md="3">
+                                                    <v-text-field v-model="materno" label="MATERNO CLIENTE" :counter="100"
+                                                        :rules="maternoRules" @input="materno = materno.toUpperCase()"
+                                                        required disabled></v-text-field>
+                                                </v-col>
+
+                                                <v-col cols="12" md="1"></v-col>
+                                                <v-col cols="12" md="5">
+                                                    <v-text-field v-model="nit" label="NIT CLIENTE" :counter="100"
+                                                        :rules="nitRules" @input="nit = nit.toUpperCase()" required
+                                                        disabled></v-text-field>
+                                                </v-col>
+
+                                                <v-col cols="12">
+                                                    <v-list-item>
+                                                        <v-list-item-title class="text-center">
+                                                            <h5>Lista de Productos</h5>
+                                                        </v-list-item-title>
+                                                    </v-list-item>
+
+                                                    <v-card-title>
+                                                        <v-text-field v-model="buscarproducto" append-icon="mdi-magnify"
+                                                            label="BUSCAR PRODUCTOS" single-line
+                                                            hide-details></v-text-field>
+                                                    </v-card-title>
+                                                </v-col>
+
+                                                <v-col cols="12">
+                                                    <v-data-table :headers="headersProductos" :items="datosProductos"
+                                                        :search="buscarproductos" :items-per-page="5" class="elevation-1"
+                                                        id="tableId">
+
+                                                        <template #[`item.est`]="{ item }">
+                                                            <v-chip :color="colorEstadoProd(item.est)" dark>
+                                                                {{ item.est }}
+                                                            </v-chip>
+                                                        </template>
+
+                                                        <template #[`item.actions`]="{ item }">
+                                                            <v-icon small class="mr-2" color="#001781"
+                                                                @click="seleccionarProducto(item)">
+                                                                mdi-check-circle
+                                                            </v-icon>
+                                                        </template>
+
+                                                    </v-data-table>
+                                                </v-col>
+
+                                                <v-col cols="12">
+                                                    <v-list-item>
+                                                        <v-list-item-title class="text-center">
+                                                            <h5>Detalle Venta</h5>
+                                                        </v-list-item-title>
+                                                    </v-list-item>
+                                                </v-col>
+
+                                                <v-col cols="12">
+                                                    <v-data-table :headers="headersCarrito" :items="datosCarrito"
+                                                        :items-per-page="12" class="elevation-1" id="tableId">
+
+                                                        <template #[`item.actions`]="{ item }">
+                                                            <v-icon small class="mr-2" color="#001781"
+                                                                @click="seleccionarProducto()">
+                                                                mdi-check-circle
+                                                            </v-icon>
+                                                        </template>
+
+                                                    </v-data-table>
+                                                </v-col>
+
+                                                <v-col cols="12" md="8"> </v-col>
+                                                <v-col cols="12" md="4">
+                                                    <v-toolbar dense shaped color="#001781">
+                                                        <v-toolbar-title style="color: #ffffff;">
+                                                            <h6>
+                                                                OPCIONES
+                                                            </h6>
+                                                        </v-toolbar-title>
+                                                        <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                                            @click="registrarVenta()" style="float: left"
+                                                            title="REGISTRAR VENTA">
+                                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                                        </v-btn>
+                                                    </v-toolbar>
+                                                </v-col>
+                                            </v-row>
+                                        </v-container>
+                                    </v-form>
+                                </v-card>
+                            </v-tab-item>
+
+                        </v-tabs>
+                    </v-col>
+                </v-row>
+            </v-card-actions>
+
+            <v-list-item> </v-list-item>
+
+            <div class="text-center">
+                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                    <strong>{{ mensajeSnackbar }}</strong>
+
+
+                    <template v-slot:action="{ attrs }">
+                        <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                            mdi-close
+                        </v-icon>
+                    </template>
+                </v-snackbar>
+            </div>
+
+            <div class="text-center">
+
+                <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                    <strong>{{ mensajeSnackbarError }}</strong>
+
+                    <template v-slot:action="{ attrs }">
+                        <v-icon right v-bind="attrs" @click="snackbarError = false">
+                            mdi-close
+                        </v-icon>
+                    </template>
+                </v-snackbar>
+            </div>
+
+        </v-card>
     </v-card>
 </template>
 <script>
@@ -253,9 +376,9 @@ export default {
             //#region Carrito
             productoSeleccionado: "",
             cantidad: "",
-            idEmpleado: "",
+            idEmpleado: 1,
             razonSocial: "",
-            codigoControl: "",
+            codigoControl: "aa",
             datosCarrito: [],
             headersCarrito: [
                 { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
@@ -268,21 +391,51 @@ export default {
             ],
             //#endregion
 
+            //#region Ventas
+            datosVentas: [],
+            headersVentas: [
+                { text: "NIT", value: "nit", sortable: false },
+                { text: "COD. CONTR.", value: "codctrl", sortable: false },
+                { text: "RAZ. SOCIAL", value: "razsoc", sortable: false },
+                { text: "TOTAL", value: "tot", sortable: false },
+                { text: "ESTADO", value: "est", sortable: false },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
+            //#endregion
+
             //#region Modals
             clientesModal: 0,
             cantidadModal: 0,
+            flag: 1,
             //#endregion
 
-            
+            //#region Snackbars
+            snackbarOK: false,
+            mensajeSatisfactorio: "REGISTRO CORRECTO ",
+            snackbarError: false,
+            mensajeError: "REGISTRO FALLIDO ",
+            snackbarWarning: false,
+            mensajeWarning: "EMAIL YA EXISTE ",
+            timeout: 2000,
+            mensajeSnackbar: "",
             //#endregion
         }
     },
 
     created: function () {
         this.listarProductos();
+        this.listarVentas();
     },
     methods: {
         colorEstado(est) {
+            if (est == 'V') return 'green'
+            else return 'red'
+        },
+        colorEstadoProd(est) {
+            if (est == 'ACTIVO') return 'green'
+            else return 'red'
+        },
+        colorEstadoCli(est) {
             if (est == 'ACTIVO') return 'green'
             else return 'red'
         },
@@ -328,38 +481,83 @@ export default {
                     console.log(error);
                 });
         },
+
+        listarVenta() {
+            this.listarVentas();
+        },
+        async listarVentas() {
+            let me = this;
+            await axios
+                .get("/venta/listarventas")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosVentas = [];
+
+                    } else {
+                        me.datosVentas = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
         //#endregion
         //#region Registros
         /*registrarVentas() {
             this.registrarVenta(this.idProducto, this.cantidad, this.precioUnitario, this.total, this.codigoControl, this.nit, this.razonSocial, this.idCliente, this.idEmpleado);
         },*/
         async registrarVenta() {
+            let me = this;
             if (this.datosCarrito.length > 0 && this.idCliente !== "") {
-                const venta = {
-                    idCliente: this.idCliente,
-                    idEmpleado: this.idEmpleado,
-                    razonSocial: this.razonSocial,
-                    nit: this.nit,
-                    productos: this.datosCarrito
-                };
-
                 try {
-                    const response = await axios.post("venta/registrarventa", venta);//akjdahskdjashdkjashdkjsdsh
-                    if (response.data.message === "VENTA REALIZADA CORRECTAMENTE") {
-                        console.log("Venta registrada con éxito.");
-                        this.resetVenta();
-                    } else {
-                        console.error("Error al registrar la venta:", response.data.message);
+                    // Creas una lista para almacenar las ventas de cada producto
+                    const ventas = [];
 
+                    // Recorres el carrito y creas un objeto de venta por cada producto
+                    for (const producto of this.datosCarrito) {
+                        const venta = {
+                            idProducto: producto.idprod,
+                            cantidad: producto.cant,
+                            precioUnitario: producto.precuni,
+                            total: producto.total,
+                            codigoControl: this.codigoControl, // Asegúrate de definir este dato en tus datos de componente
+                            nit: this.nit, // Asegúrate de definir este dato en tus datos de componente
+                            razonSocial: this.razonSocial, // Asegúrate de definir este dato en tus datos de componente
+                            idCliente: this.idCliente,
+                            idEmpleado: this.idEmpleado, // Asegúrate de obtener este valor de alguna parte (login, etc.)
+                        };
+
+                        ventas.push(venta);
                     }
+
+                    // Haces una solicitud al servidor para registrar todas las ventas
+                    console.log(ventas)
+                    const response = await axios.post("venta/registrarventa", JSON.stringify(ventas))
+                        .then(function (response) {
+                            if (response.data.message === "VENTA REALIZADA CORRECTAMENTE") {
+                                me.mensajeSnackbar = response.data.message;
+                                me.snackbarOK = true;
+                                me.resetVenta();
+                            } else {
+                                console.error("ERROR AL REALIZAR LA VENTA", response.error)
+                                this.snackbarError = true;
+                                this.mensajeSnackbar = response.data.message;
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                    // Manejas la respuesta como consideres necesario
+
                 } catch (error) {
                     console.error("Error al comunicarse con el servidor:", error);
-                    console.log(venta)
                 }
             } else {
                 console.error("Debe seleccionar un cliente y agregar productos al carrito antes de realizar la venta.");
             }
         },
+
         resetVenta() {
             // Restablece los datos del cliente y el carrito
             this.nombreCliente = "";
@@ -379,6 +577,12 @@ export default {
         },
         closeClienteModal() {
             this.clientesModal = false;
+        },
+        showInfoVenta() {
+            this.infoVenta = true;
+        },
+        closeInfoVenta() {
+            this.infoVenta = false;
         },
         //#endregion
         //#region Cambios Estado
@@ -408,13 +612,12 @@ export default {
                     codprod: this.productoSeleccionado.codprod,
                     cant: this.cantidad,
                     precuni: this.precioUnitario,
-                    total: this.total,
+                    total: this.cantidad * this.precioUnitario,
                     est: this.productoSeleccionado.est,
                     // Agrega otros campos necesarios aquí
                 };
                 this.datosCarrito.push(productoEnCarrito);
                 this.cantidadModal = false;
-                this.cantidad = 0; // Reinicia la cantidad
                 this.productoSeleccionado = null; // Reinicia el producto seleccionado
                 console.log(this.datosCarrito)
 

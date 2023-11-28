@@ -82,6 +82,11 @@ const routes = [
     path: '/materia',
     name: 'Materia',
     component: require('../components/MateriasPrimas.vue').default
+  },
+  {
+    path: '/departamento',
+    name: 'Departamentos',
+    component: require('../components/Departamentos.vue').default
   }
 ]
 
