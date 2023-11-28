@@ -1,0 +1,708 @@
+<template>
+    <v-card elevation="5" outlined shaped>
+
+        <div> <!-- Encabezado -->
+            <v-alert dense color="#00A1B1" style="color: #ffffff">
+                <h5>USUARIOS</h5>
+            </v-alert>
+        </div>
+
+        <v-dialog v-model="usuarioModal" max-width="1080px"> <!-- Usuarios Modal-->
+            
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span v-if="botonAct == 0">Nuevo Usuario</span>
+                    <span v-if="botonAct == 1">Editar Usuario</span>
+                </v-card-title>
+                <v-card-text>
+
+                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo Usuario / Editar Usuario -->
+                <v-container>
+                    <v-row>
+                        <v-col cols="12" md="1">
+                            <v-btn class="mx-2" fab dark x-small color="cyan"
+                                    @click="showEmpleado()" style="float: right" title="BUSCAR EMPLEADO">
+                                <v-icon dark> mdi-magnify </v-icon>
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="12" md="11">
+                            <v-text-field v-model="idEmpleado" :label="nombreEmpleadoLabel" type="hidden" disabled required>
+                            </v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="12">
+                            <v-text-field v-model="nombreUsuario" :counter="50" :rules="nombreRules"
+                                @input="nombreUsuario = nombreUsuario.toUpperCase()" label="Nombre de Usuario" disabled required>
+                            </v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="12">
+                                <v-select v-model="tipo" :items="datosTipo" label="Selecciona el tipo de cuenta"
+                                    prepend-icon="mdi-pick" required>
+                                </v-select>
+                        </v-col>
+                        <v-col cols="12" md="1">
+                            <v-btn class="mx-2" fab dark x-small color="cyan"
+                                    @click="showAcceso()" style="float: left" title="SELECCIONAR ACCESOS">
+                                <v-icon dark> mdi-key </v-icon>
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="12" md="11">
+                            <v-select v-model="accesos" item-value="idacc" item-text="idacc" :items="accesos" label="Seleccionar Permisos"
+                                multiple disabled
+                                ></v-select>
+                        </v-col>
+                        
+                        <v-col cols="12" md="8"> </v-col>
+                                <v-col cols="6"></v-col>
+                                <v-col cols="2">
+                                    <v-btn iconv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
+                                            @click="actualizarUsuario()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN">
+                                            <v-icon dark> mdi-pencil </v-icon>
+                                            ACTUALIZAR
+                                        </v-btn>
+                                        <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
+                                            @click="registrarUsuario()" style="float: left" title="REGISTRAR ITEM">
+                                            <v-icon dark> mdi-content-save </v-icon>
+                                            GUARDAR
+                                        </v-btn>
+                                </v-col>                      
+                                <v-col cols="2">                                        
+                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
+                                        <v-icon dark> mdi-eraser </v-icon>
+                                        LIMPIAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeUsuario()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                    </v-row>
+
+                    <div class="text-center">
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
+                            outlined>
+                            <strong>{{ mensajeSnackbar }}</strong>
+
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+
+                    <div class="text-center">
+
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                            outlined>
+                            <strong>{{ mensajeSnackbarError }}</strong>
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+                </v-container>
+            </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="empleadoModal" max-width="1080px"> <!-- Empleados Modal-->
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>Seleccionar Empleado</span>
+                </v-card-title>
+                <v-card-text>
+            <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Empleados -->
+                <v-container>
+                    <v-row>
+                        <v-col cols="12" md="12">
+                            <v-col cols="12">
+                                <v-list-item>
+                                    <v-list-item-title class="text-center">
+                                        <h5>EMPLEADOS</h5>
+                                    </v-list-item-title>
+                                </v-list-item>
+
+                                <v-card-title>
+                                    <v-text-field v-model="searchEmpleado" append-icon="mdi-magnify"
+                                        label="BUSCAR EMPLEADOS" single-line hide-details></v-text-field>
+                                </v-card-title>
+
+                                <v-data-table :headers="headersEmpleado" :items="datosEmpleado" :search="searchEmpleado"
+                                    :items-per-page="5" class="elevation-1">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarEmpleado(item)"
+                                            title="ACTIVAR EMPLEADO">
+                                            mdi-check-circle-outline
+                                        </v-icon>
+                                        <!--
+                                        <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
+                                            title="DESACTIVAR EMPLEADO">
+                                            mdi-cancel
+                                        </v-icon>
+                                        <v-icon small class="mr-2" @click="showEditEmpleado(item)"
+                                            title="EDITAR INFORMACION">
+                                            mdi-pencil
+                                        </v-icon>
+                                        -->
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                        </v-col>
+                        <v-col cols="8"></v-col>                     
+                        <v-col cols="4">
+                            <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                    @click="closeEmpleado()" style="float: right" title="SALIR">
+                                <v-icon dark> mdi-close-circle-outline </v-icon>
+                                SALIR
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+
+                    <div class="text-center">
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
+                            outlined>
+                            <strong>{{ mensajeSnackbar }}</strong>
+
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+                    <div class="text-center">
+
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                            outlined>
+                            <strong>{{ mensajeSnackbarError }}</strong>
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+                </v-container>
+            </v-form>
+            </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="accesoModal" max-width="1080px"> <!-- Accesos Modal-->
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>Selecciona los accesos que tendrá la cuenta</span>
+                </v-card-title>
+
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo ACCES / Editar CAACASE -->
+                <v-container>
+                    <v-row>
+                        <v-col cols="12" md="12">
+                        <v-data-table v-model="accesos" :headers="headersAcceso" :items="datosAcceso"
+                            item-key="idacc" item-value show-select class="elevation-1">
+                            <!--
+                            <template v-slot:top>
+                            <v-switch v-model="singleSelect" label="Single select"class="pa-3">
+
+                            </v-switch>
+                            </template>
+                        -->
+                        </v-data-table>
+                        <!--
+                        <v-col cols="12" md="1">
+                            <v-btn class="mx-2" fab dark x-small color="cyan"
+                                    @click="showEmpleado()" style="float: right" title="BUSCAR EMPLEADO">
+                                <v-icon dark> mdi-magnify </v-icon>
+                            </v-btn>
+                        </v-col>
+                    -->
+                        </v-col>
+                        <v-col cols="12" md="8"> </v-col>
+                                <v-col cols="6"></v-col>
+                                <v-col cols="2">
+                                    <!--
+                                    <v-btn iconv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
+                                            @click="actualizarUsuario()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN">
+                                            <v-icon dark> mdi-pencil </v-icon>
+                                                ACTUALIZAR
+                                    </v-btn> -->
+                                    <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
+                                        @click="closeAcceso()" style="float: left" title="GUARDAR ACCESOS">
+                                        <v-icon dark> mdi-content-save </v-icon>
+                                            GUARDAR
+                                    </v-btn>
+                                </v-col> 
+                                <!--                     
+                                <v-col cols="2">                                        
+                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
+                                        <v-icon dark> mdi-eraser </v-icon>
+                                            LIMPIAR
+                                    </v-btn>
+                                </v-col> -->
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeAcceso()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                    </v-row>
+
+
+
+                    <div class="text-center">
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
+                            outlined>
+                            <strong>{{ mensajeSnackbar }}</strong>
+
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+
+                    <div class="text-center">
+
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                            outlined>
+                            <strong>{{ mensajeSnackbarError }}</strong>
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+                </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <v-col cols="12" md="4">
+            <v-btn color="success" @click="showAddUsuario()">+ Nuevo Usuario</v-btn>
+        </v-col>
+        <div>
+            <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Usuarios -->
+                <v-container>
+                    <v-row>
+                        <v-col cols="12" md="12">
+                            <v-col cols="12">
+                                <v-list-item>
+                                    <v-list-item-title class="text-center">
+                                        <h5>USUARIOS</h5>
+                                    </v-list-item-title>
+                                </v-list-item>
+
+                                <v-card-title>
+                                    <v-text-field v-model="searchUsuario" append-icon="mdi-magnify"
+                                        label="BUSCAR USUARIOS" single-line hide-details></v-text-field>
+                                </v-card-title>
+
+                                <v-data-table :headers="headersUsuario" :items="datosUsuario" :search="searchUsuario"
+                                    :items-per-page="5" class="elevation-1">
+                                    <template #[`item.act`]="{ item }">
+                                        <v-chip :color="getColor(item.act)" dark>
+                                            {{ item.act }}
+                                        </v-chip>
+                                    </template>
+
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
+                                            title="ACTIVAR USUARIO">
+                                            mdi-check-circle-outline
+                                        </v-icon>
+                                        <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
+                                            title="DESACTIVAR USUARIO">
+                                            mdi-cancel
+                                        </v-icon>
+                                        <!--
+                                        <v-icon small class="mr-2" @click="showEditUsuario(item)"
+                                            title="EDITAR INFORMACION">
+                                            mdi-pencil
+                                        </v-icon>
+                                        -->
+                                      
+
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                        </v-col>
+                    </v-row>
+
+                    <div class="text-center">
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
+                            outlined>
+                            <strong>{{ mensajeSnackbar }}</strong>
+
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+                    <div class="text-center">
+
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                            outlined>
+                            <strong>{{ mensajeSnackbarError }}</strong>
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+                </v-container>
+            </v-form>
+        </div>
+
+    </v-card>
+</template>
+<script>
+import axios from "axios";
+
+export default {
+    data: () => ({
+        idUsuario: "",
+        nombreUsuario: "",
+        password: "",
+        accesos: "",
+        tipo: "",
+        accesos: [],
+        estado: "",
+        createDate: "",
+        lastDate: "",
+        valid: true,
+
+        datosUsuario: [],
+        datosEmpleado: [],
+        datosTipo: ["SUPERVISOR","COMUN"],
+        datosAcceso: [],
+        idEmpleado: "",
+        nombreEmpleadoLabel: "Seleccionar empleado",
+
+        
+
+        searchUsuario: "",
+        searchEmpleado: "",
+
+        snackbarOK: false,
+        mensajeSnackbar: "",
+        snackbarError: false,
+        mensajeSnackbarError: "REGISTRO FALLIDO",
+        timeout: 2000,
+
+        usuarioModal: "",
+        empleadoModal: "",
+        accesoModal: "",
+        botonAct: 0,
+        nombreRules: [
+            (v) => !!v || "NOMBRE DE USUARIO ES REQUERIDO",
+            (v) =>
+                (v && v.length <= 50) ||
+                "EL NOMBRE DE USUARIO DEBE TENER 50 CARACTERES COMO MAXIMO",
+        ],
+
+        accesosRules: [
+            (v) =>
+                (v && v.length <= 200) ||
+                "LA DESCRIPCION DEBE TENER 200 CARACTERES COMO MAXIMO",
+        ],
+
+        tipoRules: [
+            (v) =>
+                (v && v.length <= 8) ||
+                "SALARIO DEBE TENER 8 CARACTERES COMO MAXIMO",
+        ],
+
+        headersUsuario: [
+            { text: "EMPLEADO", value: "empl" },
+            { text: "USUARIO", value: "nom" },
+            { text: "ESTADO", value: "act", sortable: false },
+            { text: "FECHA CREACION", value: "credte", sortable: false },
+            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
+            { text: "OPTIONS", value: "actions", sortable: false },
+        ],
+        headersEmpleado: [
+            { text: "NOMBRES", value: "nom" },
+            { text: "PATERNO", value: "pat" },
+            { text: "MATERNO", value: "mat" },
+            { text: "OPCIONES", value: "actions", sortable: false },
+        ],
+        headersAcceso: [
+            { text: "Nro", value: "idacc", align: "start"},
+            //{ text: "MODULO", value: "mod" },
+            { text: "DESCRIPCION", value: "descrip" },
+        ],
+    }),
+
+    created: function () {
+        this.listarUsuarios();
+    },
+
+    methods: {
+
+        activar(item) {
+            this.idUsuario = item.idusu;
+            this.activarusuario(this.idUsuario);
+        },
+        async activarusuario(idUsuario) {
+            let me = this;
+            await axios
+                .post("/usuario/onusuario/" + this.idUsuario).then(function (response) {
+
+                    me.listarUsuarios();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        },
+        desactivar(item) {
+            this.idUsuario = item.idusu;
+            this.desactivarusuario(this.idUsuario);
+        },
+        async desactivarusuario(idUsuario) {
+            let me = this;
+            await axios
+                .post("/usuario/offusuario/" + this.idUsuario).then(function (response) {
+
+                    me.listarUsuarios();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        },
+        getColor(est) {
+            if (est == 'ACTIVO') return 'green'
+            else return 'red'
+        },
+
+        seleccionarEmpleado(item) {
+            this.idEmpleado = item.idempl;
+            this.nombreEmpleadoLabel = item.pat +" "+item.nom
+            this.generarDatosUsuario(item);
+            this.closeEmpleado();
+        },
+
+        generarDatosUsuario(item) {
+            let min = Math.ceil(1000);
+            let max = Math.floor(10000);
+            this.nombreUsuario = item.nom[0] + item.pat[0] + (Math.floor(Math.random() * (max - min) + min));
+            this.password = Math.floor(Math.random() * (max - min) + min);
+            console.log(this.nombreUsuario);
+            console.log(this.password);
+        },
+
+        showAddUsuario() {
+            this.botonAct = 0;
+            this.usuarioModal = true;
+        },
+        showEditUsuario(item) {
+            this.botonAct = 1;
+            this.llenarCamposUsuario(item);
+            this.usuarioModal = true;
+        },
+
+        showEmpleado(item) {
+            //this.botonAct = 1;
+            //this.llenarCamposUsuario(item);
+            this.listarEmpleados();
+            this.empleadoModal = true;
+        },
+        showAcceso(item) {
+            //this.botonAct = 1;
+            //this.llenarCamposUsuario(item);
+            this.listarAccesos();
+            this.accesoModal = true;
+        },
+
+        closeUsuario() {
+            this.usuarioModal = false;
+        },
+        closeEmpleado() {
+            this.empleadoModal = false;
+        },
+        closeAcceso() {
+            this.accesoModal = false;
+        },
+
+        llenarCamposUsuario(item) {
+            this.nombreUsuario = item.usu;
+            this.accesos = item.acc;
+            this.tipo = item.tip;
+            
+            this.idUsuario = item.idusu;
+        },
+        
+        actualizarUsuario() {
+            this.actualizarusuario(
+                this.idUsuario,
+                this.nombreUsuario,
+                this.accesos,
+                this.tipo,
+            );
+        },
+        
+       
+        async actualizarusuario(
+            idUsuario,
+            nombreUsuario,
+            accesos,
+            tipo,
+        ) {
+            let me = this;
+
+            await axios
+                .post(
+                    "/usuario/editarusuario/" +
+                    this.idUsuario +
+                    "," +
+                    this.nombreUsuario +
+                    "," +
+                    this.accesos +
+                    "," +
+                    this.tipo
+
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarUsuarios(me.idUsuario);
+                    me.limpiar();
+
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                });
+        },
+
+        limpiar() {
+            this.nombreUsuario = "";
+            this.datosUsuario = "",
+            this.idEmpleado = "";
+            this.nombreEmpleadoLabel = "";
+            this.accesos = "";
+            this.tipo = "";
+        },
+
+        async listarUsuarios(idUsuario) {
+            let me = this;
+            await axios
+                .get("/usuario/listarusuarios/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosUsuario = [];
+                    } else {
+                        me.datosUsuario = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        async listarEmpleados(idEmpleado) {
+            let me = this;
+            await axios
+                .get("/empleado/listarempleadossinc/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosEmpleado = [];
+                    } else {
+                        me.datosEmpleado = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        async listarAccesos() {
+            let me = this;
+            await axios
+                .get("/acceso/listaraccesos/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosAcceso = [];
+                    } else {
+                        me.datosAcceso = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        registrarUsuario() {
+            console.log("AS: "+accesos)
+            this.registrarUsuario(
+                this.idEmpleado,
+                this.nombreUsuario,
+                this.password,
+                this.tipo,
+                this.accesos
+                
+            );
+        },
+        async registrarUsuario(
+            idEmpleado,
+            nombreUsuario,
+            password,
+            tipo,
+            accesos
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/usuario/addusuario/" +
+                    this.idEmpleado +
+                    "," +
+                    this.nombreUsuario +
+                    "," +
+                    this.password +
+                    "," +
+                    this.tipo +
+                    "," +
+                    "[1-2-3-4]"
+
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarUsuarios(me.idUsuario);
+                    me.limpiar();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+        },
+    },
+};
+</script>

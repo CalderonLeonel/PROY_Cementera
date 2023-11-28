@@ -340,7 +340,7 @@ export default {
             ],
             //#endregion
             //#region Fabrica 
-            idFabrica: 1,
+            idFabrica: 2,
             nombreFabrica: "",
             codigoFabrica: "",
             direccionFabrica: "",

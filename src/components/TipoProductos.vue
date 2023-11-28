@@ -166,12 +166,8 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-btn class="mx-2" fab dark small icon v-if="botonact == 1" color="#EE680B"
-                                            @click="editarTipos()" style="float: left" title="ACTUALIZAR INtipoCIÓN">
+                                            @click="editarTipos()" style="float: left" title="ACTUALIZAR INFORMACION">
                                             <v-icon dark> mdi-pencil </v-icon>
-                                        </v-btn>
-                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 0" color="#EE680B"
-                                            @click="registrarTipo()" style="float: left" title="REGISTRAR Tipo">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
                                         <v-btn class="mx-2" fab dark small icon color="#EE680B" @click="limpiar()"
                                             style="float: left" title="LIMPIAR FORMULARIO">
@@ -344,7 +340,7 @@
                             </v-list-item>
 
                             <v-card-title>
-                                <v-text-field v-model="buscarTipos" append-icon="mdi-magnify" label="BUSCAR TipoS"
+                                <v-text-field v-model="buscarTipos" append-icon="mdi-magnify" label="BUSCAR TIPOS"
                                     single-line hide-details></v-text-field>
                             </v-card-title>
 
