@@ -181,11 +181,11 @@
             </div>
 
         </v-card>
-    </div>
+    </div> <!--one-->
 </template>
 <script>
 import axios from "axios";
-import ScheduleForm from './Sector.vue';
+import ScheduleForm from './Sector.vue'; // one
 
 export default {
     data: () => ({

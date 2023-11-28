@@ -165,6 +165,11 @@
               <h6>DEPARTAMENTOS</h6>
             </v-list-item-title>
           </v-list-item>
+          <v-list-item :to="{ name: 'Solicitudes' }">
+            <v-list-item-title>
+              <h6>SOLICITUDES DE PERSONAL</h6>
+            </v-list-item-title>
+          </v-list-item>
         </v-list-group>
         <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(6,'0')">
           <template v-slot:activator>
@@ -351,7 +356,7 @@ export default {
     },
     salir() {
       sessionStorage.clear();
-      this.user = {};
+      this.user = null;
       if (this.$route.path != '/login') {
         this.$router.push("/login");
       }
