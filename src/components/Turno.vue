@@ -124,7 +124,6 @@ export default {
         timeout: 2000,
 
         botonAct: 0,
-
         datosTurno: [],
         groupBy: "turn",
 
@@ -138,7 +137,6 @@ export default {
     }),
 
     created: function () {
-
         this.listarTurnos();
     },
 

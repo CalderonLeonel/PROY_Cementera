@@ -421,6 +421,7 @@ export default {
             idArea
         ) {
             let me = this;
+
             await axios
                 .post(
                     "/departamento/adddepartamento/" +
