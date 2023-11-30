@@ -20,6 +20,7 @@
                                 @input="nombreTurno = nombreTurno.toUpperCase()" label="Nombre del Turno" required>
                             </v-text-field>
                         </v-col>
+                        
                     
                             <v-col cols="12">
                                 
