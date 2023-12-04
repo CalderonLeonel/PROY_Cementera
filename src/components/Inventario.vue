@@ -748,27 +748,12 @@
 
          registrarInv() {
             if(this.movimiento == 'SALIDA'){
-                alert('SALIDA')
-                if (this.metodoValuacion == 'PEPS')
-                    alert('PEPS SALIDA');
-                else if(this.metodoValuacion == 'UEPS')
-                    alert('UEPS SALIDA');
-                else
-                    alert('PROMEDIO SALIDA');
+                this.registrarInventarioSalida(this.idItem, this.movimiento,this.cantidad,this.metodovaluacion, this.estado);
             }
             else{
-                alert('ENTRADA')
-                if (this.metodoValuacion == 'PEPS') {
-                    alert('PEPS ENTRADA');
-                }
-                else if(this.metodoValuacion == 'UEPS'){
-                    alert('UEPS ENTRADA');
-                }
-                else{
-                    alert('PROMEDIO ENTRADA');
-                }
+                this.registrarInventarioEntrada(this.idItem, this.movimiento,this.cantidad,this.metodovaluacion, this.estado);
+
             }
-            //this.registrarInventario(this.idItem, this.movimiento,this.cantidad,this.metodovaluacion, this.estado);
         },
         async registrarInventarioEntrada(
             idItem,
@@ -803,6 +788,7 @@
                     me.snackbarError = true;
 
                 });
+                
 
         },
 
