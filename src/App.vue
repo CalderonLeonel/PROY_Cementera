@@ -268,7 +268,7 @@
               <h6>EMPLEADOS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Alertas' }">
+          <v-list-item :to="{ name: 'Alerta' }">
             <v-list-item-title>
               <h6>ALERTAS</h6>
             </v-list-item-title>
