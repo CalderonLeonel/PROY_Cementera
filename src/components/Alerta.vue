@@ -237,16 +237,58 @@ export default {
         },
     
         registrarAlerta() {
-            this.almacenarArchivo(this.AlertaArchivo)
-            this.guardarArchivo(this.AlertaArchivo.name, this.tituloAlerta, this.codigoArchivo, "ACTIVO");
-        
-            this.guardarAlerta(this.tituloAlerta,this.descripcionAlerta)
+            this.guardarAlerta(this.AlertaArchivo, this.tituloAlerta, this.codigoArchivo, "ACTIVO", this.descripcionAlerta)
             this.agregarAlerta = false;
         },
 
 
-        async guardarAlerta(titulo,descripcion){
+        async guardarAlerta(AlertaArchivo, tituloAlerta, codigoArchivo, estado, descripcion){
+            const formData = new FormData();
+            formData.append('image', AlertaArchivo);
             let me = this;
+            await axios
+                .post(
+                    "/uploadimage/", formData)
+                .then(function (response) {
+                    console.log(response);
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarAlertas();
+                    me.listarArchivos();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+            const ext = AlertaArchivo.split('.');
+            const date = new Date();
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0') + '_' + (date.getMonth() + 1).toString().padStart(2, '0') + '_' + date.getFullYear();
+            const nombreArchivo = ext[0] + '_' + fechaHoraActual + '.' + ext[1];
+            await axios
+                .post(
+                    "/documento/insertar/" +
+                    ext[0] +
+                    "," +
+                    nombreArchivo +
+                    "," +
+                    tituloAlerta +
+                    "," +
+                    codigoArchivo +
+                    "," +
+                    estado)
+                .then(function (response) {
+                    console.log(response);
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarAlerta();
+                    me.listarArchivos();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
             var object = []
             await axios
                 .get("/documento/obtenerUltimo/")
@@ -269,7 +311,7 @@ export default {
             await axios
                 .post(
                     "/empleado/addalerta/" , {
-                        titulo: titulo,
+                        titulo: tituloAlerta,
                         descripcion: descripcion.toString(),
                         img: me.idArchivo
                     })
