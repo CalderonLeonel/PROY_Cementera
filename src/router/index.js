@@ -103,7 +103,7 @@ const routes = [
   },
   {
     path: "/alerta",
-    name: "Alertas",
+    name: "Alerta",
     component: require("../components/Alerta.vue").default,
   },
   {
