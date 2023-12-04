@@ -18,7 +18,7 @@
                     <v-text-field v-model="searchAlerta" append-icon="mdi-magnify"
                         label="BUSCAR ALERTA" single-line hide-details></v-text-field>
                     <v-data-table :headers="headerAlerta" :items="datosAlerta" :search="searchAlerta"
-                        :custom-filter="customFilter" class="elevation-1">
+                         class="elevation-1">
 
                         <template #[`item.iddoc`]="{ item }">
                             <v-btn color="primary" icon
@@ -239,6 +239,7 @@ export default {
         registrarAlerta() {
             this.guardarAlerta(this.AlertaArchivo, this.tituloAlerta, this.codigoArchivo, "ACTIVO", this.descripcionAlerta)
             this.agregarAlerta = false;
+            this.listarAlertas();
         },
 
 
@@ -255,13 +256,13 @@ export default {
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarAlertas();
-                    me.listarArchivos();
+                
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
 
                 });
-            const ext = AlertaArchivo.split('.');
+            const ext = AlertaArchivo.name.split('.');
             const date = new Date();
             const fechaHoraActual = date.getDate().toString().padStart(2, '0') + '_' + (date.getMonth() + 1).toString().padStart(2, '0') + '_' + date.getFullYear();
             const nombreArchivo = ext[0] + '_' + fechaHoraActual + '.' + ext[1];
@@ -282,8 +283,8 @@ export default {
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.limpiar();
-                    me.listarAlerta();
-                    me.listarArchivos();
+                    me.listarAlertas();
+                
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -344,7 +345,7 @@ export default {
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarAlertas();
-                    me.listarArchivos();
+                
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -376,7 +377,7 @@ export default {
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarAlerta();
-                    me.listarArchivos();
+                
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -413,7 +414,7 @@ export default {
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarAlertas();
-                    me.listarArchivos();
+                
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
