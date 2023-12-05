@@ -765,7 +765,7 @@
             let me = this;
             await axios
                 .post(
-                    "/inventario/agregarinventarioEntrada/" +
+                    "/inventario/agregarinventarioentrada/" +
                     this.idItem +
                     "," +
                     this.movimiento +
@@ -802,7 +802,7 @@
             let me = this;
             await axios
                 .post(
-                    "/inventario/agregarSalida/" +
+                    "/inventario/agregarinventariosalida/" +
                     this.idItem +
                     "," +
                     this.movimiento +

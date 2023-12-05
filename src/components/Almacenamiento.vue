@@ -1,6 +1,11 @@
 <template>
    <v-card elevation="5" outlined>
-        <v-alert  v-if="existencias==false" 
+    <div v-for="item in datosExistencia">
+        <div class="text-h6">
+            {{ item.nombreItem }}
+        </div>
+    </div>
+        <v-alert   v-if="existencias==false" 
                 type="error"
                 color="red darken-2"
                 dense
