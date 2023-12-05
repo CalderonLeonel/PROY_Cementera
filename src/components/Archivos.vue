@@ -139,20 +139,21 @@
                                 <v-col cols="12" md="4"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
-                                    <v-btn iconvv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="editarDocumento()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
-                                        <v-icon dark> mdi-pencil </v-icon>
-                                        ACTUALIZAR
-                                    </v-btn>
-                                    <v-btn iconv v-if="botonAct == 0" class="mx-4" dark color="#0ABF55"
-                                        @click="registrarDocumento()" style="float: left" title="REGISTRAR PROVEEDOR">
-                                        <v-icon dark> mdi-content-save </v-icon>
-                                        GUARDAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()" style="float: left"
-                                        title="LIMPIAR FORMULARIO">
+                                    <v-btn iconvv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
+                                            @click="editarDocumento()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN">
+                                            <v-icon dark> mdi-pencil </v-icon>
+                                            ACTUALIZAR
+                                        </v-btn>
+                                        <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
+                                            @click="registrarDocumento()" style="float: left" title="REGISTRAR DOCUMENTO">
+                                            <v-icon dark> mdi-content-save </v-icon>
+                                            GUARDAR
+                                        </v-btn>
+                                </v-col>                      
+                                <v-col cols="2">                                        
+                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                         LIMPIAR
                                     </v-btn>
