@@ -91,6 +91,41 @@
             </v-card>
         </v-dialog>
 
+        <v-dialog v-model="infoVenta" max-width="1000px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>INFORMACION DE LA VENTA:</span><br>
+                    <span>{{ this.codigoControl }}</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="nit" label="NIT" :counter="100" :rules="nitRules"
+                                        @input="nit = nit.toUpperCase()" required disabled></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="razonSocial" label="RAZON SOCIAL" :counter="100"
+                                        :rules="razonSocialRules" @input="razonSocial = razonSocial.toUpperCase()" required
+                                        disabled></v-text-field>
+                                </v-col>
+
+                                <v-col cols="10"></v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closeInfoVenta()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
 
         <div>
             <v-alert dense style="color: #ffffff;" color="grey">
@@ -151,10 +186,17 @@
                                                 </template>
 
                                                 <template #[`item.actions`]="{ item }">
+
                                                     <v-icon small class="mr-2" color="#001781" @click="showInfoVenta(item)"
                                                         title="VER INFORMACION">
                                                         mdi-eye
                                                     </v-icon>
+
+                                                    <v-icon small class="mr-2" color="#001781" @click="generarFactura(item)"
+                                                        title="VER FACTURA">
+                                                        mdi-printer
+                                                    </v-icon>
+
                                                 </template>
 
                                             </v-data-table>
@@ -324,6 +366,8 @@
 <script>
 import axios from "axios";
 import { async } from "regenerator-runtime";
+import jsPDF from 'jspdf';
+
 
 export default {
     data() {
@@ -392,8 +436,19 @@ export default {
             //#endregion
 
             //#region Ventas
+            idVenta: "",
             datosVentas: [],
             headersVentas: [
+                { text: "NIT", value: "nit", sortable: false },
+                { text: "COD. CONTR.", value: "codctrl", sortable: false },
+                { text: "RAZ. SOCIAL", value: "razsoc", sortable: false },
+                { text: "TOTAL", value: "tot", sortable: false },
+                { text: "ESTADO", value: "est", sortable: false },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
+
+            datosVentasDetalle: [],
+            headersVentasDetalle: [
                 { text: "NIT", value: "nit", sortable: false },
                 { text: "COD. CONTR.", value: "codctrl", sortable: false },
                 { text: "RAZ. SOCIAL", value: "razsoc", sortable: false },
@@ -407,6 +462,7 @@ export default {
             clientesModal: 0,
             cantidadModal: 0,
             flag: 1,
+            infoVenta: 0,
             //#endregion
 
             //#region Snackbars
@@ -428,7 +484,7 @@ export default {
     },
     methods: {
         colorEstado(est) {
-            if (est == 'V') return 'green'
+            if (est == 'COMPLETADO') return 'green'
             else return 'red'
         },
         colorEstadoProd(est) {
@@ -439,6 +495,41 @@ export default {
             if (est == 'ACTIVO') return 'green'
             else return 'red'
         },
+
+        generarFactura(item) {
+            // Crea un nuevo documento jsPDF
+            const doc = new jsPDF();
+
+            // Agrega el encabezado al documento
+            doc.text('Factura de Venta', 10, 10);
+
+            // Agrega los datos de la venta
+            doc.text(`ID de Venta: ${item.idven}`, 10, 20);
+            doc.text(`Nit: ${item.nit}`, 10, 30);
+            doc.text(`Código de Control: ${item.codctrl}`, 10, 40);
+            doc.text(`Razón Social: ${item.razsoc}`, 10, 50);
+            doc.text(`Total: ${item.tot}`, 10, 60);
+
+            // Agrega una separación entre los datos de la venta y el detalle
+            doc.text('Detalle de la Venta:', 10, 80);
+
+            this.idVenta = item.idven;
+            this.listarDetalles(this.idVenta)
+
+            // Agrega el detalle de la venta
+            let yPos = 90;
+            for (const detalle of this.datosVentasDetalle) {
+                doc.text(`ID Producto: ${detalle.idprod}`, 10, yPos);
+                doc.text(`Cantidad: ${detalle.cant}`, 10, yPos + 10);
+                doc.text(`Precio Unitario: ${detalle.precuni}`, 10, yPos + 20);
+                doc.text(`Total Producto: ${detalle.total}`, 10, yPos + 30);
+                yPos += 50; // Ajusta el espacio entre elementos
+            }
+
+            // Guarda o muestra el documento
+            doc.save('factura.pdf');
+        },
+
         //#region Listados
         listarCliente() {
             this.listarClientes()
@@ -495,6 +586,26 @@ export default {
 
                     } else {
                         me.datosVentas = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+        listarDetalle() {
+            this.listarDetalles(this.idVenta);
+        },
+        async listarDetalles(idVenta) {
+            let me = this;
+            await axios
+                .get("/venta/listardetalle/" + this.idVenta)
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosVentasDetalle = [];
+
+                    } else {
+                        me.datosVentasDetalle = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
@@ -578,8 +689,13 @@ export default {
         closeClienteModal() {
             this.clientesModal = false;
         },
-        showInfoVenta() {
+        showInfoVenta(item) {
             this.infoVenta = true;
+            this.idVenta = item.idven;
+            this.nit = item.nit;
+            this.codigoControl = item.codctrl;
+            this.razonSocial = item.razsoc;
+            this.total = item.tot;
         },
         closeInfoVenta() {
             this.infoVenta = false;

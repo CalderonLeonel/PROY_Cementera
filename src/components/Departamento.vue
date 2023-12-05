@@ -16,80 +16,81 @@
                 <v-card-text>
 
                     <v-form ref="form" v-model="valid" lazy-validation> <!-- Nueva Departamento / Editar Departamento -->
-                <v-container>
-                    <v-row>
-                        <v-col cols="12" md="12">
-                            <v-text-field v-model="departamento" :counter="50" :rules="departamentoRules"
-                                @input="departamento = departamento.toUpperCase()" label="Nombre del Departamento" required>
-                            </v-text-field>
-                            <v-select v-model="idUnidad" :items="datosUnidad" item-text="unid" item-value="idunid" label="Selecciona una unidad" 
-                                 prepend-icon="mdi-map" :rules="unidadRules" required>
-                            </v-select>
-                            <v-select v-model="idArea" :items="datosArea" item-text="nom" item-value="idarea" label="Selecciona una área"
-                                 prepend-icon="mdi-map" :rules="areaRules" required>
-                            </v-select>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="12">
+                                    <v-text-field v-model="departamento" :counter="50" :rules="departamentoRules"
+                                        @input="departamento = departamento.toUpperCase()" label="Nombre del Departamento"
+                                        required>
+                                    </v-text-field>
+                                    <v-select v-model="idUnidad" :items="datosUnidad" item-text="unid" item-value="idunid"
+                                        label="Selecciona una unidad" prepend-icon="mdi-map" :rules="unidadRules" required>
+                                    </v-select>
+                                    <v-select v-model="idArea" :items="datosArea" item-text="nom" item-value="idarea"
+                                        label="Selecciona una área" prepend-icon="mdi-map" :rules="areaRules" required>
+                                    </v-select>
 
-                        </v-col>
-                        <v-col cols="12" md="8"> </v-col>
+                                </v-col>
+                                <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
-                                    <v-btn iconv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="actualizarDepartamento()" style="float: left"
-                                            title="ACTUALIZAR INFORMACIÓN">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                            ACTUALIZAR
-                                        </v-btn>
-                                        <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarDepartamento()" style="float: left" title="REGISTRAR ITEM">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                        </v-btn>
-                                </v-col>                      
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
+                                    <v-btn iconv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
+                                        @click="actualizarDepartamento()" style="float: left"
+                                        title="ACTUALIZAR INFORMACIÓN">
+                                        <v-icon dark> mdi-pencil </v-icon>
+                                        ACTUALIZAR
+                                    </v-btn>
+                                    <v-btn iconv v-if="botonAct == 0" class="mx-4" dark color="#0ABF55"
+                                        @click="registrarDepartamento()" style="float: left" title="REGISTRAR ITEM">
+                                        <v-icon dark> mdi-content-save </v-icon>
+                                        GUARDAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()" style="float: left"
+                                        title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                         LIMPIAR
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeDepartamento()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeDepartamento()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
                                 </v-col>
-                    </v-row>
+                            </v-row>
 
-                    <div class="text-center">
-                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
-                            outlined>
-                            <strong>{{ mensajeSnackbar }}</strong>
+                            <div class="text-center">
+                                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
+                                    outlined>
+                                    <strong>{{ mensajeSnackbar }}</strong>
 
 
-                            <template v-slot:action="{ attrs }">
-                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                                    mdi-close
-                                </v-icon>
-                            </template>
-                        </v-snackbar>
-                    </div>
+                                    <template v-slot:action="{ attrs }">
+                                        <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                            mdi-close
+                                        </v-icon>
+                                    </template>
+                                </v-snackbar>
+                            </div>
 
-                    <div class="text-center">
+                            <div class="text-center">
 
-                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
-                            outlined>
-                            <strong>{{ mensajeSnackbarError }}</strong>
+                                <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense
+                                    color="#EE680B" outlined>
+                                    <strong>{{ mensajeSnackbarError }}</strong>
 
-                            <template v-slot:action="{ attrs }">
-                                <v-icon right v-bind="attrs" @click="snackbarError = false">
-                                    mdi-close
-                                </v-icon>
-                            </template>
-                        </v-snackbar>
-                    </div>
-                </v-container>
-            </v-form>
+                                    <template v-slot:action="{ attrs }">
+                                        <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                            mdi-close
+                                        </v-icon>
+                                    </template>
+                                </v-snackbar>
+                            </div>
+                        </v-container>
+                    </v-form>
 
                 </v-card-text>
             </v-card>
@@ -115,8 +116,8 @@
                                         label="BUSCAR DEPARTAMENTOS" single-line hide-details></v-text-field>
                                 </v-card-title>
 
-                                <v-data-table :headers="headersDepartamento" :items="datosDepartamento" :search="searchDepartamento"
-                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                <v-data-table :headers="headersDepartamento" :items="datosDepartamento"
+                                    :search="searchDepartamento" :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.act`]="{ item }">
                                         <v-chip :color="getColor(item.act)" dark>
                                             {{ item.act }}
@@ -136,7 +137,7 @@
                                             title="EDITAR INFORMACION">
                                             mdi-pencil
                                         </v-icon>
-                                      
+
 
                                     </template>
                                 </v-data-table>
@@ -145,8 +146,7 @@
                     </v-row>
 
                     <div class="text-center">
-                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
-                            outlined>
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
                             <strong>{{ mensajeSnackbar }}</strong>
 
 
@@ -276,14 +276,14 @@ export default {
 
         showAddDepartamento() {
             this.botonAct = 0;
-            if(this.datosUnidad.length == 0) this.listarUnidades();
-            if(this.datosArea.length == 0) this.listarAreas();
+            if (this.datosUnidad.length == 0) this.listarUnidades();
+            if (this.datosArea.length == 0) this.listarAreas();
             this.departamentoModal = true;
         },
         showEditDepartamento(item) {
             this.botonAct = 1;
-            if(this.datosUnidad.length == 0) this.listarUnidades();
-            if(this.datosArea.length == 0) this.listarAreas();
+            if (this.datosUnidad.length == 0) this.listarUnidades();
+            if (this.datosArea.length == 0) this.listarAreas();
             this.llenarCamposDepartamento(item);
             this.departamentoModal = true;
         },
@@ -299,7 +299,7 @@ export default {
             this.idArea = item.idarea;
             this.idDepartamento = item.iddep;
         },
-        
+
         actualizarDepartamento() {
             this.actualizardepartamento(
                 this.idDepartamento,
@@ -308,8 +308,8 @@ export default {
                 this.idarea
             );
         },
-        
-       
+
+
         async actualizardepartamento(
             idDepartamento,
             departamento,
@@ -374,7 +374,7 @@ export default {
                         me.datosUnidad = [];
                     } else {
                         me.datosUnidad = response.data.resultado;
-                        console.log("datosUnidad: "+JSON.stringify(me.datosUnidad.idunid))
+                        console.log("datosUnidad: " + JSON.stringify(me.datosUnidad.idunid))
                     }
                 })
                 .catch(function (error) {

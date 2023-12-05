@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer"  app>
+    <v-navigation-drawer v-model="drawer" app>
       <center>
         <v-toolbar color="#00A1B1" dark>
 
@@ -165,7 +165,8 @@
               <h6>CONTABILIDAD</h6>
             </v-list-item-title>
           </v-list-item>
-          
+        </v-list-group>
+
         <v-list-group no-action color="light-blue darken-4" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
@@ -206,9 +207,13 @@
               <h6>DEPARTAMENTOS</h6>
             </v-list-item-title>
           </v-list-item>
-
+          <v-list-item :to="{ name: 'Carnet' }">
+            <v-list-item-title>
+              <h6>CARNET</h6>
+            </v-list-item-title>
+          </v-list-item>
         </v-list-group>
-        </v-list-group>
+        
         <v-list-group no-action color="light-blue darken-4" value="true">
           <template v-slot:activator>
             <v-list-item-icon>

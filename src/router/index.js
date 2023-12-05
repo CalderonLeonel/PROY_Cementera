@@ -156,6 +156,11 @@ const routes = [
     name: "Archivos",
     component: () => import("@/components/Archivos.vue"),
   },
+  {
+    path: "carnet",
+    name: "Carnet",
+    component: () => import("@/components/Carnet.vue"),
+  },
 ];
 
 const router = new VueRouter({

@@ -37,6 +37,7 @@
             </v-card>
         </v-dialog>
 
+
         <v-card class="white--text" color="grey lighten-4" max-width="100%">
             <v-card-actions>
                 <v-tabs horizontal color="#002245" center-active grow>
@@ -124,6 +125,76 @@
                         </v-card>
                     </v-tab-item>
 
+                    <v-tab-item v-if="flag == 1">
+                        <v-card elevation="5" outlined shaped>
+                            <v-row>
+                                <v-col cols="12"></v-col>
+
+                                <v-col cols="12" md="3"> </v-col>
+                                <v-col cols="12" md="3">
+                                    <v-text-field v-model="fechaInicio" label="FECHA INICIAL" type="date"></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="1"></v-col>
+                                <v-col cols="12" md="3">
+                                    <v-text-field v-model="fechaFin" label="FECHA FINAL" type="date"></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="2"></v-col>
+
+                                <v-col cols="12" md="4"></v-col>
+                                <v-col cols="12" md="4">
+                                    <v-select :items="tiposCuentas" v-model="tipoCuenta" label="TIPO CUENTA"></v-select>
+                                </v-col>
+                                <v-col cols="12" md="4"></v-col>
+
+
+                                <v-col cols="12" md="8"> </v-col>
+                                <v-col cols="12" md="4">
+                                    <v-toolbar dense shaped color="#002245">
+                                        <v-toolbar-title style="color:#ffffff">
+                                            <h6>OPCIONES</h6>
+                                        </v-toolbar-title>
+                                        <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                            @click="listarAsientosxFechas()" style="float: left"
+                                            title="LISTAR ASIENTOS POR FECHAS">
+                                            <v-icon dark> mdi-calendar-search </v-icon>
+                                        </v-btn>
+                                        <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                            @click="listarAsientosxCuentas()" style="float: left"
+                                            title="LISTAR ASIENTOS POR CUENTAS">
+                                            <v-icon dark> mdi-account </v-icon>
+                                        </v-btn>
+                                        <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="generarReportePDF()"
+                                            title="GENERAR PDF">
+                                            <v-icon dark>mdi-printer</v-icon>
+                                        </v-btn>
+                                    </v-toolbar>
+                                </v-col>
+
+                                <v-col cols="12">
+                                    <v-list-item>
+                                        <v-list-item-title class="text-center">
+                                            <h5>ASIENTOS CONTABLES</h5>
+                                        </v-list-item-title>
+                                    </v-list-item>
+
+                                    <v-card-title>
+                                        <v-text-field v-model="searchAsiento" append-icon="mdi-magnify"
+                                            label="BUSCAR ASIENTO" single-line hide-details></v-text-field>
+                                    </v-card-title>
+
+                                    <v-data-table :headers="headersAsientos" :items="datosAsientos" :search="searchAsiento"
+                                        :items-per-page="5" class="elevation-1" id="tableId">
+                                        <template #[`item.actions`]="{ item }">
+                                            <v-icon small class="mr-2" @click="infoAsiento(item)" color="#0091EA">
+                                                mdi-eye
+                                            </v-icon>
+                                        </template>
+                                    </v-data-table>
+                                </v-col>
+                            </v-row>
+                        </v-card>
+                    </v-tab-item>
+
                 </v-tabs>
 
 
@@ -159,6 +230,10 @@
 </template>
 <script>
 import axios from "axios";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
+
 
 export default {
     data() {
@@ -186,6 +261,24 @@ export default {
             ],
             //#endregion
 
+            //#region Asientos Contables
+            idAsiento: "",
+            numeroReferencia: "",
+            descripcionAsiento: "",
+            montoDeb: "",
+            montoCre: "",
+            datosAsientos: [],
+            headersAsientos: [
+                { text: "NUM.REF", value: "numref", sortable: true },
+                { text: "CUENTA CONT.", value: "nom", sortable: true },
+                { text: "MONT. DEB", value: "mondeb", sortable: true },
+                { text: "MONT.CRED", value: "moncre", sortable: true },
+                { text: "ESTADO", value: "est", sortable: true },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
+
+            //#endregion
+
             //#region Snackbars
             snackbarOK: false,
             mensajeSatisfactorio: "REGISTRO CORRECTO ",
@@ -197,6 +290,13 @@ export default {
             mensajeSnackbar: "",
             //#endregion
 
+            //#region DATEPICKER
+            fechaInicio: null,
+            fechaFin: null,
+            menuInicio: false,
+            menuFin: false,
+            //#endregion
+
             //#region Modals
             saldoModal: 0,
             //#endregion
@@ -205,6 +305,7 @@ export default {
 
     created: function () {
         this.listarCuentas();
+        this.listarAsientos();
     },
 
     methods: {
@@ -212,6 +313,72 @@ export default {
             if (est == 'ACTIVO') return 'green'
             else return 'orange'
         },
+
+        generarReportePDF() {
+            const doc = new jsPDF();
+            doc.text(20, 20, 'Reporte de Asientos Contables'); // Título del reporte
+
+            let y = 30; // Posición inicial en el eje Y para comenzar a escribir los datos
+
+            // Iterar sobre los datos de asientos y agregarlos al PDF
+            this.datosAsientos.forEach(item => {
+                // Ejemplo: Agregar datos al PDF
+                doc.text(20, y, `Número de Referencia: ${item.numref}`);
+                doc.text(20, y + 10, `Descripción: ${item.nom}`);
+                doc.text(20, y + 20, `Monto Débito: ${item.mondeb}`);
+                doc.text(20, y + 30, `Monto Crédito: ${item.moncre}`);
+
+                // Aumentar la posición en Y para el próximo conjunto de datos
+                y += 50; // Ajusta este valor según sea necesario para el espaciado deseado
+
+                // Si el espacio en la página es insuficiente, agrega una nueva página
+                if (y >= 250) {
+                    doc.addPage(); // Agregar una nueva página si es necesario
+                    y = 20; // Restablecer la posición en Y para la nueva página
+                }
+            });
+
+            doc.save('reporte_asientos.pdf'); // Guardar el PDF
+        },
+
+        /*generarReportePDF() {
+            const doc = new jsPDF();
+
+            const columns = [
+                { title: 'Número de Referencia', dataKey: 'numref' },
+                { title: 'Descripción', dataKey: 'nom' },
+                { title: 'Monto Débito', dataKey: 'mondeb' },
+                { title: 'Monto Crédito', dataKey: 'moncre' },
+            ];
+
+            const rows = this.datosAsientos.map(asiento => ({
+                numref: asiento.numref,
+                nom: asiento.nom,
+                mondeb: asiento.mondeb,
+                moncre: asiento.moncre,
+            }));
+
+            console.log(rows); // Verifica los datos que estás pasando a autoTable
+
+
+            doc.autoTable({
+                head: [columns],
+                body: rows,
+                startY: 20,
+                styles: {
+                    font: 'Arial', // Fuente del texto
+                    fontSize: 10, // Tamaño de fuente
+                    cellPadding: 4,
+                    fillColor: '#f3f3f3', // Color de fondo de la tabla
+                },
+                headStyles: {
+                    fillColor: '#001f3f', // Color de fondo del encabezado
+                    textColor: '#ffffff', // Color del texto del encabezado
+                },
+            });
+
+            doc.save('reporte_asientos.pdf'); // Guardar el PDF
+        },*/
 
         //#region Listados
         listarCuenta() {
@@ -227,6 +394,68 @@ export default {
 
                     } else {
                         me.datosCuentas = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        listarAsiento() {
+            this.listarAsientos();
+        },
+        async listarAsientos() {
+            let me = this;
+            await axios
+                .get("/contabilidad/listarasientos")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosAsientos = [];
+
+                    } else {
+                        me.datosAsientos = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        listarAsientoxFechas() {
+            this.listarAsientosxFechas(this.fechaInicio, this.fechaFin);
+        },
+        async listarAsientosxFechas(fechaInicio, fechaFin) {
+            let me = this;
+            await axios
+                .get("/contabilidad/listarasientosxfechas/" +
+                    this.fechaInicio +
+                    "," +
+                    this.fechaFin
+                )
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosAsientos = [];
+
+                    } else {
+                        me.datosAsientos = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+        listarAsientoxCuenta() {
+            this.listarAsientosxCuentas(this.tipoCuenta);
+        },
+        async listarAsientosxCuentas(tipoCuenta) {
+            let me = this;
+            await axios
+                .get("/contabilidad/listarasientosxcuenta/" + this.tipoCuenta)
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosAsientos = [];
+
+                    } else {
+                        me.datosAsientos = response.data.resultado;
                     }
                 })
                 .catch(function (error) {

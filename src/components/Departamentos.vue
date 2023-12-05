@@ -16,7 +16,6 @@
                     <v-tab-item v-if="flag == 1">
                         <v-card elevation="5" outlined shaped>
                             <v-row>
-                                <iframe title="proy" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=a9cc7db1-0ce1-4cb2-a0e6-09f0233bcf67&autoAuth=true&ctid=77cab36c-76b2-48c3-9c54-cb9e4ee09b72" frameborder="0" allowFullScreen="true"></iframe>
 
                                 <v-col cols="12" md="12"></v-col>
 
