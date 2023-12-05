@@ -1,19 +1,24 @@
 <template>
-    <v-card elevation="5" outlined shaped>
+    <div> <!--one-->
+    <!--<v-btn dark color="#00A1B1" @click.stop="showScheduleForm=true">Mostrar Areas</v-btn> --> <!--one -->
+        <ScheduleForm v-model="showScheduleForm" /> <!--one-->
+        <v-card elevation="5" outlined shaped>
 
-        <div> <!-- Encabezado -->
-            <v-alert dense color="#00A1B1" style="color: #ffffff">
-                <h5>DEPARTAMENTOS</h5>
-            </v-alert>
-        </div>
+            <div> <!-- Encabezado -->
+                <v-alert dense color="#00A1B1" style="color: #ffffff">
+                    <h5>DEPARTAMENTOS</h5>
+                </v-alert>
+            </div>
 
-        <v-dialog v-model="departamentoModal" max-width="1080px"> <!-- Modal-->
-            <v-card elevation="5" outlined shaped>
-                <v-card-title>
-                    <span v-if="botonAct == 0">Nuevo Departamento</span>
-                    <span v-if="botonAct == 1">Editar Departamento</span>
-                </v-card-title>
-                <v-card-text>
+            <v-dialog v-model="departamentoModal" max-width="1080px"> <!-- Modal-->
+                
+                <v-card elevation="5" outlined shaped>
+                    
+                    <v-card-title>
+                        <span v-if="botonAct == 0">Nuevo Departamento</span>
+                        <span v-if="botonAct == 1">Editar Departamento</span>
+                    </v-card-title>
+                    <v-card-text>
 
                     <v-form ref="form" v-model="valid" lazy-validation> <!-- Nueva Departamento / Editar Departamento -->
                         <v-container>
@@ -142,42 +147,156 @@
                                     </template>
                                 </v-data-table>
                             </v-col>
-                        </v-col>
-                    </v-row>
+                            <v-col cols="12" md="8"> </v-col>
+                                    <v-col cols="6"></v-col>
+                                    <v-col cols="2">
+                                        <v-btn iconv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
+                                                @click="actualizarDepartamento()" style="float: left"
+                                                title="ACTUALIZAR INFORMACIÓN">
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                                ACTUALIZAR
+                                            </v-btn>
+                                            <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
+                                                @click="registrarDepartamento()" style="float: left" title="REGISTRAR ITEM">
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                                GUARDAR
+                                            </v-btn>
+                                    </v-col>                      
+                                    <v-col cols="2">                                        
+                                        <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                            style="float: left" title="LIMPIAR FORMULARIO">
+                                            <v-icon dark> mdi-eraser </v-icon>
+                                            LIMPIAR
+                                        </v-btn>
+                                    </v-col>
+                                    <v-col cols="2">
+                                        <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                            @click="closeDepartamento()" style="float: right" title="SALIR">
+                                            <v-icon dark> mdi-close-circle-outline </v-icon>
+                                            SALIR
+                                        </v-btn>
+                                    </v-col>
+                        </v-row>
 
                     <div class="text-center">
                         <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
                             <strong>{{ mensajeSnackbar }}</strong>
 
 
-                            <template v-slot:action="{ attrs }">
-                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                                    mdi-close
-                                </v-icon>
-                            </template>
-                        </v-snackbar>
-                    </div>
-                    <div class="text-center">
+                                <template v-slot:action="{ attrs }">
+                                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                        mdi-close
+                                    </v-icon>
+                                </template>
+                            </v-snackbar>
+                        </div>
 
-                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
-                            outlined>
-                            <strong>{{ mensajeSnackbarError }}</strong>
+                        <div class="text-center">
 
-                            <template v-slot:action="{ attrs }">
-                                <v-icon right v-bind="attrs" @click="snackbarError = false">
-                                    mdi-close
-                                </v-icon>
-                            </template>
-                        </v-snackbar>
-                    </div>
-                </v-container>
-            </v-form>
-        </div>
+                            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                                outlined>
+                                <strong>{{ mensajeSnackbarError }}</strong>
 
-    </v-card>
+                                <template v-slot:action="{ attrs }">
+                                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                        mdi-close
+                                    </v-icon>
+                                </template>
+                            </v-snackbar>
+                        </div>
+                    </v-container>
+                </v-form>
+
+                    </v-card-text>
+                </v-card>
+            </v-dialog>
+
+            <v-col cols="12" md="4">
+                <v-btn color="success" @click="showAddDepartamento()">+ Nuevo Departamento</v-btn>
+            </v-col>
+
+            <div>
+                <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Departamentos -->
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12" md="12">
+                                <v-col cols="12">
+                                    <v-list-item>
+                                        <v-list-item-title class="text-center">
+                                            <h5>DEPARTAMENTOS</h5>
+                                        </v-list-item-title>
+                                    </v-list-item>
+
+                                    <v-card-title>
+                                        <v-text-field v-model="searchDepartamento" append-icon="mdi-magnify"
+                                            label="BUSCAR DEPARTAMENTOS" single-line hide-details></v-text-field>
+                                    </v-card-title>
+
+                                    <v-data-table :headers="headersDepartamento" :items="datosDepartamento" :search="searchDepartamento"
+                                        :items-per-page="5" class="elevation-1" id="tableId">
+                                        <template #[`item.act`]="{ item }">
+                                            <v-chip :color="getColor(item.act)" dark>
+                                                {{ item.act }}
+                                            </v-chip>
+                                        </template>
+
+                                        <template #[`item.actions`]="{ item }">
+                                            <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
+                                                title="ACTIVAR DEPARTAMENTO">
+                                                mdi-check-circle-outline
+                                            </v-icon>
+                                            <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
+                                                title="DESACTIVAR DEPARTAMENTO">
+                                                mdi-cancel
+                                            </v-icon>
+                                            <v-icon small class="mr-2" @click="showEditDepartamento(item)"
+                                                title="EDITAR INFORMACION">
+                                                mdi-pencil
+                                            </v-icon>
+                                        
+
+                                        </template>
+                                    </v-data-table>
+                                </v-col>
+                            </v-col>
+                        </v-row>
+
+                        <div class="text-center">
+                            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
+                                outlined>
+                                <strong>{{ mensajeSnackbar }}</strong>
+
+
+                                <template v-slot:action="{ attrs }">
+                                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                        mdi-close
+                                    </v-icon>
+                                </template>
+                            </v-snackbar>
+                        </div>
+                        <div class="text-center">
+
+                            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                                outlined>
+                                <strong>{{ mensajeSnackbarError }}</strong>
+
+                                <template v-slot:action="{ attrs }">
+                                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                        mdi-close
+                                    </v-icon>
+                                </template>
+                            </v-snackbar>
+                        </div>
+                    </v-container>
+                </v-form>
+            </div>
+
+        </v-card>
+    </div> <!--one-->
 </template>
 <script>
 import axios from "axios";
+import ScheduleForm from './Sector.vue'; // one
 
 export default {
     data: () => ({
@@ -195,6 +314,7 @@ export default {
         datosUnidad: [],
         datosArea: [],
 
+        showScheduleForm: false, //one
         snackbarOK: false,
         mensajeSnackbar: "",
         snackbarError: false,
@@ -234,7 +354,9 @@ export default {
         //this.idDepartamento = this.user.idDepartamento;
         this.listarDepartamentos();
     },
-
+    components: { //one/
+        ScheduleForm
+    },
     methods: {
 
         activar(item) {
@@ -410,6 +532,7 @@ export default {
             idArea
         ) {
             let me = this;
+
             await axios
                 .post(
                     "/departamento/adddepartamento/" +

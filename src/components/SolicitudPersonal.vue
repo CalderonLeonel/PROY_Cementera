@@ -3,37 +3,42 @@
 
         <div> <!-- Encabezado -->
             <v-alert dense color="#00A1B1" style="color: #ffffff">
-                <h5>AREAS</h5>
+                <h5>SOLICITUDES DE NUEVO PERSONAL</h5>
             </v-alert>
         </div>
 
-        <v-dialog v-model="areaModal" max-width="1080px"> <!-- Modal-->
+        <v-dialog v-model="solicitudModal" max-width="1080px"> <!-- Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nueva Area</span>
-                    <span v-if="botonAct == 1">Editar Area</span>
+                    <span v-if="botonAct == 0">Nueva Solicitud</span>
+                    <span v-if="botonAct == 1">Editar Solicitud</span>
                 </v-card-title>
                 <v-card-text>
 
-                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nueva Area / Editar Area -->
+                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nueva Solicitud / Editar Solicitud -->
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <v-text-field v-model="nombre" :counter="50" :rules="nombreRules"
-                                @input="nombre = nombre.toUpperCase()" label="Nombre del Area" required>
+                            <v-text-field v-model="puesto" :counter="50" :rules="puestoRules"
+                                @input="puesto = puesto.toUpperCase()" label="Nombre del puesto" required>
                             </v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="12">
+                            <v-textarea v-model="descripcion" :counter="200" :rules="descripcionRules" outlined
+                                @input="descripcion = descripcion.toUpperCase()" label="Requerimientos del puesto" required>
+                            </v-textarea>
                         </v-col>
                         <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
                                     <v-btn iconv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="actualizarArea()" style="float: left"
+                                            @click="actualizarSolicitud()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                             ACTUALIZAR
                                         </v-btn>
                                         <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarArea()" style="float: left" title="REGISTRAR ITEM">
+                                            @click="registrarSolicitud()" style="float: left" title="REGISTRAR ITEM">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
                                         </v-btn>
@@ -47,7 +52,7 @@
                                 </v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeArea()" style="float: right" title="SALIR">
+                                        @click="closeSolicitud()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -89,26 +94,26 @@
         </v-dialog>
 
         <v-col cols="12" md="4">
-            <v-btn color="success" @click="showAddArea()">+ Nueva Area</v-btn>
+            <v-btn color="success" @click="showAddSolicitud()">+ Nueva Solicitud</v-btn>
         </v-col>
         <div>
-            <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Areas -->
+            <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Solicitudes -->
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="12">
                             <v-col cols="12">
                                 <v-list-item>
                                     <v-list-item-title class="text-center">
-                                        <h5>AREAS</h5>
+                                        <h5>SOLICITUDES DE PERSONAL</h5>
                                     </v-list-item-title>
                                 </v-list-item>
 
                                 <v-card-title>
-                                    <v-text-field v-model="searchArea" append-icon="mdi-magnify"
-                                        label="BUSCAR AREAS" single-line hide-details></v-text-field>
+                                    <v-text-field v-model="searchSolicitud" append-icon="mdi-magnify"
+                                        label="BUSCAR SOLICITUDES" single-line hide-details></v-text-field>
                                 </v-card-title>
 
-                                <v-data-table :headers="headersArea" :items="datosArea" :search="searchArea"
+                                <v-data-table :headers="headersSolicitud" :items="datosSolicitud" :search="searchSolicitud"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.act`]="{ item }">
                                         <v-chip :color="getColor(item.act)" dark>
@@ -118,14 +123,14 @@
 
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
-                                            title="ACTIVAR AREA">
+                                            title="ACTIVAR SOLICITUD">
                                             mdi-check-circle-outline
                                         </v-icon>
                                         <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
-                                            title="DESACTIVAR AREA">
+                                            title="DESACTIVAR SOLICITUD">
                                             mdi-cancel
                                         </v-icon>
-                                        <v-icon small class="mr-2" @click="showEditArea(item)"
+                                        <v-icon small class="mr-2" @click="showEditSolicitud(item)"
                                             title="EDITAR INFORMACION">
                                             mdi-pencil
                                         </v-icon>
@@ -174,14 +179,17 @@ import axios from "axios";
 
 export default {
     data: () => ({
-        idArea: "",
-        nombre: "",
+        idSolicitud: "",
+        puesto: "",
+        descripcion: "",
         estado: "",
         createDate: "",
         lastDate: "",
         valid: true,
+        idUsuario: "",
 
-        searchArea: "",
+        searchSolicitud: "",
+        datosSolicitud: [],
 
         snackbarOK: false,
         mensajeSnackbar: "",
@@ -189,42 +197,52 @@ export default {
         mensajeSnackbarError: "REGISTRO FALLIDO",
         timeout: 2000,
 
-        areaModal: "",
+        solicitudModal: "",
         botonAct: 0,
-        nombreRules: [
-            (v) => !!v || "NOMBRE DEL AREA ES REQUERIDO",
+        puestoRules: [
+            (v) => !!v || "NOMBRE DEL PUESTO ES REQUERIDO",
             (v) =>
                 (v && v.length <= 50) ||
-                "EL NOMBRE DE AREA DEBE TENER 50 CARACTERES COMO MAXIMO",
+                "EL NOMBRE DEL PUESTO DEBE TENER 50 CARACTERES COMO MAXIMO",
+        ],
+        descripcionRules: [
+            (v) => !!v || "REQUERIMIENTOS DEL PUESTO ES REQUERIDO",
+            (v) =>
+                (v && v.length <= 200) ||
+                "ELOS REQUERIMINETOS DEL PUESTO DEBEN JUNTAR 200 CARACTERES COMO MAXIMO",
         ],
 
-        datosArea: [],
 
-        headersArea: [
-            { text: "AREA", value: "nom", sortable: false },
+
+        headersSolicitud: [
+            { text: "SOLICITUD", value: "pues" },
+            //{ text: "REQUERIMIENTOS", value: "des", sortable: false },
+            { text: "FECHA CREACION", value: "credte" },
+            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte" },
             { text: "ESTADO", value: "act", sortable: false },
-            { text: "FECHA CREACION", value: "credte", sortable: false },
-            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
             { text: "OPTIONS", value: "actions", sortable: false },
         ],
     }),
 
     created: function () {
-        this.listarAreas();
+        this.user = JSON.parse(sessionStorage.getItem("session"));
+        this.idUsuario = this.user['id_usuario'];
+        console.log("ID: "+this.idUsuario);
+        this.listarSolicitudes();
     },
 
     methods: {
 
         activar(item) {
-            this.idArea = item.idarea;
-            this.activararea(this.idArea);
+            this.idSolicitud = item.idunid;
+            this.activarsolicitud(this.idSolicitud);
         },
-        async activararea(idArea) {
+        async activarsolicitud(idSolicitud) {
             let me = this;
             await axios
-                .post("/area/onarea/" + this.idArea).then(function (response) {
+                .post("/solicitud/onsolicitud/" + this.idSolicitud).then(function (response) {
 
-                    me.listarAreas();
+                    me.listarSolicitudes();
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -232,15 +250,15 @@ export default {
 
         },
         desactivar(item) {
-            this.idArea = item.idarea;
-            this.desactivararea(this.idArea);
+            this.idSolicitud = item.idunid;
+            this.desactivarsolicitud(this.idSolicitud);
         },
-        async desactivararea(idArea) {
+        async desactivarsolicitud(idSolicitud) {
             let me = this;
             await axios
-                .post("/area/offarea/" + this.idArea).then(function (response) {
+                .post("/solicitud/offsolicitud/" + this.idSolicitud).then(function (response) {
 
-                    me.listarAreas();
+                    me.listarSolicitudes();
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -248,57 +266,62 @@ export default {
 
         },
         getColor(est) {
-            if (est == 'ACTIVO') return 'green'
+            if (est == 'PENDIENTE') return 'orange'
+            else if (est == 'ACEPTADA') return 'green'
             else return 'red'
         },
 
-        showAddArea() {
+        showAddSolicitud() {
             this.botonAct = 0;
-            this.areaModal = true;
+            this.solicitudModal = true;
         },
-        showEditArea(item) {
+        showEditSolicitud(item) {
             this.botonAct = 1;
-            this.llenarCamposArea(item);
-            this.areaModal = true;
+            this.llenarCamposSolicitud(item);
+            this.solicitudModal = true;
         },
 
-        closeArea() {
-            this.areaModal = false;
+        closeSolicitud() {
+            this.solicitudModal = false;
         },
 
-        llenarCamposArea(item) {
-            this.nombre = item.nom;
-            
-            this.idArea = item.idarea;
+        llenarCamposSolicitud(item) {
+            this.puesto = item.pues;
+            this.descripcion = item.des;
+            this.idSolicitud = item.idsoli;
         },
         
-        actualizarArea() {
-            this.actualizararea(
-                this.idArea,
-                this.nombre,
+        actualizarSolicitud() {
+            this.actualizarsolicitud(
+                this.idSolicitud,
+                this.puesto,
+                this.descripcion
             );
         },
         
        
-        async actualizararea(
-            idArea,
-            nombre,
+        async actualizarsolicitud(
+            idSolicitud,
+            puesto,
+            descripcion
         ) {
             let me = this;
 
             await axios
                 .post(
-                    "/area/editararea/" +
-                    this.idArea +
+                    "/solicitud/editarsolicitud/" +
+                    this.idSolicitud +
                     "," +
-                    this.nombre
+                    this.puesto +
+                    "," +
+                    this.descripcion
 
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarAreas(me.idArea);
+                    me.listarSolicitudes(me.idSolicitud);
                     me.limpiar();
 
                 })
@@ -308,46 +331,55 @@ export default {
         },
 
         limpiar() {
-            this.nombre = "";
+            this.idSolicitud = "";
+            this.puesto = "";
+            this.descripcion = "";
         },
 
-        async listarAreas(idArea) {
+        async listarSolicitudes() {
             let me = this;
             await axios
-                .get("/area/listarareas/")
+                .get("/solicitud/listarsolicitudes/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
-                        me.datosArea = [];
+                        me.datosSolicitud = [];
                     } else {
-                        me.datosArea = response.data.resultado;
+                        me.datosSolicitud = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         },
-        registrarArea() {
-            this.registrarArea(
-                this.nombre,
+        registrarSolicitud() {
+            this.registrarSolicitud(
+                this.puesto,
+                this.descripcion
             );
         },
-        async registrarArea(
-            nombre,
+        async registrarSolicitud(
+            puesto,
+            descripcion,
+            idUsuario
         ) {
             let me = this;
 
             //let me=this;
             await axios
                 .post(
-                    "/area/addarea/" +
-                    this.nombre
+                    "/solicitud/addsolicitud/" +
+                    this.puesto +
+                    "," +
+                    this.descripcion +
+                    "," +
+                    this.idUsuario
 
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarAreas(me.idArea);
+                    me.listarSolicitudes(me.idSolicitud);
                     me.limpiar();
                 })
                 .catch(function (error) {

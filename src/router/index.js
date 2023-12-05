@@ -122,9 +122,24 @@ const routes = [
     component: require("../components/Departamento.vue").default,
   },
   {
+    path: "/solicitudes",
+    name: "Solicitudes",
+    component: require("../components/SolicitudPersonal.vue").default,
+  },
+  {
+    path: "/perfil/:employee",
+    name: "Perfil",
+    component: require("../components/EmpleadoPerfil.vue").default,
+  },
+  {
     path: "/usuarios",
     name: "Usuarios",
     component: require("../components/Usuario.vue").default,
+  },
+  {
+    path: "/alerta",
+    name: "Alerta",
+    component: require("../components/Alerta.vue").default,
   },
   {
     path: "proveedor",

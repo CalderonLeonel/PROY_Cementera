@@ -6,7 +6,7 @@
                 <v-card class="mx-auto" outlined>
 
 
-                    <v-app-bar dark color="orange darken-2">
+                    <v-app-bar dark color="#00A1B1">
 
 
                         <v-toolbar-title>CREDENCIALES</v-toolbar-title>
@@ -28,7 +28,7 @@
                             <v-text-field label="CONTRASEÑA" prepend-icon="mdi-lock" type="password" :rules="passwordrules"
                                 v-model="user.password">
                             </v-text-field>
-                            <v-btn block class="primary mt-3" type="submit">INGRESAR</v-btn>
+                            <v-btn block dark color="#00A1B1" class="mt-3" type="submit">INGRESAR</v-btn>
                             <v-alert text v-model="alert.show" :type="alert.type" dismissible>{{ alert.message }}</v-alert>
                         </v-form>
 
@@ -55,7 +55,7 @@ export default {
             value => !!value || 'LA CONTRASEÑA ES REQUERIDA',
             // value =>(value && value.lemgth>4 || 'LA CONTRASEÑA ES MUY CORTA')          
         ],
-        user: { user: "", password: "" }
+        user: { user: "", password: ""}
     }),
     methods: {
         async signin() {
@@ -73,6 +73,7 @@ export default {
                         };
                     }
                     else {
+                        console.log("session: "+ JSON.stringify(res.data));
                         sessionStorage.setItem('session', JSON.stringify(res.data));
 
                         this.$router.push('/');
