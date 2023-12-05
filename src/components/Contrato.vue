@@ -3,37 +3,45 @@
 
         <div> <!-- Encabezado -->
             <v-alert dense color="#00A1B1" style="color: #ffffff">
-                <h5>AREAS</h5>
+                <h5>CONTRATOS</h5>
             </v-alert>
         </div>
 
-        <v-dialog v-model="areaModal" max-width="1080px"> <!-- Modal-->
+        <v-dialog v-model="contratoModal" max-width="1080px"> <!-- Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nueva Area</span>
-                    <span v-if="botonAct == 1">Editar Area</span>
+                    <span v-if="botonAct == 0">Nuevo Contrato</span>
+                    <span v-if="botonAct == 1">Editar Contrato</span>
                 </v-card-title>
                 <v-card-text>
 
-                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nueva Area / Editar Area -->
+                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo Contrato / Editar Contrato -->
                 <v-container>
                     <v-row>
-                        <v-col cols="12" md="12">
-                            <v-text-field v-model="nombre" :counter="50" :rules="nombreRules"
-                                @input="nombre = nombre.toUpperCase()" label="Nombre del Area" required>
-                            </v-text-field>
+                        <v-col cols="12" md="10">
+                            <v-file-input v-model="documentoArchivo"
+                                accept=".docx, .xlsx, .pptx, .pdf, .xml"
+                                label="Archivo"></v-file-input>
                         </v-col>
+                        <v-col cols="12" md="12">
+                                <v-date-picker v-model="fechaInicio" @input="fechaInicio = fechaInicio" 
+                                    label="Fecha de Inicio"></v-date-picker>
+                            </v-col>
+                            <v-col cols="12" md="12">
+                                <v-date-picker v-model="fechaFinal" @input="fechaFinal = fechaFinal" 
+                                    label="Fecha de Finalizacion"></v-date-picker>
+                            </v-col>
                         <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
                                     <v-btn iconv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="actualizarArea()" style="float: left"
+                                            @click="actualizarContrato()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                             ACTUALIZAR
                                         </v-btn>
                                         <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarArea()" style="float: left" title="REGISTRAR ITEM">
+                                            @click="registrarContrato()" style="float: left" title="REGISTRAR ITEM">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
                                         </v-btn>
@@ -47,7 +55,7 @@
                                 </v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeArea()" style="float: right" title="SALIR">
+                                        @click="closeContrato()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -89,26 +97,26 @@
         </v-dialog>
 
         <v-col cols="12" md="4">
-            <v-btn color="success" @click="showAddArea()">+ Nueva Area</v-btn>
+            <v-btn color="success" @click="showAddContrato()">+ Nuevo Contrato</v-btn>
         </v-col>
         <div>
-            <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Areas -->
+            <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Contratos -->
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="12">
                             <v-col cols="12">
                                 <v-list-item>
                                     <v-list-item-title class="text-center">
-                                        <h5>AREAS</h5>
+                                        <h5>CONTRATOS</h5>
                                     </v-list-item-title>
                                 </v-list-item>
 
                                 <v-card-title>
-                                    <v-text-field v-model="searchArea" append-icon="mdi-magnify"
-                                        label="BUSCAR AREAS" single-line hide-details></v-text-field>
+                                    <v-text-field v-model="searchContrato" append-icon="mdi-magnify"
+                                        label="BUSCAR CONTRATOS" single-line hide-details></v-text-field>
                                 </v-card-title>
 
-                                <v-data-table :headers="headersArea" :items="datosArea" :search="searchArea"
+                                <v-data-table :headers="headersContrato" :items="datosContrato" :search="searchContrato"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.act`]="{ item }">
                                         <v-chip :color="getColor(item.act)" dark>
@@ -118,14 +126,14 @@
 
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
-                                            title="ACTIVAR AREA">
+                                            title="ACTIVAR CONTRATO">
                                             mdi-check-circle-outline
                                         </v-icon>
                                         <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
-                                            title="DESACTIVAR AREA">
+                                            title="DESACTIVAR CONTRATO">
                                             mdi-cancel
                                         </v-icon>
-                                        <v-icon small class="mr-2" @click="showEditArea(item)"
+                                        <v-icon small class="mr-2" @click="showEditContrato(item)"
                                             title="EDITAR INFORMACION">
                                             mdi-pencil
                                         </v-icon>
@@ -174,14 +182,17 @@ import axios from "axios";
 
 export default {
     data: () => ({
-        idArea: "",
-        nombre: "",
+        idContrato: "",
+        documentoArchivo: "",
+        fechaInicio: "2000-10-12",
+        fechaFinal: "2000-10-12",
+        idEmpleado: this.value,
         estado: "",
         createDate: "",
         lastDate: "",
         valid: true,
 
-        searchArea: "",
+        searchContrato: "",
 
         snackbarOK: false,
         mensajeSnackbar: "",
@@ -189,19 +200,12 @@ export default {
         mensajeSnackbarError: "REGISTRO FALLIDO",
         timeout: 2000,
 
-        areaModal: "",
+        contratoModal: "",
         botonAct: 0,
-        nombreRules: [
-            (v) => !!v || "NOMBRE DEL AREA ES REQUERIDO",
-            (v) =>
-                (v && v.length <= 50) ||
-                "EL NOMBRE DE AREA DEBE TENER 50 CARACTERES COMO MAXIMO",
-        ],
+        datosContrato: [],
 
-        datosArea: [],
-
-        headersArea: [
-            { text: "AREA", value: "nom", sortable: false },
+        headersContrato: [
+            { text: "CONTRATO", value: "nom", sortable: false },
             { text: "ESTADO", value: "act", sortable: false },
             { text: "FECHA CREACION", value: "credte", sortable: false },
             { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
@@ -210,21 +214,36 @@ export default {
     }),
 
     created: function () {
-        this.listarAreas();
+        this.idEmpleado = this.$routes.params.idempl;
+        this.listarContratos();
+    },
+    props: {
+        value: {
+        type: Boolean,
+        required: true,
+        },
+    },
+    watch: {
+        value(newValue) {
+        this.sharedVariable = newValue; // Actualiza la variable cuando el prop cambia
+        },
+        sharedVariable(newSharedVariable) {
+        this.$emit('input', newSharedVariable); // Emite el evento para actualizar el prop
+        },
     },
 
     methods: {
 
         activar(item) {
-            this.idArea = item.idarea;
-            this.activararea(this.idArea);
+            this.idContrato = item.idcontrato;
+            this.activarcontrato(this.idContrato);
         },
-        async activararea(idArea) {
+        async activarcontrato(idContrato) {
             let me = this;
             await axios
-                .post("/area/onarea/" + this.idArea).then(function (response) {
+                .post("/contrato/oncontrato/" + this.idContrato).then(function (response) {
 
-                    me.listarAreas();
+                    me.listarContratos();
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -232,15 +251,15 @@ export default {
 
         },
         desactivar(item) {
-            this.idArea = item.idarea;
-            this.desactivararea(this.idArea);
+            this.idContrato = item.idcontrato;
+            this.desactivarcontrato(this.idContrato);
         },
-        async desactivararea(idArea) {
+        async desactivarcontrato(idContrato) {
             let me = this;
             await axios
-                .post("/area/offarea/" + this.idArea).then(function (response) {
+                .post("/contrato/offcontrato/" + this.idContrato).then(function (response) {
 
-                    me.listarAreas();
+                    me.listarContratos();
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -252,53 +271,51 @@ export default {
             else return 'red'
         },
 
-        showAddArea() {
-            this.botonAct = 0;
-            this.areaModal = true;
+        showAddContrato() {
+            this.contratoModal = true;
+            if (this.documentoArchivo != '') {
+                this.inputState = false;
+            }
+            else {
+                this.inputState = true;
+            }
         },
-        showEditArea(item) {
+        showEditContrato(item) {
             this.botonAct = 1;
-            this.llenarCamposArea(item);
-            this.areaModal = true;
+            this.llenarCamposContrato(item);
+            this.contratoModal = true;
         },
 
-        closeArea() {
-            this.areaModal = false;
+        closeContrato() {
+            this.contratoModal = false;
         },
-
-        llenarCamposArea(item) {
-            this.nombre = item.nom;
-            
-            this.idArea = item.idarea;
-        },
-        
-        actualizarArea() {
-            this.actualizararea(
-                this.idArea,
-                this.nombre,
+        actualizarContrato() {
+            this.actualizarcontrato(
+                this.idContrato,
+                this.documentoArchivo,
             );
         },
         
        
-        async actualizararea(
-            idArea,
-            nombre,
+        async actualizarcontrato(
+            idContrato,
+            documentoArchivo,
         ) {
             let me = this;
 
             await axios
                 .post(
-                    "/area/editararea/" +
-                    this.idArea +
+                    "/contrato/editarcontrato/" +
+                    this.idContrato +
                     "," +
-                    this.nombre
+                    this.documentoArchivo
 
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarAreas(me.idArea);
+                    me.listarContratos(me.idContrato);
                     me.limpiar();
 
                 })
@@ -308,46 +325,78 @@ export default {
         },
 
         limpiar() {
-            this.nombre = "";
+            this.$refs.form.reset()
+            this.documentoArchivo = "";
         },
 
-        async listarAreas(idArea) {
+        async listarContratos(idContrato) {
             let me = this;
             await axios
-                .get("/area/listarareas/")
+                .get("/contrato/listarcontratos/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
-                        me.datosArea = [];
+                        me.datosContrato = [];
                     } else {
-                        me.datosArea = response.data.resultado;
+                        me.datosContrato = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         },
-        registrarArea() {
-            this.registrarArea(
-                this.nombre,
-            );
+        registrarContrato() {
+            this.almacenarArchivo(this.documentoArchivo)
+            this.registrarContrato(this.documentoArchivo.name);
+            this.contratoModal = false;
         },
-        async registrarArea(
-            nombre,
-        ) {
+        async almacenarArchivo(documentoArchivo) {
+            const formData = new FormData();
+            formData.append('file', documentoArchivo);
+            let me = this;
+            await axios
+                .post(
+                    "/uploadFile/", formData)
+                .then(function (response) {
+                    console.log(response);
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarDocumentos();
+                    me.listarArchivos();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+            },
+        
+        async registrarContrato(documentoArchivo) {
+            const ext = documentoArchivo.split('.');
+            const date = new Date();
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0') + '_' + (date.getMonth() + 1).toString().padStart(2, '0') + '_' + date.getFullYear();
+            const nombreArchivo = ext[0] + '_' + fechaHoraActual + '.' + ext[1];
             let me = this;
 
             //let me=this;
             await axios
                 .post(
-                    "/area/addarea/" +
-                    this.nombre
+                    "/contrato/addcontrato/" +
+                    ext[0] +
+                    "," +
+                    this.nombreArchivo +
+                    "," +
+                    this.fechaInicio +
+                    "," +
+                    this.fechaFinal +
+                    "," +
+                    this.idEmpleado
 
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarAreas(me.idArea);
+                    me.listarContratos(me.idContrato);
                     me.limpiar();
                 })
                 .catch(function (error) {

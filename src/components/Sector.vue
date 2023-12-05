@@ -1,37 +1,31 @@
 <template>
-    <div> <!--one-->
-    <!--<v-btn dark color="#00A1B1" @click.stop="showScheduleForm=true">Mostrar Areas</v-btn> --> <!--one -->
-        <ScheduleForm v-model="showScheduleForm" /> <!--one-->
         <v-card elevation="5" outlined shaped>
 
             <div> <!-- Encabezado -->
                 <v-alert dense color="#00A1B1" style="color: #ffffff">
-                    <h5>DEPARTAMENTOS</h5>
+                    <h5>SECTORES</h5>
                 </v-alert>
             </div>
 
-            <v-dialog v-model="departamentoModal" max-width="1080px"> <!-- Modal-->
+            <v-dialog v-model="sectorModal" max-width="1080px"> <!-- Modal-->
                 
                 <v-card elevation="5" outlined shaped>
                     
                     <v-card-title>
-                        <span v-if="botonAct == 0">Nuevo Departamento</span>
-                        <span v-if="botonAct == 1">Editar Departamento</span>
+                        <span v-if="botonAct == 0">Nuevo Sector</span>
+                        <span v-if="botonAct == 1">Editar Sector</span>
                     </v-card-title>
                     <v-card-text>
 
-                        <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo Departamento / Editar Departamento -->
+                        <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo Sector / Editar Sector -->
                     <v-container>
                         <v-row>
                             <v-col cols="12" md="12">
-                                <v-text-field v-model="departamento" :counter="50" :rules="departamentoRules"
-                                    @input="departamento = departamento.toUpperCase()" label="Nombre del Departamento" required>
+                                <v-text-field v-model="sector" :counter="50" :rules="sectorRules"
+                                    @input="sector = sector.toUpperCase()" label="Nombre del Sector" required>
                                 </v-text-field>
-                                <v-select v-model="idUnidad" :items="datosUnidad" item-text="unid" item-value="idunid" label="Selecciona una unidad" 
-                                    prepend-icon="mdi-map" :rules="unidadRules" required>
-                                </v-select>
-                                <v-select v-model="idArea" :items="datosArea" item-text="nom" item-value="idarea" label="Selecciona una área"
-                                    prepend-icon="mdi-map" :rules="areaRules" required>
+                                <v-select v-model="idDepartamento" :items="datosDepartamento" item-text="nom" item-value="iddep" label="Selecciona un departamento" 
+                                    prepend-icon="mdi-map" :rules="departamentoRules" required>
                                 </v-select>
 
                             </v-col>
@@ -39,13 +33,13 @@
                                     <v-col cols="6"></v-col>
                                     <v-col cols="2">
                                         <v-btn iconv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
-                                                @click="actualizarDepartamento()" style="float: left"
+                                                @click="actualizarSector()" style="float: left"
                                                 title="ACTUALIZAR INFORMACIÓN">
                                                 <v-icon dark> mdi-pencil </v-icon>
                                                 ACTUALIZAR
                                             </v-btn>
                                             <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
-                                                @click="registrarDepartamento()" style="float: left" title="REGISTRAR ITEM">
+                                                @click="registrarSector()" style="float: left" title="REGISTRAR ITEM">
                                                 <v-icon dark> mdi-content-save </v-icon>
                                                 GUARDAR
                                             </v-btn>
@@ -59,7 +53,7 @@
                                     </v-col>
                                     <v-col cols="2">
                                         <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                            @click="closeDepartamento()" style="float: right" title="SALIR">
+                                            @click="closeSector()" style="float: right" title="SALIR">
                                             <v-icon dark> mdi-close-circle-outline </v-icon>
                                             SALIR
                                         </v-btn>
@@ -101,27 +95,27 @@
             </v-dialog>
 
             <v-col cols="12" md="4">
-                <v-btn color="success" @click="showAddDepartamento()">+ Nuevo Departamento</v-btn>
+                <v-btn color="success" @click="showAddSector()">+ Nuevo Sector</v-btn>
             </v-col>
 
             <div>
-                <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Departamentos -->
+                <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Sectores -->
                     <v-container>
                         <v-row>
                             <v-col cols="12" md="12">
                                 <v-col cols="12">
                                     <v-list-item>
                                         <v-list-item-title class="text-center">
-                                            <h5>DEPARTAMENTOS</h5>
+                                            <h5>SECTORES</h5>
                                         </v-list-item-title>
                                     </v-list-item>
 
                                     <v-card-title>
-                                        <v-text-field v-model="searchDepartamento" append-icon="mdi-magnify"
-                                            label="BUSCAR DEPARTAMENTOS" single-line hide-details></v-text-field>
+                                        <v-text-field v-model="searchSector" append-icon="mdi-magnify"
+                                            label="BUSCAR SECTORES" single-line hide-details></v-text-field>
                                     </v-card-title>
 
-                                    <v-data-table :headers="headersDepartamento" :items="datosDepartamento" :search="searchDepartamento"
+                                    <v-data-table :headers="headersSector" :items="datosSector" :search="searchSector"
                                         :items-per-page="5" class="elevation-1" id="tableId">
                                         <template #[`item.act`]="{ item }">
                                             <v-chip :color="getColor(item.act)" dark>
@@ -131,14 +125,14 @@
 
                                         <template #[`item.actions`]="{ item }">
                                             <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
-                                                title="ACTIVAR DEPARTAMENTO">
+                                                title="ACTIVAR SECTOR">
                                                 mdi-check-circle-outline
                                             </v-icon>
                                             <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
-                                                title="DESACTIVAR DEPARTAMENTO">
+                                                title="DESACTIVAR SECTOR">
                                                 mdi-cancel
                                             </v-icon>
-                                            <v-icon small class="mr-2" @click="showEditDepartamento(item)"
+                                            <v-icon small class="mr-2" @click="showEditSector(item)"
                                                 title="EDITAR INFORMACION">
                                                 mdi-pencil
                                             </v-icon>
@@ -181,55 +175,46 @@
             </div>
 
         </v-card>
-    </div> <!--one-->
 </template>
 <script>
 import axios from "axios";
-import ScheduleForm from './Sector.vue'; // one
 
 export default {
     data: () => ({
-        idDepartamento: "",
-        departamento: "",
+        idSector: "",
+        sector: "",
         estado: "",
         createDate: "",
         lastDate: "",
-        idArea: "",
-        idUnidad: "",
+        idDepartamento: "",
         valid: true,
 
-        searchDepartamento: "",
+        searchSector: "",
+        datosSector: [],
         datosDepartamento: [],
-        datosUnidad: [],
-        datosArea: [],
 
-        showScheduleForm: false, //one
         snackbarOK: false,
         mensajeSnackbar: "",
         snackbarError: false,
         mensajeSnackbarError: "REGISTRO FALLIDO",
         timeout: 2000,
 
-        departamentoModal: "",
+        sectorModal: "",
         botonAct: 0,
-        departamentoRules: [
-            (v) => !!v || "NOMBRE DE DEPARTAMENTO ES REQUERIDO",
+        sectorRules: [
+            (v) => !!v || "NOMBRE DE SECTOR ES REQUERIDO",
             (v) =>
                 (v && v.length <= 50) ||
-                "EL NOMBRE DE LA DEPARTAMENTO DEBE TENER 50 CARACTERES COMO MAXIMO",
+                "EL NOMBRE DE LA SECTOR DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
-        unidadRules: [
-            (v) => !!v || "ASIGNAR UNA UNIDAD ES REQUERIDO",
+        departamentoRules: [
+            (v) => !!v || "ASIGNAR UN DEPARTAMENTO ES REQUERIDO",
 
         ],
-        areaRules: [
-            (v) => !!v || "ASIGNAR UN AREA ES REQUERIDO",
-        ],
 
-        headersDepartamento: [
-            { text: "DEPARTAMENTO", value: "nom", sortable: false },
-            { text: "UNIDAD", value: "unid", sortable: false },
-            { text: "AREA", value: "area", sortable: false },
+        headersSector: [
+            { text: "SECTOR", value: "nom", sortable: false },
+            { text: "DEPARTAMENTO", value: "dep", sortable: false },
             { text: "ESTADO", value: "act", sortable: false },
             { text: "FECHA CREACION", value: "credte", sortable: false },
             { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
@@ -240,24 +225,21 @@ export default {
 
     created: function () {
         //this.user = JSON.parse(sessionStorage.getItem("session"));
-        //this.idDepartamento = this.user.idDepartamento;
-        this.listarDepartamentos();
-    },
-    components: { //one/
-        ScheduleForm
+        //this.idSector = this.user.idSector;
+        this.listarSectores();
     },
     methods: {
 
         activar(item) {
-            this.idDepartamento = item.iddep;
-            this.activardepartamento(this.idDepartamento);
+            this.idSector = item.iddep;
+            this.activarsector(this.idSector);
         },
-        async activardepartamento(idDepartamento) {
+        async activarsector(idSector) {
             let me = this;
             await axios
-                .post("/departamento/ondepartamento/" + this.idDepartamento).then(function (response) {
+                .post("/sector/onsector/" + this.idSector).then(function (response) {
 
-                    me.listarDepartamentos();
+                    me.listarSectores();
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -265,15 +247,15 @@ export default {
 
         },
         desactivar(item) {
-            this.idDepartamento = item.iddep;
-            this.desactivardepartamento(this.idDepartamento);
+            this.idSector = item.iddep;
+            this.desactivarsector(this.idSector);
         },
-        async desactivardepartamento(idDepartamento) {
+        async desactivarsector(idSector) {
             let me = this;
             await axios
-                .post("/departamento/offdepartamento/" + this.idDepartamento).then(function (response) {
+                .post("/sector/offsector/" + this.idSector).then(function (response) {
 
-                    me.listarDepartamentos();
+                    me.listarSectores();
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -285,69 +267,62 @@ export default {
             else return 'red'
         },
 
-        showAddDepartamento() {
+        showAddSector() {
             this.botonAct = 0;
-            if(this.datosUnidad.length == 0) this.listarUnidades();
-            if(this.datosArea.length == 0) this.listarAreas();
-            this.departamentoModal = true;
+            if(this.datosDepartamento.length == 0) this.listarDepartamentos();
+            this.sectorModal = true;
         },
-        showEditDepartamento(item) {
+        showEditSector(item) {
             this.botonAct = 1;
-            if(this.datosUnidad.length == 0) this.listarUnidades();
-            if(this.datosArea.length == 0) this.listarAreas();
-            this.llenarCamposDepartamento(item);
-            this.departamentoModal = true;
+            if(this.datosDepartamento.length == 0) this.listarDepartamentos();
+            this.llenarCamposSector(item);
+            this.sectorModal = true;
         },
 
-        closeDepartamento() {
-            this.departamentoModal = false;
+        closeSector() {
+            this.sectorModal = false;
             this.limpiar();
         },
 
-        llenarCamposDepartamento(item) {
-            this.departamento = item.nom;
-            this.idUnidad = item.idunid;
-            this.idArea = item.idarea;
+        llenarCamposSector(item) {
+            this.sector = item.nom;
             this.idDepartamento = item.iddep;
+            this.idSector = item.iddep;
         },
         
-        actualizarDepartamento() {
-            this.actualizardepartamento(
-                this.idDepartamento,
-                this.departamento,
-                this.idunid,
-                this.idarea
+        actualizarSector() {
+            this.actualizarsector(
+                this.idSector,
+                this.sector,
+                this.iddep
             );
         },
         
        
-        async actualizardepartamento(
+        async actualizarsector(
+            idSector,
+            sector,
             idDepartamento,
-            departamento,
-            idUnidad,
-            idArea
         ) {
             let me = this;
 
             await axios
                 .post(
-                    "/departamento/editardepartamento/" +
-                    this.idDepartamento +
+                    "/sector/editarsector/" +
+                    this.idSector +
                     "," +
-                    this.departamento +
+                    this.sector +
                     "," +
-                    this.idUnidad +
-                    "," +
-                    this.idArea
+                    this.idDepartamento
 
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarDepartamentos(me.idDepartamento);
+                    me.listarSectores(me.idSector);
                     me.limpiar();
-                    me.closeDepartamento();
+                    me.closeSector();
 
                 })
                 .catch(function (error) {
@@ -356,11 +331,25 @@ export default {
         },
 
         limpiar() {
-            this.departamento = "";
-            this.idUnidad = ""; this.datosUnidad = [];
-            this.idArea = ""; this.datosArea = [];
+            this.sector = "";
+            this.idDepartamento = ""; this.datosDepartamento = [];
         },
 
+        async listarSectores(idSector) {
+            let me = this;
+            await axios
+                .get("/sector/listarsectores/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosSector = [];
+                    } else {
+                        me.datosSector = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
         async listarDepartamentos(idDepartamento) {
             let me = this;
             await axios
@@ -370,75 +359,39 @@ export default {
                         me.datosDepartamento = [];
                     } else {
                         me.datosDepartamento = response.data.resultado;
+                        console.log("datosDepartamento: "+JSON.stringify(me.datosDepartamento.iddep))
                     }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         },
-        async listarUnidades(idUnidad) {
-            let me = this;
-            await axios
-                .get("/unidad/listarunidades/")
-                .then(function (response) {
-                    if (response.data.resultado == null) {
-                        me.datosUnidad = [];
-                    } else {
-                        me.datosUnidad = response.data.resultado;
-                        console.log("datosUnidad: "+JSON.stringify(me.datosUnidad.idunid))
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-        async listarAreas(idArea) {
-            let me = this;
-            await axios
-                .get("/area/listarareas/")
-                .then(function (response) {
-                    if (response.data.resultado == null) {
-
-                        me.datosArea = [];
-                    } else {
-                        me.datosArea = response.data.resultado;
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-        registrarDepartamento() {
-            this.registrarDepartamento(
-                this.departamento,
-                this.idUnidad,
-                this.idArea
+        registrarSector() {
+            this.registrarSector(
+                this.sector,
+                this.idDepartamento
             );
         },
-        async registrarDepartamento(
-            departamento,
-            idUnidad,
-            idArea
+        async registrarSector(
+            sector,
+            idDepartamento
         ) {
             let me = this;
-
             await axios
                 .post(
-                    "/departamento/adddepartamento/" +
-                    this.departamento +
+                    "/sector/addsector/" +
+                    this.sector +
                     "," +
-                    this.idUnidad +
-                    "," +
-                    this.idArea
+                    this.idDepartamento
 
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarDepartamentos(me.idDepartamento);
+                    me.listarSectores(me.idSector);
                     me.limpiar();
-                    me.closeDepartamento();
+                    me.closeSector();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;

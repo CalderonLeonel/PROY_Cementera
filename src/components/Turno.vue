@@ -16,10 +16,11 @@
                         </v-list-item>
                         
                         <v-col cols="12" md="12">
-                            <v-text-field v-model="nombreCargo" :counter="50" :rules="nombreRules"
-                                @input="nombreCargo = nombreCargo.toUpperCase()" label="Nombre del Turno" required>
+                            <v-text-field v-model="nombreTurno" :counter="50" :rules="nombreRules"
+                                @input="nombreTurno = nombreTurno.toUpperCase()" label="Nombre del Turno" required>
                             </v-text-field>
                         </v-col>
+                        
                     
                             <v-col cols="12">
                                 
@@ -124,7 +125,6 @@ export default {
         timeout: 2000,
 
         botonAct: 0,
-
         datosTurno: [],
         groupBy: "turn",
 
@@ -138,13 +138,12 @@ export default {
     }),
 
     created: function () {
-
         this.listarTurnos();
     },
 
     methods: {
     
-        async listarTurnos(idCargo) {
+        async listarTurnos(idTurno) {
             let me = this;
             await axios
                 .get("/turno/listarturnos/")

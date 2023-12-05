@@ -208,7 +208,7 @@
                 </v-card-title>
 
                 <v-card-text>
-                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo ACCES / Editar CAACASE -->
+                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Seleccionar Accesos -->
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="12">
@@ -391,9 +391,8 @@ export default {
         idUsuario: "",
         nombreUsuario: "",
         password: "",
-        accesos: "",
         tipo: "",
-        accesos: [],
+        accesos: [],//[1,2,3,4,5],
         estado: "",
         createDate: "",
         lastDate: "",
@@ -401,10 +400,11 @@ export default {
 
         datosUsuario: [],
         datosEmpleado: [],
-        datosTipo: ["SUPERVISOR","COMUN"],
+        datosTipo: ["GERENTE","SUPERVISOR","COMUN"],
         datosAcceso: [],
         idEmpleado: "",
         nombreEmpleadoLabel: "Seleccionar empleado",
+        email: "",
 
         
 
@@ -452,6 +452,7 @@ export default {
             { text: "NOMBRES", value: "nom" },
             { text: "PATERNO", value: "pat" },
             { text: "MATERNO", value: "mat" },
+            { text: "CORREO", value: "emal" },
             { text: "OPCIONES", value: "actions", sortable: false },
         ],
         headersAcceso: [
@@ -507,6 +508,7 @@ export default {
         seleccionarEmpleado(item) {
             this.idEmpleado = item.idempl;
             this.nombreEmpleadoLabel = item.pat +" "+item.nom
+            this.email = item.emal
             this.generarDatosUsuario(item);
             this.closeEmpleado();
         },
@@ -555,7 +557,7 @@ export default {
 
         llenarCamposUsuario(item) {
             this.nombreUsuario = item.usu;
-            this.accesos = item.acc;
+            //this.accesos = item.acc;
             this.tipo = item.tip;
             
             this.idUsuario = item.idusu;
@@ -609,7 +611,7 @@ export default {
             this.datosUsuario = "",
             this.idEmpleado = "";
             this.nombreEmpleadoLabel = "";
-            this.accesos = "";
+            this.accesos = [];
             this.tipo = "";
         },
 
@@ -659,7 +661,7 @@ export default {
                 });
         },
         registrarUsuario() {
-            console.log("AS: "+accesos)
+            console.log("ACCESOS: "+accesos)
             this.registrarUsuario(
                 this.idEmpleado,
                 this.nombreUsuario,
@@ -677,6 +679,16 @@ export default {
             accesos
         ) {
             let me = this;
+            let aux = JSON.stringify(this.accesos);
+            
+            var jsonArray = JSON.parse(aux);
+            var accesosArray = jsonArray.map(function(obj) {
+                return obj.idacc;
+            });
+            // Mostrar el nuevo array
+            console.log("Test1: "+this.accesos[0].idacc);
+            console.log("Test2: "+accesosArray);
+            
             await axios
                 .post(
                     "/usuario/addusuario/" +
@@ -688,7 +700,11 @@ export default {
                     "," +
                     this.tipo +
                     "," +
-                    "[1-2-3-4]"
+                    auxAccesos +
+                    "," +
+                    this.email +
+                    "," +
+                    this.nombreEmpleadoLabel, accesosArray
 
                 )
                 .then(function (response) {

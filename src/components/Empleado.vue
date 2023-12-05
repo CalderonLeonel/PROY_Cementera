@@ -164,8 +164,10 @@
                                             title="EDITAR INFORMACION">
                                             mdi-pencil
                                         </v-icon>
-                                      
-
+                                        <v-icon small class="mr-2" color="#001781" @click="goToEmpleadoPerfil(item)" 
+                                                title="VER EMPLEADO">
+                                                mdi-eye
+                                            </v-icon>
                                     </template>
                                 </v-data-table>
                             </v-col>
@@ -279,7 +281,7 @@ export default {
                 "EL NOMBRE DEL EMPLEADO DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
         cargoRules: [
-            (v) => !!v || "ASIGNAR UNA CARGO ES REQUERIDO",
+            (v) => !!v || "ASIGNAR UN CARGO ES REQUERIDO",
 
         ],
         departamentoRules: [
@@ -294,8 +296,8 @@ export default {
             //{ text: "DEPARTAMENTO", value: "dep" },
             { text: "CONTACTOS", value: "tel", sortable: false },
             { text: "ESTADO", value: "act" },
-            { text: "FECHA CREACION", value: "credte", sortable: false },
-            { text: "ULTIMA ACTUALIZACIÓN", value: "upddate", sortable: false },
+            //{ text: "FECHA CREACION", value: "credte", sortable: false },
+            //{ text: "ULTIMA ACTUALIZACIÓN", value: "upddate", sortable: false },
             { text: "OPCIONES", value: "actions", sortable: false },
         ],
 
@@ -308,6 +310,9 @@ export default {
     },
 
     methods: {
+        goToEmpleadoPerfil(item) {
+            this.$router.push({ name: 'Perfil', params: item})
+        },
 
         activar(item) {
             this.idEmpleado = item.idempl;
