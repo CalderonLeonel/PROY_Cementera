@@ -180,19 +180,6 @@
 import axios from "axios";
 
 export default {
-    props: { //one
-     value: Boolean
-    },
-    computed: { //one
-        show: {
-        get () {
-            return this.value
-        },
-        set (value) {
-            this.$emit('input', value)
-            }
-        }
-    },
     data: () => ({
         idArea: "",
         nombre: "",
