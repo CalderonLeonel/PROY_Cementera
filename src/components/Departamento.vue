@@ -123,6 +123,13 @@
 
                                     <v-data-table :headers="headersDepartamento" :items="datosDepartamento" :search="searchDepartamento"
                                         :items-per-page="5" class="elevation-1" id="tableId">
+                                        <template #[`item.credte`]="{ item }">
+                                            <td>{{ new Date(item.credte).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
+                                        </template>
+                                        <template #[`item.upddte`]="{ item }">
+                                            <td v-if="item.upddte == null">-</td>
+                                            <td v-if="item.upddte != null">{{ new Date(item.upddte).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
+                                        </template>
                                         <template #[`item.act`]="{ item }">
                                             <v-chip :color="getColor(item.act)" dark>
                                                 {{ item.act }}

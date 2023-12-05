@@ -192,6 +192,7 @@ export default {
         valid: true,
 
         searchCargo: "",
+        datosCargo: [],
 
         snackbarOK: false,
         mensajeSnackbar: "",
@@ -219,17 +220,14 @@ export default {
                 (v && v.length <= 8) ||
                 "SALARIO DEBE TENER 8 CARACTERES COMO MAXIMO",
         ],
-
-        //checkbox: false,
-        datosCargo: [],
-
+        
         headersCargo: [
             { text: "CARGO", value: "carg", sortable: false },
             { text: "DESCRIPCION", value: "descrip", sortable: false },
             { text: "SALARIO", value: "salar", sortable: false },
             { text: "ESTADO", value: "act", sortable: false },
-            { text: "FECHA CREACION", value: "credte", sortable: false },
-            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
+            //{ text: "FECHA CREACION", value: "credte", sortable: false },
+            //{ text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
             { text: "OPTIONS", value: "actions", sortable: false },
         ],
     }),
