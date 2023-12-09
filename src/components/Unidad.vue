@@ -115,7 +115,7 @@
                                     </template>
                                     <template #[`item.upddte`]="{ item }">
                                         <td v-if="item.upddte == null">-</td>
-                                        <td v-if="item.upddte != null">{{ new Date(item.fecfin).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
+                                        <td v-if="item.upddte != null">{{ new Date(item.upddte).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
                                     </template>
                                     <template #[`item.act`]="{ item }">
                                         <v-chip :color="getColor(item.act)" dark>

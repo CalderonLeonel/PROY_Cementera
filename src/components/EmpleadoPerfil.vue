@@ -567,7 +567,7 @@ export default {
             { text: "ESTADO", value: "act" },
             //{ text: "FECHA CREACION", value: "credte" },
             //{ text: "ULTIMA ACTUALIZACIÓN", value: "upddte" },
-            { text: "OPTIONS", value: "actions", sortable: false },
+            { text: "OPCIONES", value: "actions", sortable: false },
         ],
 
         headersObservacion: [
@@ -575,7 +575,7 @@ export default {
             { text: "COMENTARIO", value: "com" },
             { text: "FECHA", value: "fec" },
             { text: "ESTADO", value: "act" },
-            { text: "OPTIONS", value: "actions", sortable: false },
+            { text: "OPCIONES", value: "actions", sortable: false },
         ],
         headersVacacion: [
             { text: "AÑO", value: "anio" },
@@ -583,7 +583,7 @@ export default {
             { text: "DIA FINAL", value: "fecfin" },
             { text: "DIAS TOTALES", value: "cont" },
             { text: "ESTADO", value: "act" },
-            { text: "OPTIONS", value: "actions", sortable: false },
+            { text: "OPCIONES", value: "actions", sortable: false },
         ],
 
         observacionRules: [

@@ -129,20 +129,23 @@
                                     </template>
 
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
-                                            title="ACTIVAR SOLICITUD">
-                                            mdi-check-circle-outline
+                                        <v-icon v-if="item.act == 'PENDIENTE' && user.tipo != 'COMUN'" small class="mr-3" @click="aceptar(item)"
+                                            title="ACEPTAR SOLICITUD">
+                                            mdi-check-circle
                                         </v-icon>
-                                        <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
-                                            title="DESACTIVAR SOLICITUD">
-                                            mdi-cancel
+                                        <v-icon v-if="item.act == 'PENDIENTE' && user.tipo != 'COMUN'" small class="mr-4" @click="rechazar(item)"
+                                            title="RECHAZAR SOLICITUD">
+                                            mdi-close-octagon
                                         </v-icon>
-                                        <v-icon small class="mr-2" @click="showEditSolicitud(item)"
+                                        <v-icon v-if="item.act == 'PENDIENTE' && user.tipo == 'COMUN'" small class="mr-2" @click="showEditSolicitud(item)"
                                             title="EDITAR INFORMACION">
                                             mdi-pencil
                                         </v-icon>
+                                        <v-icon v-if="item.act != 'PENDIENTE'" small class="mr-2"
+                                            title="ELIMINAR SOLICITUD">
+                                            mdi-delete
+                                        </v-icon>
                                       
-
                                     </template>
                                 </v-data-table>
                             </v-col>
@@ -223,31 +226,31 @@ export default {
 
         headersSolicitud: [
             { text: "SOLICITUD", value: "pues" },
-            //{ text: "REQUERIMIENTOS", value: "des", sortable: false },
+            { text: "REQUERIMIENTOS", value: "des", sortable: false },
             { text: "FECHA CREACION", value: "credte" },
             { text: "ULTIMA ACTUALIZACIÓN", value: "upddte" },
             { text: "ESTADO", value: "act", sortable: false },
-            { text: "OPTIONS", value: "actions", sortable: false },
+            { text: "OPCIONES", value: "actions", sortable: false },
         ],
     }),
 
     created: function () {
         this.user = JSON.parse(sessionStorage.getItem("session"));
         this.idUsuario = this.user['id_usuario'];
-        console.log("ID: "+this.idUsuario);
+        console.log("ID: "+this.idUsuario+" y "+this.user.tipo);
         this.listarSolicitudes();
     },
 
     methods: {
 
-        activar(item) {
-            this.idSolicitud = item.idunid;
-            this.activarsolicitud(this.idSolicitud);
+        aceptar(item) {
+            this.idSolicitud = item.idsoli;
+            this.aceptarsolicitud(this.idSolicitud);
         },
-        async activarsolicitud(idSolicitud) {
+        async aceptarsolicitud(idSolicitud) {
             let me = this;
             await axios
-                .post("/solicitud/onsolicitud/" + this.idSolicitud).then(function (response) {
+                .post("/solicitud/acceptsolicitud/" + this.idSolicitud).then(function (response) {
 
                     me.listarSolicitudes();
                 })
@@ -256,14 +259,14 @@ export default {
                 });
 
         },
-        desactivar(item) {
-            this.idSolicitud = item.idunid;
-            this.desactivarsolicitud(this.idSolicitud);
+        rechazar(item) {
+            this.idSolicitud = item.idsoli;
+            this.rechazarsolicitud(this.idSolicitud);
         },
-        async desactivarsolicitud(idSolicitud) {
+        async rechazarsolicitud(idSolicitud) {
             let me = this;
             await axios
-                .post("/solicitud/offsolicitud/" + this.idSolicitud).then(function (response) {
+                .post("/solicitud/denysolicitud/" + this.idSolicitud).then(function (response) {
 
                     me.listarSolicitudes();
                 })
@@ -329,6 +332,7 @@ export default {
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.listarSolicitudes(me.idSolicitud);
+                    me.closeSolicitud();
                     me.limpiar();
 
                 })
@@ -388,6 +392,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarSolicitudes(me.idSolicitud);
                     me.limpiar();
+                    me.closeSolicitud();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;

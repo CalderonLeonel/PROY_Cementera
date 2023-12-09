@@ -97,7 +97,7 @@
         <v-dialog v-model="turnoModal" max-width="1080px"> <!-- Modal Turno-->>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>Asignar Turno</span>
+                    <span>Lista de Turnos del Sector</span>
                 </v-card-title>
                 <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Turnos -->
                     <v-container>
@@ -112,8 +112,7 @@
                                 <v-text-field v-model="searchTurno" append-icon="mdi-magnify" label="BUSCAR TURNOS"
                                     single-line hide-details></v-text-field>
                             </v-card-title> -->
-                                    <v-data-table :headers="headersTurno" :items="datosTurno" :items-per-page="5"
-                                        class="elevation-1">
+                                    <v-data-table :headers="headersTurno" :items="datosTurno" :items-per-page="5"  :group-by="groupBy" class="elevation-1">
                                         <template #[`item.credte`]="{ item }">
                                             <td>{{ new Date(item.credte).toLocaleDateString('es-ES', {
                                                 day: 'numeric',
@@ -331,6 +330,8 @@ export default {
         datosTurno: [],
         datosTurnoSinS: [],
 
+        groupBy: "turn-desactvado",
+
         snackbarOK: false,
         mensajeSnackbar: "",
         snackbarError: false,
@@ -383,7 +384,7 @@ export default {
                     if (response.data.resultado == null) {
                         me.datosTurno = [];
                     } else {
-                        me.datosTurno = response.data.resultado; console.log(me.datosTurno);
+                        me.datosTurno = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
@@ -454,7 +455,7 @@ export default {
         },
 
         activar(item) {
-            this.idSector = item.iddep;
+            this.idSector = item.idsect;
             this.activarsector(this.idSector);
         },
         async activarsector(idSector) {
@@ -470,7 +471,7 @@ export default {
 
         },
         desactivar(item) {
-            this.idSector = item.iddep;
+            this.idSector = item.idsect;
             this.desactivarsector(this.idSector);
         },
         async desactivarsector(idSector) {
@@ -503,11 +504,11 @@ export default {
         },
         showTurno(item) {
             this.idSector = item.idsect;
-            if (this.datosTurno.length == 0) this.listarTurnos();
+            this.listarTurnos();
             this.turnoModal = true;
         },
         showAsignarTurno(item) {
-            if (this.datosTurnoSinS.length == 0) this.listarTurnosSinS();
+            this.listarTurnosSinS();
             //this.llenarCamposSector(item);
             this.asignarTurnoModal = true;
         },
@@ -526,23 +527,13 @@ export default {
         llenarCamposSector(item) {
             this.sector = item.nom;
             this.idDepartamento = item.iddep;
-            this.idSector = item.iddep;
+            this.idSector = item.idsect;
         },
 
         actualizarSector() {
-            this.actualizarsector(
-                this.idSector,
-                this.sector,
-                this.iddep
-            );
+            this.actualizarsector();
         },
-
-
-        async actualizarsector(
-            idSector,
-            sector,
-            idDepartamento,
-        ) {
+        async actualizarsector() {
             let me = this;
 
             await axios
@@ -598,7 +589,6 @@ export default {
                         me.datosDepartamento = [];
                     } else {
                         me.datosDepartamento = response.data.resultado;
-                        console.log("datosDepartamento: " + JSON.stringify(me.datosDepartamento.iddep))
                     }
                 })
                 .catch(function (error) {

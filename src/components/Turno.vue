@@ -32,11 +32,11 @@
                 <v-row>
                     <v-col cols="12" md="12">
                         <v-col cols="12">
-                            <div> <!-- Encabezado -->
-                                <v-alert dense color="#00A1B1" style="color: #ffffff; text-align: center;">
+                            <v-list-item>
+                                <v-list-item-title class="text-center">
                                     <h5>TURNOS</h5>
-                                </v-alert>
-                            </div>
+                                </v-list-item-title>
+                            </v-list-item>
                             <v-col cols="12" md="4">
                                 <v-btn color="success" @click="showAddTurno()">+ Nuevo Turno</v-btn>
                             </v-col>
@@ -44,15 +44,20 @@
                                 <v-text-field v-model="searchTurno" append-icon="mdi-magnify" label="BUSCAR TURNOS"
                                     single-line hide-details></v-text-field>
                             </v-card-title>
-                            <v-data-table :headers="headersTurno" :items="datosTurno"
-                                :items-per-page="5" class="elevation-1">
+                            <v-data-table :headers="headersTurno" :items="datosTurno" :items-per-page="5"
+                                class="elevation-1">
                                 <template #[`item.credte`]="{ item }">
-                                            <td>{{ new Date(item.credte).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
-                                        </template>
-                                        <template #[`item.upddte`]="{ item }">
-                                            <td v-if="item.upddte == null">-</td>
-                                            <td v-if="item.upddte != null">{{ new Date(item.upddte).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
-                                        </template>
+                                    <td>{{ new Date(item.credte).toLocaleDateString('es-ES', {
+                                        day: 'numeric', month:
+                                            'long', year: 'numeric'
+                                    }) }}</td>
+                                </template>
+                                <template #[`item.upddte`]="{ item }">
+                                    <td v-if="item.upddte == null">-</td>
+                                    <td v-if="item.upddte != null">{{ new Date(item.upddte).toLocaleDateString('es-ES', {
+                                        day: 'numeric', month: 'long', year: 'numeric'
+                                    }) }}</td>
+                                </template>
                                 <template #[`item.act`]="{ item }">
                                     <v-chip :color="getColor(item.act)" dark>
                                         {{ item.act }}
@@ -67,9 +72,11 @@
                                         title="DESACTIVAR TURNO">
                                         mdi-cancel
                                     </v-icon>
-                                    <v-icon small class="mr-2" @click="showEditTurno(item)"
-                                        title="ACTUALIZAR INFORMACION">
+                                    <v-icon small class="mr-2" @click="showEditTurno(item)" title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
+                                    </v-icon>
+                                    <v-icon small class="mr-2" @click="showListarHorario(item)" title="VER HORARIOS">
+                                        mdi-clock
                                     </v-icon>
                                 </template>
                             </v-data-table>
@@ -106,8 +113,7 @@
             </v-container>
         </v-form>
 
-        <v-dialog v-model="turnoModal" persistent :overlay="false" max-width="1080px">
-            <!-- Modal Turno -->
+        <v-dialog v-model="turnoModal" persistent :overlay="false" max-width="1080px"> <!-- Modal Turno -->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span v-if="botonAct == 0">Nuevo Turno</span>
@@ -121,8 +127,7 @@
                                 <v-col cols="12" md="12">
                                     <v-col cols="12" md="12">
                                         <v-text-field v-model="turno" :counter="50" :rules="turnoRules"
-                                            @input="turno = turno.toUpperCase()" label="Nombre del Turno"
-                                            required>
+                                            @input="turno = turno.toUpperCase()" label="Nombre del Turno" required>
                                         </v-text-field>
                                     </v-col>
 
@@ -195,15 +200,38 @@
         <v-dialog v-model="horarioModal" persistent :overlay="false" max-width="1080px"> <!-- Modal Horario-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nueva Horario</span>
+                    <span v-if="botonAct == 0">Nuevo Horario</span>
                     <span v-if="botonAct == 1">Editar Horario</span>
                 </v-card-title>
                 <v-card-text>
-                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nueva Horario / Editar Horario -->
-                        <v-container>
+                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo Horario / Editar Horario -->
+                        <v-container class="d-flex">
                             <v-row>
                                 <v-col cols="12" md="12">
+                                    <span>De </span>
+                                    <v-select v-model="diaInicio" :items="datosSemana" label="Primer dia..." prepend-icon="mdi-pick" required></v-select>
+                                    <span> A </span>
+                                    <v-select v-model="diaFinal" :items="datosSemana" label="Último dia..." prepend-icon="mdi-pick" required></v-select>
+                                </v-col>
+                                <v-col cols="12" md="12">
                                     <!-- time pickers -->
+                                    <v-menu v-model="timePicker1" :close-on-content-click="false" :nudge-right="40"
+                                        transition="scale-transition" offset-y min-width="auto">
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-text-field v-model="horaInicio" label="Hora de Entrada"
+                                                prepend-icon="mdi-clock-time-seven-outline" readonly v-bind="attrs"
+                                                v-on="on"></v-text-field>
+                                        </template>
+                                        <v-time-picker v-model="horaInicio" @input="timePicker1 = false"></v-time-picker>
+                                    </v-menu>
+                                    <v-menu v-model="timePicker2" :close-on-content-click="false" :nudge-right="40"
+                                        transition="scale-transition" offset-y min-width="auto">
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-text-field v-model="horaFinal" label="Hora de Salida"
+                                                prepend-icon="mdi-clock" readonly v-bind="attrs" v-on="on"></v-text-field>
+                                        </template>
+                                        <v-time-picker v-model="horaFinal" @input="timePicker2 = false"></v-time-picker>
+                                    </v-menu>
 
                                 </v-col>
 
@@ -268,63 +296,73 @@
             </v-card>
         </v-dialog>
 
-        <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Horarios -->
-            <v-container>
-                <v-row>
-                    <v-col cols="12" md="12">
-                        <v-col cols="12">
-                            <v-list-item>
-                                <v-list-item-title class="text-center">
-                                    <h5>Horarios</h5>
-                                </v-list-item-title>
-                            </v-list-item>
-                            <v-col cols="12" md="4">
-                                <v-btn color="success" @click="showAddHorario()">+ Registrar Horario</v-btn>
-                            </v-col>
-                            <!--
+        <v-dialog v-model="listarHorarioModal" max-width="1080px"> <!-- Modal Listar Horario-->
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>Lista de Horarios del Turno</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Horarios -->
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="12">
+                                    <v-col cols="12">
+                                        <v-list-item>
+                                            <v-list-item-title class="text-center">
+                                                <h5>HORARIOS</h5>
+                                            </v-list-item-title>
+                                        </v-list-item>
+                                        <v-col cols="12" md="4">
+                                            <v-btn color="success" @click="showAddHorario()">+ REGISTRAR HORARIO</v-btn>
+                                        </v-col>
+                                        <!--
                             <v-card-title>
                                 <v-text-field v-model="searchHorario" append-icon="mdi-magnify" label="BUSCAR REGISTROS"
                                     single-line hide-details></v-text-field>
                             </v-card-title>
                         -->
-                            <v-data-table :headers="headersHorario" :items="datosHorario"
-                                :items-per-page="5" class="elevation-1" id="tableId">
-                                <template #[`item.fecini`]="{ item }">
-                                    <td>{{ new Date(item.fecini).toLocaleDateString('es-ES', {
-                                        day: 'numeric', month: 'long', year: 'numeric'
-                                    }) }}
-                                    </td>
-                                </template>
-                                <template #[`item.fecfin`]="{ item }">
-                                    <td>{{ new Date(item.fecfin).toLocaleDateString('es-ES', {
-                                        day: 'numeric', month: 'long', year: 'numeric'
-                                    }) }}
-                                    </td>
-                                </template>
-                                <template #[`item.act`]="{ item }">
-                                    <v-chip :color="getColor(item.act)" dark>
-                                        {{ item.act }}
-                                    </v-chip>
-                                </template>
-                                <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activarHorario(item)"
-                                        title="ACTIVAR HORARIO">
-                                        mdi-check-circle-outline
-                                    </v-icon>
-                                    <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivarHorario(item)"
-                                        title="ANULAR HORARIO">
-                                        mdi-cancel
-                                    </v-icon>
-                                    <v-icon small class="mr-2" @click="showEditHorario(item)" title="EDITAR INFORMACION">
-                                        mdi-pencil
-                                    </v-icon>
-                                </template>
-                            </v-data-table>
-                        </v-col>
-                    </v-col>
-                </v-row>
-            </v-container>
-        </v-form>
+                                        <v-data-table :headers="headersHorario" :items="datosHorario" :items-per-page="5"
+                                            class="elevation-1" id="tableId">
+                                            <template #[`item.diaini`]="{ item }">
+                                                <td v-if="item.diaini != item.diafin">De {{ item.diaini }} a {{ item.diafin }}.</td>
+                                                <td v-if="item.diaini == item.diafin">{{ item.diaini }}</td>
+                                            </template>
+                                            <template #[`item.act`]="{ item }">
+                                                <v-chip :color="getColor(item.act)" dark>
+                                                    {{ item.act }}
+                                                </v-chip>
+                                            </template>
+                                            <template #[`item.actions`]="{ item }">
+                                                <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2"
+                                                    @click="activarHorario(item)" title="ACTIVAR HORARIO">
+                                                    mdi-check-circle-outline
+                                                </v-icon>
+                                                <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2"
+                                                    @click="desactivarHorario(item)" title="ANULAR HORARIO">
+                                                    mdi-cancel
+                                                </v-icon>
+                                                <v-icon small class="mr-2" @click="showEditHorario(item)"
+                                                    title="EDITAR INFORMACION">
+                                                    mdi-pencil
+                                                </v-icon>
+                                                <v-icon small class="mr-2" @click="deleteHorario(item)"
+                                                    title="ELIMINAR HORARIO">
+                                                    mdi-delete
+                                                </v-icon>
+                                            </template>
+                                        </v-data-table>
+                                    </v-col>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+
 
     </v-card>
 </template>
@@ -341,16 +379,22 @@ export default {
         valid: true,
 
         idHorario: '',
+        diaInicio: '',
+        diaFinal: '',
         horaInicio: '',
         horaFinal: '',
+        timePicker1: false,
+        timePicker2: false,
 
         searchTurno: "",
 
         turnoModal: false,
+        listarHorarioModal: false,
         horarioModal: false,
 
         datosTurno: [],
         datosHorario: [],
+        datosSemana: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
 
         snackbarOK: false,
         mensajeSnackbar: "",
@@ -369,18 +413,19 @@ export default {
             { text: "ESTADO", value: "act", sortable: false },
             { text: "OPCIONES", value: "actions", sortable: false, align: 'end' },
         ],
+        /* //De otro v-dable comentado para probar el group-by
         headersTurnoHorario: [
             { text: "TURNO", value: "turn", sortable: false },
             { text: "DIAS", value: "dias", sortable: false, align: 'end' },
-            { text: "HORA INICIO", value: "hraini", sortable: false, align: 'end' },
-            { text: "HORA FINAL", value: "hrafin", sortable: false, align: 'end' },
+            { text: "HORA INICIO", value: "hraini" },
+            { text: "HORA FINAL", value: "hrafin" },
             { text: "OPCIONES", value: "actions", sortable: false, align: 'end' },
         ],
+        */
         headersHorario: [
-            //{ text: "TURNO", value: "turn", sortable: false },
-            { text: "DIAS", value: "dias", sortable: false, align: 'end' },
-            { text: "HORA INICIO", value: "hraini", sortable: false, align: 'end' },
-            { text: "HORA FINAL", value: "hrafin", sortable: false, align: 'end' },
+            { text: "DIAS", value: "diaini", sortable: false },
+            { text: "HORA INICIO", value: "hraini" },
+            { text: "HORA FINAL", value: "hrafin" },
             { text: "OPCIONES", value: "actions", sortable: false, align: 'end' },
         ],
         turnoRules: [
@@ -416,8 +461,14 @@ export default {
             this.llenarCamposHorario(item);
             this.horarioModal = true;
         },
+        showListarHorario(item) {
+            //this.botonAct = 0;
+            this.idTurno = item.idturn;
+            this.listarHorarios();
+            this.listarHorarioModal = true;
 
-        async listarTurnos(idTurno) {
+        },
+        async listarTurnos() {
             let me = this;
             await axios
                 .get("/turno/listarturnos/")
@@ -445,13 +496,13 @@ export default {
                 .then(function (response) {
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarTurnos(me.idTurno);
+                    me.listarTurnos();
                     me.limpiarTurno();
                     me.turnoModalModal = false;
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "REGISTRO FALLIDO",
-                    me.snackbarError = true;
+                        me.snackbarError = true;
                 });
         },
         actualizarTurno() {
@@ -469,25 +520,44 @@ export default {
                 .then(function (response) {
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarTurnos(me.idTurno);
+                    me.listarTurnos();
                     me.limpiarTurno();
                     me.closeAddTurno();
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "ACTUALIZACION FALLIDA",
-                    me.snackbarError = true;
+                        me.snackbarError = true;
                 });
         },
 
-
+        async listarHorarios() {
+            let me = this;
+            await axios
+                .get("/horario/listarhorarios/" + this.idTurno)
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosHorario = [];
+                    } else {
+                        me.datosHorario = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
         registrarHorario() {
             this.registrarHorarios()
         },
         async registrarHorarios() {
             let me = this;
+            
             await axios
                 .post(
                     "/horario/addhorario/" +
+                    this.diaInicio +
+                    "," +
+                    this.diaFinal +
+                    "," +
                     this.horaInicio +
                     "," +
                     this.horaFinal +
@@ -499,11 +569,11 @@ export default {
                     me.snackbarOK = true;
                     me.listarHorarios(me.idTurno);
                     me.limpiarHorario();
-                    me.observacionModal = false;
+                    me.horarioModal = false;
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "REGISTRO DE HORARIO FALLIDO",
-                    me.snackbarError = true;
+                        me.snackbarError = true;
                 });
         },
         actualizarHorario() {
@@ -516,9 +586,14 @@ export default {
                     "/horario/editarhorario/" +
                     this.idHorario +
                     "," +
+                    this.diaInicio +
+                    "," +
+                    this.diaFinal +
+                    "," +
                     this.horaInicio +
                     "," +
                     this.horaFinal
+                    
                 )
                 .then(function (response) {
                     me.mensajeSnackbar = response.data.message;
@@ -529,7 +604,7 @@ export default {
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "ACTUALIZACION FALLIDA",
-                    me.snackbarError = true;
+                        me.snackbarError = true;
                 });
         },
         desactivarTurno(item) {
@@ -566,8 +641,11 @@ export default {
         closeAddTurno() {
             this.turnoModal = false;
         },
+        closeListarHorario() {
+            this.listarHorarioModal = false;
+        },
         closeAddHorario() {
-            this.horarioModalModal = false;
+            this.horarioModal = false;
         },
         llenarCamposTurno(item) {
             this.idTurno = item.idturn;
@@ -575,8 +653,11 @@ export default {
             //this.diaFinal = new Date(item.fecfin).toISOString().split('T')[0];
         },
         llenarCamposHorario(item) {
-            this.idHorario = item.idturn;
-            //this.horaInicio = item.turn;
+            this.idHorario = item.idhor;
+            this.diaInicio = item.diaini;
+            this.diaFinal = item.diafin;
+            this.horaInicio = item.hraini;
+            this.horaFinal = item.hrafin;
             //this.horaFinal = new Date(item.fecfin).toISOString().split('T')[0];
         },
         limpiarTurno() {
