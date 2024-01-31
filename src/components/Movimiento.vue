@@ -174,15 +174,7 @@
 
                                         <v-tab-item v-if="flag == 1">
                                             <v-card elevation="5" outlined shaped>
-                                                <v-row>
-                                                    <v-col cols="12" hidden>
-                                                        <v-list-item>
-                                                            <v-list-item-title class="text-center">
-                                                                <h5>DATOS PERSONALES</h5>
-                                                            </v-list-item-title>
-                                                        </v-list-item>
-                                                    </v-col>
-                                                </v-row>
+
                                                 <v-row>
                                                     <v-col cols="12"></v-col>
 
@@ -200,9 +192,9 @@
                                                         </v-card-title>
 
 
-                                                        <v-data-table :headers="headersMovimientos" :items="datosMovimientos"
-                                                            :search="buscarMovimiento" :items-per-page="5"
-                                                            class="elevation-1" id="tableId">
+                                                        <v-data-table :headers="headersMovimientos"
+                                                            :items="datosMovimientos" :search="buscarMovimiento"
+                                                            :items-per-page="5" class="elevation-1" id="tableId">
 
                                                             <template #[`item.est`]="{ item }">
                                                                 <v-chip :color="colorEstadoMov(item.est)" dark>
@@ -243,13 +235,6 @@
                                         <v-tab-item v-if="flag == 1">
                                             <v-card elevation="5" outlined shaped>
                                                 <v-row>
-                                                    <v-col cols="12" hidden>
-                                                        <v-list-item>
-                                                            <v-list-item-title class="text-center">
-                                                                <h5>DATOS PERSONALES</h5>
-                                                            </v-list-item-title>
-                                                        </v-list-item>
-                                                    </v-col>
                                                     <v-form ref="form" v-model="valid" lazy-validation>
                                                         <v-container>
                                                             <v-row>
@@ -388,26 +373,7 @@ export default {
             ],
             //#endregion
 
-            //#region Fabrica 
-            idFabrica: "",
-            nombreFabrica: "",
-            codigoFabrica: "",
-            direccionFabrica: "",
-            latitud: "",
-            longitud: "",
-            departamento: "",
-            ciudad: "",
-            datosFabricas: [],
-            headersFabricas: [
-                { text: "NOMBRE FABRICA", value: "nomfab", sortable: false },
-                { text: "CODIGO FABRICA", value: "codfab", sortable: false },
-                { text: "CIUDAD", value: "ciu", sortable: false },
-                { text: "DEPARTAMENTO", value: "depa", sortable: false },
-                { text: "ESTADO", value: "est", sortable: false },
-                { text: "OPCIONES", value: "actions", sortable: false },
-            ],
-            //#endregion
-
+            
             //#region Productos
             idProducto: "",
             nombreProducto: "",

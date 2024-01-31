@@ -26,7 +26,7 @@
                                         :items-per-page="5" class="elevation-1" id="tableId">
 
                                         <template #[`item.est`]="{ item }">
-                                            <v-chip :color="colorEstadoCli(item.est)" dark>
+                                            <v-chip :color="colorEstado(item.est)" dark>
                                                 {{ item.est }}
                                             </v-chip>
                                         </template>
@@ -91,283 +91,116 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="infoVenta" max-width="1000px">
-            <v-card elevation="5" outlined shaped>
-                <v-card-title>
-                    <span>INFORMACION DE LA VENTA:</span><br>
-                    <span>{{ this.codigoControl }}</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-form ref="form" v-model="valid" lazy-validation>
-                        <v-container>
-                            <v-row>
 
-                                <v-col cols="12" md="4">
-                                    <v-text-field v-model="nit" label="NIT" :counter="100" :rules="nitRules"
-                                        @input="nit = nit.toUpperCase()" required disabled></v-text-field>
-                                </v-col>
-                                <v-col cols="12" md="4">
-                                    <v-text-field v-model="razonSocial" label="RAZON SOCIAL" :counter="100"
-                                        :rules="razonSocialRules" @input="razonSocial = razonSocial.toUpperCase()" required
-                                        disabled></v-text-field>
-                                </v-col>
-
-                                <v-col cols="10"></v-col>
-                                <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closeInfoVenta()"
-                                        style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                    </v-btn>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                    </v-form>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
-
-
+        <v-card-title>
+            FORMULARIO DE VENTA
+        </v-card-title>
         <div>
-            <v-alert dense style="color: #ffffff;" color="grey">
-                <h5>VENTAS</h5>
-            </v-alert>
+            <v-form ref="form" v-model="valid" lazy-validation>
+                <v-container>
+                    <v-row>
+                        <v-col cols="12" md="1">
+                            <v-btn class="mx-2" fab dark x-small color="cyan" :rules="clienteRules" @click="showClientes()"
+                                style="float: right" title="BUSCAR CLIENTES">
+                                <v-icon dark> mdi-magnify </v-icon>
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="12" md="5">
+                            <v-text-field v-model="nombreCliente" label="CLIENTE" :counter="100" :rules="nombreClienteRules"
+                                @input="nombreCliente = nombreCliente.toUpperCase()" required disabled></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="3">
+                            <v-text-field v-model="paterno" label="PATERNO CLIENTE" :counter="100" :rules="paternoRules"
+                                @input="paterno = paterno.toUpperCase()" required disabled></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="3">
+                            <v-text-field v-model="materno" label="MATERNO CLIENTE" :counter="100" :rules="maternoRules"
+                                @input="materno = materno.toUpperCase()" required disabled></v-text-field>
+                        </v-col>
+
+                        <v-col cols="12" md="1"></v-col>
+                        <v-col cols="12" md="5">
+                            <v-text-field v-model="nit" label="NIT CLIENTE" :counter="100" :rules="nitRules"
+                                @input="nit = nit.toUpperCase()" required disabled></v-text-field>
+                        </v-col>
+
+                        <v-col cols="12">
+                            <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>Lista de Productos</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+
+                            <v-card-title>
+                                <v-text-field v-model="buscarproducto" append-icon="mdi-magnify" label="BUSCAR PRODUCTOS"
+                                    single-line hide-details></v-text-field>
+                            </v-card-title>
+                        </v-col>
+
+                        <v-col cols="12">
+                            <v-data-table :headers="headersProductos" :items="datosProductos" :search="buscarproductos"
+                                :items-per-page="5" class="elevation-1" id="tableId">
+
+                                <template #[`item.est`]="{ item }">
+                                    <v-chip :color="colorEstado(item.est)" dark>
+                                        {{ item.est }}
+                                    </v-chip>
+                                </template>
+
+                                <template #[`item.actions`]="{ item }">
+                                    <v-icon small class="mr-2" color="#001781" @click="seleccionarProducto(item)">
+                                        mdi-check-circle
+                                    </v-icon>
+                                </template>
+
+                            </v-data-table>
+                        </v-col>
+
+                        <v-col cols="12">
+                            <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>Detalle Venta</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                        </v-col>
+
+                        <v-col cols="12">
+                            <v-data-table :headers="headersCarrito" :items="datosCarrito" :items-per-page="12"
+                                class="elevation-1" id="tableId">
+
+                                <template #[`item.actions`]="{ item }">
+                                    <v-icon small class="mr-2" color="#001781" @click="seleccionarProducto()">
+                                        mdi-check-circle
+                                    </v-icon>
+                                </template>
+
+                            </v-data-table>
+                        </v-col>
+
+                        <v-col cols="12" md="8"> </v-col>
+                        <v-col cols="12" md="4">
+                            <v-toolbar dense shaped color="#001781">
+                                <v-toolbar-title style="color: #ffffff;">
+                                    <h6>
+                                        OPCIONES
+                                    </h6>
+                                </v-toolbar-title>
+                                <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="registrarVenta()"
+                                    style="float: left" title="REGISTRAR VENTA">
+                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                </v-btn>
+                            </v-toolbar>
+                        </v-col>
+
+                    </v-row>
+                </v-container>
+            </v-form>
         </div>
-
-        <v-card class="white--text" color="grey lighten-4" max-width="100%">
-            <v-card-actions>
-                <v-row>
-                    <v-col cols="12">
-                        <v-tabs horizontal color="#002245" center-active grow>
-                            <v-tab>
-                                <v-icon left>
-                                    mdi-view-list
-                                </v-icon>
-                                VENTAS
-                                REAL.
-                            </v-tab>
-                            <v-tab>
-                                <v-icon left>
-                                    mdi-cash
-                                </v-icon>
-                                FORM
-                                VENTA.
-                            </v-tab>
-                            <v-tab>
-                                <v-icon left>
-                                    mdi-format-list-checkbox
-                                </v-icon>
-                                EXPE
-                                FORM
-                            </v-tab>
-
-                            <v-tab-item v-if="flag == 1">
-                                <v-card elevation="5" outlined shaped>
-                                    <v-row>
-                                        <v-col cols="12" hidden>
-                                            <v-list-item>
-                                                <v-list-item-title class="text-center">
-                                                    <h5>VENTAS REALIZADAS</h5>
-                                                </v-list-item-title>
-                                            </v-list-item>
-                                        </v-col>
-                                        <v-col cols="12">
-                                            <v-card-title>
-                                                <v-text-field v-model="buscarVenta" append-icon="mdi-magnify"
-                                                    label="BUSCAR VENTA REALIZADA" single-line hide-details></v-text-field>
-                                            </v-card-title>
-
-                                            <v-data-table :headers="headersVentas" :items="datosVentas"
-                                                :search="searchVenta" :items-per-page="5" class="elevation-1" id="tableId">
-
-                                                <template #[`item.est`]="{ item }">
-                                                    <v-chip :color="colorEstado(item.est)" dark>
-                                                        {{ item.est }}
-                                                    </v-chip>
-                                                </template>
-
-                                                <template #[`item.actions`]="{ item }">
-
-                                                    <v-icon small class="mr-2" color="#001781" @click="showInfoVenta(item)"
-                                                        title="VER INFORMACION">
-                                                        mdi-eye
-                                                    </v-icon>
-
-                                                    <v-icon small class="mr-2" color="#001781" @click="generarFactura(item)"
-                                                        title="VER FACTURA">
-                                                        mdi-printer
-                                                    </v-icon>
-
-                                                </template>
-
-                                            </v-data-table>
-                                        </v-col>
-                                    </v-row>
-                                </v-card>
-                            </v-tab-item>
-
-                            <v-tab-item v-if="flag == 1">
-                                <v-card elevation="5" outlined shaped>
-                                    <v-form ref="form" v-model="valid" lazy-validation>
-                                        <v-container>
-                                            <v-row>
-                                                <v-col cols="12" hidden>
-                                                    <v-list-item>
-                                                        <v-list-item-title class="text-center">
-                                                            <h5>VENTAS REALIZADAS</h5>
-                                                        </v-list-item-title>
-                                                    </v-list-item>
-                                                </v-col>
-
-                                                <v-col cols="12" md="1">
-                                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="clienteRules"
-                                                        @click="showClientes()" style="float: right"
-                                                        title="BUSCAR CLIENTES">
-                                                        <v-icon dark> mdi-magnify </v-icon>
-                                                    </v-btn>
-                                                </v-col>
-                                                <v-col cols="12" md="5">
-                                                    <v-text-field v-model="nombreCliente" label="CLIENTE" :counter="100"
-                                                        :rules="nombreClienteRules"
-                                                        @input="nombreCliente = nombreCliente.toUpperCase()" required
-                                                        disabled></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" md="3">
-                                                    <v-text-field v-model="paterno" label="PATERNO CLIENTE" :counter="100"
-                                                        :rules="paternoRules" @input="paterno = paterno.toUpperCase()"
-                                                        required disabled></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" md="3">
-                                                    <v-text-field v-model="materno" label="MATERNO CLIENTE" :counter="100"
-                                                        :rules="maternoRules" @input="materno = materno.toUpperCase()"
-                                                        required disabled></v-text-field>
-                                                </v-col>
-
-                                                <v-col cols="12" md="1"></v-col>
-                                                <v-col cols="12" md="5">
-                                                    <v-text-field v-model="nit" label="NIT CLIENTE" :counter="100"
-                                                        :rules="nitRules" @input="nit = nit.toUpperCase()" required
-                                                        disabled></v-text-field>
-                                                </v-col>
-
-                                                <v-col cols="12">
-                                                    <v-list-item>
-                                                        <v-list-item-title class="text-center">
-                                                            <h5>Lista de Productos</h5>
-                                                        </v-list-item-title>
-                                                    </v-list-item>
-
-                                                    <v-card-title>
-                                                        <v-text-field v-model="buscarproducto" append-icon="mdi-magnify"
-                                                            label="BUSCAR PRODUCTOS" single-line
-                                                            hide-details></v-text-field>
-                                                    </v-card-title>
-                                                </v-col>
-
-                                                <v-col cols="12">
-                                                    <v-data-table :headers="headersProductos" :items="datosProductos"
-                                                        :search="buscarproductos" :items-per-page="5" class="elevation-1"
-                                                        id="tableId">
-
-                                                        <template #[`item.est`]="{ item }">
-                                                            <v-chip :color="colorEstadoProd(item.est)" dark>
-                                                                {{ item.est }}
-                                                            </v-chip>
-                                                        </template>
-
-                                                        <template #[`item.actions`]="{ item }">
-                                                            <v-icon small class="mr-2" color="#001781"
-                                                                @click="seleccionarProducto(item)">
-                                                                mdi-check-circle
-                                                            </v-icon>
-                                                        </template>
-
-                                                    </v-data-table>
-                                                </v-col>
-
-                                                <v-col cols="12">
-                                                    <v-list-item>
-                                                        <v-list-item-title class="text-center">
-                                                            <h5>Detalle Venta</h5>
-                                                        </v-list-item-title>
-                                                    </v-list-item>
-                                                </v-col>
-
-                                                <v-col cols="12">
-                                                    <v-data-table :headers="headersCarrito" :items="datosCarrito"
-                                                        :items-per-page="12" class="elevation-1" id="tableId">
-
-                                                        <template #[`item.actions`]="{ item }">
-                                                            <v-icon small class="mr-2" color="#001781"
-                                                                @click="seleccionarProducto()">
-                                                                mdi-check-circle
-                                                            </v-icon>
-                                                        </template>
-
-                                                    </v-data-table>
-                                                </v-col>
-
-                                                <v-col cols="12" md="8"> </v-col>
-                                                <v-col cols="12" md="4">
-                                                    <v-toolbar dense shaped color="#001781">
-                                                        <v-toolbar-title style="color: #ffffff;">
-                                                            <h6>
-                                                                OPCIONES
-                                                            </h6>
-                                                        </v-toolbar-title>
-                                                        <v-btn class="mx-2" fab dark x-small color="#EE680B"
-                                                            @click="registrarVenta()" style="float: left"
-                                                            title="REGISTRAR VENTA">
-                                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
-                                                        </v-btn>
-                                                    </v-toolbar>
-                                                </v-col>
-                                            </v-row>
-                                        </v-container>
-                                    </v-form>
-                                </v-card>
-                            </v-tab-item>
-
-                        </v-tabs>
-                    </v-col>
-                </v-row>
-            </v-card-actions>
-
-            <v-list-item> </v-list-item>
-
-            <div class="text-center">
-                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
-                    <strong>{{ mensajeSnackbar }}</strong>
-
-
-                    <template v-slot:action="{ attrs }">
-                        <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                            mdi-close
-                        </v-icon>
-                    </template>
-                </v-snackbar>
-            </div>
-
-            <div class="text-center">
-
-                <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
-                    <strong>{{ mensajeSnackbarError }}</strong>
-
-                    <template v-slot:action="{ attrs }">
-                        <v-icon right v-bind="attrs" @click="snackbarError = false">
-                            mdi-close
-                        </v-icon>
-                    </template>
-                </v-snackbar>
-            </div>
-
-        </v-card>
     </v-card>
 </template>
 <script>
 import axios from "axios";
 import { async } from "regenerator-runtime";
-import jsPDF from 'jspdf';
-
 
 export default {
     data() {
@@ -420,9 +253,10 @@ export default {
             //#region Carrito
             productoSeleccionado: "",
             cantidad: "",
-            idEmpleado: 1,
+            idEmpleado: "",
             razonSocial: "",
-            codigoControl: "aa",
+            codigoControl: "",
+            totalVenta: 0,
             datosCarrito: [],
             headersCarrito: [
                 { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
@@ -435,101 +269,91 @@ export default {
             ],
             //#endregion
 
-            //#region Ventas
-            idVenta: "",
-            datosVentas: [],
-            headersVentas: [
-                { text: "NIT", value: "nit", sortable: false },
-                { text: "COD. CONTR.", value: "codctrl", sortable: false },
-                { text: "RAZ. SOCIAL", value: "razsoc", sortable: false },
-                { text: "TOTAL", value: "tot", sortable: false },
-                { text: "ESTADO", value: "est", sortable: false },
-                { text: "OPCIONES", value: "actions", sortable: false },
-            ],
-
-            datosVentasDetalle: [],
-            headersVentasDetalle: [
-                { text: "NIT", value: "nit", sortable: false },
-                { text: "COD. CONTR.", value: "codctrl", sortable: false },
-                { text: "RAZ. SOCIAL", value: "razsoc", sortable: false },
-                { text: "TOTAL", value: "tot", sortable: false },
-                { text: "ESTADO", value: "est", sortable: false },
-                { text: "OPCIONES", value: "actions", sortable: false },
-            ],
+            //#region Ultima Venta
+            idUltimaVenta: "",
+            datosUltimaVenta: [],
             //#endregion
 
             //#region Modals
             clientesModal: 0,
             cantidadModal: 0,
-            flag: 1,
-            infoVenta: 0,
             //#endregion
 
-            //#region Snackbars
-            snackbarOK: false,
-            mensajeSatisfactorio: "REGISTRO CORRECTO ",
-            snackbarError: false,
-            mensajeError: "REGISTRO FALLIDO ",
-            snackbarWarning: false,
-            mensajeWarning: "EMAIL YA EXISTE ",
-            timeout: 2000,
-            mensajeSnackbar: "",
+            //#region Venta
+            venta: {
+                idProducto: "",
+                cantidad: "",
+                precioUnitario: "",
+                total: "",
+                codigoControl: "ASDASDASDASD",
+                nit: "",
+                razonSocial: "",
+                idCliente: "",
+                idEmpleado: 1,
+            },
+            //#endregion
+
+            //#region Asiento Contable
+            idAsientoContable: "",
+            numeroReferencia: "",
+            descripcionAsiento: "VENTAS",
+            idCuentaContable: "",
+            montoDebito: "",
+            montoCredito: "",
+            //#endregion
+
+            //#region Cuenta Contables
+            idCuentaContable: "",
+            numeroCuenta: "",
+            nombreCuenta: "",
+            descripcionCuenta: "",
+            tipoCuenta: "",
+            saldo: "",
+            tiposCuentas: [
+                'Activo', 'Pasivo', 'Capital', 'Ingreso', 'Gasto'
+            ],
+            datosCuentas: [],
+            headersCuentas: [
+                { text: "NUM. CUENTA", value: "numcnt", sortable: true },
+                { text: "NOM. CUENTA", value: "nom", sortable: true },
+                { text: "DESCRIPCION", value: "des", sortable: true },
+                { text: "TIPO CUENTA", value: "tipoc", sortable: true },
+                { text: "ESTADO", value: "est", sortable: true },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
             //#endregion
         }
     },
 
     created: function () {
         this.listarProductos();
-        this.listarVentas();
+        this.listarCuentas();
     },
     methods: {
         colorEstado(est) {
-            if (est == 'COMPLETADO') return 'green'
-            else return 'red'
-        },
-        colorEstadoProd(est) {
             if (est == 'ACTIVO') return 'green'
             else return 'red'
         },
-        colorEstadoCli(est) {
-            if (est == 'ACTIVO') return 'green'
-            else return 'red'
+        generarNumeroReferencia() {
+            const fechaActual = new Date();
+
+            // Obtiene los componentes de la fecha y hora
+            const año = fechaActual.getFullYear();
+            const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0'); // Añade ceros a la izquierda si es necesario
+            const dia = fechaActual.getDate().toString().padStart(2, '0');
+            const hora = fechaActual.getHours().toString().padStart(2, '0');
+            const minutos = fechaActual.getMinutes().toString().padStart(2, '0');
+            const segundos = fechaActual.getSeconds().toString().padStart(2, '0');
+
+            // Formatea el número de referencia utilizando la información de la fecha y hora
+            const numeroReferencia = `${año}${mes}${dia}${hora}${minutos}${segundos}`;
+
+            // Puedes ajustar el formato del número de referencia según tus necesidades
+            // Por ejemplo, puedes agregar un prefijo o un sufijo según tus requisitos.
+            // Ejemplo: const numeroReferencia = `REF-${año}${mes}${dia}${hora}${minutos}${segundos}`;
+
+            return numeroReferencia;
         },
-
-        generarFactura(item) {
-            // Crea un nuevo documento jsPDF
-            const doc = new jsPDF();
-
-            // Agrega el encabezado al documento
-            doc.text('Factura de Venta', 10, 10);
-
-            // Agrega los datos de la venta
-            doc.text(`ID de Venta: ${item.idven}`, 10, 20);
-            doc.text(`Nit: ${item.nit}`, 10, 30);
-            doc.text(`Código de Control: ${item.codctrl}`, 10, 40);
-            doc.text(`Razón Social: ${item.razsoc}`, 10, 50);
-            doc.text(`Total: ${item.tot}`, 10, 60);
-
-            // Agrega una separación entre los datos de la venta y el detalle
-            doc.text('Detalle de la Venta:', 10, 80);
-
-            this.idVenta = item.idven;
-            this.listarDetalles(this.idVenta)
-
-            // Agrega el detalle de la venta
-            let yPos = 90;
-            for (const detalle of this.datosVentasDetalle) {
-                doc.text(`ID Producto: ${detalle.idprod}`, 10, yPos);
-                doc.text(`Cantidad: ${detalle.cant}`, 10, yPos + 10);
-                doc.text(`Precio Unitario: ${detalle.precuni}`, 10, yPos + 20);
-                doc.text(`Total Producto: ${detalle.total}`, 10, yPos + 30);
-                yPos += 50; // Ajusta el espacio entre elementos
-            }
-
-            // Guarda o muestra el documento
-            doc.save('factura.pdf');
-        },
-
         //#region Listados
         listarCliente() {
             this.listarClientes()
@@ -573,39 +397,61 @@ export default {
                 });
         },
 
-        listarVenta() {
-            this.listarVentas();
+        recuperarUltimasVentas() {
+            this.recuperarUltimaVenta();
         },
-        async listarVentas() {
+        async recuperarUltimaVenta() {
             let me = this;
             await axios
-                .get("/venta/listarventas")
+                .get("/venta/ultimaventa")
                 .then(function (response) {
                     if (response.data.resultado == null) {
-                        me.datosVentas = [];
+                        me.datosUltimaVenta = [];
 
                     } else {
-                        me.datosVentas = response.data.resultado;
+                        //console.log(response.data);
+                        me.datosUltimaVenta = response.data.resultado;
+
                     }
+                    // me.listarAula(me.id_sede); actualizar tabla esta creando ciclos
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         },
 
-        listarDetalle() {
-            this.listarDetalles(this.idVenta);
+        listarCuenta() {
+            this.listarCuentas();
         },
-        async listarDetalles(idVenta) {
+        async listarCuentas() {
             let me = this;
             await axios
-                .get("/venta/listardetalle/" + this.idVenta)
+                .get("/contabilidad/listarcuentas")
                 .then(function (response) {
+                    console.log("Respuesta del servidor:", response.data);
                     if (response.data.resultado == null) {
-                        me.datosVentasDetalle = [];
+                        me.datosCuentas = [];
 
                     } else {
-                        me.datosVentasDetalle = response.data.resultado;
+                        me.datosCuentas = response.data.resultado;
+
+                        // Recorrer las cuentas para calcular montoCredito y montoDebito
+                        me.montoCredito = me.datosCuentas.reduce((total, cuenta) => {
+                            if (cuenta.tipoc === "Ingreso") {
+                                return total + parseFloat(cuenta.saldac || 0);
+                            }
+                            return total;
+                        }, 0);
+
+                        me.montoDebito = me.datosCuentas.reduce((total, cuenta) => {
+                            if (cuenta.tipoc === "Gasto") {
+                                return total + parseFloat(cuenta.saldac || 0);
+                            }
+                            return total;
+                        }, 0);
+
+                        console.log("Monto Crédito:", me.montoCredito);
+                        console.log("Monto Débito:", me.montoDebito);
                     }
                 })
                 .catch(function (error) {
@@ -614,58 +460,53 @@ export default {
         },
         //#endregion
         //#region Registros
-        /*registrarVentas() {
-            this.registrarVenta(this.idProducto, this.cantidad, this.precioUnitario, this.total, this.codigoControl, this.nit, this.razonSocial, this.idCliente, this.idEmpleado);
-        },*/
-        async registrarVenta() {
-            let me = this;
-            if (this.datosCarrito.length > 0 && this.idCliente !== "") {
-                try {
-                    // Creas una lista para almacenar las ventas de cada producto
-                    const ventas = [];
+        calcularTotalVenta() {
+            return this.datosCarrito.reduce((total, producto) => total + producto.total, 0);
+        },
 
-                    // Recorres el carrito y creas un objeto de venta por cada producto
-                    for (const producto of this.datosCarrito) {
-                        const venta = {
-                            idProducto: producto.idprod,
-                            cantidad: producto.cant,
-                            precioUnitario: producto.precuni,
-                            total: producto.total,
-                            codigoControl: this.codigoControl, // Asegúrate de definir este dato en tus datos de componente
-                            nit: this.nit, // Asegúrate de definir este dato en tus datos de componente
-                            razonSocial: this.razonSocial, // Asegúrate de definir este dato en tus datos de componente
-                            idCliente: this.idCliente,
-                            idEmpleado: this.idEmpleado, // Asegúrate de obtener este valor de alguna parte (login, etc.)
-                        };
+        registrarVentas() {
+            this.venta.total = this.calcularTotalVenta(); // Calcula el total antes de registrar la venta
+            this.registrarVenta(this.totalVenta, this.codigoControl, this.nit, this.razonSocial, this.idCliente, this.idEmpleado);
+        },
 
-                        ventas.push(venta);
-                    }
+        async registrarVenta(totalVenta, codigoControl, nit, razonSocial, idCliente, idEmpleado) {
+            try {
+                let me = this;
 
-                    // Haces una solicitud al servidor para registrar todas las ventas
-                    console.log(ventas)
-                    const response = await axios.post("venta/registrarventa", JSON.stringify(ventas))
-                        .then(function (response) {
-                            if (response.data.message === "VENTA REALIZADA CORRECTAMENTE") {
-                                me.mensajeSnackbar = response.data.message;
-                                me.snackbarOK = true;
-                                me.resetVenta();
-                            } else {
-                                console.error("ERROR AL REALIZAR LA VENTA", response.error)
-                                this.snackbarError = true;
-                                this.mensajeSnackbar = response.data.message;
-                            }
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
+                await axios.post("/venta/addventa/" +
+                    this.totalVenta +
+                    "," +
+                    this.venta.codigoControl +
+                    "," +
+                    this.nit +
+                    "," +
+                    this.razonSocial +
+                    "," +
+                    this.idCliente +
+                    "," +
+                    this.venta.idEmpleado
+                )
+                    .then(function (response) {
+                        me.mensajeSnackbar = response.data.message;
+                        me.snackbarOK = true;
 
-                    // Manejas la respuesta como consideres necesario
+                        // Recuperar la última venta
+                        me.recuperarUltimaVenta();
+                        // Registrar productos del carrito
+                        me.registrarVentasCarrito();
+                        //Registrar asiento contable
+                        me.registrarAsientosContables();
+                        //Limpiamos el formulario
+                        me.resetVenta();
+                    })
+                    .catch(function (error) {
+                        me.mensajeSnackbar = error.response.data.message;
+                        me.snackbarError = true;
+                    });
 
-                } catch (error) {
-                    console.error("Error al comunicarse con el servidor:", error);
-                }
-            } else {
-                console.error("Debe seleccionar un cliente y agregar productos al carrito antes de realizar la venta.");
+            } catch (error) {
+                // Manejar errores en caso de que la solicitud falle
+                console.error("Error al registrar la venta:", error);
             }
         },
 
@@ -678,6 +519,145 @@ export default {
             this.datosCarrito = [];
             // Otros campos de reinicio según tus necesidades
         },
+
+        async registrarVentasCarrito() {
+            // Obtener el ID de la última venta
+            this.idUltimaVenta = this.datosUltimaVenta.idven; // Asumiendo que "datosUltimaVenta" contiene el resultado de la última venta
+            // Iterar sobre los productos en el carrito y registrarlos utilizando el ID de la última venta
+            console.log(this.idUltimaVenta)
+
+            this.datosCarrito.forEach(producto => {
+                this.registrarVentaCarrito(producto.idprod, producto.cant, producto.precuni);
+            });
+        },
+
+        async registrarVentaCarrito(idProducto, cantidad, precioUnitario) {
+            try {
+                let me = this;
+
+                await axios.post("/venta/addventacarrito", {
+                    idProducto: idProducto,
+                    cantidad: cantidad,
+                    precioUnitario: precioUnitario
+                })
+                    .then(function (response) {
+                        me.mensajeSnackbar = response.data.message;
+                        me.snackbarOK = true;
+                    })
+                    .catch(function (error) {
+                        me.mensajeSnackbar = error.response.data.message;
+                        me.snackbarError = true;
+                    });
+
+            } catch (error) {
+                console.error("Error al registrar la venta:", error);
+            }
+        },
+
+        registrarAsientosContables() {
+            this.numeroReferencia = this.generarNumeroReferencia();
+            this.idCuentaContable = this.seleccionarCuentaContableVentas();
+
+            // Actualizo el total de la venta
+            const totalVenta = this.datosCarrito.reduce((total, producto) => total + producto.total, 0);
+
+            // Calculo los montos de débito y crédito
+            const { montoDebito, montoCredito } = this.listarCuentas();
+
+            const esIngreso = true; // Aquí debes determinar si es un ingreso o gasto
+
+            // Sumo el total de la venta al monto de crédito
+            const nuevoMontoCredito = montoCredito + totalVenta;
+
+            // Registro el asiento contable con los montos calculados
+            this.registrarAsientoContable(this.numeroReferencia, this.descripcionAsiento, this.idCuentaContable, montoDebito, nuevoMontoCredito);
+
+            // Después de registrar el asiento, aumentar o reducir el saldo según corresponda
+            if (esIngreso) {
+                this.aumentarSaldo();
+            } else {
+                this.reducirSaldo();
+            }
+        },
+
+        async registrarAsientoContable(numeroReferencia, descripcionAsiento, idCuentaContable, montoDebito, montoCredito) {
+            try {
+                let me = this;
+
+                await axios.post("/contabilidad/addasiento/" +
+                    this.numeroReferencia +
+                    "," +
+                    this.descripcionAsiento +
+                    "," +
+                    this.idCuentaContable +
+                    "," +
+                    this.montoDebito +
+                    "," +
+                    this.montoCredito
+                )
+                    .then(function (response) {
+                        me.mensajeSnackbar = response.data.message;
+                        me.snackbarOK = true;
+                    })
+                    .catch(function (error) {
+                        me.mensajeSnackbar = error.response.data.message;
+                        me.snackbarError = true;
+                    });
+
+            } catch (error) {
+                // Manejar errores en caso de que la solicitud falle
+                console.error("Error al registrar la venta:", error);
+            }
+        },
+
+        aumentarSaldos() {
+            this.aumentarSaldo()
+        },
+
+        async aumentarSaldo() {
+            try {
+                let me = this
+                axios.post("/contabilidad/aumentarsaldo/" +
+                    this.idCuentaContable +
+                    "," +
+                    this.totalVenta
+                )
+                    .then(response => {
+                        // Manejar la respuesta si es necesario
+                        console.log(response.data.message);
+                    })
+                    .catch(error => {
+                        console.error("Error al aumentar el saldo:", error);
+                    });
+            } catch (error) {
+
+            }
+        },
+
+        reducirSaldos() {
+            this.reducirSaldo()
+        },
+
+        async reducirSaldo() {
+            try {
+                let me = this
+                axios.post("/contabilidad/reducirsaldo/" +
+                    this.idCuentaContable +
+                    "," +
+                    this.totalVenta
+                )
+                    .then(response => {
+                        // Manejar la respuesta si es necesario
+                        console.log(response.data.message);
+                    })
+                    .catch(error => {
+                        console.error("Error al reducir el saldo:", error);
+                    });
+            } catch (error) {
+
+            }
+        },
+
         //#endregion
         //#region Edicion
         //#endregion
@@ -688,17 +668,6 @@ export default {
         },
         closeClienteModal() {
             this.clientesModal = false;
-        },
-        showInfoVenta(item) {
-            this.infoVenta = true;
-            this.idVenta = item.idven;
-            this.nit = item.nit;
-            this.codigoControl = item.codctrl;
-            this.razonSocial = item.razsoc;
-            this.total = item.tot;
-        },
-        closeInfoVenta() {
-            this.infoVenta = false;
         },
         //#endregion
         //#region Cambios Estado
@@ -715,31 +684,50 @@ export default {
         },
         seleccionarProducto(item) {
             this.productoSeleccionado = item;
-            this.idProducto = item.idprod;
-            this.precioUnitario = item.precuni;
-            this.total = this.cantidad * item.precuni;
+            this.venta.idProducto = item.idprod;
+            this.venta.precioUnitario = item.precuni;
+            this.venta.total = this.cantidad * item.precuni;
             this.cantidadModal = true;
         },
         agregarProductoAlCarrito() {
             if (this.cantidad > 0) {
+                this.venta.total = this.cantidad * this.venta.precioUnitario; // Actualiza el total de la venta
                 const productoEnCarrito = {
-                    idprod: this.idProducto,
+                    idprod: this.venta.idProducto,
                     nomprod: this.productoSeleccionado.nomprod,
                     codprod: this.productoSeleccionado.codprod,
                     cant: this.cantidad,
-                    precuni: this.precioUnitario,
-                    total: this.cantidad * this.precioUnitario,
+                    precuni: this.venta.precioUnitario,
+                    total: this.venta.total,
                     est: this.productoSeleccionado.est,
                     // Agrega otros campos necesarios aquí
                 };
                 this.datosCarrito.push(productoEnCarrito);
-                this.cantidadModal = false;
-                this.productoSeleccionado = null; // Reinicia el producto seleccionado
-                console.log(this.datosCarrito)
+                // Actualiza el totalVenta sumando el total del nuevo producto
+                this.totalVenta += this.venta.total;
 
+                console.log(this.datosCarrito)
+                console.log("Total de la venta:", this.totalVenta);
+
+                this.cantidadModal = false;
+                this.cantidad = 0; // Reinicia la cantidad
+                this.productoSeleccionado = null; // Reinicia el producto seleccionado
             }
         },
 
+        seleccionarCuentaContableVentas() {
+            // El tipo de cuenta para ventas es "Ingresos"
+            const cuentaVentas = this.datosCuentas.find(cuenta => cuenta.tipoc === "Ingreso");
+
+            if (cuentaVentas) {
+                // Devolver el idCuentaContable si se encuentra una cuenta de ventas
+                return cuentaVentas.idcnt;
+            } else {
+                console.error("No se encontró una cuenta de ventas.");
+                // Puedes devolver un valor predeterminado o lanzar un error según tus necesidades
+                return null; // O devuelve un valor predeterminado
+            }
+        },
         //#endregion
     },
 }

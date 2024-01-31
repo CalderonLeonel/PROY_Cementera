@@ -5,7 +5,7 @@
                 <h5>TRANSPORTE</h5>
             </v-alert>
         </div>
-        
+
         <div>
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-container>
@@ -74,6 +74,20 @@
                             </v-tab>
                             <v-tab>
                                 <v-icon left>
+                                    mdi-car
+                                </v-icon>
+                                REG
+                                CARRO
+                            </v-tab>
+                            <v-tab>
+                                <v-icon left>
+                                    mdi-camera
+                                </v-icon>
+                                FOTO
+                                CHOFER
+                            </v-tab>
+                            <v-tab>
+                                <v-icon left>
                                     mdi-truck
                                 </v-icon>
                                 ASIGNAR
@@ -115,6 +129,214 @@
                                         </v-col>
 
                                         <v-col cols="12" md="2"></v-col>
+                                        <v-col cols="12" md="4">
+                                            <v-list-item>
+                                                <v-list-item-title class="text-left">
+                                                    <h5>DATOS PERSONALES</h5>
+                                                </v-list-item-title>
+                                            </v-list-item>
+                                        </v-col>
+                                        <v-col cols="12" md="6"></v-col>
+
+
+                                        <v-col cols="12" md="2"></v-col>
+                                        <v-col cols="12" md="3">
+                                            <v-text-field v-model="nombres" :counter="30" :rules="nombreChoferRules"
+                                                @input="nombres = nombres.toUpperCase()" label="NOMBRE(S)"
+                                                required></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="3">
+                                            <v-text-field v-model="paterno" :counter="40" :rules="apellidoPatChoferRules"
+                                                @input="paterno = paterno.toUpperCase()" label="APELLIDO PATERNO" required>
+                                            </v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="3">
+                                            <v-text-field v-model="materno" :counter="40" :rules="apellidoMatChoferRules"
+                                                @input="materno = materno.toUpperCase()" label="APELLIDO MATERNO" required>
+                                            </v-text-field>
+                                        </v-col>
+
+                                        <v-col cols="12" md="2"></v-col>
+                                        <v-col cols="12" md="3">
+                                            <v-text-field :rules="ciChoferRules" v-model="ciChofer" :counter="10"
+                                                @input="ciChofer = ciChofer.toUpperCase()" :value="1"
+                                                label="NÚMERO DOCUMENTO" required>
+                                            </v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="3">
+                                            <v-text-field v-model="direccionChofer" :rules="direccionChoferRules"
+                                                :counter="70" @input="direccionChofer = direccionChofer.toUpperCase()"
+                                                label="DIRECCIÓN" required>
+                                            </v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="3">
+                                            <v-text-field v-model="nacionalidad" :rules="nacionalidadChoferRules"
+                                                :counter="10" @input="nacionalidad = nacionalidad.toUpperCase()"
+                                                label="NACIONALIDAD" required>
+                                            </v-text-field>
+                                        </v-col>
+
+                                        <v-col cols="12" md="2"></v-col>
+                                        <v-col cols="12" md="3">
+                                            <v-text-field v-model="telefono" :rules="telefonoChoferRules" type="number"
+                                                :counter="10" @input="telefono = telefono.toUpperCase()" label="TELEFONO">
+                                            </v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="3">
+                                            <v-text-field v-model="fechaNacimiento" :rules="fechaChoferRules" type="date"
+                                                :value="2" label="FECHA NACIMIENTO">
+                                            </v-text-field>
+                                        </v-col>
+                                        <v-col class="d-flex" cols="12" md="3">
+                                            <v-select v-model="genero" :items="datosGenero" :rules="generoChoferRules"
+                                                item-text="sex" item-value="sex" label="GÉNERO" filled dense required solo>
+
+                                            </v-select>
+                                        </v-col>
+
+                                        <v-col cols="12" md="2"></v-col>
+                                        <v-col cols="12" md="1">
+                                            <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="showPais()"
+                                                style="float: right" title="BUSCAR PAIS">
+                                                <v-icon dark> mdi-gesture-double-tap </v-icon>
+                                            </v-btn>
+
+                                        </v-col>
+                                        <v-col cols="12" md="2">
+                                            <v-text-field v-model="pais" :rules="paisRules" label="PAIS" disabled required>
+                                            </v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="1">
+                                            <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="showCiudad()"
+                                                style="float: right" title="BUSCAR CIUDAD">
+                                                <v-icon dark> mdi-gesture-double-tap </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="12" md="2">
+                                            <v-text-field v-model="ciudad" :rules="ciudadRules" label="CIUDAD" disabled
+                                                required>
+                                            </v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="4"></v-col>
+
+                                        <v-col cols="12" md="8"> </v-col>
+                                        <v-col cols="12" md="4">
+                                            <v-toolbar dense shaped color="#002245">
+                                                <v-toolbar-title style="color:#ffffff">
+                                                    <h6>OPCIONES</h6>
+                                                </v-toolbar-title>
+                                                <v-btn v-if="act == 1" class="mx-2" fab dark x-small color="#EE680B"
+                                                    @click="actualizarChofer()" style="float: left"
+                                                    title="ACTUALIZAR CHOFER">
+                                                    <v-icon dark> mdi-account-edit-outline </v-icon>
+                                                </v-btn>
+                                                <v-btn v-if="act == 0" class="mx-2" fab dark x-small color="#EE680B"
+                                                    @click="registrarChofer()" style="float: left" title="REGISTRAR CHOFER">
+                                                    <v-icon dark> mdi-account-check </v-icon>
+                                                </v-btn>
+                                                <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="limpiar()"
+                                                    style="float: left" title="LIMPIAR FORMULARIO">
+                                                    <v-icon dark> mdi-eraser </v-icon>
+                                                </v-btn>
+                                            </v-toolbar>
+                                        </v-col>
+                                    </v-row>
+                                </v-card>
+                            </v-tab-item>
+
+                            <v-tab-item v-if="flag == 1">
+                                <v-card elevation="5" outlined shaped>
+                                    <v-row>
+
+                                        <v-col cols="12"></v-col>
+
+                                        <v-col cols="12" md="2">
+                                        </v-col>
+                                        <v-col cols="12" md="4">
+                                            <v-list-item>
+                                                <v-list-item-title class="text-left">
+                                                    <h5>REGISTRAR CARRO</h5>
+                                                </v-list-item-title>
+                                            </v-list-item>
+                                        </v-col>
+                                        <v-col cols="12" md="6"></v-col>
+
+                                        <v-col cols="12" md="2">
+                                            <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="showChoferes()"
+                                                style="float: right" title="BUSCAR CHOFER">
+                                                <v-icon dark> mdi-gesture-double-tap </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="12" md="3">
+                                            <v-text-field v-model="nombres" :counter="30" :rules="nombreChoferRules"
+                                                @input="nombres = nombres.toUpperCase()" label="NOMBRE(S)" required
+                                                disabled></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="3">
+                                            <v-text-field v-model="paterno" :counter="40" :rules="apellidoPatChoferRules"
+                                                @input="paterno = paterno.toUpperCase()" label="APELLIDO PATERNO" required
+                                                disabled>
+                                            </v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="3">
+                                            <v-text-field v-model="materno" :counter="40" :rules="apellidoMatChoferRules"
+                                                @input="materno = materno.toUpperCase()" label="APELLIDO MATERNO" required
+                                                disabled>
+                                            </v-text-field>
+                                        </v-col>
+
+                                        <v-col cols="12" md="2"></v-col>
+                                        <v-col cols="12" md="3">
+                                            <v-text-field v-model="placa" :rules="placaRules"
+                                                @input="placa = placa.toUpperCase()" type="text" label="PLACA">
+                                            </v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="3">
+                                            <v-text-field v-model="modelo" :rules="modeloChoferRules" type="text"
+                                                @input="modelo = modelo.toUpperCase()" label="MODELO">
+                                            </v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" md="3">
+                                            <v-text-field v-model="color" :rules="colorAutoRules" type="text"
+                                                @input="color = color.toUpperCase()" label="COLOR">
+                                            </v-text-field>
+                                        </v-col>
+
+                                        <v-col cols="12" md="8"> </v-col>
+                                        <v-col cols="12" md="4">
+                                            <v-toolbar dense shaped color="#002245">
+                                                <v-toolbar-title style="color:#ffffff">
+                                                    <h6>OPCIONES</h6>
+                                                </v-toolbar-title>
+                                                <v-btn v-if="act == 1" class="mx-2" fab dark x-small color="#EE680B"
+                                                    @click="actualizarChofer()" style="float: left"
+                                                    title="ACTUALIZAR CHOFER">
+                                                    <v-icon dark> mdi-account-edit-outline </v-icon>
+                                                </v-btn>
+                                                <v-btn v-if="act == 0" class="mx-2" fab dark x-small color="#EE680B"
+                                                    @click="registrarChofer()" style="float: left" title="REGISTRAR CHOFER">
+                                                    <v-icon dark> mdi-account-check </v-icon>
+                                                </v-btn>
+                                                <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="limpiar()"
+                                                    style="float: left" title="LIMPIAR FORMULARIO">
+                                                    <v-icon dark> mdi-eraser </v-icon>
+                                                </v-btn>
+                                            </v-toolbar>
+                                        </v-col>
+
+
+                                    </v-row>
+                                </v-card>
+                            </v-tab-item>
+
+                            <v-tab-item v-if="flag == 1">
+
+                                <v-card elevation="5" outlined shaped>
+                                    <v-row>
+
+                                        <v-col cols="12"></v-col>
+
+                                        <v-col cols="12" md="2"></v-col>
                                         <v-col cols="12" md="2">
                                             <v-list-item>
                                                 <v-list-item-title class="text-left">
@@ -142,7 +364,6 @@
                                         </v-col>
                                         <v-col cols="12" md="4"></v-col>
 
-
                                         <v-col cols="12" md="8"></v-col>
                                         <v-col cols="12" md="4">
                                             <v-toolbar dense shaped color="#002245">
@@ -167,158 +388,9 @@
                                             </v-toolbar>
                                         </v-col>
 
-                                        <v-col cols="12" md="2"></v-col>
-                                        <v-col cols="12" md="4">
-                                            <v-list-item>
-                                                <v-list-item-title class="text-left">
-                                                    <h5>DATOS PERSONALES</h5>
-                                                </v-list-item-title>
-                                            </v-list-item>
-                                        </v-col>
-                                        <v-col cols="12" md="6"></v-col>
-
-
-                                        <v-col cols="12" md="2"></v-col>
-                                        <v-col cols="12" md="3">
-                                            <v-text-field v-model="nombres" :counter="30" :rules="nombreChoferRules"
-                                                @input="nombres = nombres.toUpperCase()" label="NOMBRE(S)"
-                                                required></v-text-field>
-                                        </v-col>
-
-
-                                        <v-col cols="12" md="3">
-                                            <v-text-field v-model="paterno" :counter="40" :rules="apellidoPatChoferRules"
-                                                @input="paterno = paterno.toUpperCase()" label="APELLIDO PATERNO" required>
-                                            </v-text-field>
-                                        </v-col>
-
-
-                                        <v-col cols="12" md="3">
-                                            <v-text-field v-model="materno" :counter="40" :rules="apellidoMatChoferRules"
-                                                @input="materno = materno.toUpperCase()" label="APELLIDO MATERNO" required>
-                                            </v-text-field>
-                                        </v-col>
-
-                                        <v-col cols="12" md="2"></v-col>
-                                        <v-col cols="12" md="3">
-                                            <v-text-field :rules="numeroDocumentoChoferRules" v-model="num_documento"
-                                                :counter="10" @input="areaEstudios = areaEstudios.toUpperCase()" :value="1"
-                                                label="NÚMERO DOCUMENTO" required>
-                                            </v-text-field>
-                                        </v-col>
-
-                                        <v-col cols="12" md="3">
-                                            <v-text-field v-model="direccionChofer" :rules="direccionChoferRules"
-                                                :counter="70" @input="direccionChofer = direccionChofer.toUpperCase()"
-                                                label="DIRECCIÓN" required>
-                                            </v-text-field>
-                                        </v-col>
-
-                                        <v-col cols="12" md="3">
-                                            <v-text-field v-model="nacionalidad" :rules="nacionalidadChoferRules"
-                                                :counter="10" @input="nacionalidad = nacionalidad.toUpperCase()"
-                                                label="NACIONALIDAD" required>
-                                            </v-text-field>
-                                        </v-col>
-
-                                        <v-col cols="12" md="2"></v-col>
-                                        <v-col cols="12" md="3">
-                                            <v-text-field v-model="telefono" :rules="telefonoChoferRules" type="number"
-                                                :counter="10" @input="telefono = telefono.toUpperCase()" label="TELEFONO">
-                                            </v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" md="3">
-                                            <v-text-field v-model="fechaNaci" :rules="fechaChoferRules" type="date"
-                                                :value="2" label="FECHA NACIMIENTO">
-                                            </v-text-field>
-                                        </v-col>
-
-                                        <v-col class="d-flex" cols="12" md="3">
-                                            <v-select v-model="selectGenero" :items="datosGenero" :rules="generoChoferRules"
-                                                item-text="sex" item-value="sex" label="GÉNERO" filled dense required solo>
-
-                                            </v-select>
-                                        </v-col>
-                                        <v-col cols="12" md="1"></v-col>
-
-                                        <v-col cols="12" md="2"></v-col>
-                                        <v-col cols="12" md="1">
-                                            <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="showPais()"
-                                                style="float: right" title="BUSCAR PAIS">
-                                                <v-icon dark> mdi-gesture-double-tap </v-icon>
-                                            </v-btn>
-
-                                        </v-col>
-                                        <v-col cols="12" md="2">
-                                            <v-text-field v-model="selectPais" :rules="paisRules" label="PAIS" disabled
-                                                required>
-                                            </v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" md="1">
-                                            <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="showCiudad()"
-                                                style="float: right" title="BUSCAR CIUDAD">
-                                                <v-icon dark> mdi-gesture-double-tap </v-icon>
-                                            </v-btn>
-                                        </v-col>
-                                        <v-col cols="12" md="2">
-                                            <v-text-field v-model="selectCiudad" :rules="ciudadRules" label="CIUDAD"
-                                                disabled required>
-                                            </v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" md="3">
-                                            <v-text-field type=number v-model="nit" :rules="nitRules" label="NIT"
-                                                :counter="20" required></v-text-field>
-                                        </v-col>
-
-
-                                        <v-col cols="12" md="2"></v-col>
-                                        <v-col cols="12" md="4">
-                                            <v-list-item>
-                                                <v-list-item-title class="text-left">
-                                                    <h5>DATOS DEL CARRO</h5>
-                                                </v-list-item-title>
-                                            </v-list-item>
-                                        </v-col>
-                                        <v-col cols="12" md="6"></v-col>
-
-                                        <v-col cols="12" md="2"></v-col>
-                                        <v-col cols="12" md="3">
-                                            <v-text-field v-model="placa" :rules="placaRules"
-                                                @input="placa = placa.toUpperCase()" :value="2" type="text" label="PLACA">
-                                            </v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" md="3">
-                                            <v-text-field v-model="modelo" :rules="modeloChoferRules" type="text"
-                                                @input="modelo = modelo.toUpperCase()" :value="2" label="MODELO">
-                                            </v-text-field>
-                                        </v-col>
-
-
-
-                                        <v-col cols="12" md="8"> </v-col>
-                                        <v-col cols="12" md="4">
-                                            <v-toolbar dense shaped color="#002245">
-                                                <v-toolbar-title style="color:#ffffff">
-                                                    <h6>OPCIONES</h6>
-                                                </v-toolbar-title>
-                                                <v-btn v-if="act == 1" class="mx-2" fab dark x-small color="#EE680B"
-                                                    @click="actualizarChofer()" style="float: left"
-                                                    title="ACTUALIZAR CHOFER">
-                                                    <v-icon dark> mdi-account-edit-outline </v-icon>
-                                                </v-btn>
-                                                <v-btn v-if="act == 0" class="mx-2" fab dark x-small color="#EE680B"
-                                                    @click="actualizarChofer()" style="float: left"
-                                                    title="REGISTRAR CHOFER">
-                                                    <v-icon dark> mdi-account-check </v-icon>
-                                                </v-btn>
-                                                <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="limpiar()"
-                                                    style="float: left" title="LIMPIAR FORMULARIO">
-                                                    <v-icon dark> mdi-eraser </v-icon>
-                                                </v-btn>
-                                            </v-toolbar>
-                                        </v-col>
                                     </v-row>
                                 </v-card>
+
                             </v-tab-item>
 
                             <v-tab-item v-if="flag == 1">
@@ -558,6 +630,31 @@ import axios from "axios"
 export default {
     data() {
         return {
+
+            //#region Chofer
+            idChofer: "",
+            nombres: "",
+            paterno: "",
+            materno: "",
+            ciChofer: "",
+            direccionChofer: "",
+            nacionalidad: "",
+            telefono: "",
+            fechaNacimiento: "",
+            genero: "",
+            datosGenero: [
+                'MASCULINO', 'FEMENINO'
+            ],
+            pais: "",
+            ciudad: "",
+            //#endregion
+
+            //#region Carro
+            placa: "",
+            modelo: "",
+            color: "",
+            //#endregion
+
             flag: 1,
             //AperturaCamara
             isCameraOpen: false,
@@ -677,6 +774,175 @@ export default {
             const context3 = this.$refs.canvas3.getContext('2d');
             context3.drawImage(this.$refs.canvas, 0, 0, 313, 230, 0, 0, 313, 230);
         },
+
+        actualizarChoferImg() {
+            this.urlFoto,
+                this.actualizarChoImg()
+        },
+        async actualizarChoImg() {
+            let me = this;
+
+            //let me=this;
+            await axios
+                .post(
+                    "/transporte/actDocenteimg/" +
+                    this.unicodigo
+                )
+                .then(function (response) {
+                    console.log(response.data)
+                    me.snackbarOK = true;
+                    me.mensajeSnackbar = response.data.message;
+                    me.listarDatosDocente(me.unicodigo);
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    me.mensajeSnackbar = error.response.message;
+                    console.log(error.response.message);
+                });
+        },
+
+        actualizarFoto() {
+            let me = this;
+            axios
+                .post('/docente/updFotoUrl/' +
+                    this.unicodigo
+                ).
+                then(function (response) {
+                    me.urlFotoData = response.data.resultado;
+                    me.urlFoto = me.urlFotoData.rows[0];
+
+                })
+        },
+
+        //#region Registrar
+        registrarChofer() {
+            this.registroChofer(this.nombres, this.paterno, this.materno, this.ciChofer, this.direccionChofer, this.nacionalidad, this.telefono, this.fechaNacimiento, this.genero, this.pais, this.ciudad)
+        },
+        async registroChofer(
+
+            nombres,
+            paterno,
+            materno,
+            ciChofer,
+            direccionChofer,
+            nacionalidad,
+            telefono,
+            fechaNacimiento,
+            genero,
+            pais,
+            ciudad
+        ) {
+            let me = this
+            await axios
+                .post(
+                    "/transporte/addchofer/" +
+                    this.nombres +
+                    "," +
+                    this.paterno +
+                    "," +
+                    this.materno +
+                    "," +
+                    this.ciChofer +
+                    "," +
+                    this.direccionChofer +
+                    "," +
+                    this.nacionalidad +
+                    "," +
+                    this.telefono +
+                    "," +
+                    this.fechaNacimiento +
+                    "," +
+                    this.genero +
+                    "," +
+                    this.pais +
+                    "," +
+                    this.ciudad
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarCuentas();
+                    me.saldoModal = false;
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                });
+        },
+
+        registrarCarro() {
+            this.registroCarro(this.placa, this.modelo, this.color, this.idChofer)
+        },
+        async registroCarro(
+            placa,
+            modelo,
+            color,
+            idChofer
+        ) {
+            let me = this
+
+            await axios
+                .post(
+                    "/transporte/addcarro/" +
+                    this.placa +
+                    "," +
+                    this.modelo +
+                    "," +
+                    this.color +
+                    "," +
+                    this.idChofer
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarCuentas();
+                    me.saldoModal = false;
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                });
+        },
+        //#endregion
+
+        //#region Actualizar
+        //#endregion
+
+        //#region Listados
+        //#endregion
+
+        //#region Cambiar Estados
+        //#endregion
+
+        //#region Modals
+        showPais() {
+
+        },
+
+        showCiudad() {
+
+        },
+
+        showChoferes() {
+
+        },
+        //#endregion
+
+        //#region Seleccionar Datos
+        seleccionarPais() {
+
+        },
+
+        seleccionarCiudad() {
+
+        },
+
+        seleccionarChofer() {
+
+        },
+        //#endregion
     },
 }
 </script>
