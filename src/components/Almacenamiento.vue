@@ -49,7 +49,7 @@
                             </v-list-item>
 
                             <v-card-title>
-                               <v-text-field v-model="searchAlmacenamiento" append-icon="mdi-magnify" label="Buscar Almacen"
+                               <v-text-field v-model="searchAlmacenamiento" append-icon="mdi-magnify" label="BUSCAR ALMACEN"
                                     single-line hide-details></v-text-field>
                             </v-card-title>
 
