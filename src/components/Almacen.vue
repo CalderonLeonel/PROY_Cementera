@@ -44,7 +44,7 @@
                             </v-list-item>
 
                             <v-card-title>
-                               <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR Almacen"
+                               <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACEN"
                                     single-line hide-details></v-text-field>
                             </v-card-title>
 
