@@ -44,7 +44,7 @@
                             </v-list-item>
 
                             <v-card-title>
-                               <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="Buscar Almacen"
+                               <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR Almacen"
                                     single-line hide-details></v-text-field>
                             </v-card-title>
 
@@ -96,7 +96,7 @@
                             </v-list-item>
 
                             <v-card-title>
-                               <v-text-field v-model="searchSeccion" append-icon="mdi-magnify" label="Buscar Seccion"
+                               <v-text-field v-model="searchSeccion" append-icon="mdi-magnify" label="BUSCAR SECCION"
                                     single-line hide-details></v-text-field>
                             </v-card-title>
 
@@ -142,7 +142,7 @@
                             </v-list-item>
 
                             <v-card-title>
-                               <v-text-field v-model="searchStand" append-icon="mdi-magnify" label="Buscar Stand"
+                               <v-text-field v-model="searchStand" append-icon="mdi-magnify" label="BUSCAR STAND"
                                     single-line hide-details></v-text-field>
                             </v-card-title>
 
@@ -182,7 +182,7 @@
                             <h3>VISUALIZACIÓN DE ALMACENAMIENTO</h3>
                         </v-col>
                         <v-col cols="12" md="12">
-                               <v-text-field v-model="searchDetalleAlmacenamiento" append-icon="mdi-magnify" label="Buscar Almacen"
+                               <v-text-field v-model="searchDetalleAlmacenamiento" append-icon="mdi-magnify" label="BUSCAR ALMACEN"
                                     single-line hide-details></v-text-field>
                         </v-col>
                         <v-col cols="12" md="12">
@@ -514,7 +514,7 @@
                                 <v-col cols="3"></v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anularSeccion()" style="float: right" title="Anular">
+                                        @click="anularSeccion()" style="float: right" title="ANULAR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         ANULAR
                                     </v-btn>
@@ -597,7 +597,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="red" dark x-big  @click="closeDetalleAlmacen()">
-                        <v-icon dark> mdi-close-circle-outline </v-icon> Salir
+                        <v-icon dark> mdi-close-circle-outline </v-icon> SALIR
                     </v-btn>
                     <v-spacer></v-spacer>
                 </v-card-actions>
@@ -633,7 +633,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="red" dark x-big  @click="closeDetalleSeccion()">
-                        <v-icon dark> mdi-arrow-left-bold-circle-outline </v-icon> Atras
+                        <v-icon dark> mdi-arrow-left-bold-circle-outline </v-icon> ATRAS
                     </v-btn>
                     <v-spacer></v-spacer>
                 </v-card-actions>
@@ -665,7 +665,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="red" dark x-big  @click="closeDetalleStand()">
-                        <v-icon dark> mdi-arrow-left-bold-circle-outline </v-icon> Atras
+                        <v-icon dark> mdi-arrow-left-bold-circle-outline </v-icon> ATRAS
                     </v-btn>
                     <v-spacer></v-spacer>
                 </v-card-actions>
