@@ -114,7 +114,7 @@
         <v-dialog v-model="agregarDocumento" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>Agregar Documento</span>
+                    <span>AÑADIR DOCUMENTO</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" lazy-validation>
@@ -123,15 +123,15 @@
                                 <v-col cols="12" md="7">
                                     <v-file-input v-model="documentoArchivo"
                                         accept=".jpg, .jpeg, .webp, .png, .gif, .bmp, .docx, .xlsx, .pptx, .pdf, .csv, .xml"
-                                        label="Archivo"></v-file-input>
+                                        label="ARCHIVO"></v-file-input>
 
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-text-field v-model="codigoArchivo" type="text" label="Codigo" :counter="25"
+                                    <v-text-field v-model="codigoArchivo" type="text" label="CODIGO" :counter="25"
                                         @input="codigoArchivo = codigoArchivo.toUpperCase()" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="descripcionArchivo" type="text" label="Descripción"
+                                    <v-text-field v-model="descripcionArchivo" type="text" label="DESCRIPCION"
                                         :counter="150" @input="descripcionArchivo = descripcionArchivo.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
