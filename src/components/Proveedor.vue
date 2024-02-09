@@ -44,7 +44,7 @@
                             </v-list-item>
 
                             <v-card-title>
-                               <v-text-field v-model="searchProveedor" append-icon="mdi-magnify" label="Buscar Proveedor"
+                               <v-text-field v-model="searchProveedor" append-icon="mdi-magnify" label="BUSCAR PROVEEDOR"
                                     single-line hide-details></v-text-field>
                             </v-card-title>
 
@@ -92,7 +92,7 @@
         <v-dialog v-model="agregarProveedorModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>Agregar Proveedor</span>
+                    <span>AGREGAR PROVEEDOR</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
