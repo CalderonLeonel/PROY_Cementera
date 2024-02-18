@@ -49,7 +49,7 @@
                             </v-list-item>
 
                             <v-card-title>
-                               <v-text-field v-model="searchAlmacenamiento" append-icon="mdi-magnify" label="BUSCAR ALMACEN"
+                               <v-text-field v-model="searchAlmacenamiento" append-icon="mdi-magnify" label="BUSCAR ITEM ALMACENADO"
                                     single-line hide-details></v-text-field>
                             </v-card-title>
 
@@ -88,7 +88,7 @@
             <v-dialog v-model="modalAlmacenamiento" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>AGREGAR ALMACENAMIENTO</span>
+                    <span>REGISTRAR ALMACENAMIENTO</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -173,7 +173,7 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchStand" append-icon="mdi-magnify" label="BUSCAR SECCIÓN"
+                                    <v-text-field v-model="searchStand" append-icon="mdi-magnify" label="BUSCAR STANDS ACTIVOS"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -211,7 +211,7 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR SECCIÓN"
+                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ITEMS ACTIVOS"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
