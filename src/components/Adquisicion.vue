@@ -482,7 +482,7 @@
                                 <v-col cols="3"></v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anularCotizacionAdquisicion()" style="float: right" title="ANULAR ALMACEN">
+                                        @click="anularCotizacionAdquisicion()" style="float: right" title="ANULAR COTIZACION DE ADQUISICION">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         ANULAR
                                     </v-btn>
@@ -514,7 +514,7 @@
                                 <v-col cols="3"></v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anularCotizacionItem()" style="float: right" title="ANULAR ALMACEN">
+                                        @click="anularCotizacionItem()" style="float: right" title="QUITAR ITEM">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         ANULAR
                                     </v-btn>
@@ -554,7 +554,7 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="red" dark x-big  @click="closeDetalleCotizacion()">
-                    <v-icon dark> mdi-close-circle-outline </v-icon> Salir
+                    <v-icon dark> mdi-close-circle-outline </v-icon> SALIR
                 </v-btn>
                 <v-spacer></v-spacer>
             </v-card-actions>
