@@ -69,11 +69,11 @@
                                         mdi-pencil
                                     </v-icon>
                                     <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
-                                        title="ACTIVAR Almacen">
+                                        title="ACTIVAR ALMACEN">
                                         mdi-check-circle-outline
                                     </v-icon>
                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionAlmacen(item)"
-                                        title="DESACTIVAR Almacen">
+                                        title="DESACTIVAR ALMACEN">
                                         mdi-close-circle
                                     </v-icon>             
                                 </template>
