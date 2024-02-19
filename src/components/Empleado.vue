@@ -559,7 +559,7 @@ export default {
                 });
         },
         registrarEmpleado() {
-            this.snackbarError = true;
+            this.registrarEmpleados();
         },
         async registrarEmpleados() {
             let me = this;

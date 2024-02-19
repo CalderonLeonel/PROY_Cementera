@@ -700,8 +700,6 @@ export default {
                     "," +
                     this.tipo +
                     "," +
-                    auxAccesos +
-                    "," +
                     this.email +
                     "," +
                     this.nombreEmpleadoLabel, accesosArray

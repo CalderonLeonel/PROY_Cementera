@@ -916,7 +916,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarVacaciones(me.idEmpleado);
                     me.limpiarVacacion();
-                    me.observacionModal = false;
+                    me.closeAddVacacion();
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "REGISTRO DE VACACIÓN FALLIDO",
