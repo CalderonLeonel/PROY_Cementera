@@ -112,6 +112,11 @@ const routes = [
     component: require("../components/Usuario.vue").default,
   },
   {
+    path: "/alerta",
+    name: "Alerta",
+    component: require("../components/Alerta.vue").default,
+  },
+  {
     path: "proveedor",
     name: "Proveedor",
     component: () => import("@/components/Proveedor.vue"),

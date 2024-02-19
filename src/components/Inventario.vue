@@ -747,9 +747,15 @@
          
 
          registrarInv() {
-            this.registrarInventario(this.idItem, this.movimiento,this.cantidad,this.metodovaluacion, this.estado);
+            if(this.movimiento == 'SALIDA'){
+                this.registrarInventarioSalida(this.idItem, this.movimiento,this.cantidad,this.metodovaluacion, this.estado);
+            }
+            else{
+                this.registrarInventarioEntrada(this.idItem, this.movimiento,this.cantidad,this.metodovaluacion, this.estado);
+
+            }
         },
-        async registrarInventario(
+        async registrarInventarioEntrada(
             idItem,
             movimiento,
             cantidad,
@@ -759,7 +765,44 @@
             let me = this;
             await axios
                 .post(
-                    "/inventario/agregarinventario/" +
+                    "/inventario/agregarinventarioentrada/" +
+                    this.idItem +
+                    "," +
+                    this.movimiento +
+                    "," +
+                    this.cantidad +
+                    "," +
+                    this.metodoValuacion +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.closeModalAgregarTransaccion();
+                    me.listarInventarios();
+                    me.limpiar();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+                
+
+        },
+
+        async registrarInventarioSalida(
+            idItem,
+            movimiento,
+            cantidad,
+            metodovaluacion,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/agregarinventariosalida/" +
                     this.idItem +
                     "," +
                     this.movimiento +
