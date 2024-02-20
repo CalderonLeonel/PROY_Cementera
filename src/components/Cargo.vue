@@ -24,7 +24,8 @@
                             </v-text-field>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-text-field v-model="descripcion" :counter="200" :rules="descripcionRules" label="Descripcion"
+                            <v-text-field v-model="descripcion" :counter="200" :rules="descripcionRules" 
+                            @input="descripcion = descripcion.toUpperCase()" label="Descripcion" 
                                 ></v-text-field>
                         </v-col>
                         <v-col cols="12" md="12">
@@ -192,6 +193,7 @@ export default {
         valid: true,
 
         searchCargo: "",
+        datosCargo: [],
 
         snackbarOK: false,
         mensajeSnackbar: "",
@@ -219,17 +221,14 @@ export default {
                 (v && v.length <= 8) ||
                 "SALARIO DEBE TENER 8 CARACTERES COMO MAXIMO",
         ],
-
-        //checkbox: false,
-        datosCargo: [],
-
+        
         headersCargo: [
             { text: "CARGO", value: "carg", sortable: false },
             { text: "DESCRIPCION", value: "descrip", sortable: false },
             { text: "SALARIO", value: "salar", sortable: false },
             { text: "ESTADO", value: "act", sortable: false },
-            { text: "FECHA CREACION", value: "credte", sortable: false },
-            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
+            //{ text: "FECHA CREACION", value: "credte", sortable: false },
+            //{ text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
             { text: "OPTIONS", value: "actions", sortable: false },
         ],
     }),
@@ -337,7 +336,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarCargos(me.idCargo);
                     me.limpiar();
-
+                    me.closeCargo();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -396,6 +395,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarCargos(me.idCargo);
                     me.limpiar();
+                    me.closeCargo();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;

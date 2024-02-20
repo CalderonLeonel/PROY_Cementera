@@ -110,6 +110,13 @@
 
                                 <v-data-table :headers="headersArea" :items="datosArea" :search="searchArea"
                                     :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.credte`]="{ item }">
+                                        <td>{{ new Date(item.credte).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
+                                    </template>
+                                    <template #[`item.upddte`]="{ item }">
+                                        <td v-if="item.upddte == null">-</td>
+                                        <td v-if="item.upddte != null">{{ new Date(item.upddte).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
+                                    </template>
                                     <template #[`item.act`]="{ item }">
                                         <v-chip :color="getColor(item.act)" dark>
                                             {{ item.act }}
@@ -202,9 +209,9 @@ export default {
 
         headersArea: [
             { text: "AREA", value: "nom", sortable: false },
-            { text: "ESTADO", value: "act", sortable: false },
             { text: "FECHA CREACION", value: "credte", sortable: false },
             { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
+            { text: "ESTADO", value: "act", sortable: false },
             { text: "OPTIONS", value: "actions", sortable: false },
         ],
     }),
@@ -300,7 +307,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarAreas(me.idArea);
                     me.limpiar();
-
+                    me.closeArea();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -349,6 +356,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarAreas(me.idArea);
                     me.limpiar();
+                    me.closeArea();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
