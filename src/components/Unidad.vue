@@ -309,7 +309,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarUnidades(me.idUnidad);
                     me.limpiar();
-
+                    me.closeUnidad();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -358,6 +358,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarUnidades(me.idUnidad);
                     me.limpiar();
+                    me.closeUnidad();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;

@@ -155,7 +155,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeAddTurno()"
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeTurno()"
                                         style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
@@ -257,7 +257,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeAddHorario()"
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeHorario()"
                                         style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
@@ -498,7 +498,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarTurnos();
                     me.limpiarTurno();
-                    me.turnoModalModal = false;
+                    me.turnoModal = false;
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "REGISTRO FALLIDO",
@@ -522,7 +522,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarTurnos();
                     me.limpiarTurno();
-                    me.closeAddTurno();
+                    me.closeTurno();
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "ACTUALIZACION FALLIDA",
@@ -569,7 +569,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarHorarios(me.idTurno);
                     me.limpiarHorario();
-                    me.horarioModal = false;
+                    me.closeHorario();
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "REGISTRO DE HORARIO FALLIDO",
@@ -600,12 +600,31 @@ export default {
                     me.snackbarOK = true;
                     me.listarHorarios(me.idTurno);
                     me.limpiarHorario();
-                    me.closeAddHorario();
+                    me.closeHorario();
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "ACTUALIZACION FALLIDA",
                         me.snackbarError = true;
                 });
+        },
+        deleteHorario(item) {
+            this.idHorario = item.idhor;
+            this.deletehorario(this.idHorario);
+        },
+        async deletehorario(idHorario) {
+            let me = this;
+            await axios
+                .post("/horario/deletehorario/" + this.idHorario).then(function (response) {
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarHorarios(me.idTurno);
+                    me.limpiarHorario();
+                    me.closeHorario();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
         },
         desactivarTurno(item) {
             this.idTurno = item.idturn;
@@ -638,13 +657,13 @@ export default {
 
         },
 
-        closeAddTurno() {
+        closeTurno() {
             this.turnoModal = false;
         },
         closeListarHorario() {
             this.listarHorarioModal = false;
         },
-        closeAddHorario() {
+        closeHorario() {
             this.horarioModal = false;
         },
         llenarCamposTurno(item) {

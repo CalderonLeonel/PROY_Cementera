@@ -115,7 +115,7 @@
                                     </template>
                                     <template #[`item.upddte`]="{ item }">
                                         <td v-if="item.upddte == null">-</td>
-                                        <td v-if="item.upddte != null">{{ new Date(item.fecfin).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
+                                        <td v-if="item.upddte != null">{{ new Date(item.upddte).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
                                     </template>
                                     <template #[`item.act`]="{ item }">
                                         <v-chip :color="getColor(item.act)" dark>
@@ -307,7 +307,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarAreas(me.idArea);
                     me.limpiar();
-
+                    me.closeArea();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -356,6 +356,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarAreas(me.idArea);
                     me.limpiar();
+                    me.closeArea();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;

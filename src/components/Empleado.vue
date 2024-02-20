@@ -409,7 +409,6 @@ export default {
 
         closeEmpleado() {
             this.empleadoModal = false;
-            this.limpiar();
         },
 
         llenarCamposEmpleado(item) {
