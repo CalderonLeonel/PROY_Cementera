@@ -164,13 +164,6 @@
                                             FORM
                                             MOV.
                                         </v-tab>
-                                        <v-tab>
-                                            <v-icon left>
-                                                mdi-plus-network
-                                            </v-icon>
-                                            EXPE
-                                            FORM
-                                        </v-tab>
 
                                         <v-tab-item v-if="flag == 1">
                                             <v-card elevation="5" outlined shaped>
@@ -339,11 +332,38 @@
                                                 </v-row>
                                             </v-card>
                                         </v-tab-item>
+
                                     </v-tabs>
                                 </v-col>
                             </v-row>
                         </v-card-actions>
                     </v-card>
+
+                    <div class="text-center">
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
+                            <strong>{{ mensajeSnackbar }}</strong>
+
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+                    <div class="text-center">
+
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                            outlined>
+                            <strong>{{ mensajeSnackbarError }}</strong>
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
 
                 </v-container>
             </v-form>
@@ -373,7 +393,7 @@ export default {
             ],
             //#endregion
 
-            
+
             //#region Productos
             idProducto: "",
             nombreProducto: "",
@@ -426,6 +446,14 @@ export default {
             //#endregion
             botonact: 0,
             idAlmacen: 1,
+
+            //#region Snackbars
+            snackbarOK: false,
+            mensajeSnackbar: "",
+            snackbarError: false,
+            mensajeSnackbarError: "REGISTRO FALLIDO",
+            timeout: 2000,
+            //#endregion
 
         }
     },

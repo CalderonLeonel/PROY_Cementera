@@ -1,5 +1,118 @@
 <template>
     <v-card elevation="5" outlined shaped>
+
+        <v-dialog v-model="paisesModal" max-width="500px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>PAISES</span><br>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-list-item>
+                                        <v-list-item-title class="text-center">
+                                            <h5>PAISES</h5>
+                                        </v-list-item-title>
+                                    </v-list-item>
+
+                                    <v-card-title>
+                                        <v-text-field v-model="buscarPaises" append-icon="mdi-magnify" label="BUSCAR PAISES"
+                                            single-line hide-details
+                                            @input="buscarPaises = buscarPaises.toUpperCase()"></v-text-field>
+                                    </v-card-title>
+                                    <v-data-table :headers="headersPaises" :items="datosPaises" :search="buscarPaises"
+                                        :items-per-page="5" class="elevation-1" id="tableId">
+
+                                        <template #[`item.est`]="{ item }">
+                                            <v-chip :color="colorEstado(item.est)" dark>
+                                                {{ item.est }}
+                                            </v-chip>
+                                        </template>
+
+
+                                        <template #[`item.actions`]="{ item }">
+                                            <v-icon small class="mr-2" color="#001781" @click="seleccionarPais(item)"
+                                                title="SELECCIONAR PAIS">
+                                                mdi-check-circle
+                                            </v-icon>
+                                        </template>
+
+                                    </v-data-table>
+                                </v-col>
+                                <v-col cols="10"></v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closePaisModal()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    </v-btn>
+                                </v-col>
+
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="ciudadModal" max-width="500px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>CIUDADES</span><br>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-list-item>
+                                        <v-list-item-title class="text-center">
+                                            <h5>CIUDADES</h5>
+                                        </v-list-item-title>
+                                    </v-list-item>
+
+                                    <v-card-title>
+                                        <v-text-field v-model="buscarCiudad" append-icon="mdi-magnify" label="BUSCAR CIUDAD"
+                                            single-line hide-details
+                                            @input="buscarCiudad = buscarCiudad.toUpperCase()"></v-text-field>
+                                    </v-card-title>
+                                    <v-data-table :headers="headersCiudades" :items="datosCiudades" :search="buscarCiudad"
+                                        :items-per-page="5" class="elevation-1" id="tableId">
+
+                                        <template #[`item.est`]="{ item }">
+                                            <v-chip :color="colorEstado(item.est)" dark>
+                                                {{ item.est }}
+                                            </v-chip>
+                                        </template>
+
+
+                                        <template #[`item.actions`]="{ item }">
+                                            <v-icon small class="mr-2" color="#001781" @click="seleccionarCiudad(item)"
+                                                title="SELECCIONAR CIUDAD">
+                                                mdi-check-circle
+                                            </v-icon>
+                                        </template>
+
+                                    </v-data-table>
+                                </v-col>
+                                <v-col cols="10"></v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closeCiudadModal()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    </v-btn>
+                                </v-col>
+
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
         <div>
             <v-alert dense style="color: #ffffff;" color="grey">
                 <h5>TRANSPORTE</h5>
@@ -23,32 +136,24 @@
                             </v-card-title>
 
 
-                            <v-data-table :headers="headersTransportes" :items="datosTransportes"
+                            <v-data-table :headers="headersMovimientos" :items="datosMovimientos"
                                 :search="buscarTransportes" :items-per-page="5" class="elevation-1" id="tableId">
 
                                 <template #[`item.est`]="{ item }">
-                                    <v-chip :color="colorEstado(item.est)" dark>
+                                    <v-chip :color="colorEstadoMov(item.est)" dark>
                                         {{ item.est }}
                                     </v-chip>
                                 </template>
 
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
-                                        @click="activar(item)" title="ACTIVAR TRANSPORTES">
-                                        mdi-check-circle-outline
-                                    </v-icon>
-                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
-                                        @click="desactivar(item)" title="DESACTIVAR TRANSPORTES">
-                                        mdi-cancel
-                                    </v-icon>
-                                    <v-icon small class="mr-2" color="#001781" @click="showEditFormatoModal(item)"
-                                        title="ACTUALIZAR INFORMACION">
-                                        mdi-pencil
-                                    </v-icon>
                                     <v-icon small class="mr-2" color="#001781" @click="showInfoFormato(item)"
                                         title="VER INFORMACION">
                                         mdi-eye
+                                    </v-icon>
+                                    <v-icon small class="mr-2" color="#001781" @click="seleccionarMovimiento(item)"
+                                        title="SELECCIONAR MOVIMIENTO">
+                                        mdi-check-circle
                                     </v-icon>
                                 </template>
 
@@ -631,6 +736,7 @@ export default {
     data() {
         return {
 
+            act: 0,
             //#region Chofer
             idChofer: "",
             nombres: "",
@@ -645,8 +751,6 @@ export default {
             datosGenero: [
                 'MASCULINO', 'FEMENINO'
             ],
-            pais: "",
-            ciudad: "",
             //#endregion
 
             //#region Carro
@@ -664,14 +768,68 @@ export default {
             imageUrl: 0,
             file: null,
 
+            //#region Movimiento
+            idMovimiento: "",
+            codigoMovimiento: "",
+            motivoMovimiento: "",
+            cantidadMovimiento: "",
+            datosMovimientos: [],
+            headersMovimientos: [
+                { text: "CODIGO MOVIMIENTO", value: "codmov", sortable: false },
+                { text: "ORIGEN", value: "nomfab", sortable: false },
+                { text: "DESTINO", value: "nomalm", sortable: false },
+                { text: "CANTIDAD", value: "cant", sortable: false },
+                { text: "ESTADO", value: "est", sortable: false },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
+            //#endregion
+
+            //#region Pais
+            idPais: "",
+            pais: "",
+            datosPaises: [],
+            headersPaises: [
+                { text: "PAIS", value: "nompais", sortable: false },
+                { text: "ESTADO", value: "est", sortable: false },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
+            //#endregion
+
+            //#region Ciudad
+            idCiudad: "",
+            ciudad: "",
+            datosCiudades: [],
+            headersCiudades: [
+                { text: "CIUDAD", value: "nomciu", sortable: false },
+                { text: "ESTADO", value: "est", sortable: false },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
+            //#endregion
+
+            //#region Modals
+            paisesModal: 0,
+            ciudadModal: 0,
+            //#endregion
+
         }
     },
 
     created: function () {
-
+        this.listarMovimientos();
     },
 
     methods: {
+        colorEstadoMov(est) {
+            if (est == 'PENDIENTE') return 'orange'
+            else return 'red'
+        },
+        colorEstado(est) {
+            if (est == 'ACTIVO') return 'green'
+            else return 'red'
+        },
+
+        //#region Camara
+
         //Implementacion del uso de la camara
         //Apertura de la camara
 
@@ -814,9 +972,11 @@ export default {
                 })
         },
 
+        //#endregion
+
         //#region Registrar
         registrarChofer() {
-            this.registroChofer(this.nombres, this.paterno, this.materno, this.ciChofer, this.direccionChofer, this.nacionalidad, this.telefono, this.fechaNacimiento, this.genero, this.pais, this.ciudad)
+            this.registroChofer(this.nombres, this.paterno, this.materno, this.ciChofer, this.direccionChofer, this.nacionalidad, this.telefono, this.fechaNacimiento, this.genero, this.idPais, this.idCiudad)
         },
         async registroChofer(
 
@@ -829,8 +989,8 @@ export default {
             telefono,
             fechaNacimiento,
             genero,
-            pais,
-            ciudad
+            idPais,
+            idCiudad
         ) {
             let me = this
             await axios
@@ -854,16 +1014,15 @@ export default {
                     "," +
                     this.genero +
                     "," +
-                    this.pais +
+                    this.idPais +
                     "," +
-                    this.ciudad
+                    this.idCiudad
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.limpiar();
-                    me.listarCuentas();
                     me.saldoModal = false;
                 })
                 .catch(function (error) {
@@ -911,6 +1070,66 @@ export default {
         //#endregion
 
         //#region Listados
+        listarMovimiento() {
+            this.listarMovimientos();
+        },
+        async listarMovimientos() {
+            let me = this;
+            await axios
+                .get("/movimiento/listarmovimientos")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosMovimientos = [];
+
+                    } else {
+                        me.datosMovimientos = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+        listarPais() {
+            this.listarPaises();
+        },
+        async listarPaises() {
+            let me = this;
+            await axios
+                .get("/pais/listarpaises")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosPaises = [];
+
+                    } else {
+                        me.datosPaises = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+        listarCiudad() {
+            this.listarCiudades();
+        },
+        async listarCiudades() {
+            let me = this;
+            await axios
+                .get("/ciudad/listarCiudades/" + this.idPais)
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosCiudades = [];
+
+                    } else {
+                        me.datosCiudades = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
         //#endregion
 
         //#region Cambiar Estados
@@ -918,11 +1137,19 @@ export default {
 
         //#region Modals
         showPais() {
-
+            this.paisesModal = true;
+            this.listarPaises();
+        },
+        closePaisModal() {
+            this.paisesModal = false;
         },
 
         showCiudad() {
-
+            this.ciudadModal = true;
+            this.listarCiudades();
+        },
+        closeCiudadModal() {
+            this.ciudadModal = false;
         },
 
         showChoferes() {
@@ -931,12 +1158,16 @@ export default {
         //#endregion
 
         //#region Seleccionar Datos
-        seleccionarPais() {
-
+        seleccionarPais(item) {
+            this.idPais = item.idpai;
+            this.pais = item.nompais;
+            this.paisesModal = false;
         },
 
-        seleccionarCiudad() {
-
+        seleccionarCiudad(item) {
+            this.idCiudad = item.idciu;
+            this.ciudad = item.nomciu;
+            this.ciudadModal = false;
         },
 
         seleccionarChofer() {

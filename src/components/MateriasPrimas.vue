@@ -158,6 +158,32 @@
 
 
                     </v-row>
+
+                    <div class="text-center">
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
+                            <strong>{{ mensajeSnackbar }}</strong>
+
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+                    <div class="text-center">
+
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                            outlined>
+                            <strong>{{ mensajeSnackbarError }}</strong>
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
                 </v-container>
             </v-form>
         </div>
@@ -192,14 +218,14 @@ export default {
             //#endregion
 
             //#region Proveedor
-            idProveedor: 1,
-            nombreProveedor: "PRUEBA",
+            idProveedor: "",
+            nombreProveedor: "",
             datosProveedor: [],
             headersProveedor: [
-                { text: "NOMBRE", value: "nom", sortable: false },
-                { text: "CONTACTO 1", value: "des", sortable: false },
-                { text: "CONTACTO 2", value: "cant", sortable: false },
-                { text: "CORREO", value: "med", sortable: false },
+                { text: "NOMBRE", value: "nomprv", sortable: false },
+                { text: "CONTACTO 1", value: "cto1pro", sortable: false },
+                { text: "CONTACTO 2", value: "cto2pro", sortable: false },
+                { text: "CORREO", value: "croprov", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false }
             ],
@@ -208,6 +234,14 @@ export default {
 
             //#region Modals
             proveedoresModal: 0,
+            //#endregion
+
+            //#region SnackBars
+            snackbarOK: false,
+            mensajeSnackbar: "",
+            snackbarError: false,
+            mensajeSnackbarError: "REGISTRO FALLIDO",
+            timeout: 2000,
             //#endregion
 
         }
@@ -254,6 +288,27 @@ export default {
 
                     } else {
                         me.datosMateriaPrimasInh = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+        listarProveedores() {
+            this.listarProveedor();
+        },
+
+        async listarProveedor() {
+            let me = this;
+            await axios
+                .get("/proveedor/listarproveedores")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosProveedor = [];
+
+                    } else {
+                        me.datosProveedor = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
@@ -413,8 +468,8 @@ export default {
 
         //#region Seleccion de Datos
         seleccionarProveedor(item) {
-            this.idProveedor = item.idprov;
-            this.nombreProveedor = item.nomprov;
+            this.idProveedor = item.idprv;
+            this.nombreProveedor = item.nomprv;
             this.proveedoresModal = false;
         },
         //#endregion
