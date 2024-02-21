@@ -142,7 +142,7 @@
                                     :items-per-page="5" class="elevation-1">
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon small class="mr-2" @click="seleccionarEmpleado(item)"
-                                            title="ACTIVAR EMPLEADO">
+                                            title="SELECCIONAR EMPLEADO">
                                             mdi-check-circle-outline
                                         </v-icon>
                                         <!--
@@ -699,8 +699,6 @@ export default {
                     this.password +
                     "," +
                     this.tipo +
-                    "," +
-                    auxAccesos +
                     "," +
                     this.email +
                     "," +

@@ -63,11 +63,11 @@
                                          mdi-pencil
                                      </v-icon>
                                      <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="confirmarActivacionInv(item)"
-                                         title="ACTIVAR Almacen">
+                                         title="ACTIVAR ALMACEN">
                                          mdi-check-circle-outline
                                      </v-icon>
                                      <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionInv(item)"
-                                         title="DESACTIVAR Almacen">
+                                         title="DESACTIVAR ALMACEN">
                                          mdi-close-circle
                                      </v-icon>             
                                  </template>
@@ -90,7 +90,7 @@
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="Buscar Items"
+                                <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ITEMS"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
@@ -109,11 +109,11 @@
                                          mdi-pencil
                                      </v-icon>
                                      <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
-                                         title="ACTIVAR Seccion">
+                                         title="ACTIVAR SECCION">
                                          mdi-check-circle-outline
                                      </v-icon>
                                      <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionIt(item)"
-                                         title="DESACTIVAR Seccion">
+                                         title="DESACTIVAR SECCION">
                                          mdi-close-circle
                                      </v-icon>             
                                  </template>
@@ -136,7 +136,7 @@
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="Buscar Item"
+                                <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="BUSCAR ITEM"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
@@ -155,11 +155,11 @@
                                          mdi-pencil
                                      </v-icon>
                                      <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
-                                         title="ACTIVAR Stand">
+                                         title="ACTIVAR STAND">
                                          mdi-check-circle-outline
                                      </v-icon>
                                      <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionTip(item)"
-                                         title="DESACTIVAR Stand">
+                                         title="DESACTIVAR STAND">
                                          mdi-close-circle
                                      </v-icon>             
                                  </template>
@@ -295,7 +295,7 @@
                                             ACTUALIZAR
                                         </v-btn>
                                         <v-btn iconv v-if="botonActTT == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarInv()" style="float: left" title="REGISTRAR TRANSACCION ">
+                                            @click="registrarInv()" style="float: left" title="REGISTRAR TRANSACCION">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
                                         </v-btn>

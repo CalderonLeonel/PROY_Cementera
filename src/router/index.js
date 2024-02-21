@@ -127,7 +127,7 @@ const routes = [
     component: require("../components/SolicitudPersonal.vue").default,
   },
   {
-    path: "/perfil/:employee",
+    path: "/perfil",
     name: "Perfil",
     component: require("../components/EmpleadoPerfil.vue").default,
   },

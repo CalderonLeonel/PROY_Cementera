@@ -110,6 +110,13 @@
 
                                 <v-data-table :headers="headersUnidad" :items="datosUnidad" :search="searchUnidad"
                                     :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.credte`]="{ item }">
+                                        <td>{{ new Date(item.credte).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
+                                    </template>
+                                    <template #[`item.upddte`]="{ item }">
+                                        <td v-if="item.upddte == null">-</td>
+                                        <td v-if="item.upddte != null">{{ new Date(item.upddte).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
+                                    </template>
                                     <template #[`item.act`]="{ item }">
                                         <v-chip :color="getColor(item.act)" dark>
                                             {{ item.act }}
@@ -203,9 +210,9 @@ export default {
 
         headersUnidad: [
             { text: "UNIDAD", value: "unid", sortable: false },
-            { text: "ESTADO", value: "act", sortable: false },
             { text: "FECHA CREACION", value: "credte", sortable: false },
             { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
+            { text: "ESTADO", value: "act", sortable: false },
             { text: "OPTIONS", value: "actions", sortable: false },
         ],
     }),
@@ -302,7 +309,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarUnidades(me.idUnidad);
                     me.limpiar();
-
+                    me.closeUnidad();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -351,6 +358,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarUnidades(me.idUnidad);
                     me.limpiar();
+                    me.closeUnidad();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
