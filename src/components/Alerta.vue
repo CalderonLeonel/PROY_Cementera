@@ -101,6 +101,27 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <strong>{{ mensajeSnackbar }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                         mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+
+        <div class="text-center">
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                            mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
     </v-card>
 </template>
 

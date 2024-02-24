@@ -1,5 +1,26 @@
 <template>
    <v-card elevation="5" outlined>
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <strong>{{ mensajeSnackbar }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                         mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+
+        <div class="text-center">
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                            mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
         <v-alert v-if="existencias==false"  
                 type="error"
                 color="red darken-2"
@@ -20,7 +41,7 @@
                 prominent
                 >
                 <div class="text-h5">
-                    SE TIENE LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
+                    SE TIENEN LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
                 </div>
                
         </v-alert>
@@ -44,7 +65,7 @@
                             </v-list-item>
 
                             <v-card-title>
-                               <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR Almacen"
+                               <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACEN"
                                     single-line hide-details></v-text-field>
                             </v-card-title>
 
@@ -69,11 +90,11 @@
                                         mdi-pencil
                                     </v-icon>
                                     <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
-                                        title="ACTIVAR Almacen">
+                                        title="ACTIVAR ALMACEN">
                                         mdi-check-circle-outline
                                     </v-icon>
                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionAlmacen(item)"
-                                        title="DESACTIVAR Almacen">
+                                        title="DESACTIVAR ALMACEN">
                                         mdi-close-circle
                                     </v-icon>             
                                 </template>

@@ -1,5 +1,26 @@
 <template>
     <v-card elevation="5" outlined>
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <strong>{{ mensajeSnackbar }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                         mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+
+        <div class="text-center">
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                            mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
             <v-alert  v-if="existencias==false" 
                 type="error"
                 color="red darken-2"
@@ -20,7 +41,7 @@
                 prominent
                 >
                 <div class="text-h5">
-                    SE TIENE LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
+                    SE TIENEN LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
                 </div>
                
             </v-alert>
@@ -136,7 +157,7 @@
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="BUSCAR ITEM"
+                                <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="BUSCAR TIPO DE ITEM"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
@@ -170,36 +191,6 @@
                              </v-data-table>
                          </v-col>
                      </v-row>
-                     <v-row>
-                        <v-col cols="12">
-                        <v-alert dense style="color: #ffffff;" color="indigo">
-                            <h3>VALORACION</h3>
-                        </v-alert>
-                        </v-col>
-                        <v-col cols="12">
-                        <v-tabs horizontal color="#002245" center-active grow>
-                                        <v-tab>
-                                            MENSUAL
-                                        </v-tab>
-                                        <v-tab>
-                                            TRIMESTRAL
-                                        </v-tab>
-                                        <v-tab>
-                                            SEMESTRAL
-                                        </v-tab>
-                                        <v-tab>
-                                            ANUAL
-                                        </v-tab>
-                                        <v-tab>
-                                            TOTAL
-                                        </v-tab>
-
-                                      
-                                    </v-tabs>
-                    <v-data-table :headers="headerInventario" :items="datosInventario"
-                                            :items-per-page="5" class="elevation-1" id="tableId"></v-data-table>
-                     </v-col>
-                     </v-row>
  
                  </v-container>
              </v-form>
@@ -217,7 +208,7 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR SECCIÓN"
+                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ITEMS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -333,7 +324,7 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="BUSCAR SECCIÓN"
+                                    <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="BUSCAR TIPOS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -462,7 +453,7 @@
                                             ACTUALIZAR
                                         </v-btn>
                                         <v-btn iconv v-if="botonActTT == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarTipo()" style="float: left" title="REGISTRAR PROVEEDOR">
+                                            @click="registrarTipo()" style="float: left" title="REGISTRAR TIPO">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
                                         </v-btn>
@@ -500,7 +491,7 @@
                                 <v-col cols="3"></v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anularTipo()" style="float: right" title="ANULAR TIPO ITEM">
+                                        @click="anularTipo()" style="float: right" title="ANULAR TIPO">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         ANULAR
                                     </v-btn>

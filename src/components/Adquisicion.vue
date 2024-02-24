@@ -1,5 +1,26 @@
 <template>
    <v-card elevation="5" outlined>
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <strong>{{ mensajeSnackbar }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                         mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+
+        <div class="text-center">
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                            mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
         <v-alert v-if="existencias==false"         
                 type="error"
                 color="red darken-2"
@@ -20,7 +41,7 @@
                 prominent
                 >
                 <div class="text-h5">
-                    SE TIENE LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
+                    SE TIENEN LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
                 </div>
                
         </v-alert>
@@ -482,7 +503,7 @@
                                 <v-col cols="3"></v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anularCotizacionAdquisicion()" style="float: right" title="ANULAR ALMACEN">
+                                        @click="anularCotizacionAdquisicion()" style="float: right" title="ANULAR COTIZACION DE ADQUISICION">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         ANULAR
                                     </v-btn>
@@ -514,7 +535,7 @@
                                 <v-col cols="3"></v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anularCotizacionItem()" style="float: right" title="ANULAR ALMACEN">
+                                        @click="anularCotizacionItem()" style="float: right" title="QUITAR ITEM">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         ANULAR
                                     </v-btn>
@@ -554,7 +575,7 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="red" dark x-big  @click="closeDetalleCotizacion()">
-                    <v-icon dark> mdi-close-circle-outline </v-icon> Salir
+                    <v-icon dark> mdi-close-circle-outline </v-icon> SALIR
                 </v-btn>
                 <v-spacer></v-spacer>
             </v-card-actions>
