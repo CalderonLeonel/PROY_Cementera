@@ -40,6 +40,27 @@
                 </v-col>
             </v-row>
         </v-container>
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
+                <strong>{{ mensajeSnackbar }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                         mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+
+        <div class="text-center">
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                            mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
         <v-dialog v-model="agregarAlerta" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
@@ -101,27 +122,7 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
-        <div class="text-center">
-            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
-                <strong>{{ mensajeSnackbar }}</strong>
-                <template v-slot:action="{ attrs }">
-                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                         mdi-close
-                    </v-icon>
-                </template>
-            </v-snackbar>
-        </div>
 
-        <div class="text-center">
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
-                <strong>{{ mensajeSnackbarError }}</strong>
-                <template v-slot:action="{ attrs }">
-                    <v-icon right v-bind="attrs" @click="snackbarError = false">
-                            mdi-close
-                    </v-icon>
-                </template>
-            </v-snackbar>
-        </div>
     </v-card>
 </template>
 
@@ -131,7 +132,7 @@ import axios from "axios";
 export default {
     data() {
         return {
-
+            mensajeSnackbarError: "REGISTRO FALLIDO",
 
             AlertaArchivo:'',
             codigoArchivo:'EMPALRT',
@@ -139,7 +140,8 @@ export default {
             descripcionAlerta:'',
             idArchivo: '',
 
-
+            snackbarOK: false,
+            snackbarError : false,
 
             datosAlerta: [],
             searchAlerta: '',

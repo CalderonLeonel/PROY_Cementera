@@ -104,7 +104,7 @@
         </div>
 
         <div class="text-center">
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="warning" outlined>
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
                 <strong>{{ mensajeSnackbarError }}</strong>
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarError = false">
@@ -122,7 +122,14 @@ import axios from "axios";
 export default {
     data() {
         return {
+
+            mensajeSnackbarError: "REGISTRO FALLIDO",
+
             generarMemorandum: false,
+
+
+            snackbarOK: false,
+             snackbarError : false,
         }
     },
     created: function () {

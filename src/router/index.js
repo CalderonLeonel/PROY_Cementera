@@ -146,6 +146,11 @@ const routes = [
     name: "Archivos",
     component: () => import("@/components/Archivos.vue"),
   },
+  {
+    path: "archivosempleado",
+    name: "ArchivosEmpleado",
+    component: () => import("@/components/ArchivosEmpleado.vue"),
+  },
 ];
 
 const router = new VueRouter({
