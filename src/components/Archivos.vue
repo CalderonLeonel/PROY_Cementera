@@ -56,8 +56,8 @@
             </v-row>
             <v-row v-if="user == 'admin'">
                 <v-col cols="12" md="12">
-                    <v-text-field v-model="searchArchivoInv" append-icon="mdi-magnify" label="BUSCAR ARCHIVO" single-line
-                        hide-details></v-text-field>
+                    <v-text-field v-model="searchArchivoInv" append-icon="mdi-magnify" label="BUSCAR ARCHIVO"
+                        single-line hide-details></v-text-field>
                     <v-data-table :headers="headerArchivo" :items="datosArchivoInv" :search="searchArchivoInv"
                         class="elevation-1">
                         <template #[`item.url`]="{ item }">
@@ -70,8 +70,8 @@
             </v-row>
             <v-row v-if="user == 'admin'">
                 <v-col cols="12" md="12">
-                    <v-text-field v-model="searchArchivoAdq" append-icon="mdi-magnify" label="BUSCAR ARCHIVO" single-line
-                        hide-details></v-text-field>
+                    <v-text-field v-model="searchArchivoAdq" append-icon="mdi-magnify" label="BUSCAR ARCHIVO"
+                        single-line hide-details></v-text-field>
                     <v-data-table :headers="headerArchivo" :items="datosArchivoAdq" :search="searchArchivoAdq"
                         class="elevation-1">
                         <template #[`item.url`]="{ item }">
@@ -139,20 +139,19 @@
                                 <v-col cols="12" md="4"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
-                                    <v-btn iconvv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="editarDocumento()" style="float: left"
-                                            title="ACTUALIZAR INFORMACIÓN">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                            ACTUALIZAR
-                                        </v-btn>
-                                        <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarDocumento()" style="float: left" title="REGISTRAR DOCUMENTO">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                        </v-btn>
-                                </v-col>                      
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                    <v-btn iconvv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
+                                        @click="editarDocumento()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
+                                        <v-icon dark> mdi-pencil </v-icon>
+                                        ACTUALIZAR
+                                    </v-btn>
+                                    <v-btn iconv v-if="botonAct == 0" class="mx-4" dark color="#0ABF55"
+                                        @click="registrarDocumento()" style="float: left" title="REGISTRAR DOCUMENTO">
+                                        <v-icon dark> mdi-content-save </v-icon>
+                                        GUARDAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()"
                                         style="float: left" title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                         LIMPIAR
@@ -173,22 +172,22 @@
             </v-card>
         </v-dialog>
         <div class="text-center">
-            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                         mdi-close
+                        mdi-close
                     </v-icon>
                 </template>
             </v-snackbar>
         </div>
 
         <div class="text-center">
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
                 <strong>{{ mensajeSnackbarError }}</strong>
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarError = false">
-                            mdi-close
+                        mdi-close
                     </v-icon>
                 </template>
             </v-snackbar>
@@ -202,6 +201,8 @@ import axios from "axios";
 export default {
     data() {
         return {
+
+            mensajeSnackbarError: "REGISTRO FALLIDO",
 
             user: 'admin',
 
@@ -235,6 +236,9 @@ export default {
             agregarDocumento: false,
             confirmacionAlmacenamiento: false,
             botonAct: 0,
+
+            snackbarOK: false,
+            snackbarError: false,
         }
     },
     created: function () {

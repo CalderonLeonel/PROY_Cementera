@@ -1,7 +1,7 @@
 <template>
    <v-card elevation="5" outlined>
-    <div class="text-center">
-            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarOK = false">
@@ -12,7 +12,7 @@
         </div>
 
         <div class="text-center">
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
                 <strong>{{ mensajeSnackbarError }}</strong>
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarError = false">
@@ -220,9 +220,10 @@ import axios from "axios";
 export default {
     data() {
         return {
+            mensajeSnackbarError: "REGISTRO FALLIDO",
 
-
-            existencias: false,
+            existencias: true,
+            itemsCriticos: '',
             datosExistencia:[],
 
             documentoArchivo: '',
@@ -274,6 +275,11 @@ export default {
             agregarProveedorModal: false,
             confirmacionAnulacionProveedor: false,
             botonAct: 0,
+
+
+
+            snackbarOK: false,
+            snackbarError : false,
             //#endregion
         }
     },
@@ -284,16 +290,60 @@ export default {
     methods: {
 
         getAlertas(){
-            this.getListaExistencias();
+            var items = [];
+            var stock = [];
+            var limite = [];
             if(this.datosExistencia==[]){
-                this.existencias=true;
+                this.existencias=false;
             }
             else{
-                console.log('')
-                console.log(JSON.parse(JSON.stringify(this.datosExistencia)))
-                console.log('')
-                this.existencias=true;
+                console.log(JSON.parse(JSON.stringify(this.datosExistencia)));
+                console.log('');
+                let datosComoObjeto = JSON.parse(JSON.stringify(this.datosExistencia))
+
+                for (let propiedad in datosComoObjeto) {
+                    console.log(`: ${propiedad}`);
+                    for (const key in datosComoObjeto[propiedad]) {
+                        console.log(`Propiedad: ${key}`);
+                        if (key == 'nombreitem') {
+                            items.push(datosComoObjeto[propiedad][key])
+                        }
+                        else if (key == 'limitecritico') {
+                            limite.push(datosComoObjeto[propiedad][key])
+                        } 
+                        else if (key == 'cantidad') {
+                            stock.push(datosComoObjeto[propiedad][key])
+                        } 
+                    }
+                }
+                for (let i = 0; i < items.length; i++) {
+                    if ( limite[i] >= stock[i]  ) {
+                        console.log(limite[i])
+                        console.log(stock[i])
+                        alert(limite[i]+' u '+stock[i] )
+                        this.existencias=false;
+                        this.itemsCriticos += items[i]+' ';
+                    }
+                }
             }
+        },
+
+        async getListaExistencias(){
+            let me = this;
+            await axios
+                .get("/inventario/listarexistencias/")
+                .then(function (response) {
+                if (response.data.resultado == null) {
+                    me.datosExistencia = [];
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                    me.datosExistencia = response.data.resultado;
+                }
+                })
+                .catch(function (error) {
+                console.log(error);
+                });
         },
 
         getColor(est) {
