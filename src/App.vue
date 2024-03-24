@@ -91,6 +91,8 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
+      
+        
         <v-list-group no-action color="#00A1B1" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
@@ -100,14 +102,13 @@
               <v-list-item-title>REPORTES</v-list-item-title>
             </v-list-item-content>
           </template>
-
+        
           <v-list-item :to="{ name: 'Reportes' }">
             <v-list-item-title>
               <h6>REPORTES</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
-
         <v-list-group no-action color="#00A1B1" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
@@ -125,7 +126,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="light-blue darken-4" value="true">
+        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(5,'0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-package</v-icon>
@@ -138,6 +139,11 @@
           <v-list-item :to="{ name: 'Empleados' }">
             <v-list-item-title>
               <h6>EMPLEADOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Alerta' }">
+            <v-list-item-title>
+              <h6>ALERTAS</h6>
             </v-list-item-title>
           </v-list-item>
           <v-list-item :to="{ name: 'Cargos' }">
@@ -185,6 +191,7 @@
               <h6>CUENTAS</h6>
             </v-list-item-title>
           </v-list-item>
+          /// Creo que esto hay doble, desaparece el de arriba porque no se tiene acceso a produccion o no se loguearon
           <v-list-item :to="{ name: 'Formatos' }">
             <v-list-item-title>
               <h6>FORMATOS</h6>
@@ -204,13 +211,15 @@
             <v-list-item-title>
               <h6>MOVIMIENTOS</h6>
             </v-list-item-title>
-          </v-list-item>
+          </v-list-item> 
           <v-list-item :to="{ name: 'Produccion' }">
             <v-list-item-title>
               <h6>PRODUCCION</h6>
             </v-list-item-title>
           </v-list-item>
+          
         </v-list-group>
+
         <v-list-group no-action color="#00A1B1" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
@@ -235,14 +244,13 @@
               <v-list-item-title>REPORTES</v-list-item-title>
             </v-list-item-content>
           </template>
-
+        
           <v-list-item :to="{ name: 'Reportes' }">
             <v-list-item-title>
               <h6>REPORTES</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
-
         <v-list-group no-action color="#00A1B1" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
@@ -259,7 +267,6 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
-
         <v-list-group no-action color="light-blue darken-4" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
@@ -306,6 +313,7 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
+       
         <v-list-group no-action color="light-blue darken-4" value="true">
           <template v-slot:activator>
             <v-list-item-icon>

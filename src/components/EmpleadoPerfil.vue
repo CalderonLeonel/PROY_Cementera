@@ -5,7 +5,7 @@
                 <h5>PERFIL DE EMPLEADO</h5>
             </v-alert>
         </div>
-        <v-container>
+        <v-container> <!-- Datos del Empleado -->
             <v-row>
                 <v-col cols="12" md="3">
                     <v-alert dense color="#00A1B1" style="color: #ffffff">
@@ -41,19 +41,27 @@
                 </v-col>
                 <v-col cols="12" md="3">
                     <v-alert dense color="#00A1B1" style="color: #ffffff">
-                        <h5>TELÉFONOS:</h5>
+                        <h5>CONTACTOS:</h5>
                     </v-alert>
                 </v-col>
-                <v-col cols="12" md="6">
+                <v-col cols="12" md="3">
                     <v-alert dense>
                         <h5>{{ this.$route.params.tel }}</h5>
                         <hr>
                     </v-alert>
                 </v-col>
                 <v-col cols="12" md="3">
-                    <v-row></v-row>
-                    <!-- FOTO CARNET -->
+                    <v-alert dense color="#00A1B1" style="color: #ffffff">
+                        <h5>ESTADO CIVIL:</h5>
+                    </v-alert>
                 </v-col>
+                <v-col cols="12" md="3">
+                    <v-alert dense>
+                        <h5>{{ this.$route.params.est }}</h5>
+                        <hr>
+                    </v-alert>
+                </v-col>
+                    <!-- FOTO CARNET -->
                 <v-col cols="12" md="3">
                     <v-alert dense color="#00A1B1" style="color: #ffffff">
                         <h5>NUMERO DE CARNET:</h5>
@@ -66,8 +74,31 @@
                     </v-alert>
                 </v-col>
             </v-row>
-
         </v-container>
+            <!-- Snackbars -->
+        <div class="text-center">
+                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
+                        outlined>
+                    <strong>{{ mensajeSnackbar }}</strong>
+                    <template v-slot:action="{ attrs }">
+                        <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                mdi-close
+                        </v-icon>
+                    </template>
+                </v-snackbar>
+        </div>
+        <div class="text-center">
+                <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense
+                        color="#EE680B" outlined>
+                    <strong>{{ mensajeSnackbarError }}</strong>
+                    <template v-slot:action="{ attrs }">
+                        <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                mdi-close
+                        </v-icon>
+                    </template>
+                </v-snackbar>
+        </div>
+        
         <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Contratos -->
             <v-container>
                 <v-row>
@@ -89,17 +120,28 @@
 
                             <v-data-table :headers="headersContrato" :items="datosContrato" :search="searchContrato"
                                 :items-per-page="5" class="elevation-1" id="tableId">
+                                <template #[`item.tip`]="{ item }">
+                                    <td v-if="item.fecfin == null">PERMANENTE</td>
+                                    <td v-if="item.fecfin != null">TEMPORAL</td>
+                                </template>
+                                <template #[`item.fecini`]="{ item }">
+                                    <td>{{ new Date(item.fecini).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
+                                </template>
+                                <template #[`item.fecfin`]="{ item }">
+                                    <td v-if="item.fecfin == null">-</td>
+                                    <td v-if="item.fecfin != null">{{ new Date(item.fecfin).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
+                                </template>
                                 <template #[`item.act`]="{ item }">
                                     <v-chip :color="getColor(item.act)" dark>
                                         {{ item.act }}
                                     </v-chip>
                                 </template>
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
+                                    <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activarContrato(item)"
                                         title="ACTIVAR CONTRATO">
                                         mdi-check-circle-outline
                                     </v-icon>
-                                    <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
+                                    <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivarContrato(item)"
                                         title="DESACTIVAR CONTRATO">
                                         mdi-cancel
                                     </v-icon>
@@ -135,21 +177,24 @@
 
                             <v-data-table :headers="headersObservacion" :items="datosObservacion" :search="searchObservacion"
                                 :items-per-page="5" class="elevation-1" id="tableId">
+                                <template #[`item.fec`]="{ item }">
+                                    <td>{{ new Date(item.fec).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
+                                </template>
                                 <template #[`item.act`]="{ item }">
                                     <v-chip :color="getColor(item.act)" dark>
                                         {{ item.act }}
                                     </v-chip>
                                 </template>
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
+                                    <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activarObservacion(item)"
                                         title="ACTIVAR OBSERVACION">
                                         mdi-check-circle-outline
                                     </v-icon>
-                                    <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
+                                    <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivarObservacion(item)"
                                         title="DESACTIVAR OBSERVACION">
                                         mdi-cancel
                                     </v-icon>
-                                    <v-icon small class="mr-2" @click="showEditobservacion(item)" title="EDITAR INFORMACION">
+                                    <v-icon small class="mr-2" @click="showEditObservacion(item)" title="EDITAR INFORMACION">
                                         mdi-pencil
                                     </v-icon>
                                 </template>
@@ -171,7 +216,7 @@
                                 </v-alert>
                             </div>
                             <v-col cols="12" md="4">
-                                <v-btn color="success" @click="showAddObservacion()">+ Registrar Vacacion</v-btn>
+                                <v-btn color="success" @click="showAddVacacion()">+ Registrar Vacacion</v-btn>
                             </v-col>
                             <v-card-title>
                                 <v-text-field v-model="searchVacacion" append-icon="mdi-magnify" label="BUSCAR REGISTROS"
@@ -180,17 +225,23 @@
 
                             <v-data-table :headers="headersVacacion" :items="datosVacacion" :search="searchVacacion"
                                 :items-per-page="5" class="elevation-1" id="tableId">
+                                <template #[`item.fecini`]="{ item }">
+                                    <td>{{ new Date(item.fecini).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
+                                </template>
+                                <template #[`item.fecfin`]="{ item }">
+                                    <td>{{ new Date(item.fecfin).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
+                                </template>
                                 <template #[`item.act`]="{ item }">
                                     <v-chip :color="getColor(item.act)" dark>
                                         {{ item.act }}
                                     </v-chip>
                                 </template>
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
+                                    <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activarVacacion(item)"
                                         title="ACTIVAR VACACION">
                                         mdi-check-circle-outline
                                     </v-icon>
-                                    <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
+                                    <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivarVacacion(item)"
                                         title="ANULAR VACACION">
                                         mdi-cancel
                                     </v-icon>
@@ -221,7 +272,7 @@
                                         accept=".docx, .xlsx, .pptx, .pdf, .xml" label="Contrato archivo">
                                     </v-file-input>
                                     <v-select v-model="tipo" :items="datosTipo" label="Selecciona el tipo de contrato a registrar"
-                                        prepend-icon="mdi-pick" required v-on:change="isDisabled = !isDisabled">
+                                        prepend-icon="mdi-pick" required v-on:change="isDisabled = !isDisabled; fechaFinal = null">
                                     </v-select>
                                     <v-menu v-model="datePicker1" :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
@@ -256,7 +307,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()" style="float: left"
+                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiarContrato()" style="float: left"
                                         title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                         LIMPIAR
@@ -270,34 +321,6 @@
                                     </v-btn>
                                 </v-col>
                             </v-row>
-
-                            <div class="text-center">
-                                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
-                                    outlined>
-                                    <strong>{{ mensajeSnackbar }}</strong>
-
-
-                                    <template v-slot:action="{ attrs }">
-                                        <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                                            mdi-close
-                                        </v-icon>
-                                    </template>
-                                </v-snackbar>
-                            </div>
-
-                            <div class="text-center">
-
-                                <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense
-                                    color="#EE680B" outlined>
-                                    <strong>{{ mensajeSnackbarError }}</strong>
-
-                                    <template v-slot:action="{ attrs }">
-                                        <v-icon right v-bind="attrs" @click="snackbarError = false">
-                                            mdi-close
-                                        </v-icon>
-                                    </template>
-                                </v-snackbar>
-                            </div>
                         </v-container>
                     </v-form>
 
@@ -325,10 +348,10 @@
                                     <v-menu v-model="datePicker3" :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="fechaInicio" label="Fecha del evento ocurrido" :rules="fechaRules"
+                                            <v-text-field v-model="fecha" label="Fecha del evento ocurrido" :rules="fechaRules"
                                                 prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                                         </template>
-                                        <v-date-picker v-model="fechaInicio" @input="datePicker3 = false"></v-date-picker>
+                                        <v-date-picker v-model="fecha" @input="datePicker3 = false"></v-date-picker>
                                     </v-menu>
 
                                 </v-col>
@@ -348,7 +371,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()" style="float: left"
+                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiarObservacion()" style="float: left"
                                         title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                         LIMPIAR
@@ -410,18 +433,18 @@
                                     <v-menu v-model="datePicker4" :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="fechaInicio" label="Fecha Inicio" :rules="fechaRules"
+                                            <v-text-field v-model="diaInicio" label="Fecha Inicio" :rules="fechaRules"
                                                 prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                                         </template>
-                                        <v-date-picker v-model="fechaInicio" @input="datePicker4 = false"></v-date-picker>
+                                        <v-date-picker v-model="diaInicio" @input="datePicker4 = false"></v-date-picker>
                                     </v-menu>
                                     <v-menu v-model="datePicker5" :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="fechaInicio" label="Fecha Final" :rules="fechaRules"
+                                            <v-text-field v-model="diaFinal" label="Fecha Final" :rules="fechaRules"
                                                 prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                                         </template>
-                                        <v-date-picker v-model="fechaInicio" @input="datePicker5 = false"></v-date-picker>
+                                        <v-date-picker v-model="diaFinal" @input="datePicker5 = false"></v-date-picker>
                                     </v-menu>
                                 </v-col>
 
@@ -440,7 +463,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()" style="float: left"
+                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiarVacacion()" style="float: left"
                                         title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                         LIMPIAR
@@ -459,8 +482,6 @@
                                 <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
                                     outlined>
                                     <strong>{{ mensajeSnackbar }}</strong>
-
-
                                     <template v-slot:action="{ attrs }">
                                         <v-icon right v-bind="attrs" @click="snackbarOK = false">
                                             mdi-close
@@ -470,11 +491,9 @@
                             </div>
 
                             <div class="text-center">
-
                                 <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense
                                     color="#EE680B" outlined>
                                     <strong>{{ mensajeSnackbarError }}</strong>
-
                                     <template v-slot:action="{ attrs }">
                                         <v-icon right v-bind="attrs" @click="snackbarError = false">
                                             mdi-close
@@ -482,6 +501,7 @@
                                     </template>
                                 </v-snackbar>
                             </div>
+
                         </v-container>
                     </v-form>
 
@@ -499,20 +519,23 @@ export default {
         idEmpleado: "",
         valid: true,
 
-        documentoArchivo: '',
+        idContrato: '',
+        documentoArchivo: 'documentoArchivo',
         tipo: 'PERMANENTE',
         datosTipo: ["PERMANENTE","TEMPORAL"],
-        fechaInicio: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-        fechaFinal: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+        fechaInicio: "",//(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+        fechaFinal: "",//(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         isDisabled: true,
         datePicker1: false,
         datePicker2: false,
 
+        idObservacion: '',
         observacion: '',
         comentario: '',
         fecha: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         datePicker3: false,
 
+        idVacacion: '',
         diaInicio: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         diaFinal: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         datePicker4: false,
@@ -537,27 +560,30 @@ export default {
         datosVacacion: [],
 
         headersContrato: [
-            { text: "CONTRATO", value: "idcont" },
+            { text: "CONTRATO", value: "idcontr" },
+            { text: "TIPO", value: "tip" },
             { text: "FECHA INICIO", value: "fecini" },
             { text: "FECHA FINAL", value: "fecfin" },
             { text: "ESTADO", value: "act" },
-            { text: "FECHA CREACION", value: "credte" },
-            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte" },
-            { text: "OPTIONS", value: "actions", sortable: false },
+            //{ text: "FECHA CREACION", value: "credte" },
+            //{ text: "ULTIMA ACTUALIZACIÓN", value: "upddte" },
+            { text: "OPCIONES", value: "actions", sortable: false },
         ],
 
         headersObservacion: [
             { text: "OBSERVACION", value: "obs" },
             { text: "COMENTARIO", value: "com" },
             { text: "FECHA", value: "fec" },
-            { text: "OPTIONS", value: "actions", sortable: false },
+            { text: "ESTADO", value: "act" },
+            { text: "OPCIONES", value: "actions", sortable: false },
         ],
         headersVacacion: [
+            { text: "AÑO", value: "anio" },
             { text: "DIA INICIO", value: "fecini" },
             { text: "DIA FINAL", value: "fecfin" },
             { text: "DIAS TOTALES", value: "cont" },
-            { text: "DIAS TOTALES", value: "act" },
-            { text: "OPTIONS", value: "actions", sortable: false },
+            { text: "ESTADO", value: "act" },
+            { text: "OPCIONES", value: "actions", sortable: false },
         ],
 
         observacionRules: [
@@ -588,11 +614,14 @@ export default {
     },
 
     methods: {
-
+        formatearFecha(fecha) {
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            return fecha.toLocaleDateString('es-ES', options);
+        },
         showAddContrato() {
+            this.botonAct = 0;
             this.contratoModal = true;
             /*
-            
             if (this.documentoArchivo != '') {
                 this.inputState = false;
             }
@@ -611,8 +640,9 @@ export default {
             this.botonAct = 0;
             this.observacionModal = true;
         },
-        showEditObservacion() {
+        showEditObservacion(item) {
             this.botonAct = 1;
+            this.llenarCamposObservacion(item);
             this.observacionModal = true;
         },
 
@@ -648,13 +678,13 @@ export default {
                     console.log(response);
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.limpiar();
+                    //me.limpiar();
                     //me.listarDocumentos();
                     //me.listarArchivos();
                 })
                 .catch(function (error) {
+                    me.mensajeSnackbarError = "REGISTRO DE ARCHIVO FALLIDO",
                     me.snackbarError = true;
-
                 });
         },
 
@@ -678,19 +708,76 @@ export default {
                     this.fechaFinal +
                     "," +
                     this.idEmpleado
-
                 )
                 .then(function (response) {
-
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.listarContratos(me.idEmpleado);
-                    me.limpiar();
+                    me.limpiarContrato();
+                    me.closeAddContrato();
                 })
                 .catch(function (error) {
+                    me.mensajeSnackbarError = "REGISTRO FALLIDO",
                     me.snackbarError = true;
 
                 });
+        },
+        async actualizarContrato() {
+            let me = this;
+            await axios
+                .post(
+                    "/contrato/editarcontrato/" +
+                    this.idContrato +
+                    "," +
+                    this.documentoArchivo +
+                    "," +
+                    this.fechaInicio +
+                    "," +
+                    this.fechaFinal
+                )
+                .then(function (response) {
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarContratos(me.idEmpleado);
+                    me.limpiarContrato();
+                    me.closeAddContrato();
+                })
+                .catch(function (error) {
+                    me.mensajeSnackbarError = "ACTUALIZACION FALLIDA",
+                    me.snackbarError = true;
+                });
+        },
+        desactivarContrato(item) {
+            this.idContrato = item.idcontr;
+            this.desactivarcontrato(this.idContrato);
+        },
+        async desactivarcontrato(idContrato) {
+            let me = this;
+            await axios
+                .post("/contrato/offcontrato/" + this.idContrato).then(function (response) {
+                    me.listarContratos();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        },
+        activarContrato(item) {
+            this.idContrato = item.idcontr;
+            this.activarcontrato(this.idContrato);
+        },
+        async activarcontrato(idContrato) {
+            let me = this;
+            await axios
+                .post("/contrato/oncontrato/" + this.idContrato).then(function (response) {
+                    me.listarContratos();
+                })
+                .catch(function (error) {
+                    me.mensajeSnackbarError = "YA HAY UN CONTRATO ACTIVO",
+                    me.snackbarError = true;
+                    console.log(error);
+                })
+
         },
         async listarObservaciones(idEmpleado) {
             let me = this;
@@ -729,12 +816,69 @@ export default {
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.listarObservaciones(me.idEmpleado);
-                    me.limpiar();
+                    me.limpiarObservacion();
                     me.observacionModal = false;
                 })
                 .catch(function (error) {
+                    me.mensajeSnackbarError = "REGISTRO DE OBSERVACION FALLIDO",
                     me.snackbarError = true;
+                });
+        },
+        actualizarObservacion() {
+            this.actualizarObservaciones()
+        },
+        async actualizarObservaciones() {
+            let me = this;
+            await axios
+                .post(
+                    "/observacion/editarobservacion/" +
+                    this.idObservacion +
+                    "," +
+                    this.observacion +
+                    "," +
+                    this.comentario +
+                    "," +
+                    this.fecha
+                )
+                .then(function (response) {
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarObservaciones(me.idEmpleado);
+                    me.limpiarObservacion();
+                    me.closeAddObservacion();
+                })
+                .catch(function (error) {
+                    me.mensajeSnackbarError = "ACTUALIZACION FALLIDA",
+                    me.snackbarError = true;
+                });
+        },
+        desactivarObservacion(item) {
+            this.idObservacion = item.idobs;
+            this.desactivarobservacion(this.idObservacion);
+        },
+        async desactivarobservacion(idObservacion) {
+            let me = this;
+            await axios
+                .post("/observacion/offobservacion/" + this.idObservacion).then(function (response) {
+                    me.listarObservaciones();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
 
+        },
+        activarObservacion(item) {
+            this.idObservacion = item.idobs;
+            this.activarobservacion(this.idObservacion);
+        },
+        async activarobservacion(idObservacion) {
+            let me = this;
+            await axios
+                .post("/observacion/onobservacion/" + this.idObservacion).then(function (response) {
+                    me.listarObservaciones();
+                })
+                .catch(function (error) {
+                    console.log(error);
                 });
         },
         async listarVacaciones(idEmpleado) {
@@ -761,26 +905,89 @@ export default {
             await axios
                 .post(
                     "/vacacion/addvacacion/" +
-                    this.fechaInicio +
+                    this.diaInicio +
                     "," +
-                    this.comentario +
-                    "," +
-                    this.fecha +
+                    this.diaFinal +
                     "," +
                     this.idEmpleado
-
                 )
                 .then(function (response) {
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarObservaciones(me.idEmpleado);
-                    me.limpiar();
-                    me.observacionModal = false;
+                    me.listarVacaciones(me.idEmpleado);
+                    me.limpiarVacacion();
+                    me.closeAddVacacion();
                 })
                 .catch(function (error) {
+                    me.mensajeSnackbarError = "REGISTRO DE VACACIÓN FALLIDO",
                     me.snackbarError = true;
-
                 });
+        },
+        actualizarVacacion() {
+            this.actualizarVacaciones()
+        },
+        async actualizarVacaciones() {
+            let me = this;
+            await axios
+                .post(
+                    "/vacacion/editarvacacion/" +
+                    this.idVacacion +
+                    "," +
+                    this.diaInicio +
+                    "," +
+                    this.diaFinal
+                )
+                .then(function (response) {
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarVacaciones(me.idEmpleado);
+                    me.limpiarVacacion();
+                    me.closeAddVacacion();
+                })
+                .catch(function (error) {
+                    me.mensajeSnackbarError = "ACTUALIZACION FALLIDA",
+                    me.snackbarError = true;
+                });
+        },
+        desactivarVacacion(item) {
+            this.idVacacion = item.idvaca;
+            this.desactivarvacacion(this.idVacacion);
+        },
+        async desactivarvacacion(idVacacion) {
+            let me = this;
+            await axios
+                .post("/vacacion/offvacacion/" + this.idVacacion).then(function (response) {
+                    me.listarVacaciones();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        },
+        activarVacacion(item) {
+            this.idVacacion = item.idvaca;
+            this.activarvacacion(this.idVacacion);
+        },
+        async activarvacacion(idVacacion) {
+            let me = this;
+            await axios
+                .post("/vacacion/onvacacion/" + this.idVacacion).then(function (response) {
+                    me.listarVacaciones();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        },
+        
+        showAddVacacion() {
+            this.botonAct = 0;
+            this.vacacionModal = true;
+        },
+        showEditVacacion(item) {
+            this.botonAct = 1;
+            this.llenarCamposVacacion(item);
+            this.vacacionModal = true;
         },
         closeAddContrato() {
             this.contratoModal = false;
@@ -791,9 +998,47 @@ export default {
         closeAddVacacion() {
             this.vacacionModal = false;
         },
-        limpiar() {
-            //this.$refs.form.reset()
-            //this.documentoArchivo = '';
+        llenarCamposContrato(item) {
+            this.idContrato = item.idcontr;
+            this.documentoArchivo = 'documentoArchivo';
+            if (item.fecini) {// && !isNaN(new Date(item.fecini))) {
+                this.fechaInicio  = new Date(item.fecini).toISOString().split('T')[0];
+            }
+            if (item.fecfin) {
+                this.fechaFinal = new Date(item.fecfin).toISOString().split('T')[0];
+            } else {this.fechaFinal = null;}
+
+            if(item.fecfin == null) { this.tipo == 'TEMPORAL';console.log("CAMBIADO A TEMPORAL"); } else { this.tipo == 'PERMANENTE';console.log("CAMBIADO A PERMANENTE"); }
+            console.log("fecfin: "+item.fecfin);
+        },
+        llenarCamposObservacion(item) {
+            this.idObservacion = item.idobs;
+            this.observacion = item.obs;
+            this.comentario = item.com;
+            this.fecha = new Date(item.fec).toISOString().split('T')[0];
+        },
+        llenarCamposVacacion(item) {
+            this.idVacacion = item.idvaca;
+            this.diaInicio = new Date(item.fecini).toISOString().split('T')[0];
+            this.diaFinal = new Date(item.fecfin).toISOString().split('T')[0];
+        },
+        limpiarContrato() {
+            this.idContrato = "";
+            //this.documentoArchivo = "";
+            this.fechaInicio = null;
+            this.fechaFinal = null;
+
+        },
+        limpiarObservacion() {
+            this.idObservacion = "";
+            this.observacion = "";
+            this.comentario = "";
+            this.fecha = "";
+        },
+        limpiarVacacion() {
+            this.idVacacion = "";
+            this.diaInicio = "";
+            this.diaFinal = "";
         },
         getColor(est) {
             if (est == 'ACTIVO') return 'green'
