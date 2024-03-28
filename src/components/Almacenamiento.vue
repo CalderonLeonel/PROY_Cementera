@@ -109,7 +109,7 @@
 
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
-                                        @click="openAlmacenModal()" style="float: right" title="BUSCAR almacen">
+                                        @click="openAlmacenModal()" style="float: right" title="BUSCAR ALMACEN">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -512,8 +512,9 @@ export default {
         },
 
         registrarAlm() {
-            alert(this.idAlmacen)
+            if (this.$refs.form.validate()) {
             this.registrarAlmacenamiento(this.idItem,this.idAlmacen, this.cantidad);
+            }
         },
         async registrarAlmacenamiento(
             idItem,
@@ -546,8 +547,10 @@ export default {
         },
 
         editarAlm() {
+            if (this.$refs.form.validate()) {
             this.editarAlmacenamiento(this.idItem, this.nombreItem,this.cantidad, this.descripcion,this.medida,this.idTipoItem, this.estado);
             this.botonAct=0;
+            }
         },
         async editarAlmacenamiento(
             idItem,

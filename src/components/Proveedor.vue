@@ -119,22 +119,22 @@
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-container>
                             <v-row>
-                                <v-col cols="12" md="4">
+                                <v-col cols="12" md="6">
                                     <v-text-field v-model="nombreProveedor" label="NOMBRE PROVEEDOR" :counter="60"
                                         :rules="nombreRules" @input="nombreProveedor = nombreProveedor.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
-                                <v-col cols="12" md="4">
+                                <v-col cols="12" md="6">
                                     <v-text-field v-model="contactoProveedorPrincipal" type="number" label="CONTACTO" :counter="10"
-                                        :rules="phone1Rules" @input="contactoProveedorPrincipal = contactoProveedorPrincipal.toUpperCase()"
+                                        :rules="phone1Rules" @input="contactoProveedorPrincipal = contactoProveedorPrincipal"
                                         required></v-text-field>
                                 </v-col>
-                                <v-col cols="12" md="4">
+                                <v-col cols="12" md="6">
                                     <v-text-field v-model="contactoProveedorecundario" type="number" label="CONTACTO SECUNDARIO (OPCIONAL)" :counter="10"
-                                        :rules="phone2Rules" @input="contactoProveedorecundario = contactoProveedorecundario.toUpperCase()"
+                                        :rules="phone2Rules" @input="contactoProveedorecundario = contactoProveedorecundario"
                                         required></v-text-field>
                                 </v-col>
-                                <v-col cols="12" md="4">
+                                <v-col cols="12" md="6">
                                     <v-text-field v-model="correoProveedor" type="email" label="CORREO" :counter="100"
                                         :rules="emailRules" @input="correoProveedor = correoProveedor"
                                         required></v-text-field>
@@ -142,7 +142,7 @@
                                 <v-col cols="12" md="12">
                                     <v-file-input v-model="documentoArchivo"
                                         accept=".jpg, .jpeg, .webp, .png, .gif, .bmp, .docx, .xlsx, .pptx, .pdf, .csv, .xml"
-                                        label="DOCUMENTO DE PROVEEDOR" 
+                                        label="DOCUMENTO DE PROVEEDOR (SI SE REQUIERE)" 
                                     ></v-file-input>
                                      </v-col>   
                                 <v-col cols="12" md="4"> </v-col>
@@ -221,6 +221,8 @@ export default {
     data() {
         return {
             mensajeSnackbarError: "REGISTRO FALLIDO",
+            mensajeSnackbar: '',
+            
 
             existencias: true,
             itemsCriticos: '',
@@ -244,16 +246,13 @@ export default {
                 "el nombre del proveedor no debe sobrepasar los 60 caracteres.",
             ],
             phone1Rules: [
-                (v) => !!v ||"Se requiere un numero telefonico o celular.",
-               (v) => v.length >= 7 || "El telephono principal debe tener al menos 7 caracteres.",
-              (v) =>
-              (v  && v.length <= 10) ||
-                "El telephono principal debe tener hasta 10 caracteres.",
+            (v) => !!v || "Se requiere un número telefónico o celular.",
+            (v) => (v && v.length >= 7) || "El teléfono principal debe tener al menos 7 caracteres.",
+            (v) => (v && v.length <= 10) || "El teléfono principal debe tener hasta 10 caracteres.",
             ],
             phone2Rules: [
-              (v) =>
-              (v && v===null || v.length >= 7 || v.length <= 10) ||
-                "El telephono secundario debe tener hasta 10 caracteres.",
+            (v) => (!v || (v.length >= 7 && v.length <= 10)) ||
+                "El teléfono secundario debe tener entre 7 y 10 caracteres.",
             ],
             emailRules: [
               (v) => !!v || "Se requiere el correo electronico del proveedor",
@@ -390,13 +389,15 @@ export default {
         },
 
         registrarProv() {
-            if(this.contactoProveedorecundario==''){
-                this.contactoProveedorecundario=this.contactoProveedorPrincipal;
+            if (this.$refs.form.validate()) {
+                if(this.contactoProveedorecundario==''){
+                    this.contactoProveedorecundario=this.contactoProveedorPrincipal;
+                }
+                this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
+                this.almacenarArchivo(this.documentoArchivo)
+                this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro000","ACTIVO");
+                this.closeModalAgregarProveedor();
             }
-            this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
-            this.almacenarArchivo(this.documentoArchivo)
-            this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro000","ACTIVO");
-            this.closeModalAgregarProveedor();
         },
         async registrarProveedor(
             nombreProveedor,
@@ -434,10 +435,12 @@ export default {
         },
 
         editarProv() {
-            this.botonAct = 0;
+            if (this.$refs.form.validate()) {
+                this.botonAct = 0;
 
-            this.editarProveedor(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
-            this.closeModalAgregarProveedor();
+                this.editarProveedor(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
+                this.closeModalAgregarProveedor();
+            }
         },
         async editarProveedor(
             idProveedor,

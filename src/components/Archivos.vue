@@ -121,17 +121,17 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="7">
-                                    <v-file-input v-model="documentoArchivo"
+                                    <v-file-input v-model="documentoArchivo" required :rules="fileRules"
                                         accept=".jpg, .jpeg, .webp, .png, .gif, .bmp, .docx, .xlsx, .pptx, .pdf, .csv, .xml"
                                         label="ARCHIVO"></v-file-input>
 
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-text-field v-model="codigoArchivo" type="text" label="CODIGO" :counter="25"
+                                    <v-text-field v-model="codigoArchivo" type="text" label="CODIGO" :counter="25" :rules="codigoRules"
                                         @input="codigoArchivo = codigoArchivo.toUpperCase()" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="descripcionArchivo" type="text" label="DESCRIPCION"
+                                    <v-text-field v-model="descripcionArchivo" type="text" label="DESCRIPCION" :rules="descripcionRules"
                                         :counter="150" @input="descripcionArchivo = descripcionArchivo.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -239,6 +239,23 @@ export default {
 
             snackbarOK: false,
             snackbarError: false,
+
+            fileRules: [
+                (v) => !!v || "El archivo es obligatorio.", 
+            ],
+
+
+            codigoRules: [
+              (v) => !!v || "Se requiere el codigo del archivo.",
+              (v) =>
+              (v && v.length <= 25 ) ||
+                "El codigo no debe sobrepasar los 25 caracteres.",
+            ],
+
+            descripcionRules: [
+            (v) => !!v || "Se requiere la descripción del archivo.",
+            (v) => (v === null || v.length <= 150) || "La descripción no debe superar los 150 caracteres.",
+            ],
         }
     },
     created: function () {
@@ -382,9 +399,11 @@ export default {
                 });
         },
         registrarDocumento() {
+            if (this.$refs.form.validate()) {
             this.almacenarArchivo(this.documentoArchivo)
             this.guardarDocumento(this.documentoArchivo.name, this.descripcionArchivo, this.codigoArchivo, "ACTIVO");
             this.agregarDocumento = false;
+            }
         },
         async almacenarArchivo(documentoArchivo) {
 
@@ -440,7 +459,9 @@ export default {
                 });
         },
         actualizarDocumento() {
+            if (this.$refs.form.validate()) {
             this.editarDocumento(this.idDocumento, this.documentoArchivo.name, this.documentoArchivo, this.descripcionArchivo, this.codigoArchivo, 'ACTIVO');
+            }
         },
         async editarDocumento(id, nombre, documento, descripcion, codigo, estado) {
             const ext = nombre.split('.');
