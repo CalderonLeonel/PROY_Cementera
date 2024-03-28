@@ -1,11 +1,11 @@
 <template>
-   <v-card elevation="5" outlined>
+    <v-card elevation="5" outlined>
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                         mdi-close
+                        mdi-close
                     </v-icon>
                 </template>
             </v-snackbar>
@@ -16,34 +16,24 @@
                 <strong>{{ mensajeSnackbarError }}</strong>
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarError = false">
-                            mdi-close
+                        mdi-close
                     </v-icon>
                 </template>
             </v-snackbar>
         </div>
-        <v-alert v-if="existencias==false"         
-                type="error"
-                color="red darken-2"
-                icon="mdi-alert-circle"
-                dense
-                prominent
-                >
-                <div class="text-h6">
-                    SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
-                </div>
-                POR FAVOR, COTICE UNA ADQUISICION PARA TENER EXISTENCIAS DE <strong>${nombreitem}</strong> NECESARIAS PARA EL FUNCIONAMIENTO DE LA FABRICA 
+        <v-alert v-if="existencias == false" type="error" color="red darken-2" icon="mdi-alert-circle" dense prominent>
+            <div class="text-h6">
+                SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
+            </div>
+            POR FAVOR, COTICE UNA ADQUISICION PARA TENER EXISTENCIAS DE <strong>${nombreitem}</strong> NECESARIAS PARA
+            EL
+            FUNCIONAMIENTO DE LA FABRICA
         </v-alert>
-        <v-alert v-if="existencias==true"          
-                type="success"
-                color="green darken-2"
-                dismissible
-                dense
-                prominent
-                >
-                <div class="text-h5">
-                    SE TIENEN LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
-                </div>
-               
+        <v-alert v-if="existencias == true" type="success" color="green darken-2" dismissible dense prominent>
+            <div class="text-h5">
+                SE TIENEN LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
+            </div>
+
         </v-alert>
         <div>
             <v-alert dense style="color: #ffffff;" color="purple">
@@ -53,10 +43,11 @@
         <div>
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-container>
-               
+
                     <v-row>
                         <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showModalAgregarCotizacionAdquisicion()">NUEVA COTIZACION DE ADQUISICIONES</v-btn>
+                            <v-btn color="success" @click="showModalAgregarCotizacionAdquisicion()">NUEVA COTIZACION DE
+                                ADQUISICIONES</v-btn>
                         </v-col>
                         <v-col cols="12">
                             <v-list-item>
@@ -66,37 +57,38 @@
                             </v-list-item>
 
                             <v-card-title>
-                               <v-text-field v-model="searchCotizacionAdquisicion" append-icon="mdi-magnify" label="BUSCAR COTIZACIONES"
-                                    single-line hide-details></v-text-field>
+                                <v-text-field v-model="searchCotizacionAdquisicion" append-icon="mdi-magnify"
+                                    label="BUSCAR COTIZACIONES" single-line hide-details></v-text-field>
                             </v-card-title>
 
-                            <v-data-table :headers="headerCotizacionAdquisicion" :items="datosCotizacionAdquisicion" :search="searchCotizacionAdquisicion"
-                                :items-per-page="5" class="elevation-1"  id="tableId">
+                            <v-data-table :headers="headerCotizacionAdquisicion" :items="datosCotizacionAdquisicion"
+                                :search="searchCotizacionAdquisicion" :items-per-page="5" class="elevation-1"
+                                id="tableId">
 
 
                                 <template #[`item.fechaVencimiento`]="{ item }">
-                                        {{getFormattedDate(item.fechaVencimiento)}}
+                                    {{ getFormattedDate(item.fechaVencimiento) }}
                                 </template>
-                                
-                               
+
+
                                 <template #[`item.estado`]="{ item }">
                                     <v-chip :color="getColor(item.estado)" dark>
-                                        {{getState(item.estado)}}
+                                        {{ getState(item.estado) }}
                                     </v-chip>
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.estado == 'PENDIENTE'" class="mr-2" color="primary" x-large  @click="llenarCamposCotizacionAdquisicion(item)"
-                                        title="ACTUALIZAR INFORMACION">
+                                    <v-icon v-if="item.estado == 'PENDIENTE'" class="mr-2" color="primary" x-large
+                                        @click="llenarCamposCotizacionAdquisicion(item)" title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
-                                    </v-icon>                                    
-                                    <v-icon  x-large color="primary" class="mr-2" @click="mostrarItems(item)"
+                                    </v-icon>
+                                    <v-icon x-large color="primary" class="mr-2" @click="mostrarItems(item)"
                                         title="VER ITEMS">
                                         mdi-eye
-                                    </v-icon>          
+                                    </v-icon>
                                 </template>
 
-                              
+
 
 
                             </v-data-table>
@@ -104,7 +96,8 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showModalAgregarCotizacionItem()">NUEVA COTIZACION DE ITEM</v-btn>
+                            <v-btn color="success" @click="showModalAgregarCotizacionItem()">NUEVA COTIZACION DE
+                                ITEM</v-btn>
                         </v-col>
                         <v-col cols="12">
                             <v-list-item>
@@ -114,35 +107,36 @@
                             </v-list-item>
 
                             <v-card-title>
-                               <v-text-field v-model="searchCotizacionItem" append-icon="mdi-magnify" label="BUSCAR UNA COTIZACION DE UN ITEM"
-                                    single-line hide-details></v-text-field>
+                                <v-text-field v-model="searchCotizacionItem" append-icon="mdi-magnify"
+                                    label="BUSCAR UNA COTIZACION DE UN ITEM" single-line hide-details></v-text-field>
                             </v-card-title>
 
-                            <v-data-table :headers="headerCotizacionItem" :items="datosCotizacionItem" :search="searchCotizacionItem"
-                                :items-per-page="5" class="elevation-1" id="tableId">
+                            <v-data-table :headers="headerCotizacionItem" :items="datosCotizacionItem"
+                                :search="searchCotizacionItem" :items-per-page="5" class="elevation-1" id="tableId">
 
                                 <template #[`item.estado`]="{ item }">
                                     <v-chip :color="getColor(item.estado)" dark>
-                                        {{getState(item.estado)}}
+                                        {{ getState(item.estado) }}
                                     </v-chip>
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposCotizacionItem(item)"
-                                        title="ACTUALIZAR INFORMACION">
+                                    <v-icon class="mr-2" color="primary" x-large
+                                        @click="llenarCamposCotizacionItem(item)" title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
                                     </v-icon>
-                                    <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
-                                        title="ACTIVAR COTIZACION">
+                                    <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2"
+                                        @click="activar(item)" title="ACTIVAR COTIZACION">
                                         mdi-check-circle-outline
                                     </v-icon>
-                                    <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionCotizacionItem(item)"
+                                    <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2"
+                                        @click="confirmacionAnulacionCotizacionItem(item)"
                                         title="DESACTIVAR COTIZACION">
                                         mdi-close-circle
-                                    </v-icon>             
+                                    </v-icon>
                                 </template>
 
-                              
+
 
 
                             </v-data-table>
@@ -157,15 +151,15 @@
                             </v-list-item>
 
                             <v-card-title>
-                               <v-text-field v-model="searchCotizacion" append-icon="mdi-magnify" label="BUSCAR COTIZACIONES"
-                                    single-line hide-details></v-text-field>
+                                <v-text-field v-model="searchCotizacion" append-icon="mdi-magnify"
+                                    label="BUSCAR COTIZACIONES" single-line hide-details></v-text-field>
                             </v-card-title>
 
-                            <v-data-table :headers="headerCotizacion" :items="datosCotizacion" :search="searchCotizacion"
-                                :items-per-page="5" class="elevation-1" id="tableId">
+                            <v-data-table :headers="headerCotizacion" :items="datosCotizacion"
+                                :search="searchCotizacion" :items-per-page="5" class="elevation-1" id="tableId">
 
                                 <template #[`item.fechaVencimiento`]="{ item }">
-                                        {{getFormattedDate(item.fechaVencimiento)}}
+                                    {{ getFormattedDate(item.fechaVencimiento) }}
                                 </template>
 
                                 <template #[`item.estado`]="{ item }">
@@ -175,25 +169,25 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon class="mr-2" color="primary" x-large  @click="mostrarItems(item)"
+                                    <v-icon class="mr-2" color="primary" x-large @click="mostrarItems(item)"
                                         title="VER ITEMS">
                                         mdi-eye
-                                    </v-icon> 
-                                    <v-icon class="mr-2" color="primary" x-large  @click="generatePDF(item)"
+                                    </v-icon>
+                                    <v-icon class="mr-2" color="primary" x-large @click="generatePDF(item)"
                                         title="VER PDF">
                                         mdi-file-pdf-box
-                                    </v-icon>         
-                                    <v-icon class="mr-2" color="green" x-large  @click="aprobarAdquisicion(item)"
+                                    </v-icon>
+                                    <v-icon class="mr-2" color="green" x-large @click="aprobarAdquisicion(item)"
                                         title="APROBAR">
                                         mdi-check-circle
-                                    </v-icon> 
-                                    <v-icon class="mr-2" color="red" x-large  @click="denegarAdquisicion(item)"
+                                    </v-icon>
+                                    <v-icon class="mr-2" color="red" x-large @click="denegarAdquisicion(item)"
                                         title="DENEGAR">
                                         mdi-close-circle
-                                    </v-icon>                                             
+                                    </v-icon>
                                 </template>
 
-                              
+
 
 
                             </v-data-table>
@@ -227,40 +221,50 @@
                                 </v-col>
 
                                 <v-col cols="12" md="8">
-                                    <v-text-field v-model="nombreCotizacion" label="NOMBRE DE LA COTIZACION"  :counter="100"
-                                         @input="nombreCotizacion = nombreCotizacion.toUpperCase()"
+                                    <v-text-field v-model="nombreCotizacion" label="NOMBRE DE LA COTIZACION"
+                                        :counter="100" @input="nombreCotizacion = nombreCotizacion.toUpperCase()" :rules="nombreCotizacionRules"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-subheader class="text-h5">FECHA DE VENCIMIENTO:</v-subheader>
                                 </v-col>
-                                <v-col cols="12" md="8">                                  
-                                    <v-date-picker required locale="es" :landscape="true" :show-current="false" full-width v-model="fechaVencimiento" :min="getDate()" @input="fechaVencimiento = fechaVencimiento" color="blue lighten-1" header-color="primary"></v-date-picker>                                 
-                                </v-col>
-                                
+                                <v-col cols="12" md="8">
+                                    <v-menu v-model="menuFecha" :close-on-content-click="false" :nudge-right="40"
+                                        transition="scale-transition" offset-y min-width="auto">
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-text-field v-model="fechaVencimiento" label="FECHA DE VENCIMIENTO"
+                                                prepend-icon="mdi-calendar" readonly required :rules="fechaRules" v-bind="attrs"
+                                                v-on="on"></v-text-field>
+                                        </template>
+                                        <v-date-picker v-model="fechaVencimiento" @input="menuFecha = false" locale="es"  color="blue lighten-1" header-color="primary"
+                                            :min="getDate()"></v-date-picker>
+                                    </v-menu>
+                                    <!--<v-date-picker required locale="es" :landscape="true" :show-current="false" full-width v-model="fechaVencimiento" :min="getDate()" @input="fechaVencimiento = fechaVencimiento" color="blue lighten-1" header-color="primary"></v-date-picker>                                 
+                               --> </v-col>
+
                                 <v-col cols="12" md="12">
                                     <v-file-input v-model="documentoArchivo"
                                         accept=".jpg, .jpeg, .webp, .png, .gif, .bmp, .docx, .xlsx, .pptx, .pdf, .csv, .xml"
-                                        label="DOCUMENTO DE COTIZACION" 
-                                    ></v-file-input>
-                                     </v-col>
-                                
+                                        label="DOCUMENTO DE COTIZACION"></v-file-input>
+                                </v-col>
+
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
-                                    <v-btn iconvv v-if="botonactCot == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="editarCotizacionAdq()" style="float: left"
-                                            title="ACTUALIZAR INFORMACIÓN">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                            ACTUALIZAR
-                                        </v-btn>
-                                        <v-btn iconv v-if="botonactCot == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarCotizacionAdq()" style="float: left" title="REGISTRAR COTIZACION DE ADQUISICION">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                        </v-btn>
-                                </v-col>                      
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                    <v-btn iconvv v-if="botonactCot == 1" class="mx-4" dark color="#0A62BF"
+                                        @click="editarCotizacionAdq()" style="float: left"
+                                        title="ACTUALIZAR INFORMACIÓN">
+                                        <v-icon dark> mdi-pencil </v-icon>
+                                        ACTUALIZAR
+                                    </v-btn>
+                                    <v-btn iconv v-if="botonactCot == 0" class="mx-4" dark color="#0ABF55"
+                                        @click="registrarCotizacionAdq()" style="float: left"
+                                        title="REGISTRAR COTIZACION DE ADQUISICION">
+                                        <v-icon dark> mdi-content-save </v-icon>
+                                        GUARDAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()"
                                         style="float: left" title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                         LIMPIAR
@@ -268,7 +272,8 @@
                                 </v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeModalAgregarCotizacionAdquisicion()" style="float: right" title="SALIR">
+                                        @click="closeModalAgregarCotizacionAdquisicion()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -291,8 +296,8 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ITEMS ACTIVOS"
-                                        single-line hide-details></v-text-field>
+                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify"
+                                        label="BUSCAR ITEMS ACTIVOS" single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
 
@@ -317,10 +322,10 @@
                     </v-container>
                 </v-card-text>
             </v-card>
-        </v-dialog>      
-        
-        
-        
+        </v-dialog>
+
+
+
         <v-dialog v-model="cotizacionModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
@@ -331,16 +336,16 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchCotizacion" append-icon="mdi-magnify" label="BUSCAR COTIZACIONES CREADAS"
-                                        single-line hide-details></v-text-field>
+                                    <v-text-field v-model="searchCotizacion" append-icon="mdi-magnify"
+                                        label="BUSCAR COTIZACIONES CREADAS" single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headerCotizacionAdquisicion" :items="datosCotizacion" :search="searchCotizacion"
-                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                <v-data-table :headers="headerCotizacionAdquisicion" :items="datosCotizacion"
+                                    :search="searchCotizacion" :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.fechaVencimiento`]="{ item }">
-                                        {{getFormattedDate(item.fechaVencimiento)}}
+                                        {{ getFormattedDate(item.fechaVencimiento) }}
                                     </template>
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon small class="mr-2" @click="seleccionarCotizacion(item)">
@@ -360,7 +365,7 @@
                     </v-container>
                 </v-card-text>
             </v-card>
-        </v-dialog> 
+        </v-dialog>
 
 
         <v-dialog v-model="proveedorModal" persistent :overlay="false" max-width="900px">
@@ -373,14 +378,14 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchProveedor" append-icon="mdi-magnify" label="BUSCAR PROVEEDOR ACTIVO"
-                                        single-line hide-details></v-text-field>
+                                    <v-text-field v-model="searchProveedor" append-icon="mdi-magnify"
+                                        label="BUSCAR PROVEEDOR ACTIVO" single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headerProveedor" :items="datosProveedor" :search="searchProveedor"
-                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                <v-data-table :headers="headerProveedor" :items="datosProveedor"
+                                    :search="searchProveedor" :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon small class="mr-2" @click="seleccionarProveedor(item)">
                                             mdi-check-circle
@@ -399,7 +404,7 @@
                     </v-container>
                 </v-card-text>
             </v-card>
-        </v-dialog>         
+        </v-dialog>
 
 
 
@@ -413,58 +418,59 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" v-if="botonactCotIt == 0" fab dark x-small color="cyan" :rules="nombreRules"
-                                        @click="openCotizacionModal()" style="float: right" title="BUSCAR COTIZACION">
+                                    <v-btn class="mx-2" v-if="botonactCotIt == 0" fab dark x-small color="cyan"
+                                        :rules="nombreRules" @click="openCotizacionModal()" style="float: right"
+                                        title="BUSCAR COTIZACION">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="nombreCotizacion" label="NOMBRE COTIZACION" :counter="60"
-                                        :rules="nombreRules" @input="nombreCotizacion = nombreCotizacion.toUpperCase()"
+                                    <v-text-field v-model="nombreCotizacion" label="NOMBRE COTIZACION" :counter="100"
+                                        :rules="nombreCotizacionRules" @input="nombreCotizacion = nombreCotizacion.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" v-if="botonactCotIt == 0" fab dark x-small color="cyan" :rules="nombreRules"
-                                        @click="openItemModal()" style="float: right" title="BUSCAR ITEM">
+                                    <v-btn class="mx-2" v-if="botonactCotIt == 0" fab dark x-small color="cyan"
+                                        :rules="nombreRules" @click="openItemModal()" style="float: right"
+                                        title="BUSCAR ITEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="5">
                                     <v-text-field v-model="nombreItem" label="NOMBRE ITEM" :counter="60"
-                                        :rules="nombreRules" @input="nombreItem = nombreItem.toUpperCase()"
-                                        disabled required></v-text-field>
+                                        :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()" disabled
+                                        required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="6">
-                                    <v-text-field v-model="precioUnitario" type="number" label="COSTO UNITARIO" 
-                                         @input="precioUnitario = precioUnitario.toUpperCase()"
-                                        required></v-text-field>
+                                    <v-text-field v-model="precioUnitario" type="number" label="COSTO UNITARIO" :rules="costoRules"
+                                        @input="precioUnitario = precioUnitario.toUpperCase()" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-text-field v-model="cantidad" type="number" label="CANTIDAD" 
-                                         @input="cantidad = cantidad.toUpperCase()"
-                                        required></v-text-field>
+                                    <v-text-field v-model="cantidad" type="number" label="CANTIDAD" :rules="cantidadRules"
+                                        @input="cantidad = cantidad.toUpperCase()" required></v-text-field>
                                 </v-col>
-                                
+
                                 <v-col cols="12" md="12"> </v-col>
-                                
+
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
-                                    <v-btn iconvv v-if="botonactCotIt == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="editarCotizacionIt()" style="float: left"
-                                            title="ACTUALIZAR INFORMACIÓN">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                            ACTUALIZAR
-                                        </v-btn>
-                                        <v-btn iconv v-if="botonactCotIt == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarCotizacionIt()" style="float: left" title="REGISTRAR COTIZACION DE ITEM">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                        </v-btn>
-                                </v-col>                      
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                    <v-btn iconvv v-if="botonactCotIt == 1" class="mx-4" dark color="#0A62BF"
+                                        @click="editarCotizacionIt()" style="float: left"
+                                        title="ACTUALIZAR INFORMACIÓN">
+                                        <v-icon dark> mdi-pencil </v-icon>
+                                        ACTUALIZAR
+                                    </v-btn>
+                                    <v-btn iconv v-if="botonactCotIt == 0" class="mx-4" dark color="#0ABF55"
+                                        @click="registrarCotizacionIt()" style="float: left"
+                                        title="REGISTRAR COTIZACION DE ITEM">
+                                        <v-icon dark> mdi-content-save </v-icon>
+                                        GUARDAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()"
                                         style="float: left" title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                         LIMPIAR
@@ -495,31 +501,31 @@
                 </v-card-title>
                 <v-card-text>
                     <v-container>
-                            <v-row>
-                                <v-col cols="3"></v-col>
-                                <v-col cols="3">
-                                    <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anularCotizacionAdquisicion()" style="float: right" title="ANULAR COTIZACION DE ADQUISICION">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        ANULAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="3">
-                                    <v-btn class="mx-2"  dark x-big color="#00A1B1"
-                                        @click="closeAnulacionCotizacionAdquisicion()" style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="3"></v-col>
-                            </v-row>
+                        <v-row>
+                            <v-col cols="3"></v-col>
+                            <v-col cols="3">
+                                <v-btn class="mx-2" dark x-big color="#BF120A" @click="anularCotizacionAdquisicion()"
+                                    style="float: right" title="ANULAR COTIZACION DE ADQUISICION">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    ANULAR
+                                </v-btn>
+                            </v-col>
+                            <v-col cols="3">
+                                <v-btn class="mx-2" dark x-big color="#00A1B1"
+                                    @click="closeAnulacionCotizacionAdquisicion()" style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    SALIR
+                                </v-btn>
+                            </v-col>
+                            <v-col cols="3"></v-col>
+                        </v-row>
                     </v-container>
                 </v-card-text>
             </v-card>
         </v-dialog>
 
 
-        
+
         <v-dialog v-model="confirmacionAnulacionCotizacionIt" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
@@ -527,55 +533,51 @@
                 </v-card-title>
                 <v-card-text>
                     <v-container>
-                            <v-row>
-                                <v-col cols="3"></v-col>
-                                <v-col cols="3">
-                                    <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anularCotizacionItem()" style="float: right" title="QUITAR ITEM">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        ANULAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="3">
-                                    <v-btn class="mx-2"  dark x-big color="#00A1B1"
-                                        @click="closeAnulacionCotizacionItem()" style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="3"></v-col>
-                            </v-row>
+                        <v-row>
+                            <v-col cols="3"></v-col>
+                            <v-col cols="3">
+                                <v-btn class="mx-2" dark x-big color="#BF120A" @click="anularCotizacionItem()"
+                                    style="float: right" title="QUITAR ITEM">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    ANULAR
+                                </v-btn>
+                            </v-col>
+                            <v-col cols="3">
+                                <v-btn class="mx-2" dark x-big color="#00A1B1" @click="closeAnulacionCotizacionItem()"
+                                    style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    SALIR
+                                </v-btn>
+                            </v-col>
+                            <v-col cols="3"></v-col>
+                        </v-row>
                     </v-container>
                 </v-card-text>
             </v-card>
         </v-dialog>
 
 
-        <v-dialog
-            v-model="detalleCotizacionDialog"
-            persistent :overlay="false"
-            max-width="900px"
-            transition="dialog-transition"
-        >
-        <v-card>
-            <v-card-title primary-title>
-                CONTENIDO
-            </v-card-title>
-        </v-card>
-        <v-card>
-                <v-data-table :headers="headerCotizacionItem" :items="datosDetalleCotizacion"
-                    :items-per-page="5" class="elevation-1">
+        <v-dialog v-model="detalleCotizacionDialog" persistent :overlay="false" max-width="900px"
+            transition="dialog-transition">
+            <v-card>
+                <v-card-title primary-title>
+                    CONTENIDO
+                </v-card-title>
+            </v-card>
+            <v-card>
+                <v-data-table :headers="headerCotizacionItem" :items="datosDetalleCotizacion" :items-per-page="5"
+                    class="elevation-1">
                 </v-data-table>
-        </v-card>
-        <v-card>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="red" dark x-big  @click="closeDetalleCotizacion()">
-                    <v-icon dark> mdi-close-circle-outline </v-icon> SALIR
-                </v-btn>
-                <v-spacer></v-spacer>
-            </v-card-actions>
-        </v-card>
+            </v-card>
+            <v-card>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red" dark x-big @click="closeDetalleCotizacion()">
+                        <v-icon dark> mdi-close-circle-outline </v-icon> SALIR
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                </v-card-actions>
+            </v-card>
         </v-dialog>
 
 
@@ -583,7 +585,7 @@
 
 
     </v-card>
-    
+
 
 </template>
 <script>
@@ -597,14 +599,14 @@ export default {
 
             existencias: true,
             itemsCriticos: '',
-            datosExistencia:[],
+            datosExistencia: [],
 
-            
+
             documentoArchivo: null,
 
             mensajeSnackbarError: "REGISTRO FALLIDO",
 
-            
+
             idcotizacion: "",
             idUsuario: "1",
             idProveedor: "",
@@ -614,35 +616,62 @@ export default {
             precioUnitario: "",
             nombreCotizacion: "",
             fechaVencimiento: "",
-            cantidad:"",
+            //date picker fecha
+            menuFecha: false,
+            cantidad: "",
             estado: "PENDIENTE",
 
 
-            nombreProveedor:"",
-            nombreItem:"",
+            nombreProveedor: "",
+            nombreItem: "",
             //fechaDeModificacion: "",
             valid: true,
+            nombreCotizacionRules: [
+                (v) => !!v || "Se requiere el nombre de la cotización.",
+                (v) =>
+                    (v && v.length <= 100) ||
+                    "El nombre de la cotización no debe sobrepasar los 100 caracteres.",
+            ],
+
+            nombreItemRules: [
+                (v) => !!v || "Se requiere el nombre del item.",
+                (v) =>
+                    (v && v.length <= 60) ||
+                    "El nombre del item no debe sobrepasar los 60 caracteres.",
+            ],
+            
             nombreRules: [
-              (v) => !!v || "Se requiere el nombre del proveedor.",
-              (v) =>
-              (v && v.length <= 60) ||
-                "el nombre del proveedor no debe sobrepasar los 60 caracteres.",
+                (v) => !!v || "Se requiere el nombre del proveedor.",
+                (v) =>
+                    (v && v.length <= 60) ||
+                    "El nombre del proveedor no debe sobrepasar los 60 caracteres.",
             ],
-            phone1Rules: [
-              (v) => !!v || "Se requiere un numero telefonico o celular.",
-              (v) =>
-              (v && v.length <= 10) ||
-                "El telephono principal debe tener hasta 10 caracteres.",
+            
+            fechaRules: [
+                (v) => !!v || "La fecha es requerida.",
+                (v) => {
+                    const selectedDate = Date.parse(v);
+                    const currentDate = new Date();
+
+                    if (!isNaN(selectedDate) && selectedDate >= currentDate) {
+                    return true;
+                    } else {
+                    return "La fecha debe ser posterior a la fecha actual.";
+                    }
+                },
             ],
-            phone2Rules: [
-              (v) =>
-              (v && v===null || v.length <= 10) ||
-                "El telephono secundario debe tener hasta 10 caracteres.",
+
+
+            costoRules: [
+                (v) => !!v || "El costo unitario es requerido.",
+                (v) => !isNaN(parseFloat(v)) && isFinite(v) || "Ingresa un valor numérico válido.",
+                (v) => v > 0 || "El costo unitario debe ser mayor que 0.",
             ],
-            emailRules: [
-              (v) => !!v || "Se requiere el correo electronico del proveedor",
-              (v) => /.+@.+\..+/.test(v) || "Debe ser un correo electronico valido",
-             ],
+            cantidadRules: [
+                (v) => !!v || "La cantidad es requerida.",
+                (v) => !isNaN(parseFloat(v)) && isFinite(v) || "Ingresa un valor numérico válido.",
+                (v) => v > 0 || "La cantidad debe ser mayor que 0.",
+            ],
 
             datosCotizacion: [],
             datosDetalleCotizacion: [],
@@ -659,7 +688,7 @@ export default {
             ],
 
 
-           
+
 
 
             datosCotizacionAdquisicion: [],
@@ -695,34 +724,34 @@ export default {
             agregarCotizacionItemModal: false,
             confirmacionAnulacionCotizacionIt: false,
 
-            searchItem:"",
-            itemModal:false,
-            datosItem:[],
+            searchItem: "",
+            itemModal: false,
+            datosItem: [],
             headerItem: [
-                 
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
-                 { text: "MEDIDA", value: "medida", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
-                 { text: "ESTADO", value: "estado", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
-                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
-             ],
+
+                { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                { text: "MEDIDA", value: "medida", sortable: true },
+                { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                { text: "ESTADO", value: "estado", sortable: true },
+                { text: "ACCIONES", value: "actions", sortable: false }
+                //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+            ],
 
 
 
 
 
 
-            searchCotizacion:"",
+            searchCotizacion: "",
             cotizacionModal: false,
-            datosCotizacion:[],
+            datosCotizacion: [],
 
 
 
-            searchProveedor:"",
+            searchProveedor: "",
             proveedorModal: false,
-            datosProveedor:[],
+            datosProveedor: [],
             headerProveedor: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
                 { text: "NOMBRE DE PROVEEDOR", value: "nomprv", sortable: true },
@@ -745,30 +774,30 @@ export default {
 
 
             header1: [
-                { text: "COTIZACIÓN", value: "idCotizacion"},
+                { text: "COTIZACIÓN", value: "idCotizacion" },
                 { text: "EMPLEADO", value: "nombreUsuario" },
-                { text: "PROVEEDOR", value: "nombreProveedor"},
-                { text: "NOMBRE COTIZACIÓN", value: "nombreCotizacion"},
+                { text: "PROVEEDOR", value: "nombreProveedor" },
+                { text: "NOMBRE COTIZACIÓN", value: "nombreCotizacion" },
                 { text: "FECHA VENCIMIENTO", value: "date" },
             ],
 
 
             header2: [
-                { text: "COTIZACIÓN ITEM", value: "idCotizacionItem"},
-                { text: "COTIZACIÓN", value: "nombrecotizacion"},
-                { text: "ITEM", value: "nombreitem"},
-                { text: "UNIDAD", value: "unidad"},
-                { text: "PRECIO UNITARIO", value: "precioUnitario"},
-                { text: "CANTIDAD", value: "cantidad"},
+                { text: "COTIZACIÓN ITEM", value: "idCotizacionItem" },
+                { text: "COTIZACIÓN", value: "nombrecotizacion" },
+                { text: "ITEM", value: "nombreitem" },
+                { text: "UNIDAD", value: "unidad" },
+                { text: "PRECIO UNITARIO", value: "precioUnitario" },
+                { text: "CANTIDAD", value: "cantidad" },
             ],
 
 
             snackbarOK: false,
-            snackbarError : false,
+            snackbarError: false,
             //#endregion
         }
     },
-    created: function (){
+    created: function () {
         this.listarCotizacionAdquisicionPendiente()
         this.listarCotizacionAdquisicion();
         this.listarCotizacionItem();
@@ -776,14 +805,14 @@ export default {
     },
     methods: {
 
-        getAlertas(){
+        getAlertas() {
             var items = [];
             var stock = [];
             var limite = [];
-            if(this.datosExistencia==[]){
-                this.existencias=false;
+            if (this.datosExistencia == []) {
+                this.existencias = false;
             }
-            else{
+            else {
                 console.log(JSON.parse(JSON.stringify(this.datosExistencia)));
                 console.log('');
                 let datosComoObjeto = JSON.parse(JSON.stringify(this.datosExistencia))
@@ -797,75 +826,75 @@ export default {
                         }
                         else if (key == 'limitecritico') {
                             limite.push(datosComoObjeto[propiedad][key])
-                        } 
+                        }
                         else if (key == 'cantidad') {
                             stock.push(datosComoObjeto[propiedad][key])
-                        } 
+                        }
                     }
                 }
                 for (let i = 0; i < items.length; i++) {
-                    if ( limite[i] >= stock[i]  ) {
+                    if (limite[i] >= stock[i]) {
                         console.log(limite[i])
                         console.log(stock[i])
-                        alert(limite[i]+' u '+stock[i] )
-                        this.existencias=false;
-                        this.itemsCriticos += items[i]+' ';
+                        alert(limite[i] + ' u ' + stock[i])
+                        this.existencias = false;
+                        this.itemsCriticos += items[i] + ' ';
                     }
                 }
             }
         },
 
-        async getListaExistencias(){
+        async getListaExistencias() {
             let me = this;
             await axios
                 .get("/inventario/listarexistencias/")
                 .then(function (response) {
-                if (response.data.resultado == null) {
-                    me.datosExistencia = [];
-                    console.log(response.data);
-                } else {
-                    console.log(response.data);
-                    me.datosExistencia = response.data.resultado;
-                }
+                    if (response.data.resultado == null) {
+                        me.datosExistencia = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosExistencia = response.data.resultado;
+                    }
                 })
                 .catch(function (error) {
-                console.log(error);
+                    console.log(error);
                 });
         },
-        
-        getDate(){ 
+
+        getDate() {
             var fecha = new Date().toISOString();
             return fecha;
         },
 
 
-        getFormattedDate(oldDate){
+        getFormattedDate(oldDate) {
             let fecha = new Date(oldDate);
             let dia = fecha.getDate();
-            let mes = fecha.getMonth() + 1; 
+            let mes = fecha.getMonth() + 1;
             let anio = fecha.getFullYear();
             if (dia < 10) dia = '0' + dia;
             if (mes < 10) mes = '0' + mes;
 
-            let fechaFormateada =  dia + '-' + mes + '-' + anio;
+            let fechaFormateada = dia + '-' + mes + '-' + anio;
 
             return fechaFormateada;
         },
 
-        changeFormatField(oldDate){
+        changeFormatField(oldDate) {
             let fecha = new Date(oldDate);
             let dia = fecha.getDate();
-            let mes = fecha.getMonth() + 1; 
+            let mes = fecha.getMonth() + 1;
             let anio = fecha.getFullYear();
             if (dia < 10) dia = '0' + dia;
             if (mes < 10) mes = '0' + mes;
 
-            let fechaFormateada =  anio + '-' + mes + '-' + dia;
+            let fechaFormateada = anio + '-' + mes + '-' + dia;
 
             return fechaFormateada;
         },
 
-        getTableData(){
+        getTableData() {
             return this.datosDetalleCotizacion;
         },
 
@@ -885,86 +914,86 @@ export default {
             this.listarProveedores();
         },
         async listarProveedores() {
-          let me = this;
-          await axios
-            .get("/proveedor/listarproveedoresactivos/")
-            .then(function (response) {
-              if (response.data.resultado == null) {
-                me.datosProveedor = [];
-                console.log(response.data);
-              } else {
-                console.log(response.data);
-                me.datosProveedor = response.data.resultado;
-              }
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+            let me = this;
+            await axios
+                .get("/proveedor/listarproveedoresactivos/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosProveedor = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosProveedor = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
 
 
         listarItem() {
-             this.listarItems();
-         },
-         async listarItems() {
-           let me = this;
-           await axios
-             .get("/inventario/listaritemactivo/")
-             .then(function (response) {
-               if (response.data.resultado == null) {
-                 me.datosItem = [];
-                 console.log(response.data);
-               } else {
-                 console.log(response.data);
-                 me.datosItem = response.data.resultado;
-               }
-             })
-             .catch(function (error) {
-               console.log(error);
-             });
-         },
+            this.listarItems();
+        },
+        async listarItems() {
+            let me = this;
+            await axios
+                .get("/inventario/listaritemactivo/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosItem = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosItem = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
 
-         
+
         listarCotizacionAdquisicionPendiente() {
             this.listarCotizacionesAdquisicionPendientes();
         },
         async listarCotizacionesAdquisicionPendientes() {
-          let me = this;
-          await axios
-            .get("/adquisicion/listarcotizaciondeadquisicionpendiente/")
-            .then(function (response) {
-              if (response.data.resultado == null) {
-                me.datosCotizacion = [];
-                console.log(response.data);
-              } else {
-                console.log(response.data);
-                me.datosCotizacion = response.data.resultado;
-              }
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+            let me = this;
+            await axios
+                .get("/adquisicion/listarcotizaciondeadquisicionpendiente/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosCotizacion = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosCotizacion = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
 
-         listarCotizacionAdquisicionActiva() {
+        listarCotizacionAdquisicionActiva() {
             this.listarCotizacionesAdquisicionActivas();
         },
         async listarCotizacionesAdquisicion() {
-          let me = this;
-          await axios
-            .get("/adquisicion/listarcotizaciondeadquisicionactiva/")
-            .then(function (response) {
-              if (response.data.resultado == null) {
-                me.datosCotizacion = [];
-                console.log(response.data);
-              } else {
-                console.log(response.data);
-                me.datosCotizacion = response.data.resultado;
-              }
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+            let me = this;
+            await axios
+                .get("/adquisicion/listarcotizaciondeadquisicionactiva/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosCotizacion = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosCotizacion = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
 
 
@@ -978,21 +1007,21 @@ export default {
             this.listarCotizacionesAdquisicion();
         },
         async listarCotizacionesAdquisicion() {
-          let me = this;
-          await axios
-            .get("/adquisicion/listarcotizaciondeadquisicion/")
-            .then(function (response) {
-              if (response.data.resultado == null) {
-                me.datosCotizacionAdquisicion = [];
-                console.log(response.data);
-              } else {
-                console.log(response.data);
-                me.datosCotizacionAdquisicion = response.data.resultado;
-              }
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+            let me = this;
+            await axios
+                .get("/adquisicion/listarcotizaciondeadquisicion/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosCotizacionAdquisicion = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosCotizacionAdquisicion = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
 
         llenarCamposCotizacionAdquisicion(item) {
@@ -1002,22 +1031,23 @@ export default {
             this.idProveedor = item.idProveedor;
             this.nombreProveedor = item.nombreProveedor;
             this.nombreCotizacion = item.nombreCotizacion;
-            var formatted = item.fechaVencimiento; 
+            var formatted = item.fechaVencimiento;
             this.fechaVencimiento = this.changeFormatField(formatted);
             this.estado = item.estado;
             this.agregarCotizacionAdquisicionModal = true;
         },
 
         registrarCotizacionAdq() {
-            if(this.documentoArchivo!=null){
-                this.almacenarArchivo(this.documentoArchivo)
-                this.guardarDocumento(this.documentoArchivo.name,this.nombreCotizacion,"adq000","ACTIVO");
-                this.registrarCotizacionAdquisicion(this.idUsuario,this.idProveedor, this.nombreCotizacion, this.fechaVencimiento,this.estado);
+            if (this.$refs.form.validate()) {
+                if (this.documentoArchivo != null) {
+                    this.almacenarArchivo(this.documentoArchivo)
+                    this.guardarDocumento(this.documentoArchivo.name, this.nombreCotizacion, "adq000", "ACTIVO");
+                    this.registrarCotizacionAdquisicion(this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado);
+                }
+                else {
+                    this.registrarCotizacionAdquisicion(this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado);
+                }
             }
-            else{
-                this.registrarCotizacionAdquisicion(this.idUsuario,this.idProveedor, this.nombreCotizacion, this.fechaVencimiento,this.estado);
-            }
-
         },
         async registrarCotizacionAdquisicion(
             idUsuario,
@@ -1058,8 +1088,10 @@ export default {
         },
 
         editarCotizacionAdq() {
-            this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario,this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado);
-            this.botonactCot=0;
+            if (this.$refs.form.validate()) {
+                this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado);
+                this.botonactCot = 0;
+            }
         },
         async editarCotizacionAdquisicion(
             idCotizacion,
@@ -1103,11 +1135,11 @@ export default {
 
         },
 
-        confirmacionAnulacionCotizacionAdquisicion(item){
+        confirmacionAnulacionCotizacionAdquisicion(item) {
             this.idCotizacion = item.idCotizacion;
             this.confirmacionAnulacionCotizacionAdq = true;
         },
-        closeAnulacionCotizacionAdquisicion(){
+        closeAnulacionCotizacionAdquisicion() {
             this.confirmacionAnulacionCotizacionAdq = false;
         },
         anularCotizacionAdquisicion() {
@@ -1134,40 +1166,40 @@ export default {
             this.listarCotizacionesItem();
         },
         async listarCotizacionesItem() {
-          let me = this;
-          await axios
-            .get("/adquisicion/listarcotizacionitemactiva/")
-            .then(function (response) {
-              if (response.data.resultado == null) {
-                me.datosCotizacionItem = [];
-                console.log(response.data);
-              } else {
-                console.log(response.data);
-                me.datosCotizacionItem = response.data.resultado;
-              }
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+            let me = this;
+            await axios
+                .get("/adquisicion/listarcotizacionitemactiva/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosCotizacionItem = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosCotizacionItem = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
 
 
         async listarDetallesCotizacion(idCotizacion) {
-          let me = this;
-          await axios
-            .get("/adquisicion/listardetallecotizacion/"+idCotizacion)
-            .then(function (response) {
-              if (response.data.resultado == null) {
-                me.datosDetalleCotizacion = [];
-                //console.log(response.data);
-              } else {
-                me.datosDetalleCotizacion = response.data.resultado;
-                //console.log(response.data);
-              }
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+            let me = this;
+            await axios
+                .get("/adquisicion/listardetallecotizacion/" + idCotizacion)
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosDetalleCotizacion = [];
+                        //console.log(response.data);
+                    } else {
+                        me.datosDetalleCotizacion = response.data.resultado;
+                        //console.log(response.data);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
 
 
@@ -1185,7 +1217,9 @@ export default {
         },
 
         registrarCotizacionIt() {
-            this.registrarCotizacionItem(this.idCotizacion,this.idItem,this.precioUnitario, this.cantidad, 'ACTIVO');
+            if (this.$refs.form.validate()) {
+                this.registrarCotizacionItem(this.idCotizacion, this.idItem, this.precioUnitario, this.cantidad, 'ACTIVO');
+            }
         },
         async registrarCotizacionItem(
             idCotizacion,
@@ -1226,8 +1260,10 @@ export default {
         },
 
         editarCotizacionIt() {
-            this.editarCotizacionItem(this.idCotizacionItem,this.idCotizacion,this.idItem,this.precioUnitario,this.cantidad, 'ACTIVO');
-            this.botonactCotIt=0;
+            if (this.$refs.form.validate()) {
+                this.editarCotizacionItem(this.idCotizacionItem, this.idCotizacion, this.idItem, this.precioUnitario, this.cantidad, 'ACTIVO');
+                this.botonactCotIt = 0;
+            }
         },
         async editarCotizacionItem(
             idCotizacionItem,
@@ -1271,11 +1307,11 @@ export default {
 
         },
 
-        confirmacionAnulacionCotizacionItem(item){
+        confirmacionAnulacionCotizacionItem(item) {
             this.idCotizacionItem = item.idCotizacionItem;
             this.confirmacionAnulacionCotizacionIt = true;
         },
-        closeAnulacionCotizacionItem(){
+        closeAnulacionCotizacionItem() {
             this.confirmacionAnulacionCotizacionIt = false;
         },
         anularCotizacionItem() {
@@ -1298,7 +1334,7 @@ export default {
         },
 
 
-       
+
         activar(item) {
             this.idProveedor = item.idProveedor;
             this.activarmateria(this.idProveedor);
@@ -1331,8 +1367,8 @@ export default {
                 });*/
 
         },
-        
-      
+
+
         //#endregion
         //#region Adicionar
         //#endregion
@@ -1340,44 +1376,44 @@ export default {
         //#endregion
         //#region Eliminar
         //#region Modals
-        editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
+        editItem(item) {
+            this.editedIndex = this.desserts.indexOf(item)
+            this.editedItem = Object.assign({}, item)
+            this.dialog = true
         },
 
-        deleteItem (item) {
+        deleteItem(item) {
             this.editedIndex = this.desserts.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialogDelete = true
         },
 
-        deleteItemConfirm () {
+        deleteItemConfirm() {
             this.desserts.splice(this.editedIndex, 1)
             this.closeDelete()
         },
 
-        close () {
+        close() {
             this.dialog = false
             this.$nextTick(() => {
-            this.editedItem = Object.assign({}, this.defaultItem)
-            this.editedIndex = -1
+                this.editedItem = Object.assign({}, this.defaultItem)
+                this.editedIndex = -1
             })
         },
 
-        closeDelete () {
+        closeDelete() {
             this.dialogDelete = false
             this.$nextTick(() => {
-            this.editedItem = Object.assign({}, this.defaultItem)
-            this.editedIndex = -1
+                this.editedItem = Object.assign({}, this.defaultItem)
+                this.editedIndex = -1
             })
         },
 
-        save () {
+        save() {
             if (this.editedIndex > -1) {
-            Object.assign(this.desserts[this.editedIndex], this.editedItem)
+                Object.assign(this.desserts[this.editedIndex], this.editedItem)
             } else {
-            this.desserts.push(this.editedItem)
+                this.desserts.push(this.editedItem)
             }
             this.close()
         },
@@ -1395,7 +1431,7 @@ export default {
         },
 
         showModalAgregarCotizacionItem() {
-            
+
             this.agregarCotizacionItemModal = true;
         },
         closeModalAgregarCotizacionItem() {
@@ -1405,71 +1441,116 @@ export default {
 
         },
 
-        openItemModal(){
+        openItemModal() {
             this.listarItems();
             this.itemModal = true;
         },
 
-        closeItemModal(){
+        closeItemModal() {
             this.itemModal = false;
         },
 
-        seleccionarItem(item){
+        seleccionarItem(item) {
             this.idItem = item.iditem;
             this.nombreItem = item.nombreitem;
             this.itemModal = false;
         },
 
-        openProveedorModal(){
+        openProveedorModal() {
             this.listarProveedores();
             this.proveedorModal = true;
         },
 
-        closeProveedorModal(){
+        closeProveedorModal() {
             this.proveedorModal = false;
         },
 
-        seleccionarProveedor(item){
+        seleccionarProveedor(item) {
             this.idProveedor = item.idprv;
             this.nombreProveedor = item.nomprv;
             this.proveedorModal = false;
         },
 
-        openCotizacionModal(){
+        openCotizacionModal() {
             this.listarCotizacionAdquisicionPendiente();
             this.cotizacionModal = true;
         },
 
-        closeCotizacionModal(){
+        closeCotizacionModal() {
             this.cotizacionModal = false;
         },
 
-        seleccionarCotizacion(item){
+        seleccionarCotizacion(item) {
             this.idCotizacion = item.idCotizacion;
             this.nombreCotizacion = item.nombreCotizacion;
             this.cotizacionModal = false;
         },
 
 
-        mostrarItems(item){
+        mostrarItems(item) {
             this.idCotizacion = item.idCotizacion;
             this.listarDetallesCotizacion(this.idCotizacion);
             this.detalleCotizacionDialog = true;
-            
+
         },
 
-        closeDetalleCotizacion(){
+        closeDetalleCotizacion() {
             this.detalleCotizacionDialog = false;
         },
 
-        async generatePDF(item){
+        async generatePDF(item) {
+            this.idCotizacion = item.idCotizacion;
+            this.listarDetallesCotizacion(this.idCotizacion);
+
+            const doc = new jsPDF();
+            doc.setFontSize(22);
+            let titulo = 'ADQUISICIÓN: ' + item.nombreCotizacion;
+            let margenIzquierdo = 20;
+            let margenDerecho = 20;
+            let anchoMaximo = doc.internal.pageSize.width - margenIzquierdo - margenDerecho;
+            let textoDividido = doc.splitTextToSize(titulo, anchoMaximo);
+            doc.text(textoDividido, margenIzquierdo, 20);
+
+            let fecha = new Date().toLocaleDateString();
+            doc.setFontSize(16);
+            doc.text(fecha, 20, 45);
+            doc.line(10, 35, 200, 35);
+
+            const header1 = this.header1.map(column => column.text);
+            const header2 = this.header2.map(column => column.text);
+            const data1 = item => this.header1.map(header => item[header.value]);
+            const data2 = JSON.parse(JSON.stringify(this.datosDetalleCotizacion));
+
+            // Agregar la tabla de datos al PDF
+            doc.autoTable({
+                head: [header1],
+                body: [],
+                startY: 60,
+            });
+
+            let finalY = doc.previousAutoTable.finalY;
+
+            doc.autoTable({
+                head: [header2],
+                body: [data2],
+                startY: finalY + 20,
+            });
+
+            // Guardar o mostrar el PDF (según tus necesidades)
+            // doc.save('nombre_del_archivo.pdf');
+            // doc.output('dataurlnewwindow');
+
+            // Nota: Asegúrate de ajustar los detalles según tus requerimientos específicos.
+        },
+
+       /*async generatePDF(item) {
             this.idCotizacion = item.idCotizacion;
             this.listarDetallesCotizacion(this.idCotizacion);
 
 
             const doc = new jsPDF();
             doc.setFontSize(22)
-            let titulo= 'ADQUISICIÓN: '+item.nombreCotizacion;
+            let titulo = 'ADQUISICIÓN: ' + item.nombreCotizacion;
             let margenIzquierdo = 20;
             let margenDerecho = 20;
             let anchoMaximo = doc.internal.pageSize.width - margenIzquierdo - margenDerecho;
@@ -1494,12 +1575,12 @@ export default {
             doc.autoTable({
                 head: [header2],
                 body: [data2],
-                startY: finalY+20,
+                startY: finalY + 20,
             });
 
-            let nombreArchivo = item.nombreCotizacion+'.pdf';
+            let nombreArchivo = item.nombreCotizacion + '.pdf';
             doc.save(nombreArchivo);
-        },
+        },*/
 
         /*
                     headerCotizacion: [
@@ -1513,49 +1594,49 @@ export default {
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
         */
-        aprobarAdquisicion(item){
+        aprobarAdquisicion(item) {
             this.idCotizacion = item.idCotizacion;
             this.idUsuario = item.idUsuario;
             this.idProveedor = item.idProveedor;
             this.nombreCotizacion = item.nombreCotizacion;
             this.fechaVencimiento = item.fechaVencimiento;
-            this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario,this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'ACTIVO');
+            this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'ACTIVO');
 
         },
-        denegarAdquisicion(item){
+        denegarAdquisicion(item) {
             this.idCotizacion = item.idCotizacion;
             this.idUsuario = item.idUsuario;
             this.idProveedor = item.idProveedor;
             this.nombreCotizacion = item.nombreCotizacion;
             this.fechaVencimiento = item.fechaVencimiento;
-            this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario,this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'INACTIVO');
+            this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'INACTIVO');
         },
 
 
 
-        limpiar () {
+        limpiar() {
             this.$refs.form.reset()
         },
-       
+
         //#endregion
 
 
 
-        async getListaExistencias(){
+        async getListaExistencias() {
             let me = this;
             await axios
                 .get("/inventario/listarexistencias/")
                 .then(function (response) {
-                if (response.data.resultado == null) {
-                    me.datosExistencia = [];
-                    console.log(response.data);
-                } else {
-                    console.log(response.data);
-                    me.datosExistencia = response.data.resultado;
-                }
+                    if (response.data.resultado == null) {
+                        me.datosExistencia = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosExistencia = response.data.resultado;
+                    }
                 })
                 .catch(function (error) {
-                console.log(error);
+                    console.log(error);
                 });
         },
 
@@ -1563,18 +1644,18 @@ export default {
 
 
 
-        registrarDocumento(){
+        registrarDocumento() {
             this.almacenarArchivo(this.documentoArchivo)
-            this.guardarDocumento(this.documentoArchivo.name,this.nombreCotizacion,"adq000","ACTIVO");
+            this.guardarDocumento(this.documentoArchivo.name, this.nombreCotizacion, "adq000", "ACTIVO");
         },
-        async almacenarArchivo(documentoArchivo){
+        async almacenarArchivo(documentoArchivo) {
 
             const formData = new FormData();
             formData.append('adquisition', documentoArchivo);
             let me = this;
-                await axios
+            await axios
                 .post(
-                    "/uploadFile/",formData)
+                    "/uploadFile/", formData)
                 .then(function (response) {
                     console.log(response);
                     me.mensajeSnackbar = response.data.message;
@@ -1589,15 +1670,15 @@ export default {
                 });
         },
 
-        async guardarDocumento(documentoArchivo,descripcionArchivo,codigoArchivo,estado){
+        async guardarDocumento(documentoArchivo, descripcionArchivo, codigoArchivo, estado) {
             const ext = documentoArchivo.split('.');
             const date = new Date();
-            const fechaHoraActual = date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear();
-            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+'.'+ext[1];
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0') + '_' + (date.getMonth() + 1).toString().padStart(2, '0') + '_' + date.getFullYear();
+            const nombreArchivo = ext[0] + '_' + fechaHoraActual + '.' + ext[1];
             let me = this;
-                await axios
+            await axios
                 .post(
-                    "/documento/insertar/"+
+                    "/documento/insertar/" +
                     ext[0] +
                     "," +
                     nombreArchivo +
@@ -1620,7 +1701,7 @@ export default {
 
                 });
         },
-      },
+    },
 };
 
 </script>

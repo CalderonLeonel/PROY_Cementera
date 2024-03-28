@@ -406,7 +406,7 @@
                                 </v-col>     
                                 <v-col cols="12" md="11" v-if="movimiento=='ENTRADA'">
                                     <v-text-field v-model="nombreItem" label="NOMBRE ITEM"
-                                        :rules="nombreRules" @input="nombreItem = nombreItem.toUpperCase()"
+                                        :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
@@ -419,7 +419,7 @@
 
                                 <v-col cols="12" md="11" v-if="movimiento=='ENTRADA'">
                                     <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACEN"
-                                        :rules="nombreRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
+                                        :rules="nombreAlmacenRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
@@ -442,7 +442,7 @@
 
                                 <v-col cols="12" md="11" v-if="movimiento=='SALIDA'">
                                     <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACEN"
-                                        :rules="nombreRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
+                                        :rules="nombreAlmacenRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
@@ -455,12 +455,12 @@
                                 
                                 <v-col cols="12" md="11" v-if="movimiento=='SALIDA'">
                                     <v-text-field v-model="nombreItem" label="NOMBRE ITEM"
-                                        :rules="nombreRules" @input="nombreItem = nombreItem.toUpperCase()"
+                                        :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="1" v-if="movimiento=='SALIDA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null || nombreAlmacen==""' 
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreAlmacenRules" :disabled='movimiento==null || nombreAlmacen==""' 
                                         @click="openItemAlmacenModal()" style="float: right" title="BUSCAR ITEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -470,17 +470,18 @@
                                     <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="[v => ( Number(v) >= 1 && Number(v) <= this.cantidadMaximaItem ) || 'El número no debe sobrepasar '+ this.cantidadMaximaItem]" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
                                          @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
-                                </v-col>          
+                                </v-col>   
+                                   
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
-                                    <v-btn iconvv v-if="botonActTT == 1" class="mx-4"  dark color="#0A62BF" :disabled='movimiento==null'
+                                    <v-btn iconvv v-if="botonActInv == 1" class="mx-4"  dark color="#0A62BF" :disabled='movimiento==null'
                                             @click="editarInv()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                             ACTUALIZAR
                                         </v-btn>
-                                        <v-btn iconv v-if="botonActTT == 0" class="mx-4"  dark color="#0ABF55" :disabled='movimiento==null'
+                                        <v-btn iconv v-if="botonActInv == 0" class="mx-4"  dark color="#0ABF55" :disabled='movimiento==null'
                                             @click="registrarInv()" style="float: left" title="REGISTRAR TRANSACCION">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
@@ -638,23 +639,24 @@
                             <v-row>
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="nombreItem" label="NOMBRE ITEM" :counter="60"
-                                        :rules="nombreRules" @input="nombreItem = nombreItem.toUpperCase()"
+                                        :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>   
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="descripcion" label="DESCRIPCION" :counter="150"
-                                         @input="descripcion = descripcion.toUpperCase()"
+                                        :rules="descripcionRules" @input="descripcion = descripcion.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>   
                                 <v-col v-if="botonActIt == 0" cols="12" md="4">
-                                    <v-combobox
+                                    <v-select
                                     label="MEDIDA"  v-model="medida" @input="medida = medida.toUpperCase()" required
-                                    :items="['Litros', 'Kilogramos', 'Mililitros', 'Toneladas', 'Gramos', 'Unidades']"
-                                    ></v-combobox>
+                                    :items="['Litros', 'Kilogramos', 'Mililitros', 'Toneladas', 'Gramos', 'Unidades']" 
+                                    :rules="[v => !!v || 'La medida es requerida']"
+                                    ></v-select>
                                 </v-col>    
                                 <v-col v-if="botonActIt == 0" cols="12" md="3">
                                     <v-text-field v-model="nombreTipoITem" label="NOMBRE TIPO ITEM" :counter="60"
-                                        :rules="nombreRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
+                                        :rules="nombreTipoRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
                                 <v-col v-if="botonActIt == 0" cols="12" md="1">
@@ -665,14 +667,15 @@
                                 </v-col> 
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="limitecritico" label="LIMITE CRITICO" type="number" :counter="25"
-                                         @input="limitecritico = limitecritico.toUpperCase()"
+                                         @input="limitecritico = limitecritico.toUpperCase()" :rules="limiteRules"
                                         required></v-text-field>
                                 </v-col> 
                                 <v-col cols="12" md="4">
-                                    <v-combobox
+                                    <v-select
                                     label="METODO VALUACION" v-model="metodoValuacion" @input="metodoValuacion = metodoValuacion.toUpperCase()" required
                                     :items="['PEPS', 'UEPS', 'PROMEDIO PONDERADO']"
-                                    ></v-combobox>
+                                    :rules="[v => !!v || 'El Metodo de Valuación es requerido']"
+                                    ></v-select>
                                 </v-col>                   
                                 <v-col cols="12" md="4"> </v-col>
                                 <v-col cols="6"></v-col>
@@ -722,7 +725,7 @@
                             <v-row>
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="nombreTipoITem" label="NOMBRE TIPO ITEM" :counter="60"
-                                        :rules="nombreRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
+                                        :rules="nombreTipoRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>                         
                                 <v-col cols="12" md="4"> </v-col>
@@ -864,7 +867,7 @@
                             <v-row>
                                 <v-col cols="12" md="11">
                                     <v-text-field v-model="nombreItem" label="NOMBRE ITEM"
-                                        :rules="nombreRules" @input="nombreItem = nombreItem.toUpperCase()"
+                                        :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
@@ -876,7 +879,7 @@
                                 </v-col>        
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="valor" label="NUEVO VALOR" type="number" :counter="25"
-                                         @input="valor = valor.toUpperCase()"
+                                         @input="valor = valor.toUpperCase()" :rules="valorRules"
                                         required></v-text-field>
                                 </v-col>     
                         
@@ -884,7 +887,7 @@
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
-                                        <v-btn iconv v-if="botonActTT == 0" class="mx-4"  dark color="#0ABF55"
+                                        <v-btn iconv class="mx-4"  dark color="#0ABF55"
                                             @click="registrarPrecioItem()" style="float: left" title="REGISTRAR NUEVO PRECIO">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
@@ -985,6 +988,41 @@
                (v && v.length <= 60) ||
                  "el nombre del proveedor no debe sobrepasar los 60 caracteres.",
              ],
+             nombreItemRules: [
+               (v) => !!v || "Se requiere el nombre del item.",
+               (v) =>
+               (v && v.length <= 60) ||
+                 "el nombre del item no debe sobrepasar los 60 caracteres.",
+             ],
+             nombreTipoRules: [
+               (v) => !!v || "Se requiere el nombre del tipo de item.",
+               (v) =>
+               (v && v.length <= 60) ||
+                 "el nombre del tipo no debe sobrepasar los 60 caracteres.",
+             ],
+             nombreAlmacenRules: [
+               (v) => !!v || "Se requiere el nombre del almacen.",
+               (v) =>
+               (v && v.length <= 60) ||
+                 "el nombre del almacen no debe sobrepasar los 60 caracteres.",
+             ],
+
+            valorRules: [
+            (v) => parseFloat(v) >= 0 || "El valor debe ser mayor a 0.",
+            (v) => !!v || "El valor es obligatorio.",
+            (v) => !isNaN(parseFloat(v)) && isFinite(v) || "Ingresa un valor numérico válido."
+            ],
+
+            limiteRules: [
+            (v) => !!v || "El limite es obligatorio.",
+            (v) => parseFloat(v) >= 0 || "El limite debe ser mayor a 0.",
+            (v) => !isNaN(parseFloat(v)) && isFinite(v) || "Ingresa un valor numérico válido."
+            ],
+                        
+            descripcionRules: [
+            (v) => !!v || "Se requiere la descripción.",
+            (v) => (v === null || v.length <= 150) || "La descripción no debe superar los 150 caracteres.",
+            ],
              phone1Rules: [
                (v) => !!v || "Se requiere un numero telefonico o celular.",
                (v) =>
@@ -1347,9 +1385,11 @@
         },
 
         editarInv() {
+            if (this.$refs.form.validate()) {
             this.editarInventario(this.idTransaccion,this.idItem, this.idAlmacen,this.movimiento,this.cantidad, this.estado);
 
             this.botonActInv=0;
+            }
         },
         async editarInventario(
             idTransaccion,
@@ -1418,7 +1458,9 @@
 
 
         registrarPrecioItem(){
+            if (this.$refs.form.validate()) {
             this.registarRevalorarizacionItem(this.idtiem,this.valor)
+            }
         },
 
 
@@ -1560,7 +1602,9 @@
          },
 
          registrarIt() {
+            if (this.$refs.form.validate()) {
             this.registrarItem(this.nombreItem, this.descripcion,this.medida,this.idTipoItem,this.limitecritico, this.metodoValuacion, this.estado);
+            }
         },
         async registrarItem(
             nombreItem,
@@ -1605,8 +1649,10 @@
         },
 
         editarIt() {
+            if (this.$refs.form.validate()) {
             this.editarItem(this.idItem, this.nombreItem, this.descripcion, this.estado, this.limitecritico, this.metodoValuacion);
             this.botonActIt=0;
+            }
         },
         async editarItem(
             idItem,
@@ -1697,9 +1743,11 @@
 
 
          registrarTipo() {
-            this.registrarTipo(this.nombreTipoITem, this.estado);            
+            if (this.$refs.form.validate()) {
+                this.registrarTipos(this.nombreTipoITem, this.estado);
+            }            
         },
-        async registrarTipo(
+        async registrarTipos(
             nombreTipoITem,
             estado
         ) {
@@ -1726,8 +1774,10 @@
         },
 
         editarTipo() {
+            if (this.$refs.form.validate()) {
             this.editarTipo( this.idTipoItem,this.nombreTipoITem, this.estado);
             this.botonActTT = 0;
+            }
         },
         async editarTipo(
             idTipoItem,
@@ -1815,10 +1865,8 @@
             .then(function (response) {
               if (response.data.resultado == null) {
                 me.datosStock = [];
-                //console.log(response.data);
               } else {
                 me.datosStock = response.data.resultado;
-                //console.log(response.data);
               }
             })
             .catch(function (error) {
@@ -2084,6 +2132,7 @@
         closeModalAgregarTipoItem(){
             this.agregarTipoItemModal = false;
             this.limpiar();
+            this.botonActTT = 0;
      
         },
 

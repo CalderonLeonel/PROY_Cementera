@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="5" outlined>
         <div>
-            <v-alert dense style="color: #ffffff;" >
+            <v-alert dense style="color: #ffffff;">
                 <h3>GESTIÓN DE ALERTAS</h3>
             </v-alert>
         </div>
@@ -15,23 +15,24 @@
             <v-row>
 
                 <v-col cols="12" md="12">
-                    <v-text-field v-model="searchAlerta" append-icon="mdi-magnify"
-                        label="BUSCAR ALERTA" single-line hide-details></v-text-field>
+                    <v-text-field v-model="searchAlerta" append-icon="mdi-magnify" label="BUSCAR ALERTA" single-line
+                        hide-details></v-text-field>
                     <v-data-table :headers="headerAlerta" :items="datosAlerta" :search="searchAlerta"
-                         class="elevation-1">
+                        class="elevation-1">
 
                         <template #[`item.iddoc`]="{ item }">
                             <v-btn color="primary" icon
-                                :href="`${axios.defaults.baseURL}${'documento/descargarImagen/' + item.nombredoc}`" target="">
+                                :href="`${axios.defaults.baseURL}${'documento/descargarImagen/' + item.nombredoc}`"
+                                target="">
                                 <v-icon>mdi-file</v-icon> DESCARGAR
                             </v-btn>
                         </template>
 
                         <template #[`item.fecha`]="{ item }">
-                            {{getFormattedDate(item.fecha)}}
+                            {{ getFormattedDate(item.fecha) }}
                         </template>
 
-    
+
 
 
 
@@ -45,7 +46,7 @@
                 <strong>{{ mensajeSnackbar }}</strong>
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                         mdi-close
+                        mdi-close
                     </v-icon>
                 </template>
             </v-snackbar>
@@ -56,7 +57,7 @@
                 <strong>{{ mensajeSnackbarError }}</strong>
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarError = false">
-                            mdi-close
+                        mdi-close
                     </v-icon>
                 </template>
             </v-snackbar>
@@ -71,21 +72,18 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="7">
-                                    <v-file-input v-model="AlertaArchivo"
-                                        accept=".jpg, .jpeg, .webp, .png"
+                                    <v-file-input v-model="AlertaArchivo" accept=".jpg, .jpeg, .webp, .png" :rules="fileRules"
                                         label="ARCHIVO"></v-file-input>
 
                                 </v-col>
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="tituloAlerta" type="text" label="TITULO"
-                                        :counter="60" @input="tituloAlerta = tituloAlerta.toUpperCase()"
-                                        required></v-text-field>
+                                    <v-text-field v-model="tituloAlerta" type="text" label="TITULO" :counter="60" :rules="tituloRules"
+                                        @input="tituloAlerta = tituloAlerta.toUpperCase()" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="descripcionAlerta" type="text" label="DESCRIPCIÓN"
+                                    <v-text-field v-model="descripcionAlerta" type="text" label="DESCRIPCIÓN" :rules="descripcionRules"
                                         :counter="150" @input="descripcionAlerta = descripcionAlerta.toUpperCase()"
-                                        auto-grow  rows="2"
-                                        required></v-text-field>
+                                        auto-grow rows="2" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4"> </v-col>
                                 <v-col cols="6"></v-col>
@@ -102,8 +100,8 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()" style="float: left"
-                                        title="LIMPIAR FORMULARIO">
+                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                         LIMPIAR
                                     </v-btn>
@@ -134,14 +132,14 @@ export default {
         return {
             mensajeSnackbarError: "REGISTRO FALLIDO",
 
-            AlertaArchivo:'',
-            codigoArchivo:'EMPALRT',
+            AlertaArchivo: '',
+            codigoArchivo: 'EMPALRT',
             tituloAlerta: '',
-            descripcionAlerta:'',
+            descripcionAlerta: '',
             idArchivo: '',
 
             snackbarOK: false,
-            snackbarError : false,
+            snackbarError: false,
 
             datosAlerta: [],
             searchAlerta: '',
@@ -157,6 +155,25 @@ export default {
             agregarAlerta: false,
             confirmacionAlmacenamiento: false,
             botonAct: 0,
+
+
+
+            fileRules: [
+                (v) => !!v || "El archivo es obligatorio.",
+            ],
+
+
+            tituloRules: [
+                (v) => !!v || "Se requiere un titulo para la alerta.",
+                (v) =>
+                    (v && v.length <= 60) ||
+                    "El titulo no debe sobrepasar los 25 caracteres.",
+            ],
+
+            descripcionRules: [
+                (v) => !!v || "Se requiere la descripción.",
+                (v) => (v === null || v.length <= 150) || "La descripción no debe superar los 150 caracteres.",
+            ],
         }
     },
     created: function () {
@@ -164,15 +181,15 @@ export default {
     },
     methods: {
 
-        getFormattedDate(oldDate){
+        getFormattedDate(oldDate) {
             let fecha = new Date(oldDate);
             let dia = fecha.getDate();
-            let mes = fecha.getMonth() + 1; 
+            let mes = fecha.getMonth() + 1;
             let anio = fecha.getFullYear();
             if (dia < 10) dia = '0' + dia;
             if (mes < 10) mes = '0' + mes;
 
-            let fechaFormateada =  dia + '-' + mes + '-' + anio;
+            let fechaFormateada = dia + '-' + mes + '-' + anio;
 
             return fechaFormateada;
         },
@@ -190,7 +207,7 @@ export default {
             this.agregarAlerta = false;
         },
 
-        async getLastDoc(){
+        async getLastDoc() {
             let me = this;
             var object = []
             await axios
@@ -209,7 +226,7 @@ export default {
                 });
             object = JSON.parse(JSON.stringify(object));
             for (const key in object) {
-                me.idArchivo=object[key].iddoc;
+                me.idArchivo = object[key].iddoc;
             }
         },
 
@@ -258,15 +275,17 @@ export default {
                     console.log(error);
                 });
         },
-    
+
         registrarAlerta() {
-            this.guardarAlerta(this.AlertaArchivo, this.tituloAlerta, this.codigoArchivo, "ACTIVO", this.descripcionAlerta)
-            this.agregarAlerta = false;
-            this.listarAlertas();
+            if (this.$refs.form.validate()) {
+                this.guardarAlerta(this.AlertaArchivo, this.tituloAlerta, this.codigoArchivo, "ACTIVO", this.descripcionAlerta)
+                this.agregarAlerta = false;
+                this.listarAlertas();
+            }
         },
 
 
-        async guardarAlerta(AlertaArchivo, tituloAlerta, codigoArchivo, estado, descripcion){
+        async guardarAlerta(AlertaArchivo, tituloAlerta, codigoArchivo, estado, descripcion) {
             const formData = new FormData();
             formData.append('image', AlertaArchivo);
             let me = this;
@@ -279,7 +298,7 @@ export default {
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarAlertas();
-                
+
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -307,7 +326,7 @@ export default {
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarAlertas();
-                
+
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -330,15 +349,15 @@ export default {
                 });
             object = JSON.parse(JSON.stringify(object));
             for (const key in object) {
-                me.idArchivo=object[key].iddoc;
+                me.idArchivo = object[key].iddoc;
             }
             await axios
                 .post(
-                    "/empleado/addalerta/" , {
-                        titulo: tituloAlerta,
-                        descripcion: descripcion.toString(),
-                        img: me.idArchivo
-                    })
+                    "/empleado/addalerta/", {
+                    titulo: tituloAlerta,
+                    descripcion: descripcion.toString(),
+                    img: me.idArchivo
+                })
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
@@ -368,7 +387,7 @@ export default {
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarAlertas();
-                
+
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -400,7 +419,7 @@ export default {
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarAlerta();
-                
+
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -408,7 +427,9 @@ export default {
                 });
         },
         actualizarAlerta() {
-            this.editarArchivo(this.idAlerta, this.AlertaArchivo.name, this.AlertaArchivo, this.tituloAlerta, this.codigoArchivo, 'ACTIVO');
+            if (this.$refs.form.validate()) {
+                this.editarArchivo(this.idAlerta, this.AlertaArchivo.name, this.AlertaArchivo, this.tituloAlerta, this.codigoArchivo, 'ACTIVO');
+            }
         },
         async editarArchivo(id, nombre, Alerta, tituloAlerta, codigo, estado) {
             const ext = nombre.split('.');
@@ -437,7 +458,7 @@ export default {
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarAlertas();
-                
+
                 })
                 .catch(function (error) {
                     me.snackbarError = true;

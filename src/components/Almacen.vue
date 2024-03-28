@@ -329,7 +329,7 @@
                             <v-row>
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="nombreSeccion" label="NOMBRE SECCIÓN" :counter="60"
-                                        :rules="nombreRules" @input="nombreSeccion = nombreSeccion.toUpperCase()"
+                                         @input="nombreSeccion = nombreSeccion.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
@@ -340,7 +340,7 @@
                                 </v-col>
                                 <v-col cols="12" md="3">
                                     <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACEN" :counter="60"
-                                        :rules="nombreRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
+                                      @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12"> </v-col>
@@ -429,7 +429,7 @@
                             <v-row>
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="nombreStand" label="NOMBRE STAND" :counter="60"
-                                        :rules="nombreRules" @input="nombreStand = nombreStand.toUpperCase()"
+                                        @input="nombreStand = nombreStand.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
@@ -440,7 +440,7 @@
                                 </v-col>
                                 <v-col cols="12" md="3">
                                     <v-text-field v-model="nombreSeccion" label="NOMBRE SECCIÓN" :counter="60"
-                                        :rules="nombreRules" @input="nombreSeccion = nombreSeccion.toUpperCase()"
+                                         @input="nombreSeccion = nombreSeccion.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12"> </v-col>
@@ -678,11 +678,30 @@ export default {
         return {
             mensajeSnackbarError: "REGISTRO FALLIDO",
 
+            nombreRules: [
+              (v) => !!v || "Se requiere el nombre del almacen.",
+              (v) =>
+              (v && v.length <= 60) ||
+                "El nombre del almacen no debe sobrepasar los 60 caracteres.",
+            ],
+
+            descripcionRules: [
+            (v) => !!v || "Se requiere la descripción del almacen.",
+            (v) => (v === null || v.length <= 100) || "La descripción no debe superar los 100 caracteres.",
+            ],
+
+
+
+
+            
+
             existencias: true,
             itemsCriticos: '',
             datosExistencia: [],
 
             documentoArchivo: '',
+
+            
 
             //#region Almacenamiento
             idAlmacen: "",
@@ -700,27 +719,7 @@ export default {
             snackbarOK: false,
             snackbarError: false,
 
-            nombreRules: [
-                (v) => !!v || "Se requiere el nombre del proveedor.",
-                (v) =>
-                    (v && v.length <= 60) ||
-                    "el nombre del proveedor no debe sobrepasar los 60 caracteres.",
-            ],
-            phone1Rules: [
-                (v) => !!v || "Se requiere un numero telefonico o celular.",
-                (v) =>
-                    (v && v.length <= 10) ||
-                    "El telephono principal debe tener hasta 10 caracteres.",
-            ],
-            phone2Rules: [
-                (v) =>
-                    (v && v === null || v.length <= 10) ||
-                    "El telephono secundario debe tener hasta 10 caracteres.",
-            ],
-            emailRules: [
-                (v) => !!v || "Se requiere el correo electronico del proveedor",
-                (v) => /.+@.+\..+/.test(v) || "Debe ser un correo electronico valido",
-            ],
+            
             datosAlmacen: [],
             headerAlmacen: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
@@ -925,7 +924,9 @@ export default {
         },
 
         registrarAlm() {
+            if (this.$refs.form.validate()) {
             this.registrarAlmacen(this.nombreAlmacen, this.descripcionAlmacen, this.estado);
+            }
             //this.almacenarArchivo(this.documentoArchivo)
             //this.guardarDocumento(this.documentoArchivo.name,this.nombreAlmacen,"inv000","ACTIVO");
 
@@ -958,8 +959,9 @@ export default {
         },
 
         editarAlm() {
-            this.editarAlmacen(this.idAlmacen, this.nombreAlmacen, this.descripcionAlmacen, this.estado);
-
+            if (this.$refs.form.validate()) {
+                this.editarAlmacen(this.idAlmacen, this.nombreAlmacen, this.descripcionAlmacen, this.estado);
+            }
         },
         async editarAlmacen(
             idAlmacen,
