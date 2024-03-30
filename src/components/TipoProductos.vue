@@ -200,44 +200,7 @@
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-container>
                             <v-row>
-                                <v-col cols="12">
-                                    <v-list-item>
-                                        <v-list-item-title class="text-center">
-                                            <h5>Tipos</h5>
-                                        </v-list-item-title>
-                                    </v-list-item>
 
-                                    <v-card-title>
-                                        <v-text-field v-model="buscarTipos" append-icon="mdi-magnify" label="BUSCAR TipoS"
-                                            single-line hide-details></v-text-field>
-                                    </v-card-title>
-                                    <v-data-table :headers="headersTiposInh" :items="datosTiposInh" :search="buscarTipos"
-                                        :items-per-page="5" class="elevation-1" id="tableId">
-
-                                        <template #[`item.est`]="{ item }">
-                                            <v-chip :color="colorEstado(item.est)" dark>
-                                                {{ item.est }}
-                                            </v-chip>
-                                        </template>
-
-
-                                        <template #[`item.actions`]="{ item }">
-                                            <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
-                                                @click="activar(item)" title="ACTIVAR TipoS">
-                                                mdi-check-circle-outline
-                                            </v-icon>
-                                            <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
-                                                @click="desactivar(item)" title="DESACTIVAR TipoS">
-                                                mdi-cancel
-                                            </v-icon>
-                                            <v-icon small class="mr-2" color="#001781" @click="showInfoTipo(item)"
-                                                title="VER INtipoCION">
-                                                mdi-eye
-                                            </v-icon>
-                                        </template>
-
-                                    </v-data-table>
-                                </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closeInfoTipoModal()"
@@ -320,69 +283,241 @@
                 <v-container>
                     <v-row>
 
-                        <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showAgregarTipo()">Nuevo Tipo</v-btn>
-                        </v-col>
-                        <v-col cols="12" md="4"></v-col>
-                        <v-col cols="12" md="4"></v-col>
-
-                        <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showTiposInhabilitados()">Tipos Inactivos</v-btn>
-                        </v-col>
-                        <v-col cols="12" md="4"></v-col>
-                        <v-col cols="12" md="4"></v-col>
-
                         <v-col cols="12">
-                            <v-list-item>
-                                <v-list-item-title class="text-center">
-                                    <h5>Tipos</h5>
-                                </v-list-item-title>
-                            </v-list-item>
-
-                            <v-card-title>
-                                <v-text-field v-model="buscarTipos" append-icon="mdi-magnify" label="BUSCAR TIPOS"
-                                    single-line hide-details></v-text-field>
-                            </v-card-title>
-
-
-                            <v-data-table :headers="headersTipos" :items="datosTipos" :search="buscarTipos"
-                                :items-per-page="5" class="elevation-1" id="tableId">
-
-                                <template #[`item.est`]="{ item }">
-                                    <v-chip :color="colorEstado(item.est)" dark>
-                                        {{ item.est }}
-                                    </v-chip>
-                                </template>
-
-
-                                <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
-                                        @click="activar(item)" title="ACTIVAR TIPO">
-                                        mdi-check-circle-outline
+                            <v-tabs horizontal color="#002245" center-active grow>
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-list-box
                                     </v-icon>
-                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
-                                        @click="desactivar(item)" title="DESACTIVAR TIPO">
-                                        mdi-cancel
+                                    ADD
+                                    TIPO.
+                                </v-tab>
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-list-box
                                     </v-icon>
-                                    <v-icon small class="mr-2" color="#001781" @click="showEditTipoModal(item)"
-                                        title="ACTUALIZAR INFORMACION">
-                                        mdi-pencil
+                                    LIST
+                                    TIPOS.
+                                </v-tab>
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-list-box
                                     </v-icon>
-                                    <v-icon small class="mr-2" color="#001781" @click="showInfoTipo(item)"
-                                        title="VER INFORMACION">
-                                        mdi-eye
-                                    </v-icon>
-                                </template>
+                                    LIST
+                                    TIPOS
+                                    INAC.
+                                </v-tab>
 
-                            </v-data-table>
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outlined shaped>
+                                        <v-card-title>
+                                            <span>AGREGAR PRODUCTO</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-form ref="form" v-model="valid" lazy-validation>
+                                                <v-container>
+                                                    <v-row>
+                                                        <v-col cols="12" md="4"></v-col>
+                                                        <v-col cols="12" md="4">
+                                                            <v-text-field v-model="nombreTipo" label="NOMBRE TIPO"
+                                                                :counter="100" :rules="nombreTipoRules"
+                                                                @input="nombreTipo = nombreTipo.toUpperCase()"
+                                                                required></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="4"></v-col>
+
+                                                        <v-col cols="12" md="4"></v-col>
+                                                        <v-col cols="12" md="4">
+                                                            <v-text-field v-model="codigoTipo" label="CODIGO TIPO"
+                                                                :counter="100" :rules="codigoTipoRules"
+                                                                @input="codigoTipo = codigoTipo.toUpperCase()"
+                                                                required></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="4"></v-col>
+
+                                                        <v-col cols="12" md="3"></v-col>
+                                                        <v-col cols="12" md="1">
+                                                            <v-btn class="mx-2" fab dark x-small color="cyan"
+                                                                :rules="lineaRules" @click="showLineas()"
+                                                                style="float: right" title="BUSCAR LINEAS">
+                                                                <v-icon dark> mdi-magnify </v-icon>
+                                                            </v-btn>
+                                                        </v-col>
+                                                        <v-col cols="12" md="4">
+                                                            <v-text-field v-model="nombreLinea" label="NOMBRE LINEA"
+                                                                :counter="50" :rules="nombreLineaRules"
+                                                                @input="nombreLinea = nombreLinea.toUpperCase()" disabled
+                                                                required></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="4"></v-col>
+
+                                                        <v-col cols="12" md="8"> </v-col>
+                                                        <v-col cols="12" md="4">
+                                                            <v-toolbar dense shaped>
+                                                                <v-toolbar-title>
+                                                                    <h6>
+                                                                        OPCIONES
+                                                                    </h6>
+                                                                </v-toolbar-title>
+                                                                <v-btn v-if="botonact == 1" class="mx-2" fab dark x-small color="#EE680B"
+                                                                    @click="actualizarTipo()" style="float: left"
+                                                                    title="ACTUALIZAR TIPO">
+                                                                    <v-icon dark> mdi-pencil </v-icon>
+                                                                </v-btn>
+                                                                <v-btn v-if="botonact == 0" class="mx-2" fab dark x-small color="#EE680B"
+                                                                    @click="registrarTipo()" style="float: left"
+                                                                    title="REGISTRAR TIPO">
+                                                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                                                </v-btn>
+                                                                <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="limpiar()"
+                                                                    style="float: left" title="LIMPIAR FORMULARIO">
+                                                                    <v-icon dark> mdi-eraser </v-icon>
+                                                                </v-btn>
+                                                            </v-toolbar>
+                                                        </v-col>
+
+                                                    </v-row>
+                                                </v-container>
+                                            </v-form>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outlined shaped>
+                                        <v-card-title>
+                                            <span>LISTA DE TIPOS DE PRODUCTOS</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-form ref="form" v-model="valid" lazy-validation>
+                                                <v-container>
+                                                    <v-row>
+
+                                                        <v-col cols="12">
+                                                            <v-list-item>
+                                                                <v-list-item-title class="text-center">
+                                                                    <h5>Tipos</h5>
+                                                                </v-list-item-title>
+                                                            </v-list-item>
+
+                                                            <v-card-title>
+                                                                <v-text-field v-model="buscarTipos"
+                                                                    append-icon="mdi-magnify" label="BUSCAR TIPOS"
+                                                                    single-line hide-details></v-text-field>
+                                                            </v-card-title>
+
+
+                                                            <v-data-table :headers="headersTipos" :items="datosTipos"
+                                                                :search="buscarTipos" :items-per-page="5"
+                                                                class="elevation-1" id="tableId">
+
+                                                                <template #[`item.est`]="{ item }">
+                                                                    <v-chip :color="colorEstado(item.est)" dark>
+                                                                        {{ item.est }}
+                                                                    </v-chip>
+                                                                </template>
+
+
+                                                                <template #[`item.actions`]="{ item }">
+                                                                    <v-icon v-if="item.est == 'INACTIVO'" color="green"
+                                                                        small class="mr-2" @click="activar(item)"
+                                                                        title="ACTIVAR TIPO">
+                                                                        mdi-check-circle-outline
+                                                                    </v-icon>
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small
+                                                                        class="mr-2" @click="desactivar(item)"
+                                                                        title="DESACTIVAR TIPO">
+                                                                        mdi-cancel
+                                                                    </v-icon>
+                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                        @click="showEditTipoModal(item)"
+                                                                        title="ACTUALIZAR INFORMACION">
+                                                                        mdi-pencil
+                                                                    </v-icon>
+                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                        @click="showInfoTipo(item)" title="VER INFORMACION">
+                                                                        mdi-eye
+                                                                    </v-icon>
+                                                                </template>
+
+                                                            </v-data-table>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-container>
+                                            </v-form>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outlined shaped>
+                                        <v-card-title>
+                                            <span>LISTA DE TIPOS DE PRODUCTOS</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-form ref="form" v-model="valid" lazy-validation>
+                                                <v-container>
+                                                    <v-row>
+
+                                                        <v-col cols="12">
+                                                            <v-list-item>
+                                                                <v-list-item-title class="text-center">
+                                                                    <h5>Tipos</h5>
+                                                                </v-list-item-title>
+                                                            </v-list-item>
+
+                                                            <v-card-title>
+                                                                <v-text-field v-model="buscarTipos"
+                                                                    append-icon="mdi-magnify" label="BUSCAR TipoS"
+                                                                    single-line hide-details></v-text-field>
+                                                            </v-card-title>
+                                                            <v-data-table :headers="headersTiposInh" :items="datosTiposInh"
+                                                                :search="buscarTipos" :items-per-page="5"
+                                                                class="elevation-1" id="tableId">
+
+                                                                <template #[`item.est`]="{ item }">
+                                                                    <v-chip :color="colorEstado(item.est)" dark>
+                                                                        {{ item.est }}
+                                                                    </v-chip>
+                                                                </template>
+
+
+                                                                <template #[`item.actions`]="{ item }">
+                                                                    <v-icon v-if="item.est == 'INACTIVO'" color="green"
+                                                                        small class="mr-2" @click="activar(item)"
+                                                                        title="ACTIVAR TipoS">
+                                                                        mdi-check-circle-outline
+                                                                    </v-icon>
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small
+                                                                        class="mr-2" @click="desactivar(item)"
+                                                                        title="DESACTIVAR TipoS">
+                                                                        mdi-cancel
+                                                                    </v-icon>
+                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                        @click="showInfoTipo(item)" title="VER INtipoCION">
+                                                                        mdi-eye
+                                                                    </v-icon>
+                                                                </template>
+
+                                                            </v-data-table>
+                                                        </v-col>
+
+                                                    </v-row>
+                                                </v-container>
+                                            </v-form>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+
+                            </v-tabs>
                         </v-col>
                     </v-row>
                 </v-container>
             </v-form>
         </div>
         <div class="text-center">
-            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="light-green darken-2 ">
-                {{ mensajeSatisfactorio }}
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="light-green darken-2">
+                <strong>{{ mensajeSnackbar }}</strong>
 
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarOK = false">
@@ -394,7 +529,7 @@
         <div class="text-center">
 
             <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
-                <strong>{{ mensajeSnackbar }}</strong>
+                <strong>{{ mensajeSnackbarError }}</strong>
 
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarWarning = false">
@@ -411,6 +546,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
+            flag: 1,
             //#region Tipo Producto
             idTipoProducto: "",
             nombreTipo: "",
@@ -454,21 +590,20 @@ export default {
             lineasModal: 0,
             //#endregion
             botonact: 0,
+
             //#region Snackbars
             snackbarOK: false,
-            mensajeSatisfactorio: "REGISTRO CORRECTO ",
-            snackbarError: false,
-            mensajeError: "REGISTRO FALLIDO ",
-            snackbarWarning: false,
-            mensajeWarning: "EMAIL YA EXISTE ",
-            timeout: 2000,
             mensajeSnackbar: "",
+            snackbarError: false,
+            mensajeSnackbarError: "REGISTRO FALLIDO",
+            timeout: 2000,
             //#endregion
         }
     },
 
     created: function () {
         this.listarTipos();
+        this.listarTiposInh()
     },
 
     methods: {
@@ -635,6 +770,8 @@ export default {
                 .post("/tipo/offtipo/" + this.idTipo).then(function (response) {
 
                     me.listarTipos();
+                    me.listarTiposInh();
+
 
                 })
                 .catch(function (error) {

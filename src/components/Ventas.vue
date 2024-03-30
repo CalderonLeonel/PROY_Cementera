@@ -193,6 +193,32 @@
                         </v-col>
 
                     </v-row>
+
+                    <div class="text-center">
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
+                            <strong>{{ mensajeSnackbar }}</strong>
+
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+                    <div class="text-center">
+
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                            outlined>
+                            <strong>{{ mensajeSnackbarError }}</strong>
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
                 </v-container>
             </v-form>
         </div>
@@ -201,6 +227,8 @@
 <script>
 import axios from "axios";
 import { async } from "regenerator-runtime";
+import jsPDF from 'jspdf';
+
 
 export default {
     data() {
@@ -322,6 +350,14 @@ export default {
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
             //#endregion
+
+            //#region SnackBars
+            snackbarOK: false,
+            mensajeSnackbar: "",
+            snackbarError: false,
+            mensajeSnackbarError: "REGISTRO FALLIDO",
+            timeout: 2000,
+            //#endregion
         }
     },
 
@@ -353,6 +389,10 @@ export default {
             // Ejemplo: const numeroReferencia = `REF-${año}${mes}${dia}${hora}${minutos}${segundos}`;
 
             return numeroReferencia;
+        },
+
+        generarFactura(item){
+
         },
         //#region Listados
         listarCliente() {

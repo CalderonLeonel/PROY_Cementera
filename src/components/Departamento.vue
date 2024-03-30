@@ -106,111 +106,113 @@
             <v-col cols="12" md="4">
                 <v-btn color="success" @click="showAddDepartamento()">+ Nueva Departamento</v-btn>
             </v-col>
-            <div>
-                <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Departamentos -->
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12" md="12">
-                                <v-col cols="12">
-                                    <v-list-item>
-                                        <v-list-item-title class="text-center">
-                                            <h5>DEPARTAMENTOS</h5>
-                                        </v-list-item-title>
-                                    </v-list-item>
+            <v-card-text>
+                <div>
+                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Departamentos -->
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="12">
+                                    <v-col cols="12">
+                                        <v-list-item>
+                                            <v-list-item-title class="text-center">
+                                                <h5>DEPARTAMENTOS</h5>
+                                            </v-list-item-title>
+                                        </v-list-item>
 
-                                    <v-card-title>
-                                        <v-text-field v-model="searchDepartamento" append-icon="mdi-magnify"
-                                            label="BUSCAR DEPARTAMENTOS" single-line hide-details></v-text-field>
-                                    </v-card-title>
+                                        <v-card-title>
+                                            <v-text-field v-model="searchDepartamento" append-icon="mdi-magnify"
+                                                label="BUSCAR DEPARTAMENTOS" single-line hide-details></v-text-field>
+                                        </v-card-title>
 
-                                    <v-data-table :headers="headersDepartamento" :items="datosDepartamento"
-                                        :search="searchDepartamento" :items-per-page="5" class="elevation-1" id="tableId">
-                                        <template #[`item.act`]="{ item }">
-                                            <v-chip :color="getColor(item.act)" dark>
-                                                {{ item.act }}
-                                            </v-chip>
-                                        </template>
+                                        <v-data-table :headers="headersDepartamento" :items="datosDepartamento"
+                                            :search="searchDepartamento" :items-per-page="5" class="elevation-1"
+                                            id="tableId">
+                                            <template #[`item.act`]="{ item }">
+                                                <v-chip :color="getColor(item.act)" dark>
+                                                    {{ item.act }}
+                                                </v-chip>
+                                            </template>
 
-                                        <template #[`item.actions`]="{ item }">
-                                            <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
-                                                title="ACTIVAR DEPARTAMENTO">
-                                                mdi-check-circle-outline
-                                            </v-icon>
-                                            <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
-                                                title="DESACTIVAR DEPARTAMENTO">
-                                                mdi-cancel
-                                            </v-icon>
-                                            <v-icon small class="mr-2" @click="showEditDepartamento(item)"
-                                                title="EDITAR INFORMACION">
-                                                mdi-pencil
-                                            </v-icon>
+                                            <template #[`item.actions`]="{ item }">
+                                                <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2"
+                                                    @click="activar(item)" title="ACTIVAR DEPARTAMENTO">
+                                                    mdi-check-circle-outline
+                                                </v-icon>
+                                                <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2"
+                                                    @click="desactivar(item)" title="DESACTIVAR DEPARTAMENTO">
+                                                    mdi-cancel
+                                                </v-icon>
+                                                <v-icon small class="mr-2" @click="showEditDepartamento(item)"
+                                                    title="EDITAR INFORMACION">
+                                                    mdi-pencil
+                                                </v-icon>
 
 
-                                        </template>
-                                    </v-data-table>
+                                            </template>
+                                        </v-data-table>
+                                    </v-col>
+                                    <v-col cols="12" md="8"> </v-col>
+                                    <v-col cols="6"></v-col>
+                                    <v-col cols="2">
+                                        <v-btn iconv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
+                                            @click="actualizarDepartamento()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN">
+                                            <v-icon dark> mdi-pencil </v-icon>
+                                            ACTUALIZAR
+                                        </v-btn>
+                                        <v-btn iconv v-if="botonAct == 0" class="mx-4" dark color="#0ABF55"
+                                            @click="registrarDepartamento()" style="float: left" title="REGISTRAR ITEM">
+                                            <v-icon dark> mdi-content-save </v-icon>
+                                            GUARDAR
+                                        </v-btn>
+                                    </v-col>
+                                    <v-col cols="2">
+                                        <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()"
+                                            style="float: left" title="LIMPIAR FORMULARIO">
+                                            <v-icon dark> mdi-eraser </v-icon>
+                                            LIMPIAR
+                                        </v-btn>
+                                    </v-col>
+                                    <v-col cols="2">
+                                        <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeDepartamento()"
+                                            style="float: right" title="SALIR">
+                                            <v-icon dark> mdi-close-circle-outline </v-icon>
+                                            SALIR
+                                        </v-btn>
+                                    </v-col>
                                 </v-col>
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="actualizarDepartamento()" style="float: left"
-                                        title="ACTUALIZAR INFORMACIÓN">
-                                        <v-icon dark> mdi-pencil </v-icon>
-                                        ACTUALIZAR
-                                    </v-btn>
-                                    <v-btn iconv v-if="botonAct == 0" class="mx-4" dark color="#0ABF55"
-                                        @click="registrarDepartamento()" style="float: left" title="REGISTRAR ITEM">
-                                        <v-icon dark> mdi-content-save </v-icon>
-                                        GUARDAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()" style="float: left"
-                                        title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeDepartamento()"
-                                        style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
-                                </v-col>
-                            </v-col>
-                        </v-row>
+                            </v-row>
 
-                        <div class="text-center">
-                            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
-                                outlined>
-                                <strong>{{ mensajeSnackbar }}</strong>
+                            <div class="text-center">
+                                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
+                                    outlined>
+                                    <strong>{{ mensajeSnackbar }}</strong>
 
 
-                                <template v-slot:action="{ attrs }">
-                                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                                        mdi-close
-                                    </v-icon>
-                                </template>
-                            </v-snackbar>
-                        </div>
+                                    <template v-slot:action="{ attrs }">
+                                        <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                            mdi-close
+                                        </v-icon>
+                                    </template>
+                                </v-snackbar>
+                            </div>
 
-                        <div class="text-center">
+                            <div class="text-center">
 
-                            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
-                                outlined>
-                                <strong>{{ mensajeSnackbarError }}</strong>
+                                <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense
+                                    color="#EE680B" outlined>
+                                    <strong>{{ mensajeSnackbarError }}</strong>
 
-                                <template v-slot:action="{ attrs }">
-                                    <v-icon right v-bind="attrs" @click="snackbarError = false">
-                                        mdi-close
-                                    </v-icon>
-                                </template>
-                            </v-snackbar>
-                        </div>
-                    </v-container>
-                </v-form>
-            </div>
+                                    <template v-slot:action="{ attrs }">
+                                        <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                            mdi-close
+                                        </v-icon>
+                                    </template>
+                                </v-snackbar>
+                            </div>
+                        </v-container>
+                    </v-form>
+                </div>
             </v-card-text>
 
 
@@ -235,15 +237,22 @@
                                             label="BUSCAR DEPARTAMENTOS" single-line hide-details></v-text-field>
                                     </v-card-title>
 
-                                    
-                                    <v-data-table :headers="headersDepartamento" :items="datosDepartamento" :search="searchDepartamento"
-                                        :items-per-page="5" class="elevation-1" id="tableId">
+
+                                    <v-data-table :headers="headersDepartamento" :items="datosDepartamento"
+                                        :search="searchDepartamento" :items-per-page="5" class="elevation-1" id="tableId">
                                         <template #[`item.credte`]="{ item }">
-                                            <td>{{ new Date(item.credte).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
+                                            <td>{{ new Date(item.credte).toLocaleDateString('es-ES', {
+                                                day: 'numeric',
+                                                month: 'long', year: 'numeric'
+                                            }) }}</td>
                                         </template>
                                         <template #[`item.upddte`]="{ item }">
                                             <td v-if="item.upddte == null">-</td>
-                                            <td v-if="item.upddte != null">{{ new Date(item.upddte).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
+                                            <td v-if="item.upddte != null">{{ new
+                                                Date(item.upddte).toLocaleDateString('es-ES', {
+                                                    day: 'numeric', month:
+                                                        'long', year: 'numeric'
+                                                }) }}</td>
                                         </template>
                                         <template #[`item.act`]="{ item }">
                                             <v-chip :color="getColor(item.act)" dark>

@@ -65,6 +65,44 @@
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-container>
                     <v-row>
+
+                        <v-col cols="12">
+                            <v-tabs horizontal color="#002245" center-active grow>
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-list-box
+                                    </v-icon>
+                                    ADD
+                                    MAT.
+                                </v-tab>
+
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-list-box
+                                    </v-icon>
+                                    LIST
+                                    MAT.
+                                </v-tab>
+
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-list-box
+                                    </v-icon>
+                                    LIST
+                                    MAT
+                                    INAC.
+                                </v-tab>
+
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-alpha-m-box-outline
+                                    </v-icon>
+                                    USO
+                                    MAT.
+                                </v-tab>
+                            </v-tabs>
+                        </v-col>
+
                         <v-col cols="12" md="1">
                             <v-btn class="mx-2" fab dark x-small color="cyan" :rules="proveedor" @click="showProveedor()"
                                 style="float: right" title="BUSCAR PROVEEDOR">
