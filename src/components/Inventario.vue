@@ -1,5 +1,26 @@
 <template>
     <v-card elevation="5" outlined>
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
+                <strong>{{ mensajeSnackbar }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                         mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+
+        <div class="text-center">
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                            mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
             <v-alert  v-if="existencias==false" 
                 type="error"
                 color="red darken-2"
@@ -10,7 +31,7 @@
                 <div class="text-h6">
                     SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
                 </div>
-                POR FAVOR, NOTIFIQUE A ADQUISICIONES PARA ADQUIRIR EXISTENCIAS DE <strong>${nombreitem}</strong>   
+                POR FAVOR, NOTIFIQUE A ADQUISICIONES PARA ADQUIRIR EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong>   
             </v-alert>
             <v-alert     v-if="existencias==true"      
                 type="success"
@@ -20,7 +41,7 @@
                 prominent
                 >
                 <div class="text-h5">
-                    SE TIENE LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
+                    SE TIENEN LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
                 </div>
                
             </v-alert>
@@ -35,6 +56,9 @@
                      <v-row>
                          <v-col cols="12" md="4">
                              <v-btn color="success" @click="showModalAgregarTransaccion()">NUEVO INVENTARIO</v-btn>
+                         </v-col>
+                         <v-col cols="12" md="4">
+                             <v-btn color="success" @click="showRevalorizarInventarioModal()">REVALORIZACIÓN DE INVENTARIO</v-btn>
                          </v-col>
                          <v-col cols="12">
                              <v-list-item>
@@ -69,6 +93,37 @@
                                      <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionInv(item)"
                                          title="DESACTIVAR ALMACEN">
                                          mdi-close-circle
+                                     </v-icon>             
+                                 </template>
+ 
+                               
+ 
+ 
+                             </v-data-table>
+                         </v-col>
+                     </v-row>
+                     <v-row>
+                         <v-col cols="12">
+                             <v-list-item>
+                                 <v-list-item-title class="text-center">
+                                     <h5>STOCK DE ALMACENES</h5>
+                                 </v-list-item-title>
+                             </v-list-item>
+ 
+                             <v-card-title>
+                                <v-text-field v-model="searchStockAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACENES"
+                                     single-line hide-details></v-text-field>
+                             </v-card-title>
+ 
+                             <v-data-table :headers="headerStockAlmacen" :items="datosStockAlmacen" :search="searchStockAlmacen"
+                                 :items-per-page="5" class="elevation-1" id="tableId">
+ 
+                        
+ 
+                                 <template #[`item.actions`]="{ item }">
+                                     <v-icon x-large color="primary" class="mr-2" @click="mostrarItems(item)"
+                                         title="VER STOCK DE ALMACEN">
+                                         mdi-eye
                                      </v-icon>             
                                  </template>
  
@@ -136,7 +191,7 @@
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="BUSCAR ITEM"
+                                <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="BUSCAR TIPO DE ITEM"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
@@ -170,36 +225,6 @@
                              </v-data-table>
                          </v-col>
                      </v-row>
-                     <v-row>
-                        <v-col cols="12">
-                        <v-alert dense style="color: #ffffff;" color="indigo">
-                            <h3>VALORACION</h3>
-                        </v-alert>
-                        </v-col>
-                        <v-col cols="12">
-                        <v-tabs horizontal color="#002245" center-active grow>
-                                        <v-tab>
-                                            MENSUAL
-                                        </v-tab>
-                                        <v-tab>
-                                            TRIMESTRAL
-                                        </v-tab>
-                                        <v-tab>
-                                            SEMESTRAL
-                                        </v-tab>
-                                        <v-tab>
-                                            ANUAL
-                                        </v-tab>
-                                        <v-tab>
-                                            TOTAL
-                                        </v-tab>
-
-                                      
-                                    </v-tabs>
-                    <v-data-table :headers="headerInventario" :items="datosInventario"
-                                            :items-per-page="5" class="elevation-1" id="tableId"></v-data-table>
-                     </v-col>
-                     </v-row>
  
                  </v-container>
              </v-form>
@@ -217,7 +242,7 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR SECCIÓN"
+                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ITEMS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -243,7 +268,125 @@
                     </v-container>
                 </v-card-text>
             </v-card>
-        </v-dialog>         
+        </v-dialog>       
+        
+        
+        <v-dialog v-model="itemDispModal" persistent :overlay="false" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA DE ITEMS DISPONIBLES PARA ALMACENAR</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="searchItemDisponibles" append-icon="mdi-magnify" label="BUSCAR ITEMS DISPONIBLES"
+                                        single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <v-data-table :headers="headerItemDisponibles" :items="datosItemDisponibles" :search="searchItemDisponibles"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarItemDisp(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
+                                    @click="closeItemDispModal()" style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>  
+        
+
+        <v-dialog v-model="itemRevalModal" persistent :overlay="false" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA DE ITEMS DISPONIBLES PARA REVALORIZAR</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="searchItemDisponibles" append-icon="mdi-magnify" label="BUSCAR ITEMS"
+                                        single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <v-data-table :headers="headerItemPrecio" :items="datosItemPrecio" :search="searchItemDisponibles"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarPrecioItem(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
+                                    @click="closeItemPrecioModal()" style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>  
+        
+
+        <v-dialog v-model="itemAlmacenModal" persistent :overlay="false" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA DE ITEMS DISPONIBLES EN EL ALMACEN</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="searchItemAlmacen" append-icon="mdi-magnify" label="BUSCAR ITEMS DISPONIBLES"
+                                        single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <v-data-table :headers="headerItemAlmacen" :items="datosStock" :search="searchItemAlmacen"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarItemAlmacen(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
+                                    @click="closeItemAlmacenModal()" style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>       
+
 
 
          <v-dialog v-model="agregarInventarioModal" persistent :overlay="false" max-width="1000px">
@@ -255,53 +398,97 @@
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-container>
                             <v-row>
-                                <v-col cols="12" md="11">
-                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM"
-                                        :rules="nombreRules" @input="nombreItem = nombreItem.toUpperCase()"
-                                        disabled required></v-text-field>
-                                </v-col>
-
-                                <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
-                                        @click="openItemModal()" style="float: right" title="BUSCAR ITEM">
-                                        <v-icon dark> mdi-magnify </v-icon>
-                                    </v-btn>
-                                </v-col>       
-                                <v-col cols="12" md="4">
+                                <v-col cols="12" md="12">
                                     <v-combobox
                                     label="MOVIMIENTO" v-model="movimiento" @input="movimiento = movimiento.toUpperCase()" required
                                     :items="['ENTRADA', 'SALIDA']"
                                     ></v-combobox>
                                 </v-col>     
-                                <v-col cols="12" md="4">
-                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :counter="25"
+                                <v-col cols="12" md="11" v-if="movimiento=='ENTRADA'">
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM"
+                                        :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
+                                        disabled required></v-text-field>
+                                </v-col>
+
+                                <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null'
+                                        @click="openItemDispModal()" style="float: right" title="BUSCAR ITEM">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col> 
+
+                                <v-col cols="12" md="11" v-if="movimiento=='ENTRADA'">
+                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACEN"
+                                        :rules="nombreAlmacenRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
+                                        disabled required></v-text-field>
+                                </v-col>
+
+                                <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null' 
+                                        @click="openAlmacenModal()" style="float: right" title="BUSCAR ALMACEN">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>  
+                                <v-col cols="12" md="4" v-if="movimiento=='ENTRADA'">
+                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="[v => ( Number(v) >= 1 && Number(v) <= this.cantidadMaxima ) || 'El número no debe sobrepasar '+ this.cantidadMaxima]" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
                                          @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
-                                </v-col>     
-                                <v-col cols="12" md="4">
-                                    <v-combobox
-                                    label="METODO VALUACION" v-model="metodoValuacion" @input="metodoValuacion = metodoValuacion.toUpperCase()" required
-                                    :items="['PEPS', 'UEPS', 'PROMEDIO PONDERADO']"
-                                    ></v-combobox>
                                 </v-col>      
-                                    
+                                
+                                
+
+
+                             
+
+                                <v-col cols="12" md="11" v-if="movimiento=='SALIDA'">
+                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACEN"
+                                        :rules="nombreAlmacenRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
+                                        disabled required></v-text-field>
+                                </v-col>
+
+                                <v-col cols="12" md="1" v-if="movimiento=='SALIDA'">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null' 
+                                        @click="openAlmacenConStockModal()" style="float: right" title="BUSCAR ALMACENES CON STOCK">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>   
+                                
+                                <v-col cols="12" md="11" v-if="movimiento=='SALIDA'">
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM"
+                                        :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
+                                        disabled required></v-text-field>
+                                </v-col>
+
+                                <v-col cols="12" md="1" v-if="movimiento=='SALIDA'">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreAlmacenRules" :disabled='movimiento==null || nombreAlmacen==""' 
+                                        @click="openItemAlmacenModal()" style="float: right" title="BUSCAR ITEM">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col> 
+                               
+                                <v-col cols="12" md="4" v-if="movimiento=='SALIDA'">
+                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="[v => ( Number(v) >= 1 && Number(v) <= this.cantidadMaximaItem ) || 'El número no debe sobrepasar '+ this.cantidadMaximaItem]" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
+                                         @input="cantidad = cantidad.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>   
+                                   
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
-                                    <v-btn iconvv v-if="botonActTT == 1" class="mx-4"  dark color="#0A62BF"
+                                    <v-btn iconvv v-if="botonActInv == 1" class="mx-4"  dark color="#0A62BF" :disabled='movimiento==null'
                                             @click="editarInv()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                             ACTUALIZAR
                                         </v-btn>
-                                        <v-btn iconv v-if="botonActTT == 0" class="mx-4"  dark color="#0ABF55"
+                                        <v-btn iconv v-if="botonActInv == 0" class="mx-4"  dark color="#0ABF55" :disabled='movimiento==null'
                                             @click="registrarInv()" style="float: left" title="REGISTRAR TRANSACCION">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
                                         </v-btn>
                                 </v-col>                      
                                 <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()" :disabled='movimiento==null'
                                         style="float: left" title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                         LIMPIAR
@@ -322,6 +509,83 @@
             </v-card>
         </v-dialog>
 
+         <v-dialog v-model="almacenModal" persistent :overlay="false" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA DE ALMACENES ACTIVOS</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACENES ACTIVOS"
+                                        single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <v-data-table :headers="headerAlmacen" :items="datosAlmacen" :search="searchAlmacen"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarAlmacen(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
+                                    @click="closeAlmacenModal()" style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>   
+
+
+        <v-dialog v-model="almacenConStockModal" persistent :overlay="false" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA DE ALMACENES CON ITEMS</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="searchAlmacenConStock" append-icon="mdi-magnify" label="BUSCAR ALMACENES ACTIVOS"
+                                        single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <v-data-table :headers="headerAlmacen" :items="datosAlmacenConStock" :search="searchAlmacenConStock"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarAlmacen(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
+                                    @click="closeAlmacenConStockModal()" style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>   
+
 
         <v-dialog v-model="tipoModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
@@ -333,7 +597,7 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="BUSCAR SECCIÓN"
+                                    <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="BUSCAR TIPOS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -375,42 +639,54 @@
                             <v-row>
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="nombreItem" label="NOMBRE ITEM" :counter="60"
-                                        :rules="nombreRules" @input="nombreItem = nombreItem.toUpperCase()"
+                                        :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>   
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="descripcion" label="DESCRIPCION" :counter="150"
-                                         @input="descripcion = descripcion.toUpperCase()"
+                                        :rules="descripcionRules" @input="descripcion = descripcion.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>   
-                                <v-col cols="12" md="4">
-                                    <v-combobox
+                                <v-col v-if="botonActIt == 0" cols="12" md="4">
+                                    <v-select
                                     label="MEDIDA"  v-model="medida" @input="medida = medida.toUpperCase()" required
-                                    :items="['LT', 'KG', 'ML', 'DS', 'UI', 'TN','SOB','MIC','MT','G','UNIDAD']"
-                                    ></v-combobox>
+                                    :items="['Litros', 'Kilogramos', 'Mililitros', 'Toneladas', 'Gramos', 'Unidades']" 
+                                    :rules="[v => !!v || 'La medida es requerida']"
+                                    ></v-select>
                                 </v-col>    
-                                <v-col cols="12" md="3">
+                                <v-col v-if="botonActIt == 0" cols="12" md="3">
                                     <v-text-field v-model="nombreTipoITem" label="NOMBRE TIPO ITEM" :counter="60"
-                                        :rules="nombreRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
+                                        :rules="nombreTipoRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
-
-                                <v-col cols="12" md="1">
+                                <v-col v-if="botonActIt == 0" cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
                                         @click="openTipoModal()" style="float: right" title="BUSCAR TIPO ITEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
-                                </v-col>             
+                                </v-col> 
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="limitecritico" label="LIMITE CRITICO" type="number" :counter="25"
+                                         @input="limitecritico = limitecritico.toUpperCase()" :rules="limiteRules"
+                                        required></v-text-field>
+                                </v-col> 
+                                <v-col cols="12" md="4">
+                                    <v-select
+                                    label="METODO VALUACION" v-model="metodoValuacion" @input="metodoValuacion = metodoValuacion.toUpperCase()" required
+                                    :items="['PEPS', 'UEPS', 'PROMEDIO PONDERADO']"
+                                    :rules="[v => !!v || 'El Metodo de Valuación es requerido']"
+                                    ></v-select>
+                                </v-col>                   
                                 <v-col cols="12" md="4"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
-                                    <v-btn iconvv v-if="botonActTT == 1" class="mx-4"  dark color="#0A62BF"
+                                    <v-btn iconvv v-if="botonActIt == 1" class="mx-4"  dark color="#0A62BF"
                                             @click="editarIt()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                             ACTUALIZAR
                                         </v-btn>
-                                        <v-btn iconv v-if="botonActTT == 0" class="mx-4"  dark color="#0ABF55"
+                                        <v-btn iconv v-if="botonActIt == 0" class="mx-4"  dark color="#0ABF55"
                                             @click="registrarIt()" style="float: left" title="REGISTRAR ITEM">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
@@ -449,7 +725,7 @@
                             <v-row>
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="nombreTipoITem" label="NOMBRE TIPO ITEM" :counter="60"
-                                        :rules="nombreRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
+                                        :rules="nombreTipoRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>                         
                                 <v-col cols="12" md="4"> </v-col>
@@ -462,7 +738,7 @@
                                             ACTUALIZAR
                                         </v-btn>
                                         <v-btn iconv v-if="botonActTT == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarTipo()" style="float: left" title="REGISTRAR PROVEEDOR">
+                                            @click="registrarTipo()" style="float: left" title="REGISTRAR TIPO">
                                             <v-icon dark> mdi-content-save </v-icon>
                                             GUARDAR
                                         </v-btn>
@@ -500,7 +776,7 @@
                                 <v-col cols="3"></v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anularTipo()" style="float: right" title="ANULAR TIPO ITEM">
+                                        @click="anularTipo()" style="float: right" title="ANULAR TIPO">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         ANULAR
                                     </v-btn>
@@ -580,6 +856,93 @@
             </v-card>
         </v-dialog>
 
+        <v-dialog v-model="revalorizarInventario" persistent :overlay="false" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>GESTIÓN DE REVALORARIZACIÓN DE INVENTARIO</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="11">
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM"
+                                        :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
+                                        disabled required></v-text-field>
+                                </v-col>
+
+                                <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
+                                        @click="openItemPrecioModal()" style="float: right" title="BUSCAR ITEM">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>        
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="valor" label="NUEVO VALOR" type="number" :counter="25"
+                                         @input="valor = valor.toUpperCase()" :rules="valorRules"
+                                        required></v-text-field>
+                                </v-col>     
+                        
+                                    
+                                <v-col cols="12" md="8"> </v-col>
+                                <v-col cols="6"></v-col>
+                                <v-col cols="2">
+                                        <v-btn iconv class="mx-4"  dark color="#0ABF55"
+                                            @click="registrarPrecioItem()" style="float: left" title="REGISTRAR NUEVO PRECIO">
+                                            <v-icon dark> mdi-content-save </v-icon>
+                                            GUARDAR
+                                        </v-btn>
+                                </v-col>                      
+                                <v-col cols="2">                                        
+                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
+                                        <v-icon dark> mdi-eraser </v-icon>
+                                        LIMPIAR
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeRevalorizarInventarioModal()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+
+        <v-dialog
+            v-model="detalleStockDialog"
+            persistent :overlay="false"
+            max-width="900px"
+            transition="dialog-transition"
+        >
+            <v-card>
+                <v-card-title primary-title>
+                    CONTENIDO
+                </v-card-title>
+            </v-card>
+            <v-card>
+                    <v-data-table :headers="headerStock" :items="datosStock"
+                        :items-per-page="5" class="elevation-1">
+                    </v-data-table>
+            </v-card>
+            <v-card>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red" dark x-big  @click="closeDetalleStock()">
+                        <v-icon dark> mdi-close-circle-outline </v-icon> SALIR
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
      </v-card>
      
  
@@ -590,16 +953,22 @@
      data() {
          return {
 
-            existencias: false,
+            mensajeSnackbarError: "REGISTRO FALLIDO",
+
+            existencias: true,
+            itemsCriticos: '',
             datosExistencia:[],
 
              //#region 
              idTransaccion: "",
              idItem:"",
-             movimiento:"",
-             cantidad:"",
+             movimiento:null,
+             limitecritico:"",
              metodoValuacion:"",
              estTranc:"",
+
+            idAlmacen:0,
+            nombreAlmacen:"",
 
 
              nombreItem:"",
@@ -619,6 +988,41 @@
                (v && v.length <= 60) ||
                  "el nombre del proveedor no debe sobrepasar los 60 caracteres.",
              ],
+             nombreItemRules: [
+               (v) => !!v || "Se requiere el nombre del item.",
+               (v) =>
+               (v && v.length <= 60) ||
+                 "el nombre del item no debe sobrepasar los 60 caracteres.",
+             ],
+             nombreTipoRules: [
+               (v) => !!v || "Se requiere el nombre del tipo de item.",
+               (v) =>
+               (v && v.length <= 60) ||
+                 "el nombre del tipo no debe sobrepasar los 60 caracteres.",
+             ],
+             nombreAlmacenRules: [
+               (v) => !!v || "Se requiere el nombre del almacen.",
+               (v) =>
+               (v && v.length <= 60) ||
+                 "el nombre del almacen no debe sobrepasar los 60 caracteres.",
+             ],
+
+            valorRules: [
+            (v) => parseFloat(v) >= 0 || "El valor debe ser mayor a 0.",
+            (v) => !!v || "El valor es obligatorio.",
+            (v) => !isNaN(parseFloat(v)) && isFinite(v) || "Ingresa un valor numérico válido."
+            ],
+
+            limiteRules: [
+            (v) => !!v || "El limite es obligatorio.",
+            (v) => parseFloat(v) >= 0 || "El limite debe ser mayor a 0.",
+            (v) => !isNaN(parseFloat(v)) && isFinite(v) || "Ingresa un valor numérico válido."
+            ],
+                        
+            descripcionRules: [
+            (v) => !!v || "Se requiere la descripción.",
+            (v) => (v === null || v.length <= 150) || "La descripción no debe superar los 150 caracteres.",
+            ],
              phone1Rules: [
                (v) => !!v || "Se requiere un numero telefonico o celular.",
                (v) =>
@@ -639,13 +1043,56 @@
                  
                  { text: "NUMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
                  { text: "ITEM", value: "nombreitem", sortable: true },
+                 { text: "ALMACEN", value: "nombrealmacen", sortable: true },
                  { text: "MOVIMIENTO", value: "movimiento", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodoValuacion", sortable: true },
-                 { text: "ESTADO", value: "estado", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 //{ text: "ESTADO", value: "estado", sortable: true },
+                 //{ text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
+
+            datosAlmacen:[],
+            headerAlmacen: [
+                //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
+                
+                { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
+                { text: "DESCRIPCIÓN DE ALMACEN", value: "descripcion", sortable: true },
+                { text: "CODIGO ALMACEN", value: "codigo", sortable: true },
+                { text: "ESTADO", value: "estado", sortable: true },
+                { text: "ACCIONES", value: "actions", sortable: false }
+                //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+            ],
+            searchAlmacen: "",
+            almacenModal: false,
+            datosAlmacenConStock: [],
+            searchAlmacenConStock: "",
+            almacenConStockModal: false,
+
+
+            datosStockAlmacen:[],
+            headerStockAlmacen: [
+                //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
+                { text: "CODIGO ALMACEN", value: "codigo", sortable: true },
+                { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
+                { text: "TOTAL", value: "total", sortable: true },
+                { text: "ACCIONES", value: "actions", sortable: false },
+                //{ text: "ACCIONES", value: "actions", sortable: false }
+                //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+            ],
+            searchStockAlmacen: "",
+
+            datosStock: [],
+            headerStock: [   
+                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "PRECIO UNITARIO", value: "valor", sortable: true },
+                 { text: "STOCK", value: "total", sortable: true },
+                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+             ],
+            searchStock: "",
+            detalleStockDialog: false,
  
              datosItem: [],
              headerItem: [
@@ -654,6 +1101,8 @@
                  { text: "DESCRIPCION", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "LIMITE CRITICO", value: "limite", sortable: true },
+                 { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -667,16 +1116,68 @@
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
+
+
+             datosItemDisponibles: [],
+             headerItemDisponibles: [
+                 
+                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "MEDIDA", value: "medida", sortable: true },
+                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "LIMITE CRITICO", value: "limite", sortable: true },
+                 { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
+                 { text: "CANTIDAD", value: "cantidad", sortable: true },
+                 { text: "PRECIO UNITARIO", value: "valor", sortable: true },
+                 { text: "ACCIONES", value: "actions", sortable: false }
+                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+             ],
+             searchItemDisponibles: "",
+             itemDispModal: false,
+             cantidadMaxima : 0,
+             cantidadMaximaItem: 0,
+
+             itemRevalModal: false,
+             datosItemPrecio: [],
+             headerItemPrecio: [
+                 
+                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "CANTIDAD", value: "total", sortable: true },
+                 { text: "PRECIO UNITARIO", value: "valor", sortable: true },
+                 { text: "ACCIONES", value: "actions", sortable: false }
+                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+             ],
+
+             
+             datosItemAlmacen: [],
+             headerItemAlmacen: [
+                 
+                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "LIMITE CRITICO", value: "limite", sortable: true },
+                 { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
+                 { text: "CANTIDAD", value: "total", sortable: true },
+                 { text: "ACCIONES", value: "actions", sortable: false }
+                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+             ],
+             searchItemAlmacen: "",
+             itemAlmacenModal: false,
  
              buscarInventario: "",
              searchInventario: "",
              agregarInventarioModal: false,
              confirmacionAnulacionInventario: false,
+
+             revalorizarInventario: false,
  
              buscarItem: "",
              searchItem: "",
              agregarItemModal: false,
              confirmacionAnulacionItem: false,
+             valor:0,
  
              buscarTipoItem: "",
              searchTipoItem: "",
@@ -692,6 +1193,10 @@
              botonActInv:0,
              botonActIt:0,
              botonActTT:0,
+
+
+             snackbarOK: false,
+             snackbarError : false,
              //#endregion
          }
      },
@@ -699,21 +1204,69 @@
        this.listarInventario();
        this.listarItem();
        this.listarTipoItem();
+       this.listarstock();
+       this.getListaExistencias().then(() => {
        this.getAlertas();
+        });
+       
      },
      methods: {
 
         getAlertas(){
-            this.getListaExistencias();
+            var items = [];
+            var stock = [];
+            var limite = [];
             if(this.datosExistencia==[]){
-                this.existencias=true;
+                this.existencias=false;
             }
             else{
-                console.log('')
-                console.log(JSON.parse(JSON.stringify(this.datosExistencia)))
-                console.log('')
-                this.existencias=true;
+                console.log(JSON.parse(JSON.stringify(this.datosExistencia)));
+                console.log('');
+                let datosComoObjeto = JSON.parse(JSON.stringify(this.datosExistencia))
+
+                for (let propiedad in datosComoObjeto) {
+                    console.log(`: ${propiedad}`);
+                    for (const key in datosComoObjeto[propiedad]) {
+                        console.log(`Propiedad: ${key}`);
+                        if (key == 'nombreitem') {
+                            items.push(datosComoObjeto[propiedad][key])
+                        }
+                        else if (key == 'limitecritico') {
+                            limite.push(datosComoObjeto[propiedad][key])
+                        } 
+                        else if (key == 'cantidad') {
+                            stock.push(datosComoObjeto[propiedad][key])
+                        } 
+                    }
+                }
+                for (let i = 0; i < items.length; i++) {
+                    if ( limite[i] >= stock[i]  ) {
+                        console.log(limite[i])
+                        console.log(stock[i])
+                        alert(limite[i]+' u '+stock[i] )
+                        this.existencias=false;
+                        this.itemsCriticos += items[i]+' ';
+                    }
+                }
             }
+        },
+
+        async getListaExistencias(){
+            let me = this;
+            await axios
+                .get("/inventario/listarexistencias/")
+                .then(function (response) {
+                if (response.data.resultado == null) {
+                    me.datosExistencia = [];
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                    me.datosExistencia = response.data.resultado;
+                }
+                })
+                .catch(function (error) {
+                console.log(error);
+                });
         },
 
          getColor(est) {
@@ -747,32 +1300,33 @@
          
 
          registrarInv() {
-            if(this.movimiento == 'SALIDA'){
+           /* if(this.movimiento == 'SALIDA'){
                 this.registrarInventarioSalida(this.idItem, this.movimiento,this.cantidad,this.metodovaluacion, this.estado);
             }
-            else{
-                this.registrarInventarioEntrada(this.idItem, this.movimiento,this.cantidad,this.metodovaluacion, this.estado);
-
-            }
+            else{*/
+                if (this.$refs.form.validate()) {
+                this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
+                }
+            //}
         },
         async registrarInventarioEntrada(
             idItem,
+            idAlmacen,
             movimiento,
             cantidad,
-            metodovaluacion,
             estado
         ) {
             let me = this;
             await axios
                 .post(
-                    "/inventario/agregarinventarioentrada/" +
+                    "/inventario/agregarinventario/" +
                     this.idItem +
+                    "," +
+                    this.idAlmacen +
                     "," +
                     this.movimiento +
                     "," +
                     this.cantidad +
-                    "," +
-                    this.metodoValuacion +
                     "," +
                     this.estado
                 )
@@ -782,6 +1336,7 @@
                     me.snackbarOK = true;
                     me.closeModalAgregarTransaccion();
                     me.listarInventarios();
+                    me.listarStockAlmacen();
                     me.limpiar();
                 })
                 .catch(function (error) {
@@ -819,6 +1374,7 @@
                     me.snackbarOK = true;
                     me.closeModalAgregarTransaccion();
                     me.listarInventarios();
+                    me.getAlertas();
                     me.limpiar();
                 })
                 .catch(function (error) {
@@ -829,16 +1385,18 @@
         },
 
         editarInv() {
-            this.editarInventario(this.idTransaccion,this.idItem, this.movimiento,this.cantidad, this.metodovaluacion, this.estado);
+            if (this.$refs.form.validate()) {
+            this.editarInventario(this.idTransaccion,this.idItem, this.idAlmacen,this.movimiento,this.cantidad, this.estado);
 
             this.botonActInv=0;
+            }
         },
         async editarInventario(
             idTransaccion,
             idItem,
+            idAlmacen,
             movimiento,
             cantidad,
-            metodovaluacion,
             estado
         ) {
             let me = this;
@@ -849,11 +1407,11 @@
                     "," +
                     this.idItem +
                     "," +
+                    this.idAlmacen +
+                    "," +
                     this.movimiento +
                     "," +
                     this.cantidad +
-                    "," +
-                    this.metodovaluacion +
                     "," +
                     this.estado
                 )
@@ -899,8 +1457,83 @@
         },
 
 
+        registrarPrecioItem(){
+            if (this.$refs.form.validate()) {
+            this.registarRevalorarizacionItem(this.idtiem,this.valor)
+            }
+        },
 
 
+        async registarRevalorarizacionItem(idItem,valor) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/agregarprecioitem/" +
+                    this.idItem +
+                    "," +
+                    this.valor
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.closeRevalorizarInventarioModal();
+                    me.listaritemactivo();
+                    me.limpiar();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+
+
+
+        listarAlmacen() {
+            this.listarAlmacenes();
+        },
+        async listarAlmacenes() {
+          let me = this;
+          await axios
+            .get("/almacen/listaralmacenesactivos/")
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosAlmacen = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosAlmacen = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
+
+        listarAlmacenconStock() {
+            this.listarAlmacenesConStock();
+        },
+        async listarAlmacenesConStock() {
+          let me = this;
+          await axios
+            .get("/almacen/listaralmacenstock/")
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosAlmacenConStock = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosAlmacenConStock = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+ 
  
  
          listarItem() {
@@ -924,15 +1557,62 @@
              });
          },
 
+         listarItemDisp() {
+             this.listarItemsDisponibles();
+         },
+         async listarItemsDisponibles() {
+           let me = this;
+           await axios
+             .get("/inventario/listaritemdisponibles/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datosItemDisponibles = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datosItemDisponibles = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+
+
+         
+         listarValorItem() {
+             this.listarValorItems();
+         },
+         async listarValorItems() {
+           let me = this;
+           await axios
+             .get("/inventario/listaritemalmacenados/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datosItemPrecio = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datosItemPrecio = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+
          registrarIt() {
-            this.registrarItem(this.nombreItem,this.cantidad, this.descripcion,this.medida,this.idTipoItem, this.estado);
+            if (this.$refs.form.validate()) {
+            this.registrarItem(this.nombreItem, this.descripcion,this.medida,this.idTipoItem,this.limitecritico, this.metodoValuacion, this.estado);
+            }
         },
         async registrarItem(
             nombreItem,
-            cantidad,
             descripcion,
             medida,
             idTipoItem,
+            limitecritico,
+            metodoValuacion,
             estado
         ) {
             let me = this;
@@ -941,15 +1621,17 @@
                     "/inventario/agregaritem/" +
                     this.nombreItem +
                     "," +
-                    this.cantidad +
-                    "," +
                     this.descripcion +
                     "," +
                     this.medida +
                     "," +
                     this.estado +
                     "," +
-                    this.idTipoItem
+                    this.idTipoItem +
+                    "," +
+                    this.limitecritico +
+                    "," +
+                    this.metodoValuacion
                 )
                 .then(function (response) {
 
@@ -967,17 +1649,19 @@
         },
 
         editarIt() {
-            this.editarItem(this.idItem, this.nombreItem,this.cantidad, this.descripcion,this.medida,this.idTipoItem, this.estado);
-            this.botonActInv=0;
+            if (this.$refs.form.validate()) {
+            this.editarItem(this.idItem, this.nombreItem, this.descripcion, this.estado, this.limitecritico, this.metodoValuacion);
+            this.botonActIt=0;
+            }
         },
         async editarItem(
             idItem,
             nombreItem,
-            cantidad,
             descripcion,
-            medida,
-            idTipoItem,
-            estado
+            estado,
+            limitecritico,
+            metodoValuacion
+            
         ) {
             let me = this;
             await axios
@@ -987,15 +1671,13 @@
                     "," +
                     this.nombreItem +
                     "," +
-                    this.cantidad +
-                    "," +
                     this.descripcion +
-                    "," +
-                    this.medida +
                     "," +
                     this.estado +
                     "," +
-                    this.idTipoItem
+                    this.limitecritico +
+                    "," +
+                    this.metodoValuacion
                 )
                 .then(function (response) {
 
@@ -1061,9 +1743,11 @@
 
 
          registrarTipo() {
-            this.registrarTipo(this.nombreTipoITem, this.estado);            
+            if (this.$refs.form.validate()) {
+                this.registrarTipos(this.nombreTipoITem, this.estado);
+            }            
         },
-        async registrarTipo(
+        async registrarTipos(
             nombreTipoITem,
             estado
         ) {
@@ -1090,8 +1774,10 @@
         },
 
         editarTipo() {
+            if (this.$refs.form.validate()) {
             this.editarTipo( this.idTipoItem,this.nombreTipoITem, this.estado);
             this.botonActTT = 0;
+            }
         },
         async editarTipo(
             idTipoItem,
@@ -1148,6 +1834,64 @@
                 });
 
         },
+
+
+        listarstock() {
+             this.listarStockAlmacen();
+         },
+         async listarStockAlmacen() {
+           let me = this;
+           await axios
+             .get("/inventario/listarstockalmacen/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datosStockAlmacen = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datosStockAlmacen = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+
+
+         async listarDetalleStock(idAlmacen) {
+          let me = this;
+          await axios
+            .get("/inventario/listarstock/"+idAlmacen)
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosStock = [];
+              } else {
+                me.datosStock = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
+
+        mostrarItems(item){
+            this.idAlmacen = item.idalmacen;
+            this.listarDetalleStock(this.idAlmacen);
+            this.detalleStockDialog = true;
+            
+        },
+
+        
+
+        closeDetalleStock(){
+            this.detalleStockDialog = false;
+        },
+
+
+
+
+     
         
          
 
@@ -1206,9 +1950,7 @@
             this.idItem = item.iditem;
             this.nombreItem = item.nombreitem;
             this.descripcion = item.descripcion;
-            this.medida = item.medida;
-            this.idTipoItem = item.idTipoItem;
-            this.nombreTipoITem = item.nombretipoitem;
+            this.limitecritico = item.limitecritico;
             this.estado = item.estado;
             this.agregarItemModal = true;
         },
@@ -1243,9 +1985,20 @@
         },
 
         closeModalAgregarTransaccion(){
+            this.movimiento = null;
             this.agregarInventarioModal = false;
             this.limpiar();
         },
+
+        showRevalorizarInventarioModal(){
+            this.revalorizarInventario = true;
+        },
+
+        closeRevalorizarInventarioModal(){
+            this.revalorizarInventario = false;
+            this.limpiar();
+        },
+
 
 
         showModalAgregarItem(){
@@ -1268,10 +2021,89 @@
             this.itemModal = false;
         },
 
+        openItemAlmacenModal(){
+            this.listarDetalleStock(this.idAlmacen);
+            this.itemAlmacenModal = true;
+        },
+
+        closeItemAlmacenModal(){
+            this.itemAlmacenModal = false;
+        },
+
+        seleccionarItemAlmacen(item) {
+            this.idItem = item.iditem;
+            this.nombreItem = item.nombreitem;
+            this.cantidadMaxima = item.cantidad;
+            this.cantidadMaximaItem = item.total; 
+            this.itemAlmacenModal = false;
+        },
+
+
+        openItemDispModal(){
+            this.listarItemDisp();
+            this.itemDispModal = true;
+        },
+
+        closeItemDispModal(){
+            this.itemDispModal = false;
+        },
+
+        seleccionarItemDisp(item) {
+            this.idItem = item.iditem;
+            this.nombreItem = item.nombreitem;
+            this.cantidadMaxima = item.cantidad;
+            this.itemDispModal = false;
+        },
+
         seleccionarItem(item) {
             this.idItem = item.iditem;
             this.nombreItem = item.nombreitem;
             this.itemModal = false;
+        },
+
+        openItemPrecioModal(){
+            this.listarValorItem();
+            this.itemRevalModal = true;
+        },
+
+        seleccionarPrecioItem(item) {
+            this.idItem = item.iditem;
+            this.nombreItem = item.nombreitem;
+            this.valor = item.valor;
+            this.itemRevalModal = false;
+        },
+
+        closeItemPrecioModal(){
+            this.itemRevalModal = false;
+        },
+
+        openAlmacenModal(){
+            this.listarAlmacen();
+            this.almacenModal = true;
+        },
+
+       
+
+        closeAlmacenModal(){
+            this.almacenModal = false;
+        },
+
+        openAlmacenConStockModal(){
+            this.listarAlmacenconStock();
+            this.almacenConStockModal = true;
+        },
+
+       
+
+        closeAlmacenConStockModal(){
+            this.almacenConStockModal = false;
+        },
+
+        seleccionarAlmacen(item) {
+            this.idAlmacen = item.idalmacen;
+            this.nombreAlmacen = item.nombrealmacen;
+            this.almacenModal = false;
+            this.almacenConStockModal = false;
         },
 
 
@@ -1282,6 +2114,7 @@
 
         closeTipoModal(){
             this.tipoModal = false;
+            this.limpiar();
         },
 
         seleccionarTipo(item){
@@ -1299,6 +2132,7 @@
         closeModalAgregarTipoItem(){
             this.agregarTipoItemModal = false;
             this.limpiar();
+            this.botonActTT = 0;
      
         },
 
@@ -1309,25 +2143,12 @@
 
 
 
+        listarExistencia(){
+            this.getListaExistencias();
+        },
 
         
-        async getListaExistencias(){
-            let me = this;
-            await axios
-                .get("/inventario/listarexistencias/")
-                .then(function (response) {
-                if (response.data.resultado == null) {
-                    me.datosExistencia = [];
-                    console.log(response.data);
-                } else {
-                    console.log(response.data);
-                    me.datosExistencia = response.data.resultado;
-                }
-                })
-                .catch(function (error) {
-                console.log(error);
-                });
-        },
+   
 
       
          //#endregion

@@ -129,7 +129,7 @@
               <v-list-item-title>REPORTES</v-list-item-title>
             </v-list-item-content>
           </template>
-
+        
           <v-list-item :to="{ name: 'Reportes' }">
             <v-list-item-title>
               <h6>REPORTES</h6>
@@ -137,7 +137,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(4, '0')">
+        <v-list-group no-action color="#00A1B1" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-account-group</v-icon>
@@ -220,6 +220,129 @@
               <h6>CUENTAS</h6>
             </v-list-item-title>
           </v-list-item>
+          /// Creo que esto hay doble, desaparece el de arriba porque no se tiene acceso a produccion o no se loguearon
+          <v-list-item :to="{ name: 'Formatos' }">
+            <v-list-item-title>
+              <h6>FORMATOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Tipos' }">
+            <v-list-item-title>
+              <h6>TIPOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Fabricas' }">
+            <v-list-item-title>
+              <h6>FABRICAS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Movimientos' }">
+            <v-list-item-title>
+              <h6>MOVIMIENTOS</h6>
+            </v-list-item-title>
+          </v-list-item> 
+          <v-list-item :to="{ name: 'Produccion' }">
+            <v-list-item-title>
+              <h6>PRODUCCION</h6>
+            </v-list-item-title>
+          </v-list-item>
+          
+        </v-list-group>
+
+        <v-list-group no-action color="#00A1B1" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-point-of-sale</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>VENTAS</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item :to="{ name: 'Ventas' }">
+            <v-list-item-title>
+              <h6>VENTAS</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+
+        <v-list-group no-action color="#00A1B1" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-chart-bar</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>REPORTES</v-list-item-title>
+            </v-list-item-content>
+          </template>
+        
+          <v-list-item :to="{ name: 'Reportes' }">
+            <v-list-item-title>
+              <h6>REPORTES</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+      
+        <v-list-group no-action color="light-blue darken-4" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-package</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>RRHH</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'Empleados' }">
+            <v-list-item-title>
+              <h6>EMPLEADOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Alerta' }">
+            <v-list-item-title>
+              <h6>ALERTAS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Cargos' }">
+            <v-list-item-title>
+              <h6>CARGOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Turnos' }">
+            <v-list-item-title>
+              <h6>TURNOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Unidades' }">
+            <v-list-item-title>
+              <h6>UNIDADES</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Areas' }">
+            <v-list-item-title>
+              <h6>AREAS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Departamentos' }">
+            <v-list-item-title>
+              <h6>DEPARTAMENTOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+       
+        <v-list-group no-action color="light-blue darken-4" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>USUARIOS</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item :to="{ name: 'Usuarios' }">
+            <v-list-item-title>
+              <h6>CUENTAS</h6>
+            </v-list-item-title>
+          </v-list-item>
         </v-list-group>
 
         <v-list-group no-action color="#00A1B1" value="true">
@@ -285,11 +408,6 @@
               <h6>ALMACEN</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Almacenamiento' }">
-            <v-list-item-title>
-              <h6>ALMACENAMIENTO</h6>
-            </v-list-item-title>
-          </v-list-item>
         </v-list-group>
 
         <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(9, '0')">
@@ -307,6 +425,11 @@
           <v-list-item :to="{ name: 'Archivos' }">
             <v-list-item-title>
               <h6>GESTIÓN DE DOCUMENTOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'ArchivosEmpleado' }">
+            <v-list-item-title>
+              <h6>DOCUMENTOS DE PERSONAL</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>

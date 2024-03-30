@@ -25,7 +25,7 @@
                 prominent
                 >
                 <div class="text-h5">
-                    SE TIENE LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
+                    SE TIENEN LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
                 </div>
                
         </v-alert>
@@ -49,7 +49,7 @@
                             </v-list-item>
 
                             <v-card-title>
-                               <v-text-field v-model="searchAlmacenamiento" append-icon="mdi-magnify" label="BUSCAR ALMACEN"
+                               <v-text-field v-model="searchAlmacenamiento" append-icon="mdi-magnify" label="BUSCAR ITEM ALMACENADO"
                                     single-line hide-details></v-text-field>
                             </v-card-title>
 
@@ -88,7 +88,7 @@
             <v-dialog v-model="modalAlmacenamiento" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>AGREGAR ALMACENAMIENTO</span>
+                    <span>REGISTRAR ALMACENAMIENTO</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -109,13 +109,13 @@
 
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
-                                        @click="openStandModal()" style="float: right" title="BUSCAR STAND">
+                                        @click="openAlmacenModal()" style="float: right" title="BUSCAR ALMACEN">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="3">
-                                    <v-text-field v-model="nombreStand" label="NOMBRE STAND" :counter="60"
-                                        :rules="nombreRules" @input="nombreStand = nombreStand.toUpperCase()"
+                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACEN" :counter="60"
+                                        :rules="nombreRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
@@ -163,26 +163,26 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="modalStand" persistent :overlay="false" max-width="900px">
+        <v-dialog v-model="modalAlmacen" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE STANDS ACTIVOS</span>
+                    <span>LISTA DE ALMACENES ACTIVOS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchStand" append-icon="mdi-magnify" label="BUSCAR SECCIÓN"
+                                    <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACENES ACTIVOS"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headerStand" :items="datosStand" :search="searchStand"
+                                <v-data-table :headers="headerAlmacen" :items="datosAlmacen" :search="searchAlmacen"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarStand(item)">
+                                        <v-icon small class="mr-2" @click="seleccionarAlmacen(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -191,7 +191,7 @@
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
                                 <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeStandModal()" style="float: right" title="SALIR">
+                                    @click="closeAlmacenModal()" style="float: right" title="SALIR">
                                     <v-icon dark> mdi-close-circle-outline </v-icon>
                                 </v-btn>
                             </v-col>
@@ -211,7 +211,7 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR SECCIÓN"
+                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ITEMS ACTIVOS"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -246,7 +246,27 @@
             </v-form>
 
         </div>
-    
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
+                <strong>{{ mensajeSnackbar }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                         mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+
+        <div class="text-center">
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                            mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
     </v-card>
     
 
@@ -257,23 +277,26 @@ export default {
     data() {
         return {
 
-            existencias: false,
+            mensajeSnackbarError: "REGISTRO FALLIDO",
+
+            existencias: true,
+            itemsCriticos: '',
             datosExistencia:[],
 
             idItem:"",
-            idStand:"",
+            idAlmacen:0,
             cantidad:"",
 
 
-            nombreStand:"",
+            nombreAlmacen:"",
             nombreItem:"",
             //fechaDeModificacion: "",
             valid: true,
             nombreRules: [
-              (v) => !!v || "Se requiere el nombre del proveedor.",
+              (v) => !!v || "Se requiere el nombre del Almacen.",
               (v) =>
               (v && v.length <= 60) ||
-                "el nombre del proveedor no debe sobrepasar los 60 caracteres.",
+                "el nombre del Almacen no debe sobrepasar los 60 caracteres.",
             ],
             phone1Rules: [
               (v) => !!v || "Se requiere un numero telefonico o celular.",
@@ -292,9 +315,9 @@ export default {
             headerAlmacenamiento: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
                 { text: "ITEM", value: "nombreitem", sortable: true },
-                { text: "STAND", value: "nombrestand", sortable: true },
+                { text: "ALMACEN", value: "nombrealmacen", sortable: true },
                 { text: "CANTIDAD", value: "cantidad", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                //{ text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
@@ -303,17 +326,19 @@ export default {
             modalAlmacenamiento: false,
 
 
-            datosStand:[],
-            headerStand: [
+            datosAlmacen:[],
+            headerAlmacen: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
-                { text: "NOMBRE DE STAND", value: "nombrestand", sortable: true },
-                { text: "SECCION", value: "nombreseccion", sortable: true },
+                
+                { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
+                { text: "DESCRIPCIÓN DE ALMACEN", value: "descripcion", sortable: true },
+                { text: "CODIGO ALMACEN", value: "codigo", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
-            searchStand: "",
-            modalStand: false,
+            searchAlmacen: "",
+            modalAlmacen: false,
             datosItem:[],
             headerItem: [
                  
@@ -330,6 +355,9 @@ export default {
 
 
             botonAct: 0,
+
+            snackbarOK: false,
+            snackbarError : false,
             //#endregion
         }
     },
@@ -341,16 +369,60 @@ export default {
     methods: {
 
         getAlertas(){
-            this.getListaExistencias();
+            var items = [];
+            var stock = [];
+            var limite = [];
             if(this.datosExistencia==[]){
-                this.existencias=true;
+                this.existencias=false;
             }
             else{
-                console.log('')
-                console.log(JSON.parse(JSON.stringify(this.datosExistencia)))
-                console.log('')
-                this.existencias=true;
+                console.log(JSON.parse(JSON.stringify(this.datosExistencia)));
+                console.log('');
+                let datosComoObjeto = JSON.parse(JSON.stringify(this.datosExistencia))
+
+                for (let propiedad in datosComoObjeto) {
+                    console.log(`: ${propiedad}`);
+                    for (const key in datosComoObjeto[propiedad]) {
+                        console.log(`Propiedad: ${key}`);
+                        if (key == 'nombreitem') {
+                            items.push(datosComoObjeto[propiedad][key])
+                        }
+                        else if (key == 'limitecritico') {
+                            limite.push(datosComoObjeto[propiedad][key])
+                        } 
+                        else if (key == 'cantidad') {
+                            stock.push(datosComoObjeto[propiedad][key])
+                        } 
+                    }
+                }
+                for (let i = 0; i < items.length; i++) {
+                    if ( limite[i] >= stock[i]  ) {
+                        console.log(limite[i])
+                        console.log(stock[i])
+                        alert(limite[i]+' u '+stock[i] )
+                        this.existencias=false;
+                        this.itemsCriticos += items[i]+' ';
+                    }
+                }
             }
+        },
+
+        async getListaExistencias(){
+            let me = this;
+            await axios
+                .get("/inventario/listarexistencias/")
+                .then(function (response) {
+                if (response.data.resultado == null) {
+                    me.datosExistencia = [];
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                    me.datosExistencia = response.data.resultado;
+                }
+                })
+                .catch(function (error) {
+                console.log(error);
+                });
         },
 
 
@@ -360,20 +432,20 @@ export default {
 
         },
 
-        listarStand() {
-            this.listarStands();
+        listarAlmacen() {
+            this.listarAlmacenes();
         },
-        async listarStands() {
+        async listarAlmacenes() {
           let me = this;
           await axios
-            .get("/stand/listarstandsactivos/")
+            .get("/almacen/listaralmacenesactivos/")
             .then(function (response) {
               if (response.data.resultado == null) {
-                me.datosStand = [];
+                me.datosAlmacen = [];
                 console.log(response.data);
               } else {
                 console.log(response.data);
-                me.datosStand = response.data.resultado;
+                me.datosAlmacen = response.data.resultado;
               }
             })
             .catch(function (error) {
@@ -433,18 +505,20 @@ export default {
             this.botonAct = 1;
             this.idItem = item.iditem;
             this.nombreItem = item.nombreitem;
-            this.idStand = item.idstand;
-            this.nombreStand = item.nombrestand;
+            this.idAlmacen = item.idAlmacen;
+            this.nombreAlmacen = item.nombreAlmacen;
             this.cantidad = item.cantidad;
             this.modalAlmacenamiento = true;
         },
 
         registrarAlm() {
-            this.registrarAlmacenamiento(this.idItem,this.idStand, this.cantidad);
+            if (this.$refs.form.validate()) {
+            this.registrarAlmacenamiento(this.idItem,this.idAlmacen, this.cantidad);
+            }
         },
         async registrarAlmacenamiento(
             idItem,
-            idStand,
+            idAlmacen,
             cantidad,
         ) {
             let me = this;
@@ -453,7 +527,7 @@ export default {
                     "/almacen/agregaralmacenamiento/" +
                     this.idItem +
                     "," +
-                    this.idStand +
+                    this.idAlmacen +
                     "," +
                     this.cantidad
                 )
@@ -473,8 +547,10 @@ export default {
         },
 
         editarAlm() {
+            if (this.$refs.form.validate()) {
             this.editarAlmacenamiento(this.idItem, this.nombreItem,this.cantidad, this.descripcion,this.medida,this.idTipoItem, this.estado);
             this.botonAct=0;
+            }
         },
         async editarAlmacenamiento(
             idItem,
@@ -491,7 +567,7 @@ export default {
                     "/almacen/editaralmacenamiento/" +
                     this.idItem +
                     "," +
-                    this.idStand +
+                    this.idAlmacen +
                     "," +
                     this.cantidad               
                 )
@@ -535,19 +611,19 @@ export default {
             this.modalItem = false;
         },
 
-        openStandModal(){
-            this.listarStands();
-            this.modalStand = true;
+        openAlmacenModal(){
+            this.listarAlmacenes();
+            this.modalAlmacen = true;
         },
 
-        closeStandModal(){
-            this.modalStand = false;
+        closeAlmacenModal(){
+            this.modalAlmacen = false;
         },
 
-        seleccionarStand(item) {
-            this.idStand = item.idstand;
-            this.nombreStand = item.nombrestand;
-            this.modalStand = false;
+        seleccionarAlmacen(item) {
+            this.idAlmacen = item.idalmacen;
+            this.nombreAlmacen = item.nombrealmacen;
+            this.modalAlmacen = false;
         },
 
 

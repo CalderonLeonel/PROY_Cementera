@@ -1,5 +1,26 @@
 <template>
    <v-card elevation="5" outlined>
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
+                <strong>{{ mensajeSnackbar }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                         mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+
+        <div class="text-center">
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                            mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
         <v-alert v-if="existencias==false"          
                 type="error"
                 color="red darken-2"
@@ -20,7 +41,7 @@
                 prominent
                 >
                 <div class="text-h5">
-                    SE TIENE LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
+                    SE TIENEN LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
                 </div>
                
             </v-alert>
@@ -98,22 +119,22 @@
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-container>
                             <v-row>
-                                <v-col cols="12" md="4">
+                                <v-col cols="12" md="6">
                                     <v-text-field v-model="nombreProveedor" label="NOMBRE PROVEEDOR" :counter="60"
                                         :rules="nombreRules" @input="nombreProveedor = nombreProveedor.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
-                                <v-col cols="12" md="4">
+                                <v-col cols="12" md="6">
                                     <v-text-field v-model="contactoProveedorPrincipal" type="number" label="CONTACTO" :counter="10"
-                                        :rules="phone1Rules" @input="contactoProveedorPrincipal = contactoProveedorPrincipal.toUpperCase()"
+                                        :rules="phone1Rules" @input="contactoProveedorPrincipal = contactoProveedorPrincipal"
                                         required></v-text-field>
                                 </v-col>
-                                <v-col cols="12" md="4">
+                                <v-col cols="12" md="6">
                                     <v-text-field v-model="contactoProveedorecundario" type="number" label="CONTACTO SECUNDARIO (OPCIONAL)" :counter="10"
-                                        :rules="phone2Rules" @input="contactoProveedorecundario = contactoProveedorecundario.toUpperCase()"
+                                        :rules="phone2Rules" @input="contactoProveedorecundario = contactoProveedorecundario"
                                         required></v-text-field>
                                 </v-col>
-                                <v-col cols="12" md="4">
+                                <v-col cols="12" md="6">
                                     <v-text-field v-model="correoProveedor" type="email" label="CORREO" :counter="100"
                                         :rules="emailRules" @input="correoProveedor = correoProveedor"
                                         required></v-text-field>
@@ -121,7 +142,7 @@
                                 <v-col cols="12" md="12">
                                     <v-file-input v-model="documentoArchivo"
                                         accept=".jpg, .jpeg, .webp, .png, .gif, .bmp, .docx, .xlsx, .pptx, .pdf, .csv, .xml"
-                                        label="DOCUMENTO DE PROVEEDOR" 
+                                        label="DOCUMENTO DE PROVEEDOR (SI SE REQUIERE)" 
                                     ></v-file-input>
                                      </v-col>   
                                 <v-col cols="12" md="4"> </v-col>
@@ -199,9 +220,12 @@ import axios from "axios";
 export default {
     data() {
         return {
+            mensajeSnackbarError: "REGISTRO FALLIDO",
+            mensajeSnackbar: '',
+            
 
-
-            existencias: false,
+            existencias: true,
+            itemsCriticos: '',
             datosExistencia:[],
 
             documentoArchivo: '',
@@ -222,16 +246,13 @@ export default {
                 "el nombre del proveedor no debe sobrepasar los 60 caracteres.",
             ],
             phone1Rules: [
-                (v) => !!v ||"Se requiere un numero telefonico o celular.",
-               (v) => v.length >= 7 || "El telephono principal debe tener al menos 7 caracteres.",
-              (v) =>
-              (v  && v.length <= 10) ||
-                "El telephono principal debe tener hasta 10 caracteres.",
+            (v) => !!v || "Se requiere un número telefónico o celular.",
+            (v) => (v && v.length >= 7) || "El teléfono principal debe tener al menos 7 caracteres.",
+            (v) => (v && v.length <= 10) || "El teléfono principal debe tener hasta 10 caracteres.",
             ],
             phone2Rules: [
-              (v) =>
-              (v && v===null || v.length >= 7 || v.length <= 10) ||
-                "El telephono secundario debe tener hasta 10 caracteres.",
+            (v) => (!v || (v.length >= 7 && v.length <= 10)) ||
+                "El teléfono secundario debe tener entre 7 y 10 caracteres.",
             ],
             emailRules: [
               (v) => !!v || "Se requiere el correo electronico del proveedor",
@@ -253,6 +274,11 @@ export default {
             agregarProveedorModal: false,
             confirmacionAnulacionProveedor: false,
             botonAct: 0,
+
+
+
+            snackbarOK: false,
+            snackbarError : false,
             //#endregion
         }
     },
@@ -263,16 +289,60 @@ export default {
     methods: {
 
         getAlertas(){
-            this.getListaExistencias();
+            var items = [];
+            var stock = [];
+            var limite = [];
             if(this.datosExistencia==[]){
-                this.existencias=true;
+                this.existencias=false;
             }
             else{
-                console.log('')
-                console.log(JSON.parse(JSON.stringify(this.datosExistencia)))
-                console.log('')
-                this.existencias=true;
+                console.log(JSON.parse(JSON.stringify(this.datosExistencia)));
+                console.log('');
+                let datosComoObjeto = JSON.parse(JSON.stringify(this.datosExistencia))
+
+                for (let propiedad in datosComoObjeto) {
+                    console.log(`: ${propiedad}`);
+                    for (const key in datosComoObjeto[propiedad]) {
+                        console.log(`Propiedad: ${key}`);
+                        if (key == 'nombreitem') {
+                            items.push(datosComoObjeto[propiedad][key])
+                        }
+                        else if (key == 'limitecritico') {
+                            limite.push(datosComoObjeto[propiedad][key])
+                        } 
+                        else if (key == 'cantidad') {
+                            stock.push(datosComoObjeto[propiedad][key])
+                        } 
+                    }
+                }
+                for (let i = 0; i < items.length; i++) {
+                    if ( limite[i] >= stock[i]  ) {
+                        console.log(limite[i])
+                        console.log(stock[i])
+                        alert(limite[i]+' u '+stock[i] )
+                        this.existencias=false;
+                        this.itemsCriticos += items[i]+' ';
+                    }
+                }
             }
+        },
+
+        async getListaExistencias(){
+            let me = this;
+            await axios
+                .get("/inventario/listarexistencias/")
+                .then(function (response) {
+                if (response.data.resultado == null) {
+                    me.datosExistencia = [];
+                    console.log(response.data);
+                } else {
+                    console.log(response.data);
+                    me.datosExistencia = response.data.resultado;
+                }
+                })
+                .catch(function (error) {
+                console.log(error);
+                });
         },
 
         getColor(est) {
@@ -319,13 +389,15 @@ export default {
         },
 
         registrarProv() {
-            if(this.contactoProveedorecundario==''){
-                this.contactoProveedorecundario=this.contactoProveedorPrincipal;
+            if (this.$refs.form.validate()) {
+                if(this.contactoProveedorecundario==''){
+                    this.contactoProveedorecundario=this.contactoProveedorPrincipal;
+                }
+                this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
+                this.almacenarArchivo(this.documentoArchivo)
+                this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro000","ACTIVO");
+                this.closeModalAgregarProveedor();
             }
-            this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
-            this.almacenarArchivo(this.documentoArchivo)
-            this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro000","ACTIVO");
-            this.closeModalAgregarProveedor();
         },
         async registrarProveedor(
             nombreProveedor,
@@ -363,10 +435,12 @@ export default {
         },
 
         editarProv() {
-            this.botonAct = 0;
+            if (this.$refs.form.validate()) {
+                this.botonAct = 0;
 
-            this.editarProveedor(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
-            this.closeModalAgregarProveedor();
+                this.editarProveedor(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
+                this.closeModalAgregarProveedor();
+            }
         },
         async editarProveedor(
             idProveedor,
