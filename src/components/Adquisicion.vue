@@ -222,8 +222,8 @@
 
                                 <v-col cols="12" md="8">
                                     <v-text-field v-model="nombreCotizacion" label="NOMBRE DE LA COTIZACION"
-                                        :counter="100" @input="nombreCotizacion = nombreCotizacion.toUpperCase()" :rules="nombreCotizacionRules"
-                                        required></v-text-field>
+                                        :counter="100" @input="nombreCotizacion = nombreCotizacion.toUpperCase()"
+                                        :rules="nombreCotizacionRules" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-subheader class="text-h5">FECHA DE VENCIMIENTO:</v-subheader>
@@ -233,10 +233,11 @@
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-text-field v-model="fechaVencimiento" label="FECHA DE VENCIMIENTO"
-                                                prepend-icon="mdi-calendar" readonly required :rules="fechaRules" v-bind="attrs"
-                                                v-on="on"></v-text-field>
+                                                prepend-icon="mdi-calendar" readonly required :rules="fechaRules"
+                                                v-bind="attrs" v-on="on"></v-text-field>
                                         </template>
-                                        <v-date-picker v-model="fechaVencimiento" @input="menuFecha = false" locale="es"  color="blue lighten-1" header-color="primary"
+                                        <v-date-picker v-model="fechaVencimiento" @input="menuFecha = false" locale="es"
+                                            color="blue lighten-1" header-color="primary"
                                             :min="getDate()"></v-date-picker>
                                     </v-menu>
                                     <!--<v-date-picker required locale="es" :landscape="true" :show-current="false" full-width v-model="fechaVencimiento" :min="getDate()" @input="fechaVencimiento = fechaVencimiento" color="blue lighten-1" header-color="primary"></v-date-picker>                                 
@@ -248,29 +249,35 @@
                                         label="DOCUMENTO DE COTIZACION"></v-file-input>
                                 </v-col>
 
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconvv v-if="botonactCot == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="editarCotizacionAdq()" style="float: left"
-                                        title="ACTUALIZAR INFORMACIÓN">
-                                        <v-icon dark> mdi-pencil </v-icon>
-                                        ACTUALIZAR
-                                    </v-btn>
-                                    <v-btn iconv v-if="botonactCot == 0" class="mx-4" dark color="#0ABF55"
-                                        @click="registrarCotizacionAdq()" style="float: left"
-                                        title="REGISTRAR COTIZACION DE ADQUISICION">
-                                        <v-icon dark> mdi-content-save </v-icon>
-                                        GUARDAR
-                                    </v-btn>
+
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonactCot == 1" color="#0A62BF"
+                                                @click="editarCotizacionAdq()" style="float: left"
+                                                title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonactCot == 0" color="#0ABF55"
+                                                @click="registrarCotizacionAdq()" style="float: left"
+                                                title="REGISTRAR COTIZACION DE ADQUISICION" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="2">
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
                                         @click="closeModalAgregarCotizacionAdquisicion()" style="float: right"
                                         title="SALIR">
@@ -426,8 +433,9 @@
                                 </v-col>
                                 <v-col cols="12" md="5">
                                     <v-text-field v-model="nombreCotizacion" label="NOMBRE COTIZACION" :counter="100"
-                                        :rules="nombreCotizacionRules" @input="nombreCotizacion = nombreCotizacion.toUpperCase()"
-                                        disabled required></v-text-field>
+                                        :rules="nombreCotizacionRules"
+                                        @input="nombreCotizacion = nombreCotizacion.toUpperCase()" disabled
+                                        required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="1">
@@ -444,39 +452,45 @@
                                 </v-col>
 
                                 <v-col cols="12" md="6">
-                                    <v-text-field v-model="precioUnitario" type="number" label="COSTO UNITARIO" :rules="costoRules"
-                                        @input="precioUnitario = precioUnitario.toUpperCase()" required></v-text-field>
+                                    <v-text-field v-model="precioUnitario" type="number" label="COSTO UNITARIO"
+                                        :rules="costoRules" @input="precioUnitario = precioUnitario.toUpperCase()"
+                                        required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-text-field v-model="cantidad" type="number" label="CANTIDAD" :rules="cantidadRules"
-                                        @input="cantidad = cantidad.toUpperCase()" required></v-text-field>
+                                    <v-text-field v-model="cantidad" type="number" label="CANTIDAD"
+                                        :rules="cantidadRules" @input="cantidad = cantidad.toUpperCase()"
+                                        required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="12"> </v-col>
-
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconvv v-if="botonactCotIt == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="editarCotizacionIt()" style="float: left"
-                                        title="ACTUALIZAR INFORMACIÓN">
-                                        <v-icon dark> mdi-pencil </v-icon>
-                                        ACTUALIZAR
-                                    </v-btn>
-                                    <v-btn iconv v-if="botonactCotIt == 0" class="mx-4" dark color="#0ABF55"
-                                        @click="registrarCotizacionIt()" style="float: left"
-                                        title="REGISTRAR COTIZACION DE ITEM">
-                                        <v-icon dark> mdi-content-save </v-icon>
-                                        GUARDAR
-                                    </v-btn>
+    
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonactCotIt == 1" color="#0A62BF"
+                                                @click="editarCotizacionIt()" style="float: left"
+                                                title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonactCotIt == 0" color="#0ABF55"
+                                                @click="registrarCotizacionIt()" style="float: left"
+                                                title="REGISTRAR COTIZACION DE ITEM" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="2">
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
                                         @click="closeModalAgregarCotizacionItem()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -627,50 +641,50 @@ export default {
             //fechaDeModificacion: "",
             valid: true,
             nombreCotizacionRules: [
-                (v) => !!v || "Se requiere el nombre de la cotización.",
+                (v) => !!v || "SE REQUIERE EL NOMBRE DE LA COTIZACIÓN.",
                 (v) =>
                     (v && v.length <= 100) ||
-                    "El nombre de la cotización no debe sobrepasar los 100 caracteres.",
+                    "EL NOMBRE DE LA COTIZACIÓN NO DEBE SOBREPASAR LOS 100 CARACTERES.",
             ],
 
             nombreItemRules: [
-                (v) => !!v || "Se requiere el nombre del item.",
+                (v) => !!v || "SE REQUIERE EL NOMBRE DEL ITEM.",
                 (v) =>
                     (v && v.length <= 60) ||
-                    "El nombre del item no debe sobrepasar los 60 caracteres.",
+                    "EL NOMBRE DEL ITEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
             ],
-            
+
             nombreRules: [
-                (v) => !!v || "Se requiere el nombre del proveedor.",
+                (v) => !!v || "SE REQUIERE EL NOMBRE DEL PROVEEDOR.",
                 (v) =>
                     (v && v.length <= 60) ||
-                    "El nombre del proveedor no debe sobrepasar los 60 caracteres.",
+                    "EL NOMBRE DEL PROVEEDOR NO DEBE SOBREPASAR LOS 60 CARACTERES.",
             ],
-            
+
             fechaRules: [
-                (v) => !!v || "La fecha es requerida.",
+                (v) => !!v || "LA FECHA ES REQUERIDA.",
                 (v) => {
                     const selectedDate = Date.parse(v);
                     const currentDate = new Date();
 
                     if (!isNaN(selectedDate) && selectedDate >= currentDate) {
-                    return true;
+                        return true;
                     } else {
-                    return "La fecha debe ser posterior a la fecha actual.";
+                        return "LA FECHA DEBE SER POSTERIOR A LA FECHA ACTUAL.";
                     }
                 },
             ],
 
 
             costoRules: [
-                (v) => !!v || "El costo unitario es requerido.",
-                (v) => !isNaN(parseFloat(v)) && isFinite(v) || "Ingresa un valor numérico válido.",
-                (v) => v > 0 || "El costo unitario debe ser mayor que 0.",
+                (v) => !!v || "EL COSTO UNITARIO ES REQUERIDO.",
+                (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO.",
+                (v) => v > 0 || "EL COSTO UNITARIO DEBE SER MAYOR QUE 0.",
             ],
             cantidadRules: [
-                (v) => !!v || "La cantidad es requerida.",
-                (v) => !isNaN(parseFloat(v)) && isFinite(v) || "Ingresa un valor numérico válido.",
-                (v) => v > 0 || "La cantidad debe ser mayor que 0.",
+                (v) => !!v || "LA CANTIDAD ES REQUERIDA.",
+                (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO.",
+                (v) => v > 0 || "LA CANTIDAD DEBE SER MAYOR QUE 0.",
             ],
 
             datosCotizacion: [],
@@ -1543,44 +1557,44 @@ export default {
             // Nota: Asegúrate de ajustar los detalles según tus requerimientos específicos.
         },
 
-       /*async generatePDF(item) {
-            this.idCotizacion = item.idCotizacion;
-            this.listarDetallesCotizacion(this.idCotizacion);
-
-
-            const doc = new jsPDF();
-            doc.setFontSize(22)
-            let titulo = 'ADQUISICIÓN: ' + item.nombreCotizacion;
-            let margenIzquierdo = 20;
-            let margenDerecho = 20;
-            let anchoMaximo = doc.internal.pageSize.width - margenIzquierdo - margenDerecho;
-            let textoDividido = doc.splitTextToSize(titulo, anchoMaximo);
-            doc.text(textoDividido, margenIzquierdo, 20);
-            let fecha = new Date().toLocaleDateString()
-            doc.setFontSize(16)
-            doc.text(fecha, 20, 45)
-            doc.line(10, 35, 200, 35)
-            const header1 = this.header1.map(column => column.text);
-            const header2 = this.header2.map(column => column.text);
-            const data1 = item => this.header1.map(header => item[header.value]);
-            const data2 = JSON.parse(JSON.stringify(this.datosDetalleCotizacion));
-            console.log('datos')
-            console.log(JSON.parse(JSON.stringify(this.datosDetalleCotizacion)));
-            doc.autoTable({
-                head: [header1],
-                body: [],
-                startY: 60,
-            });
-            let finalY = doc.previousAutoTable.finalY;
-            doc.autoTable({
-                head: [header2],
-                body: [data2],
-                startY: finalY + 20,
-            });
-
-            let nombreArchivo = item.nombreCotizacion + '.pdf';
-            doc.save(nombreArchivo);
-        },*/
+        /*async generatePDF(item) {
+             this.idCotizacion = item.idCotizacion;
+             this.listarDetallesCotizacion(this.idCotizacion);
+ 
+ 
+             const doc = new jsPDF();
+             doc.setFontSize(22)
+             let titulo = 'ADQUISICIÓN: ' + item.nombreCotizacion;
+             let margenIzquierdo = 20;
+             let margenDerecho = 20;
+             let anchoMaximo = doc.internal.pageSize.width - margenIzquierdo - margenDerecho;
+             let textoDividido = doc.splitTextToSize(titulo, anchoMaximo);
+             doc.text(textoDividido, margenIzquierdo, 20);
+             let fecha = new Date().toLocaleDateString()
+             doc.setFontSize(16)
+             doc.text(fecha, 20, 45)
+             doc.line(10, 35, 200, 35)
+             const header1 = this.header1.map(column => column.text);
+             const header2 = this.header2.map(column => column.text);
+             const data1 = item => this.header1.map(header => item[header.value]);
+             const data2 = JSON.parse(JSON.stringify(this.datosDetalleCotizacion));
+             console.log('datos')
+             console.log(JSON.parse(JSON.stringify(this.datosDetalleCotizacion)));
+             doc.autoTable({
+                 head: [header1],
+                 body: [],
+                 startY: 60,
+             });
+             let finalY = doc.previousAutoTable.finalY;
+             doc.autoTable({
+                 head: [header2],
+                 body: [data2],
+                 startY: finalY + 20,
+             });
+ 
+             let nombreArchivo = item.nombreCotizacion + '.pdf';
+             doc.save(nombreArchivo);
+         },*/
 
         /*
                     headerCotizacion: [
