@@ -147,27 +147,33 @@
                                      </v-col>   
                                 <v-col cols="12" md="4"> </v-col>
                                 <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconvv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="editarProv()" style="float: left"
-                                            title="ACTUALIZAR INFORMACIÓN">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                            ACTUALIZAR
-                                        </v-btn>
-                                        <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarProv()" style="float: left" title="REGISTRAR PROVEEDOR">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                        </v-btn>
-                                </v-col>                      
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonAct == 1" color="#0A62BF" @click="editarProv()"
+                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonAct == 0" color="#0ABF55" @click="registrarProv()"
+                                                style="float: left" title="REGISTRAR PROVEEDOR" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
+                              
+                                <v-col cols="12" sm="4" md="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
                                         @click="closeModalAgregarProveedor()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -240,23 +246,23 @@ export default {
             //fechaDeModificacion: "",
             valid: true,
             nombreRules: [
-              (v) => !!v || "Se requiere el nombre del proveedor.",
+              (v) => !!v || "SE REQUIERE EL NOMBRE DEL PROVEEDOR.",
               (v) =>
               (v && v.length <= 60) ||
-                "el nombre del proveedor no debe sobrepasar los 60 caracteres.",
+                "EL NOMBRE DEL PROVEEDOR NO DEBE SOBREPASAR LOS 60 CARACTERES.",
             ],
             phone1Rules: [
-            (v) => !!v || "Se requiere un número telefónico o celular.",
-            (v) => (v && v.length >= 7) || "El teléfono principal debe tener al menos 7 caracteres.",
-            (v) => (v && v.length <= 10) || "El teléfono principal debe tener hasta 10 caracteres.",
+            (v) => !!v || "SE REQUIERE UN NÚMERO TELEFÓNICO O CELULAR.",
+            (v) => (v && v.length >= 7) || "EL TELÉFONO PRINCIPAL DEBE TENER AL MENOS 7 CARACTERES.",
+            (v) => (v && v.length <= 10) || "EL TELÉFONO PRINCIPAL DEBE TENER HASTA 10 CARACTERES.",
             ],
             phone2Rules: [
             (v) => (!v || (v.length >= 7 && v.length <= 10)) ||
-                "El teléfono secundario debe tener entre 7 y 10 caracteres.",
+                "EL TELÉFONO SECUNDARIO DEBE TENER ENTRE 7 Y 10 CARACTERES.",
             ],
             emailRules: [
-              (v) => !!v || "Se requiere el correo electronico del proveedor",
-              (v) => /.+@.+\..+/.test(v) || "Debe ser un correo electronico valido",
+              (v) => !!v || "SE NECESITA EL CORREO ELECTRONICO DEL PROVEEDOR.",
+              (v) => /.+@.+\..+/.test(v) || "DEBE SER UN CORREO ELECTRONICO VALIDO.",
              ],
             datosProveedor: [],
             headerProveedor: [
