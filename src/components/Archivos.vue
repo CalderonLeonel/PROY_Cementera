@@ -136,28 +136,33 @@
                                         required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="4"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconvv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="editarDocumento()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
-                                        <v-icon dark> mdi-pencil </v-icon>
-                                        ACTUALIZAR
-                                    </v-btn>
-                                    <v-btn iconv v-if="botonAct == 0" class="mx-4" dark color="#0ABF55"
-                                        @click="registrarDocumento()" style="float: left" title="REGISTRAR DOCUMENTO">
-                                        <v-icon dark> mdi-content-save </v-icon>
-                                        GUARDAR
-                                    </v-btn>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonAct == 1" color="#0A62BF" @click="editarDocumento()"
+                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonAct == 0" color="#0ABF55" @click="registrarDocumento()"
+                                                style="float: left" title="REGISTRAR DOCUMENTO" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="2">
+
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeAgregarDocumento()"
                                         style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -241,20 +246,20 @@ export default {
             snackbarError: false,
 
             fileRules: [
-                (v) => !!v || "El archivo es obligatorio.", 
+                (v) => !!v || "EL ARCHIVO ES OBLIGATORIO.", 
             ],
 
 
             codigoRules: [
-              (v) => !!v || "Se requiere el codigo del archivo.",
+              (v) => !!v || "SE REQUIERE EL CODIGO DEL ARCHIVO.",
               (v) =>
               (v && v.length <= 25 ) ||
-                "El codigo no debe sobrepasar los 25 caracteres.",
+                "EL CODIGO NO DEBE SOBREPASAR LOS 25 CARACTERES.",
             ],
 
             descripcionRules: [
-            (v) => !!v || "Se requiere la descripción del archivo.",
-            (v) => (v === null || v.length <= 150) || "La descripción no debe superar los 150 caracteres.",
+            (v) => !!v || "SE REQUIERE LA DESCRIPCIÓN DEL ARCHIVO.",
+            (v) => (v === null || v.length <= 150) || "LA DESCRIPCIÓN NO DEBE SUPERAR LOS 150 CARACTERES.",
             ],
         }
     },
