@@ -430,7 +430,7 @@
                                     </v-btn>
                                 </v-col>  
                                 <v-col cols="12" md="4" v-if="movimiento=='ENTRADA'">
-                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="[v => ( Number(v) >= 1 && Number(v) <= this.cantidadMaxima ) || 'El número no debe sobrepasar '+ this.cantidadMaxima]" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
+                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadEntradaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
                                          @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>      
@@ -467,34 +467,40 @@
                                 </v-col> 
                                
                                 <v-col cols="12" md="4" v-if="movimiento=='SALIDA'">
-                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="[v => ( Number(v) >= 1 && Number(v) <= this.cantidadMaximaItem ) || 'El número no debe sobrepasar '+ this.cantidadMaximaItem]" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
+                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadSalidaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
                                          @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>   
+
+                                <v-col cols="12" sm="4" md="12"></v-col>
                                    
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconvv v-if="botonActInv == 1" class="mx-4"  dark color="#0A62BF" :disabled='movimiento==null'
-                                            @click="editarInv()" style="float: left"
-                                            title="ACTUALIZAR INFORMACIÓN">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                            ACTUALIZAR
-                                        </v-btn>
-                                        <v-btn iconv v-if="botonActInv == 0" class="mx-4"  dark color="#0ABF55" :disabled='movimiento==null'
-                                            @click="registrarInv()" style="float: left" title="REGISTRAR TRANSACCION">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                        </v-btn>
-                                </v-col>                      
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()" :disabled='movimiento==null'
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped >
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonActInv == 1" color="#0A62BF" @click="editarInv()" :disabled='movimiento==null'
+                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonActInv == 0" color="#0ABF55" @click="registrarInv()" :disabled='movimiento==null'
+                                                style="float: left" title="REGISTRAR TRANSACCIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large :disabled='movimiento==null'
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
+                               
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
                                         @click="closeModalAgregarTransaccion()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -667,7 +673,7 @@
                                 </v-col> 
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="limitecritico" label="LIMITE CRITICO" type="number" :counter="25"
-                                         @input="limitecritico = limitecritico.toUpperCase()" :rules="limiteRules"
+                                         @input="limitecritico = limitecritico" :rules="limiteRules"
                                         required></v-text-field>
                                 </v-col> 
                                 <v-col cols="12" md="4">
@@ -677,29 +683,35 @@
                                     :rules="[v => !!v || 'El Metodo de Valuación es requerido']"
                                     ></v-select>
                                 </v-col>                   
-                                <v-col cols="12" md="4"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconvv v-if="botonActIt == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="editarIt()" style="float: left"
-                                            title="ACTUALIZAR INFORMACIÓN">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                            ACTUALIZAR
-                                        </v-btn>
-                                        <v-btn iconv v-if="botonActIt == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarIt()" style="float: left" title="REGISTRAR ITEM">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                        </v-btn>
-                                </v-col>                      
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
+                                <v-col cols="12" md="12"> </v-col>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped >
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonActIt == 1" color="#0A62BF" @click="editarIt()"
+                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonActIt == 0" color="#0ABF55" @click="registrarIt()" 
+                                                style="float: left" title="REGISTRAR ITEM" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large 
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
+                               
+                              
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
                                         @click="closeModalAgregarItem()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -728,29 +740,34 @@
                                         :rules="nombreTipoRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>                         
-                                <v-col cols="12" md="4"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconvv v-if="botonActTT == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="editarTipo()" style="float: left"
-                                            title="ACTUALIZAR INFORMACIÓN">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                            ACTUALIZAR
-                                        </v-btn>
-                                        <v-btn iconv v-if="botonActTT == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarTipo()" style="float: left" title="REGISTRAR TIPO">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                        </v-btn>
-                                </v-col>                      
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
+                                <v-col cols="12" md="12"> </v-col>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped >
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonActTT == 1" color="#0A62BF" @click="editarTipo()"
+                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarTipo()" 
+                                                style="float: left" title="REGISTRAR TIPO DE ITEM" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large 
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
+
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
                                         @click="closeModalAgregarTipoItem()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -884,23 +901,30 @@
                                 </v-col>     
                         
                                     
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                        <v-btn iconv class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarPrecioItem()" style="float: left" title="REGISTRAR NUEVO PRECIO">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                        </v-btn>
-                                </v-col>                      
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
+                                <v-col cols="12" md="12"> </v-col>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped >
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#0ABF55" @click="registrarPrecioItem()" 
+                                                style="float: left" title="REGISTRAR NUEVO PRECIO" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large 
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
+                                
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
                                         @click="closeRevalorizarInventarioModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -983,60 +1007,69 @@
             estado: "ACTIVO",
              valid: true,
              nombreRules: [
-               (v) => !!v || "Se requiere el nombre del proveedor.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL PROVEEDOR.",
                (v) =>
                (v && v.length <= 60) ||
-                 "el nombre del proveedor no debe sobrepasar los 60 caracteres.",
+                 "EL NOMBRE DEL PROVEEDOR NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreItemRules: [
-               (v) => !!v || "Se requiere el nombre del item.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL ITEM.",
                (v) =>
                (v && v.length <= 60) ||
-                 "el nombre del item no debe sobrepasar los 60 caracteres.",
+                 "EL NOMBRE DEL ITEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreTipoRules: [
-               (v) => !!v || "Se requiere el nombre del tipo de item.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL TIPO DE ITEM.",
                (v) =>
                (v && v.length <= 60) ||
-                 "el nombre del tipo no debe sobrepasar los 60 caracteres.",
+                 "EL NOMBRE DEL TIPO NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreAlmacenRules: [
-               (v) => !!v || "Se requiere el nombre del almacen.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL ALMACEN.",
                (v) =>
                (v && v.length <= 60) ||
-                 "el nombre del almacen no debe sobrepasar los 60 caracteres.",
+                 "EL NOMBRE DEL ALMACEN NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+             ],
+             cantidadSalidaRules: [
+               (v) => !!v || "SE REQUIERE LA CANTIDAD.",
+               (v) => ( Number(v) >= 1 && Number(v) <= this.cantidadMaximaItem ) || 'EL NÚMERO NO DEBE SOBREPASAR '+ this.cantidadMaximaItem,
+             ],
+
+             cantidadEntradaRules: [
+               (v) => !!v || "SE REQUIERE LA CANTIDAD.",
+               (v) => ( Number(v) >= 1 && Number(v) <= this.cantidadMaxima ) || 'EL NÚMERO NO DEBE SOBREPASAR '+ this.cantidadMaxima,
              ],
 
             valorRules: [
-            (v) => parseFloat(v) >= 0 || "El valor debe ser mayor a 0.",
-            (v) => !!v || "El valor es obligatorio.",
-            (v) => !isNaN(parseFloat(v)) && isFinite(v) || "Ingresa un valor numérico válido."
+                (v) => parseFloat(v) >= 0 || "EL VALOR DEBE SER MAYOR A 0.",
+                (v) => !!v || "EL VALOR ES OBLIGATORIO.",
+                (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO."
             ],
 
             limiteRules: [
-            (v) => !!v || "El limite es obligatorio.",
-            (v) => parseFloat(v) >= 0 || "El limite debe ser mayor a 0.",
-            (v) => !isNaN(parseFloat(v)) && isFinite(v) || "Ingresa un valor numérico válido."
+                (v) => !!v || "EL LIMITE ES OBLIGATORIO.",
+                (v) => parseFloat(v) >= 0 || "EL LIMITE DEBE SER MAYOR A 0.",
+                (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO."
             ],
                         
             descripcionRules: [
-            (v) => !!v || "Se requiere la descripción.",
-            (v) => (v === null || v.length <= 150) || "La descripción no debe superar los 150 caracteres.",
+                (v) => !!v || "SE REQUIERE LA DESCRIPCIÓN.",
+                (v) => (v === null || v.length <= 150) || "LA DESCRIPCIÓN NO DEBE SUPERAR LOS 150 CARACTERES.",
             ],
              phone1Rules: [
-               (v) => !!v || "Se requiere un numero telefonico o celular.",
+               (v) => !!v || "SE REQUIERE UN NUMERO TELEFONICO O CELULAR.",
                (v) =>
                (v && v.length <= 10) ||
-                 "El telephono principal debe tener hasta 10 caracteres.",
+                 "EL TELEPHONO PRINCIPAL DEBE TENER HASTA 10 CARACTERES.",
              ],
              phone2Rules: [
                (v) =>
                (v && v===null || v.length <= 10) ||
-                 "El telephono secundario debe tener hasta 10 caracteres.",
+                 "EL TELEPHONO SECUNDARIO DEBE TENER HASTA 10 CARACTERES.",
              ],
              emailRules: [
-               (v) => !!v || "Se requiere el correo electronico del proveedor",
-               (v) => /.+@.+\..+/.test(v) || "Debe ser un correo electronico valido",
+               (v) => !!v || "SE REQUIERE EL CORREO ELECTRONICO DEL PROVEEDOR.",
+               (v) => /.+@.+\..+/.test(v) || "DEBE SER UN CORREO ELECTRONICO VALIDO.",
               ],
              datosInventario: [],
              headerInventario: [
@@ -1950,7 +1983,8 @@
             this.idItem = item.iditem;
             this.nombreItem = item.nombreitem;
             this.descripcion = item.descripcion;
-            this.limitecritico = item.limitecritico;
+            this.limitecritico = item.limite;
+            this.metodoValuacion = item.metodovaluacion;
             this.estado = item.estado;
             this.agregarItemModal = true;
         },
