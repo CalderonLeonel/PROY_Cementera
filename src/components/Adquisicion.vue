@@ -86,6 +86,10 @@
                                         title="VER ITEMS">
                                         mdi-eye
                                     </v-icon>
+                                    <v-icon class="mr-2" color="primary" x-large @click="exportToPDFDetailed(item)"
+                                        title="VER PDF">
+                                        mdi-file-pdf-box
+                                    </v-icon>
                                 </template>
 
 
@@ -173,7 +177,7 @@
                                         title="VER ITEMS">
                                         mdi-eye
                                     </v-icon>
-                                    <v-icon class="mr-2" color="primary" x-large @click="generatePDF(item)"
+                                    <v-icon class="mr-2" color="primary" x-large @click="exportToPDFDetailed(item)"
                                         title="VER PDF">
                                         mdi-file-pdf-box
                                     </v-icon>
@@ -1512,102 +1516,7 @@ export default {
             this.detalleCotizacionDialog = false;
         },
 
-        async generatePDF(item) {
-            this.idCotizacion = item.idCotizacion;
-            this.listarDetallesCotizacion(this.idCotizacion);
-
-            const doc = new jsPDF();
-            doc.setFontSize(22);
-            let titulo = 'ADQUISICIÓN: ' + item.nombreCotizacion;
-            let margenIzquierdo = 20;
-            let margenDerecho = 20;
-            let anchoMaximo = doc.internal.pageSize.width - margenIzquierdo - margenDerecho;
-            let textoDividido = doc.splitTextToSize(titulo, anchoMaximo);
-            doc.text(textoDividido, margenIzquierdo, 20);
-
-            let fecha = new Date().toLocaleDateString();
-            doc.setFontSize(16);
-            doc.text(fecha, 20, 45);
-            doc.line(10, 35, 200, 35);
-
-            const header1 = this.header1.map(column => column.text);
-            const header2 = this.header2.map(column => column.text);
-            const data1 = item => this.header1.map(header => item[header.value]);
-            const data2 = JSON.parse(JSON.stringify(this.datosDetalleCotizacion));
-
-            // Agregar la tabla de datos al PDF
-            doc.autoTable({
-                head: [header1],
-                body: [],
-                startY: 60,
-            });
-
-            let finalY = doc.previousAutoTable.finalY;
-
-            doc.autoTable({
-                head: [header2],
-                body: [data2],
-                startY: finalY + 20,
-            });
-
-            // Guardar o mostrar el PDF (según tus necesidades)
-            // doc.save('nombre_del_archivo.pdf');
-            // doc.output('dataurlnewwindow');
-
-            // Nota: Asegúrate de ajustar los detalles según tus requerimientos específicos.
-        },
-
-        /*async generatePDF(item) {
-             this.idCotizacion = item.idCotizacion;
-             this.listarDetallesCotizacion(this.idCotizacion);
- 
- 
-             const doc = new jsPDF();
-             doc.setFontSize(22)
-             let titulo = 'ADQUISICIÓN: ' + item.nombreCotizacion;
-             let margenIzquierdo = 20;
-             let margenDerecho = 20;
-             let anchoMaximo = doc.internal.pageSize.width - margenIzquierdo - margenDerecho;
-             let textoDividido = doc.splitTextToSize(titulo, anchoMaximo);
-             doc.text(textoDividido, margenIzquierdo, 20);
-             let fecha = new Date().toLocaleDateString()
-             doc.setFontSize(16)
-             doc.text(fecha, 20, 45)
-             doc.line(10, 35, 200, 35)
-             const header1 = this.header1.map(column => column.text);
-             const header2 = this.header2.map(column => column.text);
-             const data1 = item => this.header1.map(header => item[header.value]);
-             const data2 = JSON.parse(JSON.stringify(this.datosDetalleCotizacion));
-             console.log('datos')
-             console.log(JSON.parse(JSON.stringify(this.datosDetalleCotizacion)));
-             doc.autoTable({
-                 head: [header1],
-                 body: [],
-                 startY: 60,
-             });
-             let finalY = doc.previousAutoTable.finalY;
-             doc.autoTable({
-                 head: [header2],
-                 body: [data2],
-                 startY: finalY + 20,
-             });
- 
-             let nombreArchivo = item.nombreCotizacion + '.pdf';
-             doc.save(nombreArchivo);
-         },*/
-
-        /*
-                    headerCotizacion: [
-                { text: "COTIZACIÓN", value: "idCotizacion", sortable: true },
-                { text: "EMPLEADO", value: "nombreUsuario", sortable: true },
-                { text: "PROVEEDOR", value: "nombreProveedor", sortable: true },
-                { text: "NOMBRE COTIZACIÓN", value: "nombreCotizacion", sortable: true },
-                { text: "FECHA VENCIMIENTO", value: "date", sortable: true },
-                { text: "ESTADO", value: "estado", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false }
-                //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
-            ],
-        */
+       
         aprobarAdquisicion(item) {
             this.idCotizacion = item.idCotizacion;
             this.idUsuario = item.idUsuario;
@@ -1715,6 +1624,45 @@ export default {
 
                 });
         },
+
+        async exportToPDFDetailed(item) {
+            try {
+                const response = await axios.get(`/adquisicion/listardetallecotizacion/` + item.idCotizacion);
+                const jsonData = response.data.resultado || [];
+                
+                var total = 0
+                jsonData.forEach(detalle => {
+                total += detalle.precioUnitario * detalle.cantidad;
+                });
+               
+
+                const bodyData = jsonData.map(data => [ 
+                    data.nombreitem,
+                    data.unidad,
+                    data.precioUnitario,
+                    data.cantidad
+
+                ]);
+                const doc = new jsPDF();
+                    let titulo = 'Detalle de Adquisición'
+                    doc.setFont('helvetica', 'bold'); 
+                    const textWidth = doc.getStringUnitWidth(titulo) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                    const textOffset = (doc.internal.pageSize.width - textWidth) / 2;
+                    doc.text(titulo, textOffset, 20);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(12);
+                    doc.text(item.nombreCotizacion, 10, 30)
+                    doc.text("Proveedor: "+ item.nombreProveedor, 10, 40);
+                    doc.text("Fecha: "+ this.getFormattedDate(item.fechaVencimiento), 10,50);
+                    doc.autoTable({ head: [["Item", "Unidad", "Precio Unitario", "Cantidad"]], body: bodyData, startY: 60 });
+                    let finalY = doc.previousAutoTable.finalY;
+                    doc.text("Total: "+total.toFixed(2)+" Bs.", 150, 10 + finalY)
+
+                    doc.save("detalleAdquisicion.pdf");
+            } catch (error) {
+                console.error(error);
+            }
+            },
     },
 };
 
