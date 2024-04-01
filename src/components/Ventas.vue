@@ -193,6 +193,32 @@
                         </v-col>
 
                     </v-row>
+
+                    <div class="text-center">
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
+                            <strong>{{ mensajeSnackbar }}</strong>
+
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+                    <div class="text-center">
+
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                            outlined>
+                            <strong>{{ mensajeSnackbarError }}</strong>
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
                 </v-container>
             </v-form>
         </div>
@@ -201,6 +227,8 @@
 <script>
 import axios from "axios";
 import { async } from "regenerator-runtime";
+import jsPDF from 'jspdf';
+
 
 export default {
     data() {
@@ -256,6 +284,7 @@ export default {
             idEmpleado: "",
             razonSocial: "",
             codigoControl: "",
+            totalVenta: 0,
             datosCarrito: [],
             headersCarrito: [
                 { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
@@ -268,6 +297,11 @@ export default {
             ],
             //#endregion
 
+            //#region Ultima Venta
+            idUltimaVenta: "",
+            datosUltimaVenta: [],
+            //#endregion
+
             //#region Modals
             clientesModal: 0,
             cantidadModal: 0,
@@ -276,26 +310,89 @@ export default {
             //#region Venta
             venta: {
                 idProducto: "",
-                cantidad: 0,
-                precioUnitario: 0,
-                total: 0,
-                codigoControl: "",
+                cantidad: "",
+                precioUnitario: "",
+                total: "",
+                codigoControl: "ASDASDASDASD",
                 nit: "",
                 razonSocial: "",
                 idCliente: "",
-                idEmpleado: "",
+                idEmpleado: 1,
             },
+            //#endregion
+
+            //#region Asiento Contable
+            idAsientoContable: "",
+            numeroReferencia: "",
+            descripcionAsiento: "VENTAS",
+            idCuentaContable: "",
+            montoDebito: "",
+            montoCredito: "",
+            //#endregion
+
+            //#region Cuenta Contables
+            idCuentaContable: "",
+            numeroCuenta: "",
+            nombreCuenta: "",
+            descripcionCuenta: "",
+            tipoCuenta: "",
+            saldo: "",
+            tiposCuentas: [
+                'Activo', 'Pasivo', 'Capital', 'Ingreso', 'Gasto'
+            ],
+            datosCuentas: [],
+            headersCuentas: [
+                { text: "NUM. CUENTA", value: "numcnt", sortable: true },
+                { text: "NOM. CUENTA", value: "nom", sortable: true },
+                { text: "DESCRIPCION", value: "des", sortable: true },
+                { text: "TIPO CUENTA", value: "tipoc", sortable: true },
+                { text: "ESTADO", value: "est", sortable: true },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
+            //#endregion
+
+            //#region SnackBars
+            snackbarOK: false,
+            mensajeSnackbar: "",
+            snackbarError: false,
+            mensajeSnackbarError: "REGISTRO FALLIDO",
+            timeout: 2000,
             //#endregion
         }
     },
 
     created: function () {
         this.listarProductos();
+        this.listarCuentas();
     },
     methods: {
         colorEstado(est) {
             if (est == 'ACTIVO') return 'green'
             else return 'red'
+        },
+        generarNumeroReferencia() {
+            const fechaActual = new Date();
+
+            // Obtiene los componentes de la fecha y hora
+            const año = fechaActual.getFullYear();
+            const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0'); // Añade ceros a la izquierda si es necesario
+            const dia = fechaActual.getDate().toString().padStart(2, '0');
+            const hora = fechaActual.getHours().toString().padStart(2, '0');
+            const minutos = fechaActual.getMinutes().toString().padStart(2, '0');
+            const segundos = fechaActual.getSeconds().toString().padStart(2, '0');
+
+            // Formatea el número de referencia utilizando la información de la fecha y hora
+            const numeroReferencia = `${año}${mes}${dia}${hora}${minutos}${segundos}`;
+
+            // Puedes ajustar el formato del número de referencia según tus necesidades
+            // Por ejemplo, puedes agregar un prefijo o un sufijo según tus requisitos.
+            // Ejemplo: const numeroReferencia = `REF-${año}${mes}${dia}${hora}${minutos}${segundos}`;
+
+            return numeroReferencia;
+        },
+
+        generarFactura(item){
+
         },
         //#region Listados
         listarCliente() {
@@ -339,31 +436,121 @@ export default {
                     console.log(error);
                 });
         },
-        //#endregion
-        //#region Registros
-        /*registrarVentas() {
-            this.registrarVenta(this.idProducto, this.cantidad, this.precioUnitario, this.total, this.codigoControl, this.nit, this.razonSocial, this.idCliente, this.idEmpleado);
-        },*/
-        async registrarVenta(
-        ) {
-            // Construye un objeto de venta con los datos necesarios
-            let me = this;
 
-            // Envía la venta al servidor o realiza la acción necesaria para registrarla
-            // Puedes usar Axios u otra librería para hacer la solicitud al servidor
-            await axios.post("/venta/registrarventa/",
-                this.venta)
-                .then(response => {
-                    // La venta se registró correctamente
-                    console.log("Venta registrada con éxito:", response.data);
-                    // Reinicia los datos del cliente y el carrito después de la venta
-                    this.resetVenta();
+        recuperarUltimasVentas() {
+            this.recuperarUltimaVenta();
+        },
+        async recuperarUltimaVenta() {
+            let me = this;
+            await axios
+                .get("/venta/ultimaventa")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosUltimaVenta = [];
+
+                    } else {
+                        //console.log(response.data);
+                        me.datosUltimaVenta = response.data.resultado;
+
+                    }
+                    // me.listarAula(me.id_sede); actualizar tabla esta creando ciclos
                 })
-                .catch(error => {
-                    // Ocurrió un error al registrar la venta
-                    console.error("Error al registrar la venta:", error);
+                .catch(function (error) {
+                    console.log(error);
                 });
         },
+
+        listarCuenta() {
+            this.listarCuentas();
+        },
+        
+        async listarCuentas() {
+            let me = this;
+            await axios
+                .get("/contabilidad/listarcuentas")
+                .then(function (response) {
+                    console.log("Respuesta del servidor:", response.data);
+                    if (response.data.resultado == null) {
+                        me.datosCuentas = [];
+
+                    } else {
+                        me.datosCuentas = response.data.resultado;
+
+                        // Recorrer las cuentas para calcular montoCredito y montoDebito
+                        me.montoCredito = me.datosCuentas.reduce((total, cuenta) => {
+                            if (cuenta.tipoc === "Ingreso") {
+                                return total + parseFloat(cuenta.saldac || 0);
+                            }
+                            return total;
+                        }, 0);
+
+                        me.montoDebito = me.datosCuentas.reduce((total, cuenta) => {
+                            if (cuenta.tipoc === "Gasto") {
+                                return total + parseFloat(cuenta.saldac || 0);
+                            }
+                            return total;
+                        }, 0);
+
+                        console.log("Monto Crédito:", me.montoCredito);
+                        console.log("Monto Débito:", me.montoDebito);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        //#endregion
+        //#region Registros
+        calcularTotalVenta() {
+            return this.datosCarrito.reduce((total, producto) => total + producto.total, 0);
+        },
+
+        registrarVentas() {
+            this.venta.total = this.calcularTotalVenta(); // Calcula el total antes de registrar la venta
+            this.registrarVenta(this.totalVenta, this.codigoControl, this.nit, this.razonSocial, this.idCliente, this.idEmpleado);
+        },
+
+        async registrarVenta(totalVenta, codigoControl, nit, razonSocial, idCliente, idEmpleado) {
+            try {
+                let me = this;
+
+                await axios.post("/venta/addventa/" +
+                    this.totalVenta +
+                    "," +
+                    this.venta.codigoControl +
+                    "," +
+                    this.nit +
+                    "," +
+                    this.razonSocial +
+                    "," +
+                    this.idCliente +
+                    "," +
+                    this.venta.idEmpleado
+                )
+                    .then(function (response) {
+                        me.mensajeSnackbar = response.data.message;
+                        me.snackbarOK = true;
+
+                        // Recuperar la última venta
+                        me.recuperarUltimaVenta();
+                        // Registrar productos del carrito
+                        me.registrarVentasCarrito();
+                        //Registrar asiento contable
+                        me.registrarAsientosContables();
+                        //Limpiamos el formulario
+                        me.resetVenta();
+                    })
+                    .catch(function (error) {
+                        me.mensajeSnackbar = error.response.data.message;
+                        me.snackbarError = true;
+                    });
+
+            } catch (error) {
+                // Manejar errores en caso de que la solicitud falle
+                console.error("Error al registrar la venta:", error);
+            }
+        },
+
         resetVenta() {
             // Restablece los datos del cliente y el carrito
             this.nombreCliente = "";
@@ -373,6 +560,145 @@ export default {
             this.datosCarrito = [];
             // Otros campos de reinicio según tus necesidades
         },
+
+        async registrarVentasCarrito() {
+            // Obtener el ID de la última venta
+            this.idUltimaVenta = this.datosUltimaVenta.idven; // Asumiendo que "datosUltimaVenta" contiene el resultado de la última venta
+            // Iterar sobre los productos en el carrito y registrarlos utilizando el ID de la última venta
+            console.log(this.idUltimaVenta)
+
+            this.datosCarrito.forEach(producto => {
+                this.registrarVentaCarrito(producto.idprod, producto.cant, producto.precuni);
+            });
+        },
+
+        async registrarVentaCarrito(idProducto, cantidad, precioUnitario) {
+            try {
+                let me = this;
+
+                await axios.post("/venta/addventacarrito", {
+                    idProducto: idProducto,
+                    cantidad: cantidad,
+                    precioUnitario: precioUnitario
+                })
+                    .then(function (response) {
+                        me.mensajeSnackbar = response.data.message;
+                        me.snackbarOK = true;
+                    })
+                    .catch(function (error) {
+                        me.mensajeSnackbar = error.response.data.message;
+                        me.snackbarError = true;
+                    });
+
+            } catch (error) {
+                console.error("Error al registrar la venta:", error);
+            }
+        },
+
+        registrarAsientosContables() {
+            this.numeroReferencia = this.generarNumeroReferencia();
+            this.idCuentaContable = this.seleccionarCuentaContableVentas();
+
+            // Actualizo el total de la venta
+            const totalVenta = this.datosCarrito.reduce((total, producto) => total + producto.total, 0);
+
+            // Calculo los montos de débito y crédito
+            const { montoDebito, montoCredito } = this.listarCuentas();
+
+            const esIngreso = true; // Aquí debes determinar si es un ingreso o gasto
+
+            // Sumo el total de la venta al monto de crédito
+            const nuevoMontoCredito = montoCredito + totalVenta;
+
+            // Registro el asiento contable con los montos calculados
+            this.registrarAsientoContable(this.numeroReferencia, this.descripcionAsiento, this.idCuentaContable, montoDebito, nuevoMontoCredito);
+
+            // Después de registrar el asiento, aumentar o reducir el saldo según corresponda
+            if (esIngreso) {
+                this.aumentarSaldo();
+            } else {
+                this.reducirSaldo();
+            }
+        },
+
+        async registrarAsientoContable(numeroReferencia, descripcionAsiento, idCuentaContable, montoDebito, montoCredito) {
+            try {
+                let me = this;
+
+                await axios.post("/contabilidad/addasiento/" +
+                    this.numeroReferencia +
+                    "," +
+                    this.descripcionAsiento +
+                    "," +
+                    this.idCuentaContable +
+                    "," +
+                    this.montoDebito +
+                    "," +
+                    this.montoCredito
+                )
+                    .then(function (response) {
+                        me.mensajeSnackbar = response.data.message;
+                        me.snackbarOK = true;
+                    })
+                    .catch(function (error) {
+                        me.mensajeSnackbar = error.response.data.message;
+                        me.snackbarError = true;
+                    });
+
+            } catch (error) {
+                // Manejar errores en caso de que la solicitud falle
+                console.error("Error al registrar la venta:", error);
+            }
+        },
+
+        aumentarSaldos() {
+            this.aumentarSaldo()
+        },
+
+        async aumentarSaldo() {
+            try {
+                let me = this
+                axios.post("/contabilidad/aumentarsaldo/" +
+                    this.idCuentaContable +
+                    "," +
+                    this.totalVenta
+                )
+                    .then(response => {
+                        // Manejar la respuesta si es necesario
+                        console.log(response.data.message);
+                    })
+                    .catch(error => {
+                        console.error("Error al aumentar el saldo:", error);
+                    });
+            } catch (error) {
+
+            }
+        },
+
+        reducirSaldos() {
+            this.reducirSaldo()
+        },
+
+        async reducirSaldo() {
+            try {
+                let me = this
+                axios.post("/contabilidad/reducirsaldo/" +
+                    this.idCuentaContable +
+                    "," +
+                    this.totalVenta
+                )
+                    .then(response => {
+                        // Manejar la respuesta si es necesario
+                        console.log(response.data.message);
+                    })
+                    .catch(error => {
+                        console.error("Error al reducir el saldo:", error);
+                    });
+            } catch (error) {
+
+            }
+        },
+
         //#endregion
         //#region Edicion
         //#endregion
@@ -406,6 +732,7 @@ export default {
         },
         agregarProductoAlCarrito() {
             if (this.cantidad > 0) {
+                this.venta.total = this.cantidad * this.venta.precioUnitario; // Actualiza el total de la venta
                 const productoEnCarrito = {
                     idprod: this.venta.idProducto,
                     nomprod: this.productoSeleccionado.nomprod,
@@ -417,12 +744,31 @@ export default {
                     // Agrega otros campos necesarios aquí
                 };
                 this.datosCarrito.push(productoEnCarrito);
+                // Actualiza el totalVenta sumando el total del nuevo producto
+                this.totalVenta += this.venta.total;
+
+                console.log(this.datosCarrito)
+                console.log("Total de la venta:", this.totalVenta);
+
                 this.cantidadModal = false;
                 this.cantidad = 0; // Reinicia la cantidad
                 this.productoSeleccionado = null; // Reinicia el producto seleccionado
             }
         },
 
+        seleccionarCuentaContableVentas() {
+            // El tipo de cuenta para ventas es "Ingresos"
+            const cuentaVentas = this.datosCuentas.find(cuenta => cuenta.tipoc === "Ingreso");
+
+            if (cuentaVentas) {
+                // Devolver el idCuentaContable si se encuentra una cuenta de ventas
+                return cuentaVentas.idcnt;
+            } else {
+                console.error("No se encontró una cuenta de ventas.");
+                // Puedes devolver un valor predeterminado o lanzar un error según tus necesidades
+                return null; // O devuelve un valor predeterminado
+            }
+        },
         //#endregion
     },
 }

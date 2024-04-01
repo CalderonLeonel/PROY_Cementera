@@ -42,7 +42,7 @@ const routes = [
     component: require("../components/Fabrica.vue").default,
   },
   {
-    path: "/moviminetos",
+    path: "/movimientos",
     name: "Movimientos",
     component: require("../components/Movimiento.vue").default,
   },
@@ -62,6 +62,31 @@ const routes = [
     component: require("../components/Clientes.vue").default,
   },
   {
+    path: "/contabilidad",
+    name: "Contabilidad",
+    component: require("../components/Contabilidad.vue").default,
+  },
+  {
+    path: "/transporte",
+    name: "Transporte",
+    component: require("../components/Transporte.vue").default,
+  },
+  {
+    path: "/laboratorio",
+    name: "Laboratorio",
+    component: require("../components/Laboratorio.vue").default,
+  },
+  {
+    path: "/materia",
+    name: "Materia",
+    component: require("../components/MateriasPrimas.vue").default,
+  },
+  {
+    path: "/departamento",
+    name: "Departamentos",
+    component: require("../components/Departamentos.vue").default,
+  },
+  {
     path: "/cargos",
     name: "Cargos",
     component: require("../components/Cargo.vue").default,
@@ -72,9 +97,9 @@ const routes = [
     component: require("../components/Empleado.vue").default,
   },
   {
-    path: '/reportes',
-    name: 'Reportes',
-    component: require('../components/Reportes.vue').default
+    path: "/reportes",
+    name: "Reportes",
+    component: require("../components/Reportes.vue").default,
   },
   {
     path: "/turnos",
@@ -145,6 +170,11 @@ const routes = [
     path: "archivos",
     name: "Archivos",
     component: () => import("@/components/Archivos.vue"),
+  },
+  {
+    path: "carnet",
+    name: "Carnet",
+    component: () => import("@/components/Carnet.vue"),
   },
   {
     path: "archivosempleado",

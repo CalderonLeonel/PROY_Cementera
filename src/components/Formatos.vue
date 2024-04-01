@@ -240,63 +240,247 @@
                 <v-container>
                     <v-row>
 
-                        <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showAgregarFormato()">Nuevo Formato</v-btn>
-                        </v-col>
-                        <v-col cols="12" md="4"></v-col>
-                        <v-col cols="12" md="4"></v-col>
-
-                        <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showFormatosInhabilitados()">Formatos Inactivos</v-btn>
-                        </v-col>
-                        <v-col cols="12" md="4"></v-col>
-                        <v-col cols="12" md="4"></v-col>
-
                         <v-col cols="12">
-                            <v-list-item>
-                                <v-list-item-title class="text-center">
-                                    <h5>Formatos</h5>
-                                </v-list-item-title>
-                            </v-list-item>
-
-                            <v-card-title>
-                                <v-text-field v-model="buscarFormatos" append-icon="mdi-magnify" label="BUSCAR FORMATOS"
-                                    single-line hide-details></v-text-field>
-                            </v-card-title>
-
-
-                            <v-data-table :headers="headersFormatos" :items="datosFormatos" :search="buscarFormatos"
-                                :items-per-page="5" class="elevation-1" id="tableId">
-
-                                <template #[`item.est`]="{ item }">
-                                    <v-chip :color="colorEstado(item.est)" dark>
-                                        {{ item.est }}
-                                    </v-chip>
-                                </template>
-
-
-                                <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
-                                        @click="activar(item)" title="ACTIVAR FormatoS">
-                                        mdi-check-circle-outline
+                            <v-tabs horizontal color="#002245" center-active grow>
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-list-box
                                     </v-icon>
-                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
-                                        @click="desactivar(item)" title="DESACTIVAR FormatoS">
-                                        mdi-cancel
+                                    ADD
+                                    FORM.
+                                </v-tab>
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-list-box
                                     </v-icon>
-                                    <v-icon small class="mr-2" color="#001781" @click="showEditFormatoModal(item)"
-                                        title="ACTUALIZAR INFORMACION">
-                                        mdi-pencil
+                                    LIST
+                                    FORM.
+                                </v-tab>
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-list-box
                                     </v-icon>
-                                    <v-icon small class="mr-2" color="#001781" @click="showInfoFormato(item)"
-                                        title="VER INFORMACION">
-                                        mdi-eye
-                                    </v-icon>
-                                </template>
+                                    LIST
+                                    FORM
+                                    INAC.
+                                </v-tab>
 
-                            </v-data-table>
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outlined shaped>
+                                        <v-card-title>
+                                            <span>AGREGAR FORMATO</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-form ref="form" v-model="valid" lazy-validation>
+                                                <v-container>
+                                                    <v-row>
+                                                        <v-col cols="12" md="4"></v-col>
+                                                        <v-col cols="12" md="4">
+                                                            <v-text-field v-model="nombreFormato" label="NOMBRE FORMATO"
+                                                                :counter="100" :rules="nombreFormatoRules"
+                                                                @input="nombreFormato = nombreFormato.toUpperCase()"
+                                                                required></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="4"></v-col>
+
+                                                        <v-col cols="12" md="4"></v-col>
+                                                        <v-col cols="12" md="4">
+                                                            <v-text-field v-model="codigoFormato" label="CODIGO FORMATO"
+                                                                :counter="100" :rules="codigoFormatoRules"
+                                                                @input="codigoFormato = codigoFormato.toUpperCase()"
+                                                                required></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="4"></v-col>
+
+                                                        <v-col cols="12" md="8"> </v-col>
+                                                        <v-col cols="12" md="4">
+                                                            <v-toolbar dense shaped color="#001781">
+                                                                <v-toolbar-title>
+                                                                    <h6>
+                                                                        OPCIONES
+                                                                    </h6>
+                                                                </v-toolbar-title>
+                                                                <v-btn v-if="botonact == 1" class="mx-2" fab dark x-small
+                                                                    color="#EE680B" @click="actualizarFormato()"
+                                                                    style="float: left" title="ACTUALIZAR INFORMACIÓN">
+                                                                    <v-icon dark> mdi-pencil </v-icon>
+                                                                </v-btn>
+                                                                <v-btn v-if="botonact == 0" class="mx-2" fab dark x-small
+                                                                    color="#EE680B" @click="registrarFormato()"
+                                                                    style="float: left" title="REGISTRAR FORMATO">
+                                                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                                                </v-btn>
+                                                                <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                                                    @click="limpiar()" style="float: left"
+                                                                    title="LIMPIAR FORMULARIO">
+                                                                    <v-icon dark> mdi-eraser </v-icon>
+                                                                </v-btn>
+                                                            </v-toolbar>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-container>
+                                            </v-form>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outlined shaped>
+                                        <v-card-title>
+                                            <span>LISTA DE FORMATOS</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-form ref="form" v-model="valid" lazy-validation>
+                                                <v-container>
+                                                    <v-row>
+                                                        <v-col cols="12">
+                                                            <v-list-item>
+                                                                <v-list-item-title class="text-center">
+                                                                    <h5>FORMATOS</h5>
+                                                                </v-list-item-title>
+                                                            </v-list-item>
+
+                                                            <v-card-title>
+                                                                <v-text-field v-model="buscarFormatos"
+                                                                    append-icon="mdi-magnify" label="BUSCAR FORMATOS"
+                                                                    single-line hide-details></v-text-field>
+                                                            </v-card-title>
+
+
+                                                            <v-data-table :headers="headersFormatos" :items="datosFormatos"
+                                                                :search="buscarFormatos" :items-per-page="5"
+                                                                class="elevation-1" id="tableId">
+
+                                                                <template #[`item.est`]="{ item }">
+                                                                    <v-chip :color="colorEstado(item.est)" dark>
+                                                                        {{ item.est }}
+                                                                    </v-chip>
+                                                                </template>
+
+
+                                                                <template #[`item.actions`]="{ item }">
+                                                                    <v-icon v-if="item.est == 'INACTIVO'" color="green"
+                                                                        small class="mr-2" @click="activar(item)"
+                                                                        title="ACTIVAR FormatoS">
+                                                                        mdi-check-circle-outline
+                                                                    </v-icon>
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small
+                                                                        class="mr-2" @click="desactivar(item)"
+                                                                        title="DESACTIVAR FormatoS">
+                                                                        mdi-cancel
+                                                                    </v-icon>
+                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                        @click="showEditFormatoModal(item)"
+                                                                        title="ACTUALIZAR INFORMACION">
+                                                                        mdi-pencil
+                                                                    </v-icon>
+                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                        @click="showInfoFormato(item)"
+                                                                        title="VER INFORMACION">
+                                                                        mdi-eye
+                                                                    </v-icon>
+                                                                </template>
+
+                                                            </v-data-table>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-container>
+                                            </v-form>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outlined shaped>
+                                        <v-card-title>
+                                            <span>LISTA DE FORMATOS</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-form ref="form" v-model="valid" lazy-validation>
+                                                <v-container>
+                                                    <v-row>
+                                                        <v-col cols="12">
+                                                            <v-list-item>
+                                                                <v-list-item-title class="text-center">
+                                                                    <h5>Formatos</h5>
+                                                                </v-list-item-title>
+                                                            </v-list-item>
+
+                                                            <v-card-title>
+                                                                <v-text-field v-model="buscarFormatos"
+                                                                    append-icon="mdi-magnify" label="BUSCAR FORMATOS"
+                                                                    single-line hide-details></v-text-field>
+                                                            </v-card-title>
+                                                            <v-data-table :headers="headersFormatosInh"
+                                                                :items="datosFormatosInh" :search="buscarFormatos"
+                                                                :items-per-page="5" class="elevation-1" id="tableId">
+
+                                                                <template #[`item.est`]="{ item }">
+                                                                    <v-chip :color="colorEstado(item.est)" dark>
+                                                                        {{ item.est }}
+                                                                    </v-chip>
+                                                                </template>
+
+
+                                                                <template #[`item.actions`]="{ item }">
+                                                                    <v-icon v-if="item.est == 'INACTIVO'" color="green"
+                                                                        small class="mr-2" @click="activar(item)"
+                                                                        title="ACTIVAR FormatoS">
+                                                                        mdi-check-circle-outline
+                                                                    </v-icon>
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small
+                                                                        class="mr-2" @click="desactivar(item)"
+                                                                        title="DESACTIVAR FormatoS">
+                                                                        mdi-cancel
+                                                                    </v-icon>
+                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                        @click="showInfoFormato(item)"
+                                                                        title="VER INFORMACION">
+                                                                        mdi-eye
+                                                                    </v-icon>
+                                                                </template>
+
+                                                            </v-data-table>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-container>
+                                            </v-form>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+
+                            </v-tabs>
+
                         </v-col>
+
                     </v-row>
+
+                    <div class="text-center">
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
+                            <strong>{{ mensajeSnackbar }}</strong>
+
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+
+                    <div class="text-center">
+
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                            outlined>
+                            <strong>{{ mensajeSnackbarError }}</strong>
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
                 </v-container>
             </v-form>
         </div>
@@ -308,6 +492,7 @@ import axios from "axios";
 export default {
     data() {
         return {
+            flag: 1,
             //#region Formato
             idFormato: "",
             codigoFormato: "",
@@ -335,11 +520,21 @@ export default {
             formatosInhabilitadosModal: 0,
             //#endregion
             botonact: 0,
+
+            //#region Snackbars
+            snackbarOK: false,
+            mensajeSnackbar: "",
+            snackbarError: false,
+            mensajeSnackbarError: "REGISTRO FALLIDO",
+            timeout: 2000,
+            //#endregion
         }
     },
 
     created: function () {
         this.listarFormatos();
+        this.listarFormatosInh();
+
     },
 
     methods: {
@@ -479,6 +674,7 @@ export default {
             await axios
                 .post("/formato/offformato/" + this.idFormato).then(function (response) {
 
+                    me.listarFormatosInh(); 
                     me.listarFormatos();
 
                 })

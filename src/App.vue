@@ -1,5 +1,5 @@
 <template>
-  <v-app >
+  <v-app>
     <v-navigation-drawer v-model="drawer" app>
       <center>
         <v-toolbar color="#00A1B1" dark>
@@ -7,7 +7,7 @@
             <v-img src="./assets/logo192.png"></v-img>
           </v-col>
           <v-col cols="8">
-              <v-toolbar-title><b>ERP Drymix</b></v-toolbar-title>
+            <v-toolbar-title><b>ERP Drymix</b></v-toolbar-title>
           </v-col>
 
         </v-toolbar>
@@ -30,7 +30,7 @@
 
       <v-list nav dense>
 
-        <v-list-group no-action color="#00A1B1" value="true">
+        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(1, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-package</v-icon>
@@ -75,8 +75,36 @@
               <h6>PRODUCCION</h6>
             </v-list-item-title>
           </v-list-item>
+          <v-list-item :to="{ name: 'Transporte' }">
+            <v-list-item-title>
+              <h6>TRANSPORTE</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Materia' }">
+            <v-list-item-title>
+              <h6>MATERIA PRIMA</h6>
+            </v-list-item-title>
+          </v-list-item>
         </v-list-group>
+
         <v-list-group no-action color="#00A1B1" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-test-tube</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>LABORATORIO</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'Laboratorio' }">
+            <v-list-item-title>
+              <h6>NUEVO PRODUCTO</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+
+        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(2, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-point-of-sale</v-icon>
@@ -91,9 +119,8 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
-      
-        
-        <v-list-group no-action color="#00A1B1" value="true">
+
+        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(3, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-chart-bar</v-icon>
@@ -109,6 +136,7 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
+
         <v-list-group no-action color="#00A1B1" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
@@ -126,7 +154,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(5,'0')">
+        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(5, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-package</v-icon>
@@ -177,7 +205,8 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
-        <v-list-group no-action color="light-blue darken-4" value="true">
+
+        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(6, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
@@ -235,6 +264,7 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
+
         <v-list-group no-action color="#00A1B1" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
@@ -251,22 +281,7 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
-        <v-list-group no-action color="#00A1B1" value="true">
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon>mdi-account-group</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>CLIENTES</v-list-item-title>
-            </v-list-item-content>
-          </template>
-
-          <v-list-item :to="{ name: 'Clientes' }">
-            <v-list-item-title>
-              <h6>Clientes</h6>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list-group>
+      
         <v-list-group no-action color="light-blue darken-4" value="true">
           <template v-slot:activator>
             <v-list-item-icon>
@@ -329,7 +344,25 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
-        <v-list-group no-action color="light-blue darken-4" value="true">
+
+        <v-list-group no-action color="#00A1B1" value="true">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-wallet-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>CONTABILIDAD</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'Contabilidad' }">
+            <v-list-item-title>
+              <h6>CONTABILIDAD</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+
+        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(7, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>
@@ -352,7 +385,8 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
-        <v-list-group no-action color="light-blue darken-4" value="true">
+        
+        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(8, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>
@@ -376,7 +410,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="light-blue darken-4" value="true" >
+        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(9, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>
@@ -440,60 +474,58 @@
 export default {
   data: () => ({
     drawer: false,
-    user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: ''}
+    user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' }
   }),
   components: {
     // Empleado_cv
   },
   computed: {
     logueado() {
-      if(this.user != null) {
+      if (this.user != null) {
         this.user = JSON.parse(sessionStorage.getItem('session'));
       }
       return this.user;
     }
   }, created: function () {
-    
-    if(this.user != null) {
+
+    if (this.user != null) {
       this.user = JSON.parse(sessionStorage.getItem('session'));
     }
 
-    
+
     //this.user.dispath("autologin");
     if (this.user == null) {
       if (this.$route.path != '/login') {
         this.$router.push("/login");
       }
     }
-    console.log("UserData: "+JSON.stringify(this.user));
+    console.log("UserData: " + JSON.stringify(this.user));
   },
   methods: {
-    checkAccess(accesoCorrecto,tipoCorrecto) {
+    checkAccess(accesoCorrecto, tipoCorrecto) {
       //this.user = JSON.parse(sessionStorage.getItem('session'));
-      if(this.user == null)
-      {
+      if (this.user == null) {
         return false;
       }
-      else
-      {
+      else {
         let checkedAccess = false;
         let checkedType = false;
         //Si accesoCorrecto es 0, no se requiere ningun acceso para acceder
-        if(accesoCorrecto != 0) {
+        if (accesoCorrecto != 0) {
           this.user['accesos'].forEach(access => {
-          if(access == accesoCorrecto)
-            checkedAccess = true;
+            if (access == accesoCorrecto)
+              checkedAccess = true;
           });
         } else checkedAccess = true;
 
         //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
-        if(tipoCorrecto != '0') {
-          if(this.user['tipo'] == tipoCorrecto) {
+        if (tipoCorrecto != '0') {
+          if (this.user['tipo'] == tipoCorrecto) {
             checkedType = true;
           }
         } else checkedType = true;
-        if(checkedAccess && checkedType) {return true}
-          else return false;
+        if (checkedAccess && checkedType) { return true }
+        else return false;
       }
 
     },

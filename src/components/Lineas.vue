@@ -1,65 +1,5 @@
 <template>
     <v-card elevation="5" outlined shaped>
-        <v-dialog v-model="agregarLineaModal" max-width="800px">
-            <v-card elevation="5" outlined shaped>
-                <v-card-title>
-                    <span>AGREGAR LINEA</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-form ref="form" v-model="valid" lazy-validation>
-                        <v-container>
-                            <v-row>
-                                <v-col cols="12" md="4"></v-col>
-                                <v-col cols="12" md="4">
-                                    <v-text-field v-model="nombreLinea" label="NOMBRE LINEA" :counter="100"
-                                        :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()"
-                                        required></v-text-field>
-                                </v-col>
-                                <v-col cols="12" md="4"></v-col>
-
-                                <v-col cols="12" md="4"></v-col>
-                                <v-col cols="12" md="4">
-                                    <v-text-field v-model="codigoLinea" label="CODIGO LINEA" :counter="100"
-                                        :rules="codigoLineaRules" @input="codigoLinea = codigoLinea.toUpperCase()"
-                                        required></v-text-field>
-                                </v-col>
-                                <v-col cols="12" md="4"></v-col>
-                                <v-col cols="10"></v-col>
-                                <v-col cols="2">
-                                    <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                        @click="closeAgregarLinea()" style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="12" md="4">
-                                    <v-toolbar dense shaped>
-                                        <v-toolbar-title>
-                                            <h6>
-                                                OPCIONES
-                                            </h6>
-                                        </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="estualizarLinea()"
-                                            style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px" height="28px">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                        </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarLinea()"
-                                            style="float: left" title="REGISTRAR LINEA" width="28px" height="28px">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
-                                        </v-btn>
-                                        <v-btn icon color="#EE680B" @click="limpiar()" style="float: left"
-                                            title="LIMPIAR FORMULARIO">
-                                            <v-icon dark> mdi-eraser </v-icon>
-                                        </v-btn>
-                                    </v-toolbar>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                    </v-form>
-
-                </v-card-text>
-            </v-card>
-        </v-dialog>
 
         <v-dialog v-model="infoLineaModal" max-width="800px">
             <v-card elevation="5" outlined shaped>
@@ -166,68 +106,6 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="lineasInhabilitadasModal" max-width="800px">
-            <v-card elevation="5" outlined shaped>
-                <v-card-title>
-                    <span>LINEAS INACTIVAS</span><br>
-                </v-card-title>
-                <v-card-text>
-                    <v-form ref="form" v-model="valid" lazy-validation>
-                        <v-container>
-                            <v-row>
-                                <v-col cols="12">
-                                    <v-list-item>
-                                        <v-list-item-title class="text-center">
-                                            <h5>LINEAS</h5>
-                                        </v-list-item-title>
-                                    </v-list-item>
-
-                                    <v-card-title>
-                                        <v-text-field v-model="buscarLineas" append-icon="mdi-magnify" label="BUSCAR LINEAS"
-                                            single-line hide-details></v-text-field>
-                                    </v-card-title>
-                                    <v-data-table :headers="headersLineasInh" :items="datosLineasInh" :search="buscarLineas"
-                                        :items-per-page="5" class="elevation-1" id="tableId">
-
-                                        <template #[`item.est`]="{ item }">
-                                            <v-chip :color="colorEstado(item.est)" dark>
-                                                {{ item.est }}
-                                            </v-chip>
-                                        </template>
-
-
-                                        <template #[`item.actions`]="{ item }">
-                                            <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
-                                                @click="activar(item)" title="ACTIVAR LINEAS">
-                                                mdi-check-circle-outline
-                                            </v-icon>
-                                            <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
-                                                @click="desactivar(item)" title="DESACTIVAR LINEAS">
-                                                mdi-cancel
-                                            </v-icon>
-                                            <v-icon small class="mr-2" color="#001781" @click="showInfoLinea(item)"
-                                                title="VER INFORMACION">
-                                                mdi-eye
-                                            </v-icon>
-                                        </template>
-
-                                    </v-data-table>
-                                </v-col>
-                                <v-col cols="10"></v-col>
-                                <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closeInfoLineaModal()"
-                                        style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                    </v-btn>
-                                </v-col>
-
-                            </v-row>
-                        </v-container>
-                    </v-form>
-
-                </v-card-text>
-            </v-card>
-        </v-dialog>
 
         <div>
             <v-alert dense style="color: #ffffff;" color="grey">
@@ -239,63 +117,245 @@
                 <v-container>
                     <v-row>
 
-                        <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showAgregarLinea()">Nueva Linea</v-btn>
-                        </v-col>
-                        <v-col cols="12" md="4"></v-col>
-                        <v-col cols="12" md="4"></v-col>
-
-                        <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showLineaInhabilitadas()">Lineas Inactivas</v-btn>
-                        </v-col>
-                        <v-col cols="12" md="4"></v-col>
-                        <v-col cols="12" md="4"></v-col>
-
                         <v-col cols="12">
-                            <v-list-item>
-                                <v-list-item-title class="text-center">
-                                    <h5>LINEAS</h5>
-                                </v-list-item-title>
-                            </v-list-item>
-
-                            <v-card-title>
-                                <v-text-field v-model="buscarLineas" append-icon="mdi-magnify" label="BUSCAR LINEAS"
-                                    single-line hide-details></v-text-field>
-                            </v-card-title>
-
-
-                            <v-data-table :headers="headersLineas" :items="datosLineas" :search="buscarLineas"
-                                :items-per-page="5" class="elevation-1" id="tableId">
-
-                                <template #[`item.est`]="{ item }">
-                                    <v-chip :color="colorEstado(item.est)" dark>
-                                        {{ item.est }}
-                                    </v-chip>
-                                </template>
-
-
-                                <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
-                                        @click="activar(item)" title="ACTIVAR LINEAS">
-                                        mdi-check-circle-outline
+                            <v-tabs horizontal color="#002245" center-active grow>
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-package-variant-closed-plus
                                     </v-icon>
-                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
-                                        @click="desactivar(item)" title="DESACTIVAR LINEAS">
-                                        mdi-cancel
+                                    FORM
+                                    LINEA.
+                                </v-tab>
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-list-box
                                     </v-icon>
-                                    <v-icon small class="mr-2" color="#001781" @click="showEditLineaModal(item)"
-                                        title="ACTUALIZAR INFORMACION">
-                                        mdi-pencil
+                                    LIST
+                                    LINEAS.
+                                </v-tab>
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-list-box
                                     </v-icon>
-                                    <v-icon small class="mr-2" color="#001781" @click="showInfoLinea(item)"
-                                        title="VER INFORMACION">
-                                        mdi-eye
-                                    </v-icon>
-                                </template>
+                                    LINEAS
+                                    INACT.
+                                </v-tab>
 
-                            </v-data-table>
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outlined shaped>
+                                        <v-card-title>
+                                            <span>AGREGAR LINEAS</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-form ref="form" v-model="valid" lazy-validation>
+                                                <v-container>
+                                                    <v-row>
+                                                        <v-col cols="12" md="4"></v-col>
+                                                        <v-col cols="12" md="4">
+                                                            <v-text-field v-model="nombreLinea" label="NOMBRE LINEA"
+                                                                :counter="100" :rules="nombreLineaRules"
+                                                                @input="nombreLinea = nombreLinea.toUpperCase()"
+                                                                required></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="4"></v-col>
+
+                                                        <v-col cols="12" md="4"></v-col>
+                                                        <v-col cols="12" md="4">
+                                                            <v-text-field v-model="codigoLinea" label="CODIGO LINEA"
+                                                                :counter="100" :rules="codigoLineaRules"
+                                                                @input="codigoLinea = codigoLinea.toUpperCase()"
+                                                                required></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="4"></v-col>
+
+                                                        <v-col cols="12" md="8"> </v-col>
+                                                        <v-col cols="12" md="4">
+                                                            <v-toolbar dense shaped color="#001781">
+                                                                <v-toolbar-title>
+                                                                    <h6>
+                                                                        OPCIONES
+                                                                    </h6>
+                                                                </v-toolbar-title>
+                                                                <v-btn v-if="botonact == 1" class="mx-2" fab dark x-small
+                                                                    color="#EE680B" @click="estualizarLinea()"
+                                                                    style="float: left" title="ACTUALIZAR INFORMACIÓN">
+                                                                    <v-icon dark> mdi-pencil </v-icon>
+                                                                </v-btn>
+                                                                <v-btn v-if="botonact == 0" class="mx-2" fab dark x-small
+                                                                    color="#EE680B" @click="registrarLinea()"
+                                                                    style="float: left" title="REGISTRAR LINEA">
+                                                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                                                </v-btn>
+                                                                <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                                                    @click="limpiar()" style="float: left"
+                                                                    title="LIMPIAR FORMULARIO">
+                                                                    <v-icon dark> mdi-eraser </v-icon>
+                                                                </v-btn>
+                                                            </v-toolbar>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-container>
+                                            </v-form>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outlined shaped>
+                                        <v-card-title>
+                                            <span>LISTA DE LINEAS</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-form ref="form" v-model="valid" lazy-validation>
+                                                <v-container>
+                                                    <v-row>
+                                                        <v-col cols="12">
+                                                            <v-list-item>
+                                                                <v-list-item-title class="text-center">
+                                                                    <h5>LINEAS</h5>
+                                                                </v-list-item-title>
+                                                            </v-list-item>
+
+                                                            <v-card-title>
+                                                                <v-text-field v-model="buscarLineas"
+                                                                    append-icon="mdi-magnify" label="BUSCAR LINEAS"
+                                                                    single-line hide-details></v-text-field>
+                                                            </v-card-title>
+
+
+                                                            <v-data-table :headers="headersLineas" :items="datosLineas"
+                                                                :search="buscarLineas" :items-per-page="5"
+                                                                class="elevation-1" id="tableId">
+
+                                                                <template #[`item.est`]="{ item }">
+                                                                    <v-chip :color="colorEstado(item.est)" dark>
+                                                                        {{ item.est }}
+                                                                    </v-chip>
+                                                                </template>
+
+
+                                                                <template #[`item.actions`]="{ item }">
+                                                                    <v-icon v-if="item.est == 'INACTIVO'" color="green"
+                                                                        small class="mr-2" @click="activar(item)"
+                                                                        title="ACTIVAR LINEAS">
+                                                                        mdi-check-circle-outline
+                                                                    </v-icon>
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small
+                                                                        class="mr-2" @click="desactivar(item)"
+                                                                        title="DESACTIVAR LINEAS">
+                                                                        mdi-cancel
+                                                                    </v-icon>
+                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                        @click="showEditLineaModal(item)"
+                                                                        title="ACTUALIZAR INFORMACION">
+                                                                        mdi-pencil
+                                                                    </v-icon>
+                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                        @click="showInfoLinea(item)"
+                                                                        title="VER INFORMACION">
+                                                                        mdi-eye
+                                                                    </v-icon>
+                                                                </template>
+
+                                                            </v-data-table>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-container>
+                                            </v-form>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outlined shaped>
+                                        <v-card-title>
+                                            <span>LINEAS INACTIVAS</span><br>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-form ref="form" v-model="valid" lazy-validation>
+                                                <v-container>
+                                                    <v-row>
+                                                        <v-col cols="12">
+                                                            <v-list-item>
+                                                                <v-list-item-title class="text-center">
+                                                                    <h5>LINEAS</h5>
+                                                                </v-list-item-title>
+                                                            </v-list-item>
+
+                                                            <v-card-title>
+                                                                <v-text-field v-model="buscarLineas"
+                                                                    append-icon="mdi-magnify" label="BUSCAR LINEAS"
+                                                                    single-line hide-details></v-text-field>
+                                                            </v-card-title>
+                                                            <v-data-table :headers="headersLineasInh"
+                                                                :items="datosLineasInh" :search="buscarLineas"
+                                                                :items-per-page="5" class="elevation-1" id="tableId">
+
+                                                                <template #[`item.est`]="{ item }">
+                                                                    <v-chip :color="colorEstado(item.est)" dark>
+                                                                        {{ item.est }}
+                                                                    </v-chip>
+                                                                </template>
+
+
+                                                                <template #[`item.actions`]="{ item }">
+                                                                    <v-icon v-if="item.est == 'INACTIVO'" color="green"
+                                                                        small class="mr-2" @click="activar(item)"
+                                                                        title="ACTIVAR LINEAS">
+                                                                        mdi-check-circle-outline
+                                                                    </v-icon>
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small
+                                                                        class="mr-2" @click="desactivar(item)"
+                                                                        title="DESACTIVAR LINEAS">
+                                                                        mdi-cancel
+                                                                    </v-icon>
+                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                        @click="showInfoLinea(item)"
+                                                                        title="VER INFORMACION">
+                                                                        mdi-eye
+                                                                    </v-icon>
+                                                                </template>
+
+                                                            </v-data-table>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-container>
+                                            </v-form>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+
+                            </v-tabs>
                         </v-col>
+
                     </v-row>
+
+                    <div class="text-center">
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
+                            <strong>{{ mensajeSnackbar }}</strong>
+
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+
+                    <div class="text-center">
+
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                            outlined>
+                            <strong>{{ mensajeSnackbarError }}</strong>
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
                 </v-container>
             </v-form>
         </div>
@@ -308,6 +368,7 @@ import { async } from "regenerator-runtime";
 export default {
     data() {
         return {
+            flag: 1,
             activo: "",
             valid: true,
             botonact: 0,
@@ -337,10 +398,20 @@ export default {
             infoLineaModal: 0,
             lineasInhabilitadasModal: 0,
             //#endregion
+
+            //#region Snackbars
+            snackbarOK: false,
+            mensajeSnackbar: "",
+            snackbarError: false,
+            mensajeSnackbarError: "REGISTRO FALLIDO",
+            timeout: 2000,
+            //#endregion
         }
     },
     created: function () {
         this.listarLineas();
+        this.listarLineasInh();
+
     },
     methods: {
         colorEstado(est) {
@@ -444,7 +515,7 @@ export default {
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.listarLineas();
-                    me.editLineaModal = false;    
+                    me.editLineaModal = false;
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
