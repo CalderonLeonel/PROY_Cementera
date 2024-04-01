@@ -54,26 +54,32 @@
              <v-form ref="form" v-model="valid" lazy-validation>
                  <v-container>
                      <v-row>
-                         <v-col cols="12" md="4">
+                         <v-col cols="3" md="2">
                              <v-btn color="success" @click="showModalAgregarTransaccion()">NUEVO INVENTARIO</v-btn>
                          </v-col>
-                         <v-col cols="12" md="4">
+                         <v-col cols="3" md="3">
                              <v-btn color="success" @click="showRevalorizarInventarioModal()">REVALORIZACIÓN DE INVENTARIO</v-btn>
                          </v-col>
+                        
                          <v-col cols="12">
                              <v-list-item>
                                  <v-list-item-title class="text-center">
                                      <h5>INVENTARIOS</h5>
                                  </v-list-item-title>
                              </v-list-item>
- 
-                             <v-card-title>
+                            <v-card-title>
                                 <v-text-field v-model="searchInventario" append-icon="mdi-magnify" label="BUSCAR INVENTARIO"
-                                     single-line hide-details></v-text-field>
-                             </v-card-title>
- 
+                                     single-line hide-details></v-text-field>                               
+                            </v-card-title>       
+                            <v-card-title>
+                                <v-btn color="primary" @click="exportToPDF()">PDF</v-btn>
+                                            
+                                <v-btn color="primary" @click="exportToCSV()">CSV</v-btn>
+                                
+                                <v-btn color="primary" @click="exportToExcel()">EXCEL</v-btn>
+                            </v-card-title> 
                              <v-data-table :headers="headerInventario" :items="datosInventario" :search="searchInventario"
-                                 :items-per-page="5" class="elevation-1" id="tableId">
+                                 :items-per-page="5" class="elevation-2" id="tableId">
  
                                  <template #[`item.estado`]="{ item }">
                                      <v-chip :color="getColor(item.estado)" dark>
@@ -124,8 +130,14 @@
                                      <v-icon x-large color="primary" class="mr-2" @click="mostrarItems(item)"
                                          title="VER STOCK DE ALMACEN">
                                          mdi-eye
-                                     </v-icon>             
+                                     </v-icon>  
+                                     <v-icon v-if="item.total>0" x-large color="primary" class="mr-2" @click="exportToPDFDetailed(item)"
+                                         title="GENERAR PDF DE STOCK">
+                                         mdi-file-pdf-box
+                                     </v-icon>                 
                                  </template>
+
+                                
  
                                
  
@@ -973,6 +985,13 @@
  </template>
  <script>
  import axios from "axios";
+ import * as XLSX from 'xlsx';
+
+ import Papa from "papaparse";
+
+ import jsPDF from "jspdf";
+ import 'jspdf-autotable';
+
  export default {
      data() {
          return {
@@ -2181,12 +2200,90 @@
             this.getListaExistencias();
         },
 
-        
-   
+      
+        async exportToCSV() {
+        try {
+            const response = await axios.get(`/inventario/listarinventarioactivo/`);
+            const jsonData = response.data.resultado || [];
+
+            const csvData = Papa.unparse(jsonData);
+
+            const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = "inventario.csv";
+            link.click();
+        } catch (error) {
+            console.error(error);
+        }
+        },
+
+        async exportToExcel() {
+        try {
+            const response = await axios.get(`/inventario/listarinventarioactivo/`);
+            const jsonData = response.data.resultado || [];
+            const worksheet = XLSX.utils.json_to_sheet(jsonData);
+            const workbook = XLSX.utils.book_new();
+
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Hoja1");
+
+            XLSX.writeFile(workbook, "inventario.xlsx", { compression: true });
+           
+        } catch (error) {
+            console.error(error);
+        }
+        },
+
+
+        async exportToPDF() {
+            try {
+                const response = await axios.get(`/inventario/listarinventarioactivo/`);
+                const jsonData = response.data.resultado || [];
+                console.log(jsonData)
+                const bodyData = jsonData.map(item => [
+                    item.idTransaccion, 
+                    item.nombreitem,
+                    item.nombrealmacen,
+                    item.movimiento,
+                    item.cantidad,
+                    item.metodoValuacion
+                ]);
+                const doc = new jsPDF();
+                    doc.text("Detalle de Inventario", 10, 10);
+                    doc.autoTable({ head: [["Número de Transacción", "Item", "Almacén", "Movimiento", "Cantidad", "Método de Valuación"]], body: bodyData });
+                    doc.save("inventario.pdf");
+            } catch (error) {
+                console.error(error);
+            }
+            },
+
+
+            async exportToPDFDetailed(item) {
+            try {
+                const response = await axios.get(`/inventario/listarstock/`+item.idalmacen);
+                const jsonData = response.data.resultado || [];
+                console.log(jsonData)
+                const bodyData = jsonData.map(data => [
+                    data.nombreitem, 
+                    data.descripcion,
+                    data.nombretipoitem,
+                    data.valor,
+                    data.total
+                ]);
+                const doc = new jsPDF();
+                    doc.text("Reporte de Almacen: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
+                   doc.autoTable({ head: [["Item", "Descripcion", "Tipo de Item", "Precio Unitario", "Stock"]], body: bodyData });
+                    doc.save("inventario.pdf");
+            } catch (error) {
+                console.error(error);
+            }
+            },
 
       
          //#endregion
        },
+
  };
  
  </script>
