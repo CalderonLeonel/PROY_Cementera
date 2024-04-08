@@ -145,6 +145,44 @@
                              </v-data-table>
                          </v-col>
                      </v-row>
+
+                     <v-row>
+                         <v-col cols="12">
+                             <v-list-item>
+                                 <v-list-item-title class="text-center">
+                                     <h5>ALMACENES CON PRODUCTOS</h5>
+                                 </v-list-item-title>
+                             </v-list-item>
+ 
+                             <v-card-title>
+                                <v-text-field v-model="searchProductoAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACENES"
+                                     single-line hide-details></v-text-field>
+                             </v-card-title>
+ 
+                             <v-data-table :headers="headerAlmacen" :items="datosProductoAlmacen" :search="searchProductoAlmacen"
+                                 :items-per-page="5" class="elevation-1" id="tableId">
+ 
+                        
+ 
+                                 <template #[`item.actions`]="{ item }">
+                                     <v-icon x-large color="primary" class="mr-2" @click="mostrarProductos(item)"
+                                         title="VER STOCK DE ALMACEN">
+                                         mdi-eye
+                                     </v-icon>  
+                                     <v-icon  x-large color="primary" class="mr-2" @click="exportToPDFProductDetailed(item)"
+                                         title="GENERAR PDF DE STOCK">
+                                         mdi-file-pdf-box
+                                     </v-icon>                 
+                                 </template>
+
+                                
+ 
+                               
+ 
+ 
+                             </v-data-table>
+                         </v-col>
+                     </v-row>
                      <v-row>
                          <v-col cols="12" md="4">
                              <v-btn color="success" @click="showModalAgregarItem()">NUEVO ITEM</v-btn>
@@ -576,7 +614,7 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchAlmacenConStock" append-icon="mdi-magnify" label="BUSCAR ALMACENES ACTIVOS"
+                                    <v-text-field v-model="searchAlmacenConStock" append-icon="mdi-magnify" label="BUSCAR ALMACENES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -603,6 +641,9 @@
                 </v-card-text>
             </v-card>
         </v-dialog>   
+
+
+       
 
 
         <v-dialog v-model="tipoModal" persistent :overlay="false" max-width="900px">
@@ -979,6 +1020,34 @@
             </v-card>
         </v-dialog>
 
+        <v-dialog
+            v-model="detalleProductosAlmacenados"
+            persistent :overlay="false"
+            max-width="900px"
+            transition="dialog-transition"
+        >
+            <v-card>
+                <v-card-title>
+                    <v-text-field v-model="searchProductoAlmacen" append-icon="mdi-magnify" label="BUSCAR PRODUCTO"
+                        single-line hide-details></v-text-field>
+                </v-card-title>
+            </v-card>
+            <v-card>
+                    <v-data-table :headers="headerProductos" :items="datosProductos" :search="searchProductoAlmacen"
+                        :items-per-page="5" class="elevation-1">
+                    </v-data-table>
+            </v-card>
+            <v-card>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red" dark x-big  @click="closeDetalleAlmacenamientoProducto()">
+                        <v-icon dark> mdi-close-circle-outline </v-icon> SALIR
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
      </v-card>
      
  
@@ -1145,6 +1214,18 @@
              ],
             searchStock: "",
             detalleStockDialog: false,
+
+            datosProductos:[],
+            datosProductoAlmacen:[],
+            headerProductos: [
+                { text: "NOMBRE DE PRODUCTO", value: "nombreprod", sortable: true },
+                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: true },
+                { text: "TIPO", value: "nombretipo", sortable: true },
+                { text: "TOTAL", value: "total", sortable: false },
+            ],
+           
+            searchProductoAlmacen: "",
+            detalleProductosAlmacenados: false,
  
              datosItem: [],
              headerItem: [
@@ -1257,6 +1338,7 @@
        this.listarItem();
        this.listarTipoItem();
        this.listarstock();
+       this.listaralmacenproducto();
        this.getListaExistencias().then(() => {
        this.getAlertas();
         });
@@ -1927,6 +2009,45 @@
         },
 
 
+        listaralmacenproducto() {
+             this.listarProductoAlmacen();
+         },
+         async listarProductoAlmacen() {
+           let me = this;
+           await axios
+             .get("/almacen/listaralmacenConProd/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datosProductoAlmacen = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datosProductoAlmacen = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+        
+
+        async listarDetalleAlmacenamientoProductos(idAlmacen) {
+          let me = this;
+          await axios
+            .get("/inventario/listarProductos/"+idAlmacen)
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosProductos = [];
+              } else {
+                me.datosProductos = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
+
         mostrarItems(item){
             this.idAlmacen = item.idalmacen;
             this.listarDetalleStock(this.idAlmacen);
@@ -1935,10 +2056,24 @@
         },
 
         
+        mostrarProductos(item){
+            this.idAlmacen = item.idalmacen;
+            this.listarDetalleAlmacenamientoProductos(this.idAlmacen);
+            this.detalleProductosAlmacenados = true;
+            
+        },
+
+        
 
         closeDetalleStock(){
             this.detalleStockDialog = false;
         },
+
+        closeDetalleAlmacenamientoProducto(){
+            this.detalleProductosAlmacenados = false;
+        },
+
+
 
 
 
@@ -2274,6 +2409,27 @@
                 const doc = new jsPDF();
                     doc.text("Reporte de Almacen: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
                    doc.autoTable({ head: [["Item", "Descripcion", "Tipo de Item", "Precio Unitario", "Stock"]], body: bodyData });
+                    doc.save("inventario.pdf");
+            } catch (error) {
+                console.error(error);
+            }
+            },
+
+
+            async exportToPDFProductDetailed(item) {
+            try {
+                const response = await axios.get(`/inventario/listarProductos/`+item.idalmacen);
+                const jsonData = response.data.resultado || [];
+                console.log(jsonData)
+                const bodyData = jsonData.map(data => [
+                    data.nombreprod, 
+                    data.codprod,
+                    data.nombretipo,
+                    data.total
+                ]);
+                const doc = new jsPDF();
+                    doc.text("Reporte de Almacen: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
+                   doc.autoTable({ head: [["Producto", "Código de Producto", "Tipo de Producto",  "Cantidad"]], body: bodyData });
                     doc.save("inventario.pdf");
             } catch (error) {
                 console.error(error);
