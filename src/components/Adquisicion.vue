@@ -707,7 +707,7 @@ export default {
 
 
 
-
+            datosPrecio:[],
 
             datosCotizacionAdquisicion: [],
             headerCotizacionAdquisicion: [
@@ -817,9 +817,11 @@ export default {
     },
     created: function () {
         this.listarCotizacionAdquisicionPendiente()
-        this.listarCotizacionAdquisicion();
-        this.listarCotizacionItem();
+        this.listarCotizacionAdquisicion()
+        this.listarCotizacionItem()
+        this.getListaExistencias().then(() => {
         this.getAlertas();
+        });
     },
     methods: {
 
@@ -1220,6 +1222,24 @@ export default {
                 });
         },
 
+        async obtenerPrecioItemCotizacion(idItem){
+            let me = this;
+            await axios
+                .get("/adquisicion/getPrecioItem/" + idItem)
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosPrecio = [];
+                        //console.log(response.data);
+                    } else {
+                        me.datosPrecio = response.data.resultado;
+                        //console.log(response.data);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
 
         llenarCamposCotizacionItem(item) {
             this.botonactCotIt = 1;
@@ -1469,7 +1489,10 @@ export default {
         },
 
         seleccionarItem(item) {
+                  
             this.idItem = item.iditem;
+            this.obtenerPrecioItemCotizacion(this.idItem);
+            this.datosItem[0]
             this.nombreItem = item.nombreitem;
             this.itemModal = false;
         },
@@ -1545,23 +1568,7 @@ export default {
 
 
 
-        async getListaExistencias() {
-            let me = this;
-            await axios
-                .get("/inventario/listarexistencias/")
-                .then(function (response) {
-                    if (response.data.resultado == null) {
-                        me.datosExistencia = [];
-                        console.log(response.data);
-                    } else {
-                        console.log(response.data);
-                        me.datosExistencia = response.data.resultado;
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
+      
 
 
 

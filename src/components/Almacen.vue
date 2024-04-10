@@ -811,7 +811,9 @@ export default {
         this.listarAlmacen();
         //this.listarSeccion();
         //this.listarStand();
+        this.getListaExistencias().then(() => {
         this.getAlertas();
+        });
     },
     methods: {
 

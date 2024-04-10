@@ -290,7 +290,9 @@ export default {
     },
     created: function (){
       this.listarProveedor();
-      this.getAlertas();
+      this.getListaExistencias().then(() => {
+        this.getAlertas();
+        });
     },
     methods: {
 
