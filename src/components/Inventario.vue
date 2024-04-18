@@ -1374,10 +1374,7 @@
                     }
                 }
                 for (let i = 0; i < items.length; i++) {
-                    if ( limite[i] >= stock[i]  ) {
-                        console.log(limite[i])
-                        console.log(stock[i])
-                        alert(limite[i]+' u '+stock[i] )
+                    if ( Number(limite[i]) >= Number(stock[i])  ) {
                         this.existencias=false;
                         this.itemsCriticos += items[i]+' ';
                     }

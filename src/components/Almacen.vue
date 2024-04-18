@@ -25,7 +25,7 @@
             <div class="text-h6">
                 SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
             </div>
-            POR FAVOR, NOTIFIQUE A ADQUISICIONES PARA ADQUIRIR EXISTENCIAS DE <strong>${nombreitem}</strong>
+            POR FAVOR, NOTIFIQUE A ADQUISICIONES PARA ADQUIRIR EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong>
         </v-alert>
         <v-alert v-if="existencias == true" type="success" color="green darken-2" dismissible dense prominent>
             <div class="text-h5">
@@ -857,10 +857,7 @@ export default {
                     }
                 }
                 for (let i = 0; i < items.length; i++) {
-                    if (limite[i] >= stock[i]) {
-                        console.log(limite[i])
-                        console.log(stock[i])
-                        alert(limite[i] + ' u ' + stock[i])
+                    if (Number(limite[i]) >= Number(stock[i]) ) {
                         this.existencias = false;
                         this.itemsCriticos += items[i] + ' ';
                     }

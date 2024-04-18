@@ -25,7 +25,7 @@
             <div class="text-h6">
                 SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
             </div>
-            POR FAVOR, COTICE UNA ADQUISICION PARA TENER EXISTENCIAS DE <strong>${nombreitem}</strong> NECESARIAS PARA
+            POR FAVOR, COTICE UNA ADQUISICION PARA TENER EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong> NECESARIAS PARA
             EL
             FUNCIONAMIENTO DE LA FABRICA
         </v-alert>
@@ -870,10 +870,7 @@ export default {
                     }
                 }
                 for (let i = 0; i < items.length; i++) {
-                    if (limite[i] >= stock[i]) {
-                        console.log(limite[i])
-                        console.log(stock[i])
-                        alert(limite[i] + ' u ' + stock[i])
+                    if (Number(limite[i]) >= Number(stock[i]) ) {
                         this.existencias = false;
                         this.itemsCriticos += items[i] + ' ';
                     }
