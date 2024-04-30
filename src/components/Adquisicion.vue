@@ -1516,22 +1516,23 @@ export default {
         seleccionarItem(item) {
             this.idItem = item.iditem;
             this.nombreItem = item.nombreitem;
-            this.itemModal = false;
-            this.obtenerPrecioItemCotizacion().then(() => {
-             
-                if(this.datosPrecio!=[]){
-                    if (this.datosPrecio[0].hasOwnProperty("precioUnitario")) {
-                        this.precioUnitario = this.datosPrecio[0].precioUnitario;
-                    }
-                    
-                    
-                }
-                else{
-                    this.precioUnitario = 0;
-                }
+            this.obtenerPrecioItemCotizacion().then(() => {    
+             if(this.datosPrecio && this.datosPrecio.length > 0 && this.datosPrecio[0]){
+                 if (this.datosPrecio[0].hasOwnProperty("precioUnitario")) {
+                     this.precioUnitario = this.datosPrecio[0].precioUnitario;
+                 }
+                 else{
+                    this.precioUnitario = "";
+                 }  
+                 
+             }
+             else{
+                 this.precioUnitario = "";
+             }
 
-             });
-          
+          });
+            this.itemModal = false; 
+            
         },
 
         openProveedorModal() {
@@ -1585,13 +1586,24 @@ export default {
         },
 
        
-        aprobarAdquisicion(item) {
-            this.idCotizacion = item.idCotizacion;
-            this.idUsuario = item.idUsuario;
-            this.idProveedor = item.idProveedor;
-            this.nombreCotizacion = item.nombreCotizacion;
-            this.fechaVencimiento = item.fechaVencimiento;
-            this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'ACTIVO');
+        async aprobarAdquisicion(item) {
+            const response = await axios.get(`/adquisicion/listardetallecotizacion/` + item.idCotizacion);
+            var contenido = response.data.resultado;
+            let me = this;
+            if (contenido == null) {
+                contenido = [];
+                me.mensajeSnackbarError = "NO SE PUEDE APROBAR UNA COTIZACION SIN ITEMS, POR FAVOR AGREGUE EL DETALLE DE LA COTIZACIÓN";
+                me.snackbarError = true;
+            } else {
+                this.idCotizacion = item.idCotizacion;
+                this.idUsuario = item.idUsuario;
+                this.idProveedor = item.idProveedor;
+                this.nombreCotizacion = item.nombreCotizacion;
+                this.fechaVencimiento = item.fechaVencimiento;
+                this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'ACTIVO');
+                me.mensajeSnackbarError = "REGISTRO FALLIDO";
+            }
+          
 
         },
         denegarAdquisicion(item) {
