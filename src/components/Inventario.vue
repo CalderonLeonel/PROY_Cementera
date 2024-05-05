@@ -1328,6 +1328,23 @@
              botonActTT:0,
 
 
+             datosSaldoItem: [],
+             headerItemAlmacen: [
+                 
+                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "LIMITE CRITICO", value: "limite", sortable: true },
+                 { text: "CANTIDAD", value: "total", sortable: true },
+                 { text: "ACCIONES", value: "actions", sortable: false }
+             ],
+             datosSaldoAlmacenItem: [],
+             headerStockAlmacen: [
+                { text: "CODIGO ALMACEN", value: "codigo", sortable: true },
+                { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
+                { text: "TOTAL", value: "total", sortable: true },
+            ],
+
              snackbarOK: false,
              snackbarError : false,
              //#endregion
@@ -2070,6 +2087,47 @@
             this.detalleProductosAlmacenados = false;
         },
 
+
+
+        listarSaldoItem() {
+            this.listarSaldoItemAlmacen();
+        },
+        async listarSaldoItemAlmacen() {
+            let me = this;
+            await axios
+                .get("/inventario/listarsaldoalmacenitem/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosSaldoItem = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosSaldoItem = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+
+        async listarDetallesCotizacion(idItem) {
+            let me = this;
+            await axios
+                .get("/inventario/listarsaldoitem/" + idItem)
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosSaldoAlmacenItem = [];
+                        //console.log(response.data);
+                    } else {
+                        me.datosSaldoAlmacenItem = response.data.resultado;
+                        //console.log(response.data);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
 
 
 
