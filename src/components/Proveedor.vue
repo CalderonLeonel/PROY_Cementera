@@ -31,7 +31,7 @@
                 <div class="text-h6">
                     SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
                 </div>
-                POR FAVOR, COTICE UNA ADQUISICION PARA TENER EXISTENCIAS DE <strong>${nombreitem}</strong> NECESARIAS PARA EL FUNCIONAMIENTO DE LA FABRICA 
+                POR FAVOR, COTICE UNA ADQUISICION PARA TENER EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong> NECESARIAS PARA EL FUNCIONAMIENTO DE LA FABRICA 
         </v-alert>
         <v-alert    v-if="existencias==true"       
                 type="success"
@@ -290,7 +290,9 @@ export default {
     },
     created: function (){
       this.listarProveedor();
-      this.getAlertas();
+      this.getListaExistencias().then(() => {
+        this.getAlertas();
+        });
     },
     methods: {
 
@@ -322,10 +324,7 @@ export default {
                     }
                 }
                 for (let i = 0; i < items.length; i++) {
-                    if ( limite[i] >= stock[i]  ) {
-                        console.log(limite[i])
-                        console.log(stock[i])
-                        alert(limite[i]+' u '+stock[i] )
+                    if ( Number(limite[i]) >= Number(stock[i]) ) {
                         this.existencias=false;
                         this.itemsCriticos += items[i]+' ';
                     }

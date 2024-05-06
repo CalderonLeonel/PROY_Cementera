@@ -25,7 +25,7 @@
             <div class="text-h6">
                 SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
             </div>
-            POR FAVOR, COTICE UNA ADQUISICION PARA TENER EXISTENCIAS DE <strong>${nombreitem}</strong> NECESARIAS PARA
+            POR FAVOR, COTICE UNA ADQUISICION PARA TENER EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong> NECESARIAS PARA
             EL
             FUNCIONAMIENTO DE LA FABRICA
         </v-alert>
@@ -78,15 +78,20 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
+                                    <v-icon v-if="item.estado == 'PENDIENTE'" x-large color="primary" class="mr-2" @click="agregarItem(item)"
+                                        title="AGREGAR ITEMS">
+                                        mdi-playlist-plus
+                                    </v-icon>
                                     <v-icon v-if="item.estado == 'PENDIENTE'" class="mr-2" color="primary" x-large
                                         @click="llenarCamposCotizacionAdquisicion(item)" title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
                                     </v-icon>
+                                   
                                     <v-icon x-large color="primary" class="mr-2" @click="mostrarItems(item)"
                                         title="VER ITEMS">
                                         mdi-eye
                                     </v-icon>
-                                    <v-icon class="mr-2" color="primary" x-large @click="exportToPDFDetailed(item)"
+                                    <v-icon v-if="item.estado != 'PENDIENTE'" class="mr-2" color="primary" x-large @click="exportToPDFDetailed(item)"
                                         title="VER PDF">
                                         mdi-file-pdf-box
                                     </v-icon>
@@ -98,7 +103,7 @@
                             </v-data-table>
                         </v-col>
                     </v-row>
-                    <v-row>
+                     <!--<v-row>
                         <v-col cols="12" md="4">
                             <v-btn color="success" @click="showModalAgregarCotizacionItem()">NUEVA COTIZACION DE
                                 ITEM</v-btn>
@@ -145,7 +150,7 @@
 
                             </v-data-table>
                         </v-col>
-                    </v-row>
+                    </v-row>-->
                     <v-row>
                         <v-col cols="12">
                             <v-list-item>
@@ -203,7 +208,7 @@
 
         </div>
 
-        <v-dialog v-model="agregarCotizacionAdquisicionModal" persistent :overlay="false" max-width="1000px">
+      <v-dialog v-model="agregarCotizacionAdquisicionModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>AGREGAR COTRIZACION DE ADQUISICION</span>
@@ -244,8 +249,7 @@
                                             color="blue lighten-1" header-color="primary"
                                             :min="getDate()"></v-date-picker>
                                     </v-menu>
-                                    <!--<v-date-picker required locale="es" :landscape="true" :show-current="false" full-width v-model="fechaVencimiento" :min="getDate()" @input="fechaVencimiento = fechaVencimiento" color="blue lighten-1" header-color="primary"></v-date-picker>                                 
-                               --> </v-col>
+                                   </v-col>
 
                                 <v-col cols="12" md="12">
                                     <v-file-input v-model="documentoArchivo"
@@ -319,6 +323,7 @@
                                         <v-icon small class="mr-2" @click="seleccionarItem(item)">
                                             mdi-check-circle
                                         </v-icon>
+                                        
                                     </template>
                                 </v-data-table>
                             </v-col>
@@ -428,40 +433,40 @@
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-container>
                             <v-row>
-                                <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" v-if="botonactCotIt == 0" fab dark x-small color="cyan"
+                                <!--<v-col cols="12" md="2">
+                                    <v-btn class="mx-2" v-if="botonactCotIt == 0 && this.idCotizacion!=null && this.nombreCotizacion!=null " fab dark x-small color="cyan"
                                         :rules="nombreRules" @click="openCotizacionModal()" style="float: right"
                                         title="BUSCAR COTIZACION">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
-                                <v-col cols="12" md="5">
-                                    <v-text-field v-model="nombreCotizacion" label="NOMBRE COTIZACION" :counter="100"
+                                <v-col cols="12" md="10">
+                                    <v-text-field v-model="nombreCotizacion"  v-if=" this.idCotizacion!=null && this.nombreCotizacion!=null " label="NOMBRE COTIZACION" :counter="100"
                                         :rules="nombreCotizacionRules"
                                         @input="nombreCotizacion = nombreCotizacion.toUpperCase()" disabled
                                         required></v-text-field>
-                                </v-col>
+                                </v-col>-->
 
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" v-if="botonactCotIt == 0" fab dark x-small color="cyan"
+                                    <v-btn class="mx-2" v-if="botonactCotIt == 0" fab dark x-small color="cyan" :disabled='nombreCotizacion==null' 
                                         :rules="nombreRules" @click="openItemModal()" style="float: right"
                                         title="BUSCAR ITEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
-                                <v-col cols="12" md="5">
-                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM" :counter="60"
+                                <v-col cols="12" md="11">
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM" :counter="60" :disabled='nombreCotizacion==null'
                                         :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()" disabled
                                         required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="6">
-                                    <v-text-field v-model="precioUnitario" type="number" label="COSTO UNITARIO"
+                                    <v-text-field v-model="precioUnitario" type="number" label="COSTO UNITARIO" :disabled='nombreCotizacion==null'
                                         :rules="costoRules" @input="precioUnitario = precioUnitario.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-text-field v-model="cantidad" type="number" label="CANTIDAD"
+                                    <v-text-field v-model="cantidad" type="number" label="CANTIDAD" :disabled='nombreCotizacion==null'
                                         :rules="cantidadRules" @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -475,12 +480,12 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-col cols="2">
-                                            <v-btn icon v-if="botonactCotIt == 1" color="#0A62BF"
+                                            <v-btn icon v-if="botonactCotIt == 1" color="#0A62BF" :disabled='nombreCotizacion==null'
                                                 @click="editarCotizacionIt()" style="float: left"
                                                 title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
-                                            <v-btn icon v-if="botonactCotIt == 0" color="#0ABF55"
+                                            <v-btn icon v-if="botonactCotIt == 0" color="#0ABF55" :disabled='nombreCotizacion==null'
                                                 @click="registrarCotizacionIt()" style="float: left"
                                                 title="REGISTRAR COTIZACION DE ITEM" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
@@ -585,6 +590,17 @@
             <v-card>
                 <v-data-table :headers="headerCotizacionItem" :items="datosDetalleCotizacion" :items-per-page="5"
                     class="elevation-1">
+                    <template #[`item.actions`]="{ item }">
+                        <v-icon class="mr-2" v-if="estadoCotizacion!='ACTIVO'" color="primary" x-large
+                            @click="llenarCamposCotizacionItem(item)" title="ACTUALIZAR INFORMACION">
+                             mdi-pencil
+                        </v-icon>
+                        <v-icon v-if=" estadoCotizacion!='ACTIVO'" x-large color="error" class="mr-2"
+                            @click="confirmacionAnulacionCotizacionItem(item)"
+                            title="ELIMINAR DETALLE COTIZACIÓN">
+                            mdi-close-circle
+                        </v-icon>
+                    </template>
                 </v-data-table>
             </v-card>
             <v-card>
@@ -692,6 +708,7 @@ export default {
             ],
 
             datosCotizacion: [],
+            estadoCotizacion: '',
             datosDetalleCotizacion: [],
             detalleCotizacionDialog: false,
             headerCotizacion: [
@@ -707,7 +724,7 @@ export default {
 
 
 
-
+            datosPrecio:[],
 
             datosCotizacionAdquisicion: [],
             headerCotizacionAdquisicion: [
@@ -726,7 +743,7 @@ export default {
                 { text: "COTIZACIÓN ITEM", value: "idCotizacionItem", sortable: true },
                 { text: "COTIZACIÓN", value: "nombrecotizacion", sortable: true },
                 { text: "ITEM", value: "nombreitem", sortable: true },
-                { text: "UNIDAD", value: "unidad", sortable: false },
+                //{ text: "UNIDAD", value: "unidad", sortable: false },
                 { text: "PRECIO UNITARIO", value: "precioUnitario", sortable: true },
                 { text: "CANTIDAD", value: "cantidad", sortable: false },
                 { text: "ACCIONES", value: "actions", sortable: false }
@@ -817,9 +834,11 @@ export default {
     },
     created: function () {
         this.listarCotizacionAdquisicionPendiente()
-        this.listarCotizacionAdquisicion();
-        this.listarCotizacionItem();
+        this.listarCotizacionAdquisicion()
+        this.listarCotizacionItem()
+        this.getListaExistencias().then(() => {
         this.getAlertas();
+        });
     },
     methods: {
 
@@ -851,10 +870,7 @@ export default {
                     }
                 }
                 for (let i = 0; i < items.length; i++) {
-                    if (limite[i] >= stock[i]) {
-                        console.log(limite[i])
-                        console.log(stock[i])
-                        alert(limite[i] + ' u ' + stock[i])
+                    if (Number(limite[i]) >= Number(stock[i]) ) {
                         this.existencias = false;
                         this.itemsCriticos += items[i] + ' ';
                     }
@@ -1220,6 +1236,26 @@ export default {
                 });
         },
 
+       
+
+        async obtenerPrecioItemCotizacion(){
+            let me = this;
+            await axios
+                .get("/adquisicion/obtenerprecioanterior/"+this.idCotizacion+","+ this.idItem,{ headers: { 'Cache-Control': 'no-cache' } } )
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosPrecio = [];
+                        //console.log(response.data);
+                    } else {
+                        me.datosPrecio = response.data.resultado;
+                        //console.log(response.data);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
 
         llenarCamposCotizacionItem(item) {
             this.botonactCotIt = 1;
@@ -1334,6 +1370,7 @@ export default {
         },
         anularCotizacionItem() {
             this.desactivarCotizacionItem(this.idCotizacionItem);
+            this.listarDetallesCotizacion(this.idCotizacionItem);
         },
         async desactivarCotizacionItem(idCotizacionItem) {
             let me = this;
@@ -1448,6 +1485,13 @@ export default {
 
         },
 
+        agregarItem(item){
+            this.idCotizacion = item.idCotizacion;
+            this.nombreCotizacion = item.nombreCotizacion;
+         
+            this.agregarCotizacionItemModal = true;
+        },
+
         showModalAgregarCotizacionItem() {
 
             this.agregarCotizacionItemModal = true;
@@ -1460,6 +1504,7 @@ export default {
         },
 
         openItemModal() {
+          
             this.listarItems();
             this.itemModal = true;
         },
@@ -1471,7 +1516,23 @@ export default {
         seleccionarItem(item) {
             this.idItem = item.iditem;
             this.nombreItem = item.nombreitem;
-            this.itemModal = false;
+            this.obtenerPrecioItemCotizacion().then(() => {    
+             if(this.datosPrecio && this.datosPrecio.length > 0 && this.datosPrecio[0]){
+                 if (this.datosPrecio[0].hasOwnProperty("precioUnitario")) {
+                     this.precioUnitario = this.datosPrecio[0].precioUnitario;
+                 }
+                 else{
+                    this.precioUnitario = "";
+                 }  
+                 
+             }
+             else{
+                 this.precioUnitario = "";
+             }
+
+          });
+            this.itemModal = false; 
+            
         },
 
         openProveedorModal() {
@@ -1499,14 +1560,22 @@ export default {
         },
 
         seleccionarCotizacion(item) {
+
             this.idCotizacion = item.idCotizacion;
+            
             this.nombreCotizacion = item.nombreCotizacion;
+           
             this.cotizacionModal = false;
+            
+            this.precioUnitario = "";
+            this.$refs.form.resetValidation();
+          
         },
 
 
         mostrarItems(item) {
             this.idCotizacion = item.idCotizacion;
+            this.estadoCotizacion = item.estado;
             this.listarDetallesCotizacion(this.idCotizacion);
             this.detalleCotizacionDialog = true;
 
@@ -1517,13 +1586,24 @@ export default {
         },
 
        
-        aprobarAdquisicion(item) {
-            this.idCotizacion = item.idCotizacion;
-            this.idUsuario = item.idUsuario;
-            this.idProveedor = item.idProveedor;
-            this.nombreCotizacion = item.nombreCotizacion;
-            this.fechaVencimiento = item.fechaVencimiento;
-            this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'ACTIVO');
+        async aprobarAdquisicion(item) {
+            const response = await axios.get(`/adquisicion/listardetallecotizacion/` + item.idCotizacion);
+            var contenido = response.data.resultado;
+            let me = this;
+            if (contenido == null) {
+                contenido = [];
+                me.mensajeSnackbarError = "NO SE PUEDE APROBAR UNA COTIZACION SIN ITEMS, POR FAVOR AGREGUE EL DETALLE DE LA COTIZACIÓN";
+                me.snackbarError = true;
+            } else {
+                this.idCotizacion = item.idCotizacion;
+                this.idUsuario = item.idUsuario;
+                this.idProveedor = item.idProveedor;
+                this.nombreCotizacion = item.nombreCotizacion;
+                this.fechaVencimiento = item.fechaVencimiento;
+                this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'ACTIVO');
+                me.mensajeSnackbarError = "REGISTRO FALLIDO";
+            }
+          
 
         },
         denegarAdquisicion(item) {
@@ -1545,23 +1625,7 @@ export default {
 
 
 
-        async getListaExistencias() {
-            let me = this;
-            await axios
-                .get("/inventario/listarexistencias/")
-                .then(function (response) {
-                    if (response.data.resultado == null) {
-                        me.datosExistencia = [];
-                        console.log(response.data);
-                    } else {
-                        console.log(response.data);
-                        me.datosExistencia = response.data.resultado;
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
+      
 
 
 
