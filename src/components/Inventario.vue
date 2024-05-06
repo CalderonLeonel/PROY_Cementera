@@ -183,6 +183,32 @@
                              </v-data-table>
                          </v-col>
                      </v-row>
+
+                     <v-row>
+                         <v-col cols="12">
+                             <v-list-item>
+                                 <v-list-item-title class="text-center">
+                                     <h5>SALDO DE ITEMS</h5>
+                                 </v-list-item-title>
+                             </v-list-item>
+ 
+                             <v-card-title>
+                                <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ITEMS"
+                                     single-line hide-details></v-text-field>
+                             </v-card-title>
+ 
+                             <v-data-table :headers="headerSaldoItem" :items="datosSaldoItem" :search="searchItem"
+                                 :items-per-page="5" class="elevation-1" id="tableId">
+                                 <template #[`item.actions`]="{ item }">
+                                     <v-icon class="mr-2" color="primary" x-large  @click="verAlmacenes(item)"
+                                         title="VER ALMACENES">
+                                         mdi-eye
+                                     </v-icon>          
+                                 </template>
+                             </v-data-table>
+                         </v-col>
+                     </v-row>
+
                      <v-row>
                          <v-col cols="12" md="4">
                              <v-btn color="success" @click="showModalAgregarItem()">NUEVO ITEM</v-btn>
@@ -1048,6 +1074,35 @@
             </v-card>
         </v-dialog>
 
+        <v-dialog
+            v-model="saldoAlmacenItemModal"
+            persistent :overlay="false"
+            max-width="900px"
+            transition="dialog-transition"
+        >
+            <v-card>
+                <v-card-title>
+                    <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACEN"
+                        single-line hide-details></v-text-field>
+                </v-card-title>
+            </v-card>
+            <v-card>
+                    <v-data-table :headers="headerSaldoAlmacenItem" :items="datosSaldoAlmacenItem" :search="searchAlmacen"
+                        :items-per-page="5" class="elevation-1">
+                    </v-data-table>
+            </v-card>
+            <v-card>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red" dark x-big  @click="closeSaldoAlmacenItemModal()">
+                        <v-icon dark> mdi-close-circle-outline </v-icon> SALIR
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+
      </v-card>
      
  
@@ -1328,8 +1383,10 @@
              botonActTT:0,
 
 
+             saldoAlmacenItemModal: false,
+
              datosSaldoItem: [],
-             headerItemAlmacen: [
+             headerSaldoItem: [
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCION", value: "descripcion", sortable: true },
@@ -1339,7 +1396,7 @@
                  { text: "ACCIONES", value: "actions", sortable: false }
              ],
              datosSaldoAlmacenItem: [],
-             headerStockAlmacen: [
+             headerSaldoAlmacenItem: [
                 { text: "CODIGO ALMACEN", value: "codigo", sortable: true },
                 { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
                 { text: "TOTAL", value: "total", sortable: true },
@@ -1356,6 +1413,7 @@
        this.listarTipoItem();
        this.listarstock();
        this.listaralmacenproducto();
+       this.listarSaldoItem();
        this.getListaExistencias().then(() => {
        this.getAlertas();
         });
@@ -2111,7 +2169,7 @@
         },
 
 
-        async listarDetallesCotizacion(idItem) {
+        async listarDetalleSaldoItem(idItem) {
             let me = this;
             await axios
                 .get("/inventario/listarsaldoitem/" + idItem)
@@ -2130,7 +2188,15 @@
         },
 
 
+        verAlmacenes(item){
+            this.idtiem = item.iditem;
+            this.listarDetalleSaldoItem(this.idtiem);
+            this.saldoAlmacenItemModal = true;
+        },
 
+        closeSaldoAlmacenItemModal(){
+            this.saldoAlmacenItemModal = false;
+        },
 
 
      
