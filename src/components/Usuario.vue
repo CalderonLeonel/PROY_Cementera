@@ -564,23 +564,12 @@ export default {
         },
         
         actualizarUsuario() {
-            this.actualizarusuario(
-                this.idUsuario,
-                this.nombreUsuario,
-                this.accesos,
-                this.tipo,
-            );
+            if (this.$refs.form.validate()) {
+                this.actualizarusuario();
+            }
         },
-        
-       
-        async actualizarusuario(
-            idUsuario,
-            nombreUsuario,
-            accesos,
-            tipo,
-        ) {
+        async actualizarusuario() {
             let me = this;
-
             await axios
                 .post(
                     "/usuario/editarusuario/" +
@@ -591,15 +580,12 @@ export default {
                     this.accesos +
                     "," +
                     this.tipo
-
                 )
                 .then(function (response) {
-
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.listarUsuarios(me.idUsuario);
                     me.limpiar();
-
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -661,23 +647,11 @@ export default {
                 });
         },
         registrarUsuario() {
-            console.log("ACCESOS: "+accesos)
-            this.registrarUsuario(
-                this.idEmpleado,
-                this.nombreUsuario,
-                this.password,
-                this.tipo,
-                this.accesos
-                
-            );
+            if (this.$refs.form.validate()) {
+                this.registrarUsuario();
+            }
         },
-        async registrarUsuario(
-            idEmpleado,
-            nombreUsuario,
-            password,
-            tipo,
-            accesos
-        ) {
+        async registrarUsuario() {
             let me = this;
             let aux = JSON.stringify(this.accesos);
             

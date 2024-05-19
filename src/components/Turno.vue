@@ -64,19 +64,19 @@
                                     </v-chip>
                                 </template>
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activarTurno(item)"
+                                    <v-icon large class="mr-2" color="#001781" @click="showListarHorario(item)" title="VER HORARIOS">
+                                        mdi-clock
+                                    </v-icon>
+                                    <v-icon large class="mr-2" color="#0A628F" @click="showEditTurno(item)" title="ACTUALIZAR INFORMACION">
+                                        mdi-pencil
+                                    </v-icon>
+                                    <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2" color="#0ABF55" @click="activarTurno(item)"
                                         title="ACTIVAR TURNO">
                                         mdi-check-circle-outline
                                     </v-icon>
-                                    <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivarTurno(item)"
+                                    <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2" color="#BF120A" @click="desactivarTurno(item)"
                                         title="DESACTIVAR TURNO">
                                         mdi-cancel
-                                    </v-icon>
-                                    <v-icon small class="mr-2" @click="showEditTurno(item)" title="ACTUALIZAR INFORMACION">
-                                        mdi-pencil
-                                    </v-icon>
-                                    <v-icon small class="mr-2" @click="showListarHorario(item)" title="VER HORARIOS">
-                                        mdi-clock
                                     </v-icon>
                                 </template>
                             </v-data-table>
@@ -333,19 +333,11 @@
                                                 </v-chip>
                                             </template>
                                             <template #[`item.actions`]="{ item }">
-                                                <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2"
-                                                    @click="activarHorario(item)" title="ACTIVAR HORARIO">
-                                                    mdi-check-circle-outline
-                                                </v-icon>
-                                                <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2"
-                                                    @click="desactivarHorario(item)" title="ANULAR HORARIO">
-                                                    mdi-cancel
-                                                </v-icon>
-                                                <v-icon small class="mr-2" @click="showEditHorario(item)"
+                                                <v-icon large class="mr-2" color="#0A628F" @click="showEditHorario(item)"
                                                     title="EDITAR INFORMACION">
                                                     mdi-pencil
                                                 </v-icon>
-                                                <v-icon small class="mr-2" @click="deleteHorario(item)"
+                                                <v-icon large class="mr-2" color="#BF120A" @click="deleteHorario(item)"
                                                     title="ELIMINAR HORARIO">
                                                     mdi-delete
                                                 </v-icon>
@@ -361,8 +353,6 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
-
-
 
     </v-card>
 </template>

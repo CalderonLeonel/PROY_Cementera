@@ -24,6 +24,7 @@
     "vue-html2pdf": "^1.8.0",
     "vue-qr": "^4.0.9",
     "vue-qrcode-component": "^2.1.1",
+    "vue-qrcode-reader": "^5.5.4",
     "vue-router": "^3.5.1",
     "vue-simple-upload": "^0.1.6",
     "vue-upload-image": "^1.1.5",
