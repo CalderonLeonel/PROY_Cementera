@@ -110,6 +110,106 @@
                     </v-data-table>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col cols="12" md="12">
+                    <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>ARCHIVOS COTIZACIONES</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                    <v-text-field v-model="searchArchivoCotizacion" append-icon="mdi-magnify"
+                        label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
+                    <v-data-table :headers="headerDocumentoAdquisicion" :items="datosDocumentoCotizacion" :search="searchDsearchArchivoCotizacionocumento"
+                        :custom-filter="customFilter" class="elevation-1">
+
+                        <template #[`item.archivo`]="{ item }">
+                                    <v-text v-if="item.archivo == null || item.arch == 'null'">
+                                        NO TIENE UN ARCHIVO
+                                    </v-text>
+                                    <v-btn v-else-if="item.archivo !=null" color="primary" icon
+                                        :href="`${axios.defaults.baseURL}${'documento/adquisicion/' + item.archivo}`" target="">
+                                        <v-icon>mdi-file</v-icon> ABRIR
+                                    </v-btn>
+                                </template>
+
+                    </v-data-table>
+                </v-col>
+            </v-row>
+
+            <v-row>
+                <v-col cols="12" md="12">
+                    <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>ARCHIVOS PROVEEDORES</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                    <v-text-field  v-model="searchArchivoProveedor" append-icon="mdi-magnify"
+                        label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
+                    <v-data-table :headers="headerDocumentoProveedor" :items="datosDocumentoProveedor" :search="searchArchivoProveedor"
+                        :custom-filter="customFilter" class="elevation-1">
+
+                        <template #[`item.archivo`]="{ item }">
+                                    <v-text v-if="item.archivo == null || item.arch == 'null'">
+                                        NO TIENE UN ARCHIVO
+                                    </v-text>
+                                    <v-btn v-else-if="item.archivo !=null" color="primary" icon
+                                        :href="`${axios.defaults.baseURL}${'documento/adquisicion/' + item.archivo}`" target="">
+                                        <v-icon>mdi-file</v-icon> ABRIR
+                                    </v-btn>
+                        </template>
+
+                    </v-data-table>
+                </v-col>
+            </v-row>
+
+            <v-row>
+                <v-col cols="12" md="12">
+                    <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>CONTRATOS</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                    <v-text-field  v-model="searchArchivoContratos" append-icon="mdi-magnify"
+                        label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
+                    <v-data-table :headers="headerDocumentoContrato" :items="datosDocumentoContrato" :search="searchArchivoContratos"
+                        :custom-filter="customFilter" class="elevation-1">
+
+                        <template #[`item.archivo`]="{ item }">
+                                    <v-text v-if="item.archivo == null || item.arch == 'null'">
+                                        NO TIENE UN ARCHIVO
+                                    </v-text>
+                                    <v-btn v-else-if="item.archivo !=null" color="primary" icon
+                                        :href="`${axios.defaults.baseURL}${'documento/descargar/' + item.archivo}`" target="">
+                                        <v-icon>mdi-file</v-icon> ABRIR
+                                    </v-btn>
+                                </template>
+
+                    </v-data-table>
+                </v-col>
+            </v-row>
+
+            <v-row>
+                <v-col cols="12" md="12">
+                    <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>ALERTAS</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                    <v-text-field v-if="user == 'admin'" v-model="searchArchivoAlertas" append-icon="mdi-magnify"
+                        label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
+                    <v-data-table :headers="headerDocumentoAlerta" :items="datosDocumentoAlerta" :search="searchArchivoAlertas"
+                        :custom-filter="customFilter" class="elevation-1">
+
+                        <template #[`item.archivo`]="{ item }">
+                            <v-btn color="primary" icon
+                                :href="`${axios.defaults.baseURL}${'documento/descargarImagen/' + item.archivo}`"
+                                target="">
+                                <v-icon>mdi-file</v-icon> DESCARGAR
+                            </v-btn>
+                        </template>
+                    </v-data-table>
+                </v-col>
+            </v-row>
         </v-container>
         <v-dialog v-model="agregarDocumento" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
@@ -261,6 +361,40 @@ export default {
             (v) => !!v || "SE REQUIERE LA DESCRIPCIÓN DEL ARCHIVO.",
             (v) => (v === null || v.length <= 150) || "LA DESCRIPCIÓN NO DEBE SUPERAR LOS 150 CARACTERES.",
             ],
+
+
+            headerDocumentoAdquisicion: [
+                { text: "DOCUMENTO", value: "nombrecotizacion", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: true },
+            ],
+
+            searchArchivoCotizacion: '',
+            datosDocumentoCotizacion: [],
+
+            headerDocumentoProveedor: [
+                { text: "DOCUMENTO", value: "nombreproveedor", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: true },
+            ],
+
+            searchArchivoProveedor: '',
+            datosDocumentoProveedor: [],
+
+            headerDocumentoContrato: [
+                { text: "DOCUMENTO", value: "nombreempleado", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: true },
+            ],
+
+            searchArchivoContratos: '',
+            datosDocumentoContrato: [],
+
+            headerDocumentoAlerta: [
+                { text: "DOCUMENTO", value: "title", sortable: true },
+                { text: "DESCRIPCION", value: "description", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: true },
+            ],
+
+            searchArchivoAlertas: '',
+            datosDocumentoAlerta: [],
         }
     },
     created: function () {
@@ -351,6 +485,10 @@ export default {
         },
         listarArchivo() {
             this.listarArchivos();
+            this.listarArchivosCotizacion();
+            this.listarArchivosProveedor();
+            this.listarArchivosContrato();
+            this.listarArchivosAlerta();
         },
         async listarArchivos() {
             let me = this;
@@ -369,6 +507,81 @@ export default {
                     console.log(error);
                 });
         },
+
+        async listarArchivosCotizacion() {
+            let me = this;
+            await axios
+                .get("/documento/listardocumentosadquisicion/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosDocumentoCotizacion = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosDocumentoCotizacion = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+
+        async listarArchivosProveedor() {
+            let me = this;
+            await axios
+                .get("/documento/listardocumentosproveedor/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosDocumentoProveedor = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosDocumentoProveedor = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+        async listarArchivosContrato() {
+            let me = this;
+            await axios
+                .get("/documento/listardocumentoscontrato/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosDocumentoContrato = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosDocumentoContrato = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+        async listarArchivosAlerta() {
+            let me = this;
+            await axios
+                .get("/documento/listardocumentosalerta/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosDocumentoAlerta = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosDocumentoAlerta = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+
         async listarArchivosInv() {
             let me = this;
             await axios
