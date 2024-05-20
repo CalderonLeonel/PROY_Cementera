@@ -54,34 +54,6 @@
                     </v-data-table>
                 </v-col>
             </v-row>
-            <v-row v-if="user == 'admin'">
-                <v-col cols="12" md="12">
-                    <v-text-field v-model="searchArchivoInv" append-icon="mdi-magnify" label="BUSCAR ARCHIVO"
-                        single-line hide-details></v-text-field>
-                    <v-data-table :headers="headerArchivo" :items="datosArchivoInv" :search="searchArchivoInv"
-                        class="elevation-1">
-                        <template #[`item.url`]="{ item }">
-                            <v-btn color="primary" icon :href="`${axios.defaults.baseURL}${item.url}`" target="">
-                                <v-icon>mdi-file</v-icon> Abrir
-                            </v-btn>
-                        </template>
-                    </v-data-table>
-                </v-col>
-            </v-row>
-            <v-row v-if="user == 'admin'">
-                <v-col cols="12" md="12">
-                    <v-text-field v-model="searchArchivoAdq" append-icon="mdi-magnify" label="BUSCAR ARCHIVO"
-                        single-line hide-details></v-text-field>
-                    <v-data-table :headers="headerArchivo" :items="datosArchivoAdq" :search="searchArchivoAdq"
-                        class="elevation-1">
-                        <template #[`item.url`]="{ item }">
-                            <v-btn color="primary" icon :href="`${axios.defaults.baseURL}${item.url}`" target="">
-                                <v-icon>mdi-file</v-icon> Abrir
-                            </v-btn>
-                        </template>
-                    </v-data-table>
-                </v-col>
-            </v-row>
             <v-row v-if="user != 'admin'">
 
                 <v-col cols="12" md="12">
