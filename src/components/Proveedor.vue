@@ -82,6 +82,17 @@
                                     </v-chip>
                                 </template>
 
+                                <template #[`item.arch`]="{ item }">
+                                    <v-text v-if="item.arch == null || item.arch == 'null'">
+                                        NO TIENE UN ARCHIVO
+                                    </v-text>
+                                    <v-btn v-else-if="item.arch !=null" color="primary" icon
+                                        :href="`${axios.defaults.baseURL}${'documento/adquisicion/' + item.arch}`" target="">
+                                        <v-icon>mdi-file</v-icon> ABRIR
+                                    </v-btn>
+                                   
+                                </template>
+
                               
 
                                 <template #[`item.actions`]="{ item }">
@@ -272,6 +283,7 @@ export default {
                 { text: "CONTACTO SECUNDARIO DE PROVEEDOR", value: "cto2pro", sortable: true },
                 { text: "CORREO DE PROVEEDOR", value: "croprov", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
+                { text: "ARCHIVO", value: "arch", sortable: false },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
@@ -395,13 +407,19 @@ export default {
 
         registrarProv() {
             if (this.$refs.form.validate()) {
-                if(this.contactoProveedorecundario==''){
+                if(this.contactoProveedorecundario == '' || this.contactoProveedorecundario == null){
                     this.contactoProveedorecundario=this.contactoProveedorPrincipal;
                 }
-                this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
-                this.almacenarArchivo(this.documentoArchivo)
-                this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro000","ACTIVO");
-                this.closeModalAgregarProveedor();
+                if (this.documentoArchivo == null || this.documentoArchivo == '') {
+                    this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
+
+                }
+                else {
+                    this.registrarProveedorArchivo(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name).then(() => {
+                        //this.registrarDocumento();
+                    });    
+                }
+                
             }
         },
         async registrarProveedor(
@@ -431,6 +449,50 @@ export default {
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarProveedores();
+                    me.closeModalAgregarProveedor();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+        async registrarProveedorArchivo(
+            nombreProveedor,
+            contactoProveedorPrincipal,
+            contactoProveedorecundario,
+            correoProveedor,
+            estado,
+            archivo
+        ) {
+            const ext = this.documentoArchivo.name.split('.');
+            const date = new Date();
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear();
+            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+'.'+ext[1];
+            let me = this;
+            await axios
+                .post(
+                    "/proveedor/insertarConArchivo/" +
+                    this.nombreProveedor +
+                    "," +
+                    this.contactoProveedorPrincipal +
+                    "," +
+                    this.contactoProveedorecundario +
+                    "," +
+                    this.correoProveedor +
+                    "," +
+                    this.estado +
+                    "," +
+                    nombreArchivo
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarProveedores();
+                    me.closeModalAgregarProveedor();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -441,10 +503,14 @@ export default {
 
         editarProv() {
             if (this.$refs.form.validate()) {
-                this.botonAct = 0;
-
-                this.editarProveedor(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
-                this.closeModalAgregarProveedor();
+                if (this.documentoArchivo == '' || this.documentoArchivo == null) {
+                    this.editarProveedor(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
+                    this.botonAct = 0;
+                }
+                else {
+                    this.editarProveedorArchivo(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name);                       
+                    this.botonAct = 0;         
+                } 
             }
         },
         async editarProveedor(
@@ -477,6 +543,7 @@ export default {
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarProveedores();
+                    me.closeModalAgregarProveedor();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -484,6 +551,54 @@ export default {
                 });
 
         },
+
+      
+        async editarProveedorArchivo(
+            idProveedor,
+            nombreProveedor,
+            contactoProveedorPrincipal,
+            contactoProveedorecundario,
+            correoProveedor,
+            estado,
+            archivo
+        ) {
+            const ext = this.documentoArchivo.name.split('.');
+            const date = new Date();
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear();
+            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+'.'+ext[1];
+            let me = this;
+            await axios
+                .post(
+                    "/proveedor/editararchivo/" +
+                    this.idProveedor +
+                    "," +
+                    this.nombreProveedor +
+                    "," +
+                    this.contactoProveedorPrincipal +
+                    "," +
+                    this.contactoProveedorecundario +
+                    "," +
+                    this.correoProveedor +
+                    "," +
+                    this.estado +
+                    "," +
+                    nombreArchivo
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarProveedores();
+                    me.closeModalAgregarProveedor();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
         confirmacionAnulacion(item){
             this.idProveedor = item.idprv;
             this.confirmacionAnulacionProveedor = true;
@@ -574,6 +689,7 @@ export default {
             
             this.correoProveedor = item.croprov;
             this.estado = item.est;
+            this.documentoArchivo.suffix = item.arch;
         },
 
 
@@ -617,9 +733,9 @@ export default {
 
 
 
-        registrarDocumento(){
+       async registrarDocumento(){
             this.almacenarArchivo(this.documentoArchivo)
-            this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro000","ACTIVO");
+            this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro"+this.idProveedor,"ACTIVO");
         },
         async almacenarArchivo(documentoArchivo){
 
@@ -647,7 +763,7 @@ export default {
             const ext = documentoArchivo.split('.');
             const date = new Date();
             const fechaHoraActual = date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear();
-            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+'.'+ext[1];
+            const nombreArchivo =  'provider_doc_'+ext[0]+'_'+fechaHoraActual+'.'+ext[1];
             let me = this;
                 await axios
                 .post(
