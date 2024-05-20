@@ -202,7 +202,7 @@
 
                         <template #[`item.archivo`]="{ item }">
                             <v-btn color="primary" icon
-                                :href="`${axios.defaults.baseURL}${'documento/descargarImagen/' + item.nombredoc}`"
+                                :href="`${axios.defaults.baseURL}${'documento/descargarImagen/' + item.archivo}`"
                                 target="">
                                 <v-icon>mdi-file</v-icon> DESCARGAR
                             </v-btn>
@@ -302,7 +302,6 @@
 
 <script>
 import axios from "axios";
-import { search } from "core-js/fn/symbol";
 
 export default {
     data() {
@@ -365,7 +364,7 @@ export default {
 
 
             headerDocumentoAdquisicion: [
-                { text: "DOCUMENTO", value: "nombreCotizacion", sortable: true },
+                { text: "DOCUMENTO", value: "nombrecotizacion", sortable: true },
                 { text: "ARCHIVO", value: "archivo", sortable: true },
             ],
 
@@ -373,7 +372,7 @@ export default {
             datosDocumentoCotizacion: [],
 
             headerDocumentoProveedor: [
-                { text: "DOCUMENTO", value: "title", sortable: true },
+                { text: "DOCUMENTO", value: "nombreproveedor", sortable: true },
                 { text: "ARCHIVO", value: "archivo", sortable: true },
             ],
 
@@ -381,7 +380,7 @@ export default {
             datosDocumentoProveedor: [],
 
             headerDocumentoContrato: [
-                { text: "DOCUMENTO", value: "nombreEmpleado", sortable: true },
+                { text: "DOCUMENTO", value: "nombreempleado", sortable: true },
                 { text: "ARCHIVO", value: "archivo", sortable: true },
             ],
 
@@ -486,6 +485,10 @@ export default {
         },
         listarArchivo() {
             this.listarArchivos();
+            this.listarArchivosCotizacion();
+            this.listarArchivosProveedor();
+            this.listarArchivosContrato();
+            this.listarArchivosAlerta();
         },
         async listarArchivos() {
             let me = this;
@@ -515,7 +518,7 @@ export default {
                         console.log(response.data);
                     } else {
                         console.log(response.data);
-                        me.datosArchivo = response.data.resultado;
+                        me.datosDocumentoCotizacion = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
