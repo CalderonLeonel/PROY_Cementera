@@ -511,7 +511,7 @@ export default {
                 .get("/documento/listardocumentosadquisicion/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
-                        me.datosArchivo = [];
+                        me.datosDocumentoCotizacion = [];
                         console.log(response.data);
                     } else {
                         console.log(response.data);
@@ -530,11 +530,11 @@ export default {
                 .get("/documento/listardocumentosproveedor/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
-                        me.datosArchivo = [];
+                        me.datosDocumentoProveedor = [];
                         console.log(response.data);
                     } else {
                         console.log(response.data);
-                        me.datosArchivo = response.data.resultado;
+                        me.datosDocumentoProveedor = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
@@ -548,11 +548,11 @@ export default {
                 .get("/documento/listardocumentoscontrato/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
-                        me.datosArchivo = [];
+                        me.datosDocumentoContrato = [];
                         console.log(response.data);
                     } else {
                         console.log(response.data);
-                        me.datosArchivo = response.data.resultado;
+                        me.datosDocumentoContrato = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
@@ -566,11 +566,11 @@ export default {
                 .get("/documento/listardocumentosalerta/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
-                        me.datosArchivo = [];
+                        me.datosDocumentoAlerta = [];
                         console.log(response.data);
                     } else {
                         console.log(response.data);
-                        me.datosArchivo = response.data.resultado;
+                        me.datosDocumentoAlerta = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
