@@ -110,6 +110,106 @@
                     </v-data-table>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col cols="12" md="12">
+                    <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>ARCHIVOS COTIZACIONES</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                    <v-text-field v-model="searchArchivoCotizacion" append-icon="mdi-magnify"
+                        label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
+                    <v-data-table :headers="headerDocumentoAdquisicion" :items="datosDocumentoCotizacion" :search="searchDsearchArchivoCotizacionocumento"
+                        :custom-filter="customFilter" class="elevation-1">
+
+                        <template #[`item.archivo`]="{ item }">
+                                    <v-text v-if="item.archivo == null || item.arch == 'null'">
+                                        NO TIENE UN ARCHIVO
+                                    </v-text>
+                                    <v-btn v-else-if="item.archivo !=null" color="primary" icon
+                                        :href="`${axios.defaults.baseURL}${'documento/adquisicion/' + item.archivo}`" target="">
+                                        <v-icon>mdi-file</v-icon> ABRIR
+                                    </v-btn>
+                                </template>
+
+                    </v-data-table>
+                </v-col>
+            </v-row>
+
+            <v-row>
+                <v-col cols="12" md="12">
+                    <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>ARCHIVOS PROVEEDORES</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                    <v-text-field  v-model="searchArchivoProveedor" append-icon="mdi-magnify"
+                        label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
+                    <v-data-table :headers="headerDocumentoProveedor" :items="datosDocumentoProveedor" :search="searchArchivoProveedor"
+                        :custom-filter="customFilter" class="elevation-1">
+
+                        <template #[`item.archivo`]="{ item }">
+                                    <v-text v-if="item.archivo == null || item.arch == 'null'">
+                                        NO TIENE UN ARCHIVO
+                                    </v-text>
+                                    <v-btn v-else-if="item.archivo !=null" color="primary" icon
+                                        :href="`${axios.defaults.baseURL}${'documento/adquisicion/' + item.archivo}`" target="">
+                                        <v-icon>mdi-file</v-icon> ABRIR
+                                    </v-btn>
+                        </template>
+
+                    </v-data-table>
+                </v-col>
+            </v-row>
+
+            <v-row>
+                <v-col cols="12" md="12">
+                    <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>CONTRATOS</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                    <v-text-field  v-model="searchArchivoContratos" append-icon="mdi-magnify"
+                        label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
+                    <v-data-table :headers="headerDocumentoContrato" :items="datosDocumentoContrato" :search="searchArchivoContratos"
+                        :custom-filter="customFilter" class="elevation-1">
+
+                        <template #[`item.archivo`]="{ item }">
+                                    <v-text v-if="item.archivo == null || item.arch == 'null'">
+                                        NO TIENE UN ARCHIVO
+                                    </v-text>
+                                    <v-btn v-else-if="item.archivo !=null" color="primary" icon
+                                        :href="`${axios.defaults.baseURL}${'documento/descargar/' + item.archivo}`" target="">
+                                        <v-icon>mdi-file</v-icon> ABRIR
+                                    </v-btn>
+                                </template>
+
+                    </v-data-table>
+                </v-col>
+            </v-row>
+
+            <v-row>
+                <v-col cols="12" md="12">
+                    <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>ALERTAS</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                    <v-text-field v-if="user == 'admin'" v-model="searchArchivoAlertas" append-icon="mdi-magnify"
+                        label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
+                    <v-data-table :headers="headerDocumentoAlerta" :items="datosDocumentoAlerta" :search="searchArchivoAlertas"
+                        :custom-filter="customFilter" class="elevation-1">
+
+                        <template #[`item.archivo`]="{ item }">
+                            <v-btn color="primary" icon
+                                :href="`${axios.defaults.baseURL}${'documento/descargarImagen/' + item.nombredoc}`"
+                                target="">
+                                <v-icon>mdi-file</v-icon> DESCARGAR
+                            </v-btn>
+                        </template>
+                    </v-data-table>
+                </v-col>
+            </v-row>
         </v-container>
         <v-dialog v-model="agregarDocumento" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
@@ -202,6 +302,7 @@
 
 <script>
 import axios from "axios";
+import { search } from "core-js/fn/symbol";
 
 export default {
     data() {
@@ -261,6 +362,40 @@ export default {
             (v) => !!v || "SE REQUIERE LA DESCRIPCIÓN DEL ARCHIVO.",
             (v) => (v === null || v.length <= 150) || "LA DESCRIPCIÓN NO DEBE SUPERAR LOS 150 CARACTERES.",
             ],
+
+
+            headerDocumentoAdquisicion: [
+                { text: "DOCUMENTO", value: "nombreCotizacion", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: true },
+            ],
+
+            searchArchivoCotizacion: '',
+            datosDocumentoCotizacion: [],
+
+            headerDocumentoProveedor: [
+                { text: "DOCUMENTO", value: "title", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: true },
+            ],
+
+            searchArchivoProveedor: '',
+            datosDocumentoProveedor: [],
+
+            headerDocumentoContrato: [
+                { text: "DOCUMENTO", value: "nombreEmpleado", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: true },
+            ],
+
+            searchArchivoContratos: '',
+            datosDocumentoContrato: [],
+
+            headerDocumentoAlerta: [
+                { text: "DOCUMENTO", value: "title", sortable: true },
+                { text: "DESCRIPCION", value: "description", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: true },
+            ],
+
+            searchArchivoAlertas: '',
+            datosDocumentoAlerta: [],
         }
     },
     created: function () {
