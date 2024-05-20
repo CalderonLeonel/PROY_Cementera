@@ -524,6 +524,25 @@ export default {
         },
 
 
+        async listarArchivosProveedor() {
+            let me = this;
+            await axios
+                .get("/documento/listardocumentosproveedor/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosArchivo = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosArchivo = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+
         async listarArchivosInv() {
             let me = this;
             await axios
