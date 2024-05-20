@@ -77,6 +77,16 @@
                                     </v-chip>
                                 </template>
 
+                                <template #[`item.archivo`]="{ item }">
+                                    <v-text v-if="item.archivo == null || item.arch == 'null'">
+                                        NO TIENE UN ARCHIVO
+                                    </v-text>
+                                    <v-btn v-else-if="item.archivo !=null" color="primary" icon
+                                        :href="`${axios.defaults.baseURL}${'documento/adquisicion/' + item.archivo}`" target="">
+                                        <v-icon>mdi-file</v-icon> ABRIR
+                                    </v-btn>
+                                </template>
+
                                 <template #[`item.actions`]="{ item }">
                                     <v-icon v-if="item.estado == 'PENDIENTE'" x-large color="primary" class="mr-2" @click="agregarItem(item)"
                                         title="AGREGAR ITEMS">
@@ -175,6 +185,16 @@
                                     <v-chip :color="getColor(item.estado)" dark>
                                         {{ item.estado }}
                                     </v-chip>
+                                </template>
+
+                                <template #[`item.archivo`]="{ item }">
+                                    <v-text v-if="item.archivo == null || item.arch == 'null'">
+                                        NO TIENE UN ARCHIVO
+                                    </v-text>
+                                    <v-btn v-else-if="item.archivo !=null" color="primary" icon
+                                        :href="`${axios.defaults.baseURL}${'documento/adquisicion/' + item.archivo}`" target="">
+                                        <v-icon>mdi-file</v-icon> ABRIR
+                                    </v-btn>
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
@@ -636,7 +656,7 @@ export default {
             datosExistencia: [],
 
 
-            documentoArchivo: null,
+            documentoArchivo: '',
 
             mensajeSnackbarError: "REGISTRO FALLIDO",
 
@@ -713,11 +733,12 @@ export default {
             detalleCotizacionDialog: false,
             headerCotizacion: [
                 { text: "COTIZACIÓN", value: "idCotizacion", sortable: true },
-                { text: "EMPLEADO", value: "nombreUsuario", sortable: true },
+                //{ text: "EMPLEADO", value: "nombreUsuario", sortable: true },
                 { text: "PROVEEDOR", value: "nombreProveedor", sortable: true },
                 { text: "NOMBRE COTIZACIÓN", value: "nombreCotizacion", sortable: true },
                 { text: "FECHA VENCIMIENTO", value: "fechaVencimiento", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: false },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
@@ -729,11 +750,12 @@ export default {
             datosCotizacionAdquisicion: [],
             headerCotizacionAdquisicion: [
                 { text: "COTIZACIÓN", value: "idCotizacion", sortable: true },
-                { text: "EMPLEADO", value: "nombreUsuario", sortable: true },
+                //{ text: "EMPLEADO", value: "nombreUsuario", sortable: true },
                 { text: "PROVEEDOR", value: "nombreProveedor", sortable: true },
                 { text: "NOMBRE COTIZACIÓN", value: "nombreCotizacion", sortable: true },
                 { text: "FECHA VENCIMIENTO", value: "fechaVencimiento", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: false },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
@@ -1073,14 +1095,17 @@ export default {
 
         registrarCotizacionAdq() {
             if (this.$refs.form.validate()) {
-                if (this.documentoArchivo != null) {
-                    this.almacenarArchivo(this.documentoArchivo)
-                    this.guardarDocumento(this.documentoArchivo.name, this.nombreCotizacion, "adq000", "ACTIVO");
+                if (this.documentoArchivo == null || this.documentoArchivo == '') {
+                    alert('no file')
                     this.registrarCotizacionAdquisicion(this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado);
                 }
                 else {
-                    this.registrarCotizacionAdquisicion(this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado);
+                    alert('file')
+                    this.registrarCotizacionAdquisicionArchivo(this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado, this.documentoArchivo.name);
+                        //this.registrarDocumento();
+                  
                 }
+              
             }
         },
         async registrarCotizacionAdquisicion(
@@ -1121,10 +1146,65 @@ export default {
 
         },
 
+
+        async registrarCotizacionAdquisicionArchivo(
+            idUsuario,
+            idProveedor,
+            nombreCotizacion,
+            fechaVencimiento,
+            estado, 
+            archivo
+        ) {
+            const ext = archivo.split('.');
+            const date = new Date();
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear();
+            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+'.'+ext[1];
+            let me = this;
+            await axios
+                .post(
+                    "/adquisicion/agregarcotizacionadquisicionarchivo/" +
+                    idUsuario +
+                    "," +
+                    idProveedor +
+                    "," +
+                    nombreCotizacion +
+                    "," +
+                    fechaVencimiento +
+                    "," +
+                    estado +
+                    "," +
+                    nombreArchivo
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarCotizacionesAdquisicion();
+                    me.listarCotizacionesAdquisicionPendientes();
+                    me.listarCotizacionesItem();
+                    me.closeModalAgregarCotizacionAdquisicion();
+                    me.limpiar();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
         editarCotizacionAdq() {
             if (this.$refs.form.validate()) {
-                this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado);
-                this.botonactCot = 0;
+                if (this.documentoArchivo != null || this.documentoArchivo != "") {
+                    //this.registrarDocumento().then(() => {
+                        this.editarCotizacionAdquisicionArchivo(this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado, this.documentoArchivo);
+                        this.botonactCot = 0;
+                        //});
+                }
+                else {
+                    this.editarCotizacionAdquisicion(this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado);
+                    this.botonactCot = 0;
+                }
+                
             }
         },
         async editarCotizacionAdquisicion(
@@ -1150,6 +1230,61 @@ export default {
                     fechaVencimiento +
                     "," +
                     estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarCotizacionesAdquisicion();
+                    me.listarCotizacionesAdquisicionPendientes();
+                    me.listarCotizacionesItem();
+                    me.closeModalAgregarCotizacionAdquisicion();
+                    me.limpiar();
+
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
+        editarCotizacionAdqFile() {
+            if (this.$refs.form.validate()) {
+                this.editarCotizacionAdquisicionArchivo(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado,this.nombreArchivo.name);
+                this.botonactCot = 0;
+            }
+        },
+        async editarCotizacionAdquisicionArchivo(
+            idCotizacion,
+            idUsuario,
+            idProveedor,
+            nombreCotizacion,
+            fechaVencimiento,
+            estado,
+            archivo
+        ) {
+            const ext = archivo.split('.');
+            const date = new Date();
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear();
+            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+'.'+ext[1];
+            let me = this;
+            await axios
+                .post(
+                    "/adquisicion/actualizarcotizacionadquisicionarchivo/" +
+                    idCotizacion +
+                    "," +
+                    idUsuario +
+                    "," +
+                    idProveedor +
+                    "," +
+                    nombreCotizacion +
+                    "," +
+                    fechaVencimiento +
+                    "," +
+                    estado +
+                    "," +
+                    nombreArchivo
                 )
                 .then(function (response) {
 
@@ -1631,14 +1766,14 @@ export default {
 
 
 
-        registrarDocumento() {
+        async registrarDocumento() {
             this.almacenarArchivo(this.documentoArchivo)
-            this.guardarDocumento(this.documentoArchivo.name, this.nombreCotizacion, "adq000", "ACTIVO");
+            this.guardarDocumento(this.documentoArchivo.name, this.nombreCotizacion, "adq"+this.idcotizacion, "ACTIVO");
         },
         async almacenarArchivo(documentoArchivo) {
 
             const formData = new FormData();
-            formData.append('adquisition', documentoArchivo);
+            formData.append('file', documentoArchivo);
             let me = this;
             await axios
                 .post(
@@ -1661,7 +1796,7 @@ export default {
             const ext = documentoArchivo.split('.');
             const date = new Date();
             const fechaHoraActual = date.getDate().toString().padStart(2, '0') + '_' + (date.getMonth() + 1).toString().padStart(2, '0') + '_' + date.getFullYear();
-            const nombreArchivo = ext[0] + '_' + fechaHoraActual + '.' + ext[1];
+            const nombreArchivo = 'acquisition_doc_'+ext[0] + '_' + fechaHoraActual + '.' + ext[1];
             let me = this;
             await axios
                 .post(
