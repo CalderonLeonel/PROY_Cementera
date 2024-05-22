@@ -31,7 +31,7 @@
                 <div class="text-h6">
                     SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
                 </div>
-                POR FAVOR, COTICE UNA ADQUISICION PARA TENER EXISTENCIAS DE <strong>${nombreitem}</strong> NECESARIAS PARA EL FUNCIONAMIENTO DE LA FABRICA 
+                POR FAVOR, COTICE UNA ADQUISICION PARA TENER EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong> NECESARIAS PARA EL FUNCIONAMIENTO DE LA FABRICA 
         </v-alert>
         <v-alert    v-if="existencias==true"       
                 type="success"
@@ -80,6 +80,17 @@
                                     <v-chip :color="getColor(item.est)" dark>
                                         {{ item.est }}
                                     </v-chip>
+                                </template>
+
+                                <template #[`item.arch`]="{ item }">
+                                    <v-text v-if="item.arch == null || item.arch == 'null'">
+                                        NO TIENE UN ARCHIVO
+                                    </v-text>
+                                    <v-btn v-else-if="item.arch !=null" color="primary" icon
+                                        :href="`${axios.defaults.baseURL}${'documento/adquisicion/' + item.arch}`" target="">
+                                        <v-icon>mdi-file</v-icon> ABRIR
+                                    </v-btn>
+                                   
                                 </template>
 
                               
@@ -147,27 +158,33 @@
                                      </v-col>   
                                 <v-col cols="12" md="4"> </v-col>
                                 <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconvv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="editarProv()" style="float: left"
-                                            title="ACTUALIZAR INFORMACIÓN">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                            ACTUALIZAR
-                                        </v-btn>
-                                        <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarProv()" style="float: left" title="REGISTRAR PROVEEDOR">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                        </v-btn>
-                                </v-col>                      
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonAct == 1" color="#0A62BF" @click="editarProv()"
+                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonAct == 0" color="#0ABF55" @click="registrarProv()"
+                                                style="float: left" title="REGISTRAR PROVEEDOR" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
+                              
+                                <v-col cols="12" sm="4" md="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
                                         @click="closeModalAgregarProveedor()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -240,23 +257,23 @@ export default {
             //fechaDeModificacion: "",
             valid: true,
             nombreRules: [
-              (v) => !!v || "Se requiere el nombre del proveedor.",
+              (v) => !!v || "SE REQUIERE EL NOMBRE DEL PROVEEDOR.",
               (v) =>
               (v && v.length <= 60) ||
-                "el nombre del proveedor no debe sobrepasar los 60 caracteres.",
+                "EL NOMBRE DEL PROVEEDOR NO DEBE SOBREPASAR LOS 60 CARACTERES.",
             ],
             phone1Rules: [
-            (v) => !!v || "Se requiere un número telefónico o celular.",
-            (v) => (v && v.length >= 7) || "El teléfono principal debe tener al menos 7 caracteres.",
-            (v) => (v && v.length <= 10) || "El teléfono principal debe tener hasta 10 caracteres.",
+            (v) => !!v || "SE REQUIERE UN NÚMERO TELEFÓNICO O CELULAR.",
+            (v) => (v && v.length >= 7) || "EL TELÉFONO PRINCIPAL DEBE TENER AL MENOS 7 CARACTERES.",
+            (v) => (v && v.length <= 10) || "EL TELÉFONO PRINCIPAL DEBE TENER HASTA 10 CARACTERES.",
             ],
             phone2Rules: [
             (v) => (!v || (v.length >= 7 && v.length <= 10)) ||
-                "El teléfono secundario debe tener entre 7 y 10 caracteres.",
+                "EL TELÉFONO SECUNDARIO DEBE TENER ENTRE 7 Y 10 CARACTERES.",
             ],
             emailRules: [
-              (v) => !!v || "Se requiere el correo electronico del proveedor",
-              (v) => /.+@.+\..+/.test(v) || "Debe ser un correo electronico valido",
+              (v) => !!v || "SE NECESITA EL CORREO ELECTRONICO DEL PROVEEDOR.",
+              (v) => /.+@.+\..+/.test(v) || "DEBE SER UN CORREO ELECTRONICO VALIDO.",
              ],
             datosProveedor: [],
             headerProveedor: [
@@ -266,6 +283,7 @@ export default {
                 { text: "CONTACTO SECUNDARIO DE PROVEEDOR", value: "cto2pro", sortable: true },
                 { text: "CORREO DE PROVEEDOR", value: "croprov", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
+                { text: "ARCHIVO", value: "arch", sortable: false },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
@@ -284,7 +302,9 @@ export default {
     },
     created: function (){
       this.listarProveedor();
-      this.getAlertas();
+      this.getListaExistencias().then(() => {
+        this.getAlertas();
+        });
     },
     methods: {
 
@@ -316,10 +336,7 @@ export default {
                     }
                 }
                 for (let i = 0; i < items.length; i++) {
-                    if ( limite[i] >= stock[i]  ) {
-                        console.log(limite[i])
-                        console.log(stock[i])
-                        alert(limite[i]+' u '+stock[i] )
+                    if ( Number(limite[i]) >= Number(stock[i]) ) {
                         this.existencias=false;
                         this.itemsCriticos += items[i]+' ';
                     }
@@ -390,13 +407,19 @@ export default {
 
         registrarProv() {
             if (this.$refs.form.validate()) {
-                if(this.contactoProveedorecundario==''){
+                if(this.contactoProveedorecundario == '' || this.contactoProveedorecundario == null){
                     this.contactoProveedorecundario=this.contactoProveedorPrincipal;
                 }
-                this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
-                this.almacenarArchivo(this.documentoArchivo)
-                this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro000","ACTIVO");
-                this.closeModalAgregarProveedor();
+                if (this.documentoArchivo == null || this.documentoArchivo == '') {
+                    this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
+
+                }
+                else {
+                    this.registrarProveedorArchivo(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name).then(() => {
+                        //this.registrarDocumento();
+                    });    
+                }
+                
             }
         },
         async registrarProveedor(
@@ -426,6 +449,50 @@ export default {
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarProveedores();
+                    me.closeModalAgregarProveedor();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+        async registrarProveedorArchivo(
+            nombreProveedor,
+            contactoProveedorPrincipal,
+            contactoProveedorecundario,
+            correoProveedor,
+            estado,
+            archivo
+        ) {
+            const ext = this.documentoArchivo.name.split('.');
+            const date = new Date();
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear();
+            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+'.'+ext[1];
+            let me = this;
+            await axios
+                .post(
+                    "/proveedor/insertarConArchivo/" +
+                    this.nombreProveedor +
+                    "," +
+                    this.contactoProveedorPrincipal +
+                    "," +
+                    this.contactoProveedorecundario +
+                    "," +
+                    this.correoProveedor +
+                    "," +
+                    this.estado +
+                    "," +
+                    nombreArchivo
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarProveedores();
+                    me.closeModalAgregarProveedor();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -436,10 +503,14 @@ export default {
 
         editarProv() {
             if (this.$refs.form.validate()) {
-                this.botonAct = 0;
-
-                this.editarProveedor(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
-                this.closeModalAgregarProveedor();
+                if (this.documentoArchivo == '' || this.documentoArchivo == null) {
+                    this.editarProveedor(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
+                    this.botonAct = 0;
+                }
+                else {
+                    this.editarProveedorArchivo(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name);                       
+                    this.botonAct = 0;         
+                } 
             }
         },
         async editarProveedor(
@@ -472,6 +543,7 @@ export default {
                     me.snackbarOK = true;
                     me.limpiar();
                     me.listarProveedores();
+                    me.closeModalAgregarProveedor();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -479,6 +551,54 @@ export default {
                 });
 
         },
+
+      
+        async editarProveedorArchivo(
+            idProveedor,
+            nombreProveedor,
+            contactoProveedorPrincipal,
+            contactoProveedorecundario,
+            correoProveedor,
+            estado,
+            archivo
+        ) {
+            const ext = this.documentoArchivo.name.split('.');
+            const date = new Date();
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear();
+            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+'.'+ext[1];
+            let me = this;
+            await axios
+                .post(
+                    "/proveedor/editararchivo/" +
+                    this.idProveedor +
+                    "," +
+                    this.nombreProveedor +
+                    "," +
+                    this.contactoProveedorPrincipal +
+                    "," +
+                    this.contactoProveedorecundario +
+                    "," +
+                    this.correoProveedor +
+                    "," +
+                    this.estado +
+                    "," +
+                    nombreArchivo
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarProveedores();
+                    me.closeModalAgregarProveedor();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
         confirmacionAnulacion(item){
             this.idProveedor = item.idprv;
             this.confirmacionAnulacionProveedor = true;
@@ -569,6 +689,7 @@ export default {
             
             this.correoProveedor = item.croprov;
             this.estado = item.est;
+            this.documentoArchivo.suffix = item.arch;
         },
 
 
@@ -612,9 +733,9 @@ export default {
 
 
 
-        registrarDocumento(){
+       async registrarDocumento(){
             this.almacenarArchivo(this.documentoArchivo)
-            this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro000","ACTIVO");
+            this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro"+this.idProveedor,"ACTIVO");
         },
         async almacenarArchivo(documentoArchivo){
 
@@ -642,7 +763,7 @@ export default {
             const ext = documentoArchivo.split('.');
             const date = new Date();
             const fechaHoraActual = date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear();
-            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+'.'+ext[1];
+            const nombreArchivo =  'provider_doc_'+ext[0]+'_'+fechaHoraActual+'.'+ext[1];
             let me = this;
                 await axios
                 .post(
