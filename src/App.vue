@@ -30,7 +30,7 @@
 
       <v-list nav dense>
 
-        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(1, '0')">
+        <v-list-group no-action color="#00A1B1" value="true"> <!-- v-if="checkAccess(1, '0')" -->
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-package</v-icon>
@@ -87,7 +87,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="#00A1B1" value="true">
+        <v-list-group no-action color="#00A1B1" value="true"> <!-- v-if="checkAccess(1, '0')" -->
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-test-tube</v-icon>
@@ -104,7 +104,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(2, '0')">
+        <v-list-group no-action color="#00A1B1" value="true"> <!-- v-if="checkAccess(2, '0')" -->
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-point-of-sale</v-icon>
@@ -120,7 +120,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(3, '0')">
+        <v-list-group no-action color="#00A1B1" value="true"> <!-- v-if="checkAccess(3, '0')" -->
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-chart-bar</v-icon>
@@ -137,7 +137,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="#00A1B1" value="true">
+        <v-list-group no-action color="#00A1B1" value="true"> <!-- v-if="checkAccess(4, '0')" -->
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-account-group</v-icon>
@@ -154,7 +154,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(5, '0')">
+        <v-list-group no-action color="#00A1B1" value="true"> <!-- v-if="checkAccess(5, '0')" -->
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-package</v-icon>
@@ -204,132 +204,19 @@
               <h6>SOLICITUDES DE PERSONAL</h6>
             </v-list-item-title>
           </v-list-item>
-        </v-list-group>
-
-        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(6, '0')">
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>USUARIOS</v-list-item-title>
-            </v-list-item-content>
-          </template>
-          <v-list-item :to="{ name: 'Usuarios' }">
+          <v-list-item :to="{ name: 'Asistencias' }">
             <v-list-item-title>
-              <h6>CUENTAS</h6>
+              <h6>ASISTENCIAS</h6>
             </v-list-item-title>
           </v-list-item>
-          /// Creo que esto hay doble, desaparece el de arriba porque no se tiene acceso a produccion o no se loguearon
-          <v-list-item :to="{ name: 'Formatos' }">
+          <v-list-item :to="{ name: 'Carnet' }">
             <v-list-item-title>
-              <h6>FORMATOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Tipos' }">
-            <v-list-item-title>
-              <h6>TIPOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Fabricas' }">
-            <v-list-item-title>
-              <h6>FABRICAS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Movimientos' }">
-            <v-list-item-title>
-              <h6>MOVIMIENTOS</h6>
-            </v-list-item-title>
-          </v-list-item> 
-          <v-list-item :to="{ name: 'Produccion' }">
-            <v-list-item-title>
-              <h6>PRODUCCION</h6>
-            </v-list-item-title>
-          </v-list-item>
-          
-        </v-list-group>
-
-        <v-list-group no-action color="#00A1B1" value="true">
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon>mdi-point-of-sale</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>VENTAS</v-list-item-title>
-            </v-list-item-content>
-          </template>
-          <v-list-item :to="{ name: 'Ventas' }">
-            <v-list-item-title>
-              <h6>VENTAS</h6>
+              <h6>CARNET</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="#00A1B1" value="true">
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon>mdi-chart-bar</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>REPORTES</v-list-item-title>
-            </v-list-item-content>
-          </template>
-        
-          <v-list-item :to="{ name: 'Reportes' }">
-            <v-list-item-title>
-              <h6>REPORTES</h6>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list-group>
-      
-        <v-list-group no-action color="light-blue darken-4" value="true">
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon>mdi-package</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>RRHH</v-list-item-title>
-            </v-list-item-content>
-          </template>
-
-          <v-list-item :to="{ name: 'Empleados' }">
-            <v-list-item-title>
-              <h6>EMPLEADOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Alerta' }">
-            <v-list-item-title>
-              <h6>ALERTAS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Cargos' }">
-            <v-list-item-title>
-              <h6>CARGOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Turnos' }">
-            <v-list-item-title>
-              <h6>TURNOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Unidades' }">
-            <v-list-item-title>
-              <h6>UNIDADES</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Areas' }">
-            <v-list-item-title>
-              <h6>AREAS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Departamentos' }">
-            <v-list-item-title>
-              <h6>DEPARTAMENTOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list-group>
-       
-        <v-list-group no-action color="light-blue darken-4" value="true">
+        <v-list-group no-action color="#00A1B1" value="true"> <!-- v-if="checkAccess(6, '0')" -->
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
@@ -344,8 +231,8 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
-
-        <v-list-group no-action color="#00A1B1" value="true">
+  
+        <v-list-group no-action color="#00A1B1" value="true"> <!-- v-if="checkAccess(1, '0')" -->
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-wallet-outline</v-icon>
@@ -362,7 +249,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(7, '0')">
+        <v-list-group no-action color="#00A1B1" value="true"> <!-- v-if="checkAccess(7, '0')" -->
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>
@@ -386,7 +273,7 @@
           </v-list-item>
         </v-list-group>
         
-        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(8, '0')">
+        <v-list-group no-action color="#00A1B1" value="true"> <!-- v-if="checkAccess(8, '0')" -->
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>
@@ -410,7 +297,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(9, '0')">
+        <v-list-group no-action color="#00A1B1" value="true"> <!-- v-if="checkAccess(9, '0')" -->
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>
@@ -433,7 +320,6 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
-
 
       </v-list>
 
