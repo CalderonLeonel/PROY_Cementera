@@ -204,6 +204,11 @@
               <h6>SOLICITUDES DE PERSONAL</h6>
             </v-list-item-title>
           </v-list-item>
+          <v-list-item :to="{ name: 'Carnet' }">
+            <v-list-item-title>
+              <h6>CARNET</h6>
+            </v-list-item-title>
+          </v-list-item>
         </v-list-group>
 
         <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(6, '0')">
@@ -325,6 +330,16 @@
           <v-list-item :to="{ name: 'Departamentos' }">
             <v-list-item-title>
               <h6>DEPARTAMENTOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Carnet' }">
+            <v-list-item-title>
+              <h6>CARNET</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Asistencias' }">
+            <v-list-item-title>
+              <h6>ASISTENCIAS</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
