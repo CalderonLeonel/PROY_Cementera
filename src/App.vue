@@ -204,27 +204,7 @@
               <h6>SOLICITUDES DE PERSONAL</h6>
             </v-list-item-title>
           </v-list-item>
-<<<<<<< HEAD
           <v-list-item :to="{ name: 'Asistencias' }">
-=======
-          <v-list-item :to="{ name: 'Carnet' }">
-            <v-list-item-title>
-              <h6>CARNET</h6>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list-group>
-
-        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(6, '0')">
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>USUARIOS</v-list-item-title>
-            </v-list-item-content>
-          </template>
-          <v-list-item :to="{ name: 'Usuarios' }">
->>>>>>> 783c4a8347bb9fd167dfbecd66c4668be8482e6c
             <v-list-item-title>
               <h6>ASISTENCIAS</h6>
             </v-list-item-title>
@@ -236,85 +216,7 @@
           </v-list-item>
         </v-list-group>
 
-<<<<<<< HEAD
         <v-list-group no-action color="#00A1B1" value="true"> <!-- v-if="checkAccess(6, '0')" -->
-=======
-        <v-list-group no-action color="#00A1B1" value="true">
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon>mdi-chart-bar</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>REPORTES</v-list-item-title>
-            </v-list-item-content>
-          </template>
-        
-          <v-list-item :to="{ name: 'Reportes' }">
-            <v-list-item-title>
-              <h6>REPORTES</h6>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list-group>
-      
-        <v-list-group no-action color="light-blue darken-4" value="true">
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon>mdi-package</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>RRHH</v-list-item-title>
-            </v-list-item-content>
-          </template>
-
-          <v-list-item :to="{ name: 'Empleados' }">
-            <v-list-item-title>
-              <h6>EMPLEADOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Alerta' }">
-            <v-list-item-title>
-              <h6>ALERTAS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Cargos' }">
-            <v-list-item-title>
-              <h6>CARGOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Turnos' }">
-            <v-list-item-title>
-              <h6>TURNOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Unidades' }">
-            <v-list-item-title>
-              <h6>UNIDADES</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Areas' }">
-            <v-list-item-title>
-              <h6>AREAS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Departamentos' }">
-            <v-list-item-title>
-              <h6>DEPARTAMENTOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Carnet' }">
-            <v-list-item-title>
-              <h6>CARNET</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Asistencias' }">
-            <v-list-item-title>
-              <h6>ASISTENCIAS</h6>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list-group>
-       
-        <v-list-group no-action color="light-blue darken-4" value="true">
->>>>>>> 783c4a8347bb9fd167dfbecd66c4668be8482e6c
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
