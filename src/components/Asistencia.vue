@@ -1,6 +1,5 @@
 <template>
     <v-card elevation="5" outlined shaped>
-
         <!-- Snackbars-->
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
@@ -27,7 +26,7 @@
                 <v-icon left>
                     mdi-account-box
                 </v-icon>
-                ASIS. DE HOY
+                ASISTENCIAS DE HOY
             </v-tab>
             <v-tab>
                 <v-icon left>
@@ -148,8 +147,6 @@
             </v-tab-item>
         </v-tabs>
 
-
-
         <v-dialog v-model="asistenciaModal" max-width="1080px" persistent> <!-- Modal Asistencia (Manual y QR)-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
@@ -160,10 +157,16 @@
                     <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Empleados -->
                         <v-container>
                             <v-row>
-                                <v-col cols="12" md="1">
+                                <v-col cols="12" md="1" v-if="botonAct == 0">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" @click="showEmpleado()"
                                         style="float: right" title="BUSCAR EMPLEADO">
                                         <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="1" v-if="botonAct == 1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" @click="showQR()"
+                                        style="float: right" title="ABRIR CAMARA">
+                                        <v-icon dark> mdi-cam </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="11">
@@ -172,25 +175,17 @@
                                     </v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="isMale" :counter="50" @input="isMale = isMale.toUpperCase()"
-                                        :label="sexoLabel" disabled required>
+                                    <v-text-field v-model="isMale" :label="sexoLabel" disabled required>
                                     </v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="edad" :counter="50" @input="edad = edad.toUpperCase()"
-                                        :label="edadLabel" disabled required>
+                                    <v-text-field v-model="edad" :label="edadLabel" disabled required>
                                     </v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
-                                    <v-btn iconv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="actualizarAsistencia()" style="float: left"
-                                        title="ACTUALIZAR INFORMACIÓN">
-                                        <v-icon dark> mdi-pencil </v-icon>
-                                        ACTUALIZAR
-                                    </v-btn>
-                                    <v-btn iconv v-if="botonAct == 0" class="mx-4" dark color="#0ABF55"
+                                    <v-btn iconv  class="mx-4" dark color="#0ABF55"
                                         @click="registrarAsistencia()" style="float: left" title="REGISTRAR ITEM">
                                         <v-icon dark> mdi-content-save </v-icon>
                                         GUARDAR
@@ -212,9 +207,7 @@
                                 </v-col>
                             </v-row>
                         </v-container>
-                        v-if="botonAct==0"
                     </v-form>
-
                 </v-card-text>
             </v-card>
         </v-dialog>
@@ -268,11 +261,10 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="LectorQRModal" max-width="1080px" lazy-validation persistent> <!-- Modal Lector QR-->
+        <v-dialog v-model="lectorQRModal" max-width="1080px" lazy-validation persistent> <!-- Modal Lector QR-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Registrar Asistencia Por QR</span>
-                    <span v-if="botonAct == 1">Editar Asistencia</span>
+                    <span>Escáner de QR</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Empleados -->
@@ -280,34 +272,23 @@
                             <v-row>
                                 <v-col cols="12" md="12">
                                     <v-col cols="12">
-                                        <qrcode-stream @decode="onDecode" @init="onInit"></qrcode-stream>
-
+                                        <qrcode-stream style="width: 300px; height: 300px; margin: 0 auto;"
+                                         @decode="onDecode" @init="onInit"></qrcode-stream>
                                     </v-col>
                                 </v-col>
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
+                                <v-col cols="8" md="12">
+                                    <v-btn iconv class="mx-4" dark color="#0A62BF"
                                         @click="actualizarAsistencia()" style="float: left"
-                                        title="ACTUALIZAR INFORMACIÓN">
+                                        title="Encender Cámara">
                                         <v-icon dark> mdi-pencil </v-icon>
                                         ACTUALIZAR
                                     </v-btn>
-                                    <v-btn iconv v-if="botonAct == 0" class="mx-4" dark color="#0ABF55"
-                                        @click="registrarAsistencia()" style="float: left" title="REGISTRAR ITEM">
+                                    <v-btn iconv class="mx-4" dark color="#0ABF55"
+                                        @click="toggleCamera(true)" style="float: left" title="REGISTRAR ITEM">
                                         <v-icon dark> mdi-content-save </v-icon>
                                         GUARDAR
                                     </v-btn>
-                                </v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeAsistencia()"
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeQR()"
                                         style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
@@ -352,14 +333,15 @@ export default {
         sexoLabel: "Género...",
         edadLabel: "Edad...",
         empleadoModal: false,
+        lectorQRModal: false,
         asistenciaModal: "",
+        isCameraActive: false,
 
         searchAsistencia: "",
         searchEmpleado: "",
         datosAsistencia: [],
         datosAsistenciaDelDia: [],
         datosEmpleado: [],
-        datosDepartamento: [],
 
         snackbarOK: false,
         mensajeSnackbar: "",
@@ -418,8 +400,9 @@ export default {
         seleccionarEmpleado(item) {
             this.idEmpleado = item.idempl;
             this.nombreEmpleadoLabel = item.nom + " " + item.pat + " " + item.mat;
-            if (item.ism) { this.isMale = "HOMBRE"; } else { this.isMale = "MUJER"; }
-            this.edadLabel = item.nacdte;//new Date(item.nacdte).toISOString().split('T')[0];
+            if (item.ism) { this.sexoLabel = "HOMBRE"; } else { this.sexoLabel = item.ism; }
+            let aux = new Date(item.nacdte).toLocaleDateString();//new Date(item.nacdte).toISOString().split('T')[0];
+            this.edadLabel= this.calculateAge(aux);
             this.closeEmpleado();
         },
 
@@ -442,8 +425,11 @@ export default {
             this.empleadoModal = false;
         },
         showEmpleado(item) {
-            this.listarEmpleados();
+            this.listarEmpleadosActivos();
             this.empleadoModal = true;
+        },
+        showQR(item) {
+            this.lectorQRModal = true;
         },
 
         llenarCamposAsistencia(item) {
@@ -485,7 +471,7 @@ export default {
                     console.log(error);
                 });
         },
-        async listarEmpleados() {
+        async listarEmpleadosActivos() {
             let me = this;
             await axios
                 .get("/empleado/listarempleadossactivos/")
@@ -500,6 +486,49 @@ export default {
                     console.log(error);
                 });
         },
+        async getEmpleado(idEmpleado) {
+            let me = this;
+            await axios
+                .get("/empleado/getempleado/"+idEmpleado)
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.mensajeSnackbarError = 'Error, empleado no encontrado.';
+                        me.snackbarError = true;
+                    } else {
+                        let newEmpleado = [];
+                        //El get_empleado no devuelve idempl porque ya se obtuvo por QR, puesto manualmente en esta linea
+                        newEmpleado.idempl = idEmpleado; 
+                        response.data.resultado.forEach(item => {
+                            newEmpleado.nom = item.nom;
+                            newEmpleado.pat = item.pat;
+                            newEmpleado.mat = item.mat;
+                            newEmpleado.ism = item.ism;
+                            newEmpleado.nacdte = item.nacdte;
+                        });
+                        me.seleccionarEmpleado(newEmpleado);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+         calculateAge(nacdte) {
+            // Convertir la fecha de nacimiento en un objeto Date
+            const birthDate = new Date(nacdte);
+            const today = new Date();
+            
+            // Calcular la diferencia en años
+            let age = today.getFullYear() - birthDate.getFullYear();
+            
+            // Ajustar si la fecha de nacimiento no ha ocurrido este año todavía
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            return age;
+        },
+        
         registrarAsistencia() {
             if (this.$refs.form.validate()) {
                 this.registrarAsistencias();
@@ -515,7 +544,7 @@ export default {
                 .then(function (response) {
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarAsistencias(me.idAsistencia);
+                    me.listarAsistenciasDelDia(me.idAsistencia);
                     me.limpiar();
                     me.closeAsistencia();
                 })
@@ -526,8 +555,10 @@ export default {
 
         //#region QR_Camara
         onDecode(content) {
-            let decodedContent = content;
             console.log("code:" + content);
+            this.getEmpleado(content);
+            this.toggleCamera(false);
+            this.lectorQRModal = false;
         },
         onInit(promise) {
             promise.then(() => {
@@ -547,8 +578,8 @@ export default {
                 }
             })
         },
-        startCamera() {
-            this.isCameraActive = true;
+        toggleCamera(value) {
+            this.isCameraActive = value;
         }
         //#endregion 
     },
