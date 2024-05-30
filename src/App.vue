@@ -129,7 +129,7 @@
               <v-list-item-title>REPORTES</v-list-item-title>
             </v-list-item-content>
           </template>
-        
+
           <v-list-item :to="{ name: 'Reportes' }">
             <v-list-item-title>
               <h6>REPORTES</h6>
@@ -237,6 +237,13 @@
               <h6>CONTABILIDAD</h6>
             </v-list-item-title>
           </v-list-item>
+
+          <v-list-item :to="{ name: 'Pagos' }">
+            <v-list-item-title>
+              <h6>PAGOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+
         </v-list-group>
 
         <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(7, '0')">
@@ -262,7 +269,7 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
-        
+
         <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(8, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
@@ -334,6 +341,17 @@
         <v-slide-y-transition mode="out-in">
           <router-view />
         </v-slide-y-transition>
+        <v-carousel>
+          <v-carousel-item>
+            <Empresa />
+          </v-carousel-item>
+          <v-carousel-item>
+            <Productos />
+          </v-carousel-item>
+          <v-carousel-item>
+            <Pedido />
+          </v-carousel-item>
+        </v-carousel>
       </v-container>
     </v-main>
     <v-footer color="#00A1B1" padless>
@@ -348,13 +366,20 @@
 </template>
 
 <script>
+
+import Empresa from '../src/components/Empresa.vue';
+import Productos from '../src/components/ProductosIni.vue';
+import Pedido from '../src/components/PedidosCliente.vue';
+
 export default {
   data: () => ({
     drawer: false,
     user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' }
   }),
   components: {
-    // Empleado_cv
+    Empresa,
+    Productos,
+    Pedido
   },
   computed: {
     logueado() {

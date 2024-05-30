@@ -378,6 +378,12 @@
                                                                 @input="nombreFabrica = nombreFabrica.toUpperCase()"
                                                                 disabled required></v-text-field>
                                                         </v-col>
+                                                        <v-col cols="12" md="4">
+                                                            <v-text-field v-model="precioUnitario" label="PRECIO PRODUCTO"
+                                                                :counter="100" :rules="precioUnitarioRules"
+                                                                @input="precioUnitario = precioUnitario.toUpperCase()"
+                                                                required></v-text-field>
+                                                        </v-col>
 
                                                         <v-col cols="12" md="8"> </v-col>
                                                         <v-col cols="12" md="4">
@@ -587,6 +593,7 @@ export default {
             idProducto: "",
             nombreProducto: "",
             codigoProducto: "",
+            precioUnitario: "",
             datosProducto: [],
             headersProducto: [
                 { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
@@ -789,14 +796,15 @@ export default {
         //#endregion
         //#region Adicionar
         registrarProductos() {
-            this.registrarProducto(this.nombreProducto, this.codigoProducto, this.idTipo, this.idFormato, this.idFabrica);
+            this.registrarProducto(this.nombreProducto, this.codigoProducto, this.idTipo, this.idFormato, this.idFabrica, this.precioUnitario);
         },
         async registrarProducto(
             nombreProducto,
             codigoProducto,
             idTipo,
             idFormato,
-            idFabrica
+            idFabrica,
+            precioUnitario
         ) {
             let me = this;
             await axios
@@ -810,7 +818,9 @@ export default {
                     "," +
                     this.idFormato +
                     "," +
-                    this.idFabrica
+                    this.idFabrica +
+                    "," +
+                    this.precioUnitario
 
                 )
                 .then(function (response) {

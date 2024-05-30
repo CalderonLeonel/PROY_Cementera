@@ -23,7 +23,8 @@
                                             @input="buscarProveedores = buscarProveedores.toUpperCase()"></v-text-field>
                                     </v-card-title>
                                     <v-data-table :headers="headersProveedor" :items="datosProveedor"
-                                        :search="buscarProveedores" :items-per-page="5" class="elevation-1" id="tableId">
+                                        :search="buscarProveedores" :items-per-page="5" class="elevation-1"
+                                        id="tableId">
 
                                         <template #[`item.est`]="{ item }">
                                             <v-chip :color="colorEstado(item.est)" dark>
@@ -33,8 +34,8 @@
 
 
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon small class="mr-2" color="#001781" @click="seleccionarProveedor(item)"
-                                                title="SELECCIONAR PROVEEDOR">
+                                            <v-icon small class="mr-2" color="#001781"
+                                                @click="seleccionarProveedor(item)" title="SELECCIONAR PROVEEDOR">
                                                 mdi-check-circle
                                             </v-icon>
                                         </template>
@@ -43,8 +44,8 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closeClienteModal()"
-                                        style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
+                                        @click="closeClienteModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -100,105 +101,276 @@
                                     USO
                                     MAT.
                                 </v-tab>
+
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-alpha-m-box-outline
+                                    </v-icon>
+                                    CONT
+                                    PROV.
+                                </v-tab>
+
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outlined shaped>
+                                        <v-card-title>
+                                            <span>AGREGAR MATERIA PRIMA</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-form ref="form" v-model="valid" lazy-validation>
+                                                <v-container>
+                                                    <v-row>
+                                                        <v-col cols="12" md="1">
+                                                            <v-btn class="mx-2" fab dark x-small color="cyan"
+                                                                :rules="proveedor" @click="showProveedor()"
+                                                                style="float: right" title="BUSCAR PROVEEDOR">
+                                                                <v-icon dark> mdi-magnify </v-icon>
+                                                            </v-btn>
+                                                        </v-col>
+                                                        <v-col cols="12" md="3">
+                                                            <v-text-field v-model="nombreProveedor" label="PROVEEDOR"
+                                                                :counter="100" :rules="nombreProveedorRules"
+                                                                @input="nombreProveedor = nombreProveedor.toUpperCase()"
+                                                                required disabled></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="4">
+                                                            <v-text-field v-model="nombreMateria" label="NOMBRE"
+                                                                :counter="25" :rules="nombreMateriaRules"
+                                                                @input="nombreMateria = nombreMateria.toUpperCase()"></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="2">
+                                                            <v-text-field v-model="cantidad" label="CANTIDAD"
+                                                                :rules="cantidadRules"
+                                                                @input="cantidad = cantidad.toUpperCase()"></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="2">
+                                                            <v-text-field v-model="medida" label="MEDIDA" :counter="15"
+                                                                :rules="medidaRules"
+                                                                @input="medidad = medidad.toUpperCase()"></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="12">
+                                                            <v-textarea v-model="descripcion" filled label="DESCRIPCION"
+                                                                auto-grow
+                                                                value="Ingrese la descripcion de la materia prima"></v-textarea>
+                                                        </v-col>
+                                                        <v-col cols="12" md="8"></v-col>
+                                                        <v-col cols="12" md="4">
+                                                            <v-toolbar dense shaped color="#002245">
+                                                                <v-toolbar-title style="color:#ffffff">
+                                                                    <h6>OPCIONES</h6>
+                                                                </v-toolbar-title>
+
+                                                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark
+                                                                    x-small color="#EE680B"
+                                                                    @click="actualizarMateriaPrima()"
+                                                                    style="float: left"
+                                                                    title="ACTUALIZAR INFORMACIÓN Materia Prima">
+                                                                    <v-icon dark> mdi-pencil </v-icon>
+                                                                </v-btn>
+                                                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark
+                                                                    x-small color="#EE680B"
+                                                                    @click="registrarMateriaPrima()" style="float: left"
+                                                                    title="REGISTRAR PRODUCTO Materia Prima">
+                                                                    <v-icon dark> mdi-content-save-plus-outline
+                                                                    </v-icon>
+                                                                </v-btn>
+                                                                <v-btn color="#EE680B" class="mx-2" fab dark x-small
+                                                                    @click="limpiar()" style="float: left"
+                                                                    title="LIMPIAR FORMULARIO">
+                                                                    <v-icon dark> mdi-eraser </v-icon>
+                                                                </v-btn>
+                                                            </v-toolbar>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-container>
+                                            </v-form>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outlined shaped>
+                                        <v-card-title>
+                                            <span>LISTAR MATERIA PRIMA</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-form ref="form" v-model="valid" lazy-validation>
+                                                <v-container>
+                                                    <v-row>
+                                                        <v-col cols="12">
+                                                            <v-list-item>
+                                                                <v-list-item-title class="text-center">
+                                                                    <h5> Materias Primas</h5>
+                                                                </v-list-item-title>
+                                                            </v-list-item>
+
+                                                            <v-card-title>
+                                                                <v-text-field v-model="buscarMateriasP"
+                                                                    append-icon="mdi-magnify"
+                                                                    label="BUSCAR MATERIA PRIMA" single-line
+                                                                    hide-details></v-text-field>
+                                                            </v-card-title>
+
+
+                                                            <v-data-table :headers="headersMateriaP"
+                                                                :items="datosMateriaP" :search="buscarMateriasP"
+                                                                :items-per-page="5" class="elevation-1" id="tableId">
+
+                                                                <template #[`item.est`]="{ item }">
+                                                                    <v-chip :color="colorEstado(item.est)" dark>
+                                                                        {{ item.est }}
+                                                                    </v-chip>
+                                                                </template>
+
+                                                                <template #[`item.actions`]="{ item }">
+                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                        @click="seleccionarObservacion(item)"
+                                                                        title="SELECCIONAR MATERIA PRIMA">
+                                                                        mdi-check-circle
+                                                                    </v-icon>
+                                                                    <v-icon v-if="item.est == 'INACTIVO'" color="green"
+                                                                        small class="mr-2" @click="activar(item)"
+                                                                        title="ACTIVAR MATERIA PRIMA">
+                                                                        mdi-check-circle-outline
+                                                                    </v-icon>
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red"
+                                                                        small class="mr-2" @click="desactivar(item)"
+                                                                        title="DESACTIVAR MATERIA PRIMA">
+                                                                        mdi-cancel
+                                                                    </v-icon>
+                                                                </template>
+
+                                                            </v-data-table>
+                                                        </v-col>
+
+                                                    </v-row>
+                                                </v-container>
+                                            </v-form>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outlined shaped>
+                                        <v-card-title>
+                                            <span>LISTAR MATERIA PRIMA INACTIVA</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-form ref="form" v-model="valid" lazy-validation>
+                                                <v-container>
+                                                    <v-row>
+                                                        <v-col cols="12">
+                                                            <v-list-item>
+                                                                <v-list-item-title class="text-center">
+                                                                    <h5> Materias Primas</h5>
+                                                                </v-list-item-title>
+                                                            </v-list-item>
+
+                                                            <v-card-title>
+                                                                <v-text-field v-model="buscarMateriasP"
+                                                                    append-icon="mdi-magnify"
+                                                                    label="BUSCAR MATERIA PRIMA" single-line
+                                                                    hide-details></v-text-field>
+                                                            </v-card-title>
+
+
+                                                            <v-data-table :headers="headersMateriaP"
+                                                                :items="datosMateriaP" :search="buscarMateriasP"
+                                                                :items-per-page="5" class="elevation-1" id="tableId">
+
+                                                                <template #[`item.est`]="{ item }">
+                                                                    <v-chip :color="colorEstado(item.est)" dark>
+                                                                        {{ item.est }}
+                                                                    </v-chip>
+                                                                </template>
+
+                                                                <template #[`item.actions`]="{ item }">
+                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                        @click="seleccionarObservacion(item)"
+                                                                        title="SELECCIONAR MATERIA PRIMA">
+                                                                        mdi-check-circle
+                                                                    </v-icon>
+                                                                    <v-icon v-if="item.est == 'INACTIVO'" color="green"
+                                                                        small class="mr-2" @click="activar(item)"
+                                                                        title="ACTIVAR MATERIA PRIMA">
+                                                                        mdi-check-circle-outline
+                                                                    </v-icon>
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red"
+                                                                        small class="mr-2" @click="desactivar(item)"
+                                                                        title="DESACTIVAR MATERIA PRIMA">
+                                                                        mdi-cancel
+                                                                    </v-icon>
+                                                                </template>
+
+                                                            </v-data-table>
+                                                        </v-col>
+
+                                                    </v-row>
+                                                </v-container>
+                                            </v-form>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outlined shaped>
+                                        <v-card-title>
+                                            <span>LISTAR MATERIA PRIMA INACTIVA</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-form ref="form" v-model="valid" lazy-validation>
+                                                <v-container>
+                                                    <v-row>
+                                                        <v-col cols="12">
+                                                            <h2>Registrar Uso de Materias Primas por Producto</h2>
+                                                        </v-col>
+                                                        <v-col cols="12">
+                                                            <v-select v-model="selectedProduct" :items="products"
+                                                                label="Producto" item-text="name" item-value="id"
+                                                                outlined required></v-select>
+                                                        </v-col>
+                                                        <v-col cols="12">
+                                                            <v-text-field v-model="quantity" label="Cantidad Utilizada"
+                                                                outlined required></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12">
+                                                            <v-btn type="submit" color="primary">Registrar Uso de
+                                                                Materias
+                                                                Primas</v-btn>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-container>
+                                            </v-form>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outlined shaped>
+                                        <v-card-title>
+                                            <span>LISTAR MATERIA PRIMA INACTIVA</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-form ref="form" v-model="valid" lazy-validation>
+                                                <v-container>
+                                                    <v-row>
+                                                    </v-row>
+                                                </v-container>
+                                            </v-form>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
                             </v-tabs>
                         </v-col>
 
-                        <v-col cols="12" md="1">
-                            <v-btn class="mx-2" fab dark x-small color="cyan" :rules="proveedor" @click="showProveedor()"
-                                style="float: right" title="BUSCAR PROVEEDOR">
-                                <v-icon dark> mdi-magnify </v-icon>
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                            <v-text-field v-model="nombreProveedor" label="PROVEEDOR" :counter="100"
-                                :rules="nombreProveedorRules" @input="nombreProveedor = nombreProveedor.toUpperCase()"
-                                required disabled></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="4">
-                            <v-text-field v-model="nombreMateria" label="NOMBRE" :counter="25" :rules="nombreMateriaRules"
-                                @input="nombreMateria = nombreMateria.toUpperCase()"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="2">
-                            <v-text-field v-model="cantidad" label="CANTIDAD" :rules="cantidadRules"
-                                @input="cantidad = cantidad.toUpperCase()"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="2">
-                            <v-text-field v-model="medida" label="MEDIDA" :counter="15" :rules="medidaRules"
-                                @input="medidad = medidad.toUpperCase()"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="12">
-                            <v-textarea v-model="descripcion" filled label="DESCRIPCION" auto-grow
-                                value="Ingrese la descripcion de la materia prima"></v-textarea>
-                        </v-col>
-                        <v-col cols="12" md="8"></v-col>
-                        <v-col cols="12" md="4">
-                            <v-toolbar dense shaped color="#002245">
-                                <v-toolbar-title style="color:#ffffff">
-                                    <h6>OPCIONES</h6>
-                                </v-toolbar-title>
-
-                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="#EE680B"
-                                    @click="actualizarMateriaPrima()" style="float: left"
-                                    title="ACTUALIZAR INFORMACIÓN Materia Prima">
-                                    <v-icon dark> mdi-pencil </v-icon>
-                                </v-btn>
-                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="#EE680B"
-                                    @click="registrarMateriaPrima()" style="float: left"
-                                    title="REGISTRAR PRODUCTO Materia Prima">
-                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
-                                </v-btn>
-                                <v-btn color="#EE680B" class="mx-2" fab dark x-small @click="limpiar()" style="float: left"
-                                    title="LIMPIAR FORMULARIO">
-                                    <v-icon dark> mdi-eraser </v-icon>
-                                </v-btn>
-                            </v-toolbar>
-                        </v-col>
-
-                        <v-col cols="12">
-                            <v-list-item>
-                                <v-list-item-title class="text-center">
-                                    <h5> Materias Primas</h5>
-                                </v-list-item-title>
-                            </v-list-item>
-
-                            <v-card-title>
-                                <v-text-field v-model="buscarMateriasP" append-icon="mdi-magnify"
-                                    label="BUSCAR MATERIA PRIMA" single-line hide-details></v-text-field>
-                            </v-card-title>
 
 
-                            <v-data-table :headers="headersMateriaP" :items="datosMateriaP" :search="buscarMateriasP"
-                                :items-per-page="5" class="elevation-1" id="tableId">
-
-                                <template #[`item.est`]="{ item }">
-                                    <v-chip :color="colorEstado(item.est)" dark>
-                                        {{ item.est }}
-                                    </v-chip>
-                                </template>
-
-                                <template #[`item.actions`]="{ item }">
-                                    <v-icon small class="mr-2" color="#001781" @click="seleccionarObservacion(item)"
-                                        title="SELECCIONAR MATERIA PRIMA">
-                                        mdi-check-circle
-                                    </v-icon>
-                                    <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
-                                        @click="activar(item)" title="ACTIVAR MATERIA PRIMA">
-                                        mdi-check-circle-outline
-                                    </v-icon>
-                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
-                                        @click="desactivar(item)" title="DESACTIVAR MATERIA PRIMA">
-                                        mdi-cancel
-                                    </v-icon>
-                                </template>
-
-                            </v-data-table>
-                        </v-col>
 
 
                     </v-row>
 
                     <div class="text-center">
-                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
+                            outlined>
                             <strong>{{ mensajeSnackbar }}</strong>
 
 
@@ -235,6 +407,7 @@ import axios from "axios";
 export default {
     data() {
         return {
+            flag: 1,
             botonAct: 0,
             //#region Materia Prima
             idMateriaPrima: "",
