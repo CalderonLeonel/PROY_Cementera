@@ -87,7 +87,7 @@
                                         NO TIENE UN ARCHIVO
                                     </v-text>
                                     <v-btn v-else-if="item.arch !=null" color="primary" icon
-                                        :href="`${axios.defaults.baseURL}${'documento/adquisicion/' + item.arch}`" target="">
+                                        :href="`${axios.defaults.baseURL}${'documento/descargar/' + item.arch}`" target="">
                                         <v-icon>mdi-file</v-icon> ABRIR
                                     </v-btn>
                                    
@@ -132,7 +132,7 @@
                             <v-row>
                                 <v-col cols="12" md="6">
                                     <v-text-field v-model="nombreProveedor" label="NOMBRE PROVEEDOR" :counter="60"
-                                        :rules="nombreRules" @input="nombreProveedor = nombreProveedor.toUpperCase()"
+                                        :rules="nombreRules" @input="nombreProveedor = nombreProveedor"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="6">
@@ -415,9 +415,9 @@ export default {
 
                 }
                 else {
-                    this.registrarProveedorArchivo(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name).then(() => {
-                        //this.registrarDocumento();
-                    });    
+                    this.registrarProveedorArchivo(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name);  
+                    this.almacenarArchivo(this.documentoArchivo)
+                    this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro"+this.idProveedor,"ACTIVO");
                 }
                 
             }
@@ -740,7 +740,7 @@ export default {
         async almacenarArchivo(documentoArchivo){
 
             const formData = new FormData();
-            formData.append('adquisition', documentoArchivo);
+            formData.append('file', documentoArchivo);
             let me = this;
                 await axios
                 .post(
@@ -750,8 +750,7 @@ export default {
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.limpiar();
-                    me.listarDocumentos();
-                    me.listarArchivos();
+                    
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -782,8 +781,7 @@ export default {
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.limpiar();
-                    me.listarDocumento();
-                    me.listarArchivos();
+                   
                 })
                 .catch(function (error) {
                     me.snackbarError = true;

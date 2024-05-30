@@ -82,7 +82,7 @@
                                         NO TIENE UN ARCHIVO
                                     </v-text>
                                     <v-btn v-else-if="item.archivo !=null" color="primary" icon
-                                        :href="`${axios.defaults.baseURL}${'documento/adquisicion/' + item.archivo}`" target="">
+                                        :href="`${axios.defaults.baseURL}${'documento/descargar/' + item.archivo}`" target="">
                                         <v-icon>mdi-file</v-icon> ABRIR
                                     </v-btn>
                                 </template>
@@ -1096,14 +1096,12 @@ export default {
         registrarCotizacionAdq() {
             if (this.$refs.form.validate()) {
                 if (this.documentoArchivo == null || this.documentoArchivo == '') {
-                    alert('no file')
                     this.registrarCotizacionAdquisicion(this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado);
                 }
-                else {
-                    alert('file')
+                else {        
                     this.registrarCotizacionAdquisicionArchivo(this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado, this.documentoArchivo.name);
-                        //this.registrarDocumento();
-                  
+                    this.almacenarArchivo(this.documentoArchivo)
+                    this.guardarDocumento(this.documentoArchivo.name, this.nombreCotizacion, "adq"+this.idcotizacion, "ACTIVO");  
                 }
               
             }
@@ -1186,6 +1184,7 @@ export default {
                     me.limpiar();
                 })
                 .catch(function (error) {
+                    alert('ALERTAREGISTRO');
                     me.snackbarError = true;
 
                 });
@@ -1195,10 +1194,10 @@ export default {
         editarCotizacionAdq() {
             if (this.$refs.form.validate()) {
                 if (this.documentoArchivo != null || this.documentoArchivo != "") {
-                    //this.registrarDocumento().then(() => {
+                    this.registrarDocumento().then(() => {
                         this.editarCotizacionAdquisicionArchivo(this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado, this.documentoArchivo);
                         this.botonactCot = 0;
-                        //});
+                        });
                 }
                 else {
                     this.editarCotizacionAdquisicion(this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado);
@@ -1783,10 +1782,10 @@ export default {
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.limpiar();
-                    me.listarDocumentos();
-                    me.listarArchivos();
+                   
                 })
                 .catch(function (error) {
+                    alert('ALERTAARCHIVO')
                     me.snackbarError = true;
 
                 });
@@ -1815,10 +1814,10 @@ export default {
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.limpiar();
-                    me.listarDocumento();
-                    me.listarArchivos();
+                    
                 })
                 .catch(function (error) {
+                    alert('ALERTADOCUMENTO')
                     me.snackbarError = true;
 
                 });
