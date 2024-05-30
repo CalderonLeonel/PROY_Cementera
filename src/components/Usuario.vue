@@ -400,7 +400,7 @@ export default {
 
         datosUsuario: [],
         datosEmpleado: [],
-        datosTipo: ["GERENTE","SUPERVISOR","COMUN"],
+        datosTipo: ["GERENTE","SUPERVISOR","SECRETARIO"],
         datosAcceso: [],
         idEmpleado: "",
         nombreEmpleadoLabel: "Seleccionar empleado",

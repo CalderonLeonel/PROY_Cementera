@@ -360,7 +360,7 @@
 export default {
   data: () => ({
     drawer: false,
-    user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' }
+    user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '', id_fabrica: 0, }
   }),
   components: {
     // Empleado_cv
