@@ -54,26 +54,32 @@
              <v-form ref="form" v-model="valid" lazy-validation>
                  <v-container>
                      <v-row>
-                         <v-col cols="12" md="4">
+                         <v-col cols="3" md="2">
                              <v-btn color="success" @click="showModalAgregarTransaccion()">NUEVO INVENTARIO</v-btn>
                          </v-col>
-                         <v-col cols="12" md="4">
+                         <v-col cols="3" md="3">
                              <v-btn color="success" @click="showRevalorizarInventarioModal()">REVALORIZACIÓN DE INVENTARIO</v-btn>
                          </v-col>
+                        
                          <v-col cols="12">
                              <v-list-item>
                                  <v-list-item-title class="text-center">
                                      <h5>INVENTARIOS</h5>
                                  </v-list-item-title>
                              </v-list-item>
- 
-                             <v-card-title>
+                            <v-card-title>
                                 <v-text-field v-model="searchInventario" append-icon="mdi-magnify" label="BUSCAR INVENTARIO"
-                                     single-line hide-details></v-text-field>
-                             </v-card-title>
- 
+                                     single-line hide-details></v-text-field>                               
+                            </v-card-title>       
+                            <v-card-title>
+                                <v-btn color="primary" @click="exportToPDF()">PDF</v-btn>
+                                            
+                                <v-btn color="primary" @click="exportToCSV()">CSV</v-btn>
+                                
+                                <v-btn color="primary" @click="exportToExcel()">EXCEL</v-btn>
+                            </v-card-title> 
                              <v-data-table :headers="headerInventario" :items="datosInventario" :search="searchInventario"
-                                 :items-per-page="5" class="elevation-1" id="tableId">
+                                 :items-per-page="5" class="elevation-2" id="tableId">
  
                                  <template #[`item.estado`]="{ item }">
                                      <v-chip :color="getColor(item.estado)" dark>
@@ -124,8 +130,14 @@
                                      <v-icon x-large color="primary" class="mr-2" @click="mostrarItems(item)"
                                          title="VER STOCK DE ALMACEN">
                                          mdi-eye
-                                     </v-icon>             
+                                     </v-icon>  
+                                     <v-icon v-if="item.total>0" x-large color="primary" class="mr-2" @click="exportToPDFDetailed(item)"
+                                         title="GENERAR PDF DE STOCK">
+                                         mdi-file-pdf-box
+                                     </v-icon>                 
                                  </template>
+
+                                
  
                                
  
@@ -133,6 +145,70 @@
                              </v-data-table>
                          </v-col>
                      </v-row>
+
+                     <v-row>
+                         <v-col cols="12">
+                             <v-list-item>
+                                 <v-list-item-title class="text-center">
+                                     <h5>ALMACENES CON PRODUCTOS</h5>
+                                 </v-list-item-title>
+                             </v-list-item>
+ 
+                             <v-card-title>
+                                <v-text-field v-model="searchProductoAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACENES"
+                                     single-line hide-details></v-text-field>
+                             </v-card-title>
+ 
+                             <v-data-table :headers="headerAlmacen" :items="datosProductoAlmacen" :search="searchProductoAlmacen"
+                                 :items-per-page="5" class="elevation-1" id="tableId">
+ 
+                        
+ 
+                                 <template #[`item.actions`]="{ item }">
+                                     <v-icon x-large color="primary" class="mr-2" @click="mostrarProductos(item)"
+                                         title="VER STOCK DE ALMACEN">
+                                         mdi-eye
+                                     </v-icon>  
+                                     <v-icon  x-large color="primary" class="mr-2" @click="exportToPDFProductDetailed(item)"
+                                         title="GENERAR PDF DE STOCK">
+                                         mdi-file-pdf-box
+                                     </v-icon>                 
+                                 </template>
+
+                                
+ 
+                               
+ 
+ 
+                             </v-data-table>
+                         </v-col>
+                     </v-row>
+
+                     <v-row>
+                         <v-col cols="12">
+                             <v-list-item>
+                                 <v-list-item-title class="text-center">
+                                     <h5>SALDO DE ITEMS</h5>
+                                 </v-list-item-title>
+                             </v-list-item>
+ 
+                             <v-card-title>
+                                <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ITEMS"
+                                     single-line hide-details></v-text-field>
+                             </v-card-title>
+ 
+                             <v-data-table :headers="headerSaldoItem" :items="datosSaldoItem" :search="searchItem"
+                                 :items-per-page="5" class="elevation-1" id="tableId">
+                                 <template #[`item.actions`]="{ item }">
+                                     <v-icon class="mr-2" color="primary" x-large  @click="verAlmacenes(item)"
+                                         title="VER ALMACENES">
+                                         mdi-eye
+                                     </v-icon>          
+                                 </template>
+                             </v-data-table>
+                         </v-col>
+                     </v-row>
+
                      <v-row>
                          <v-col cols="12" md="4">
                              <v-btn color="success" @click="showModalAgregarItem()">NUEVO ITEM</v-btn>
@@ -430,7 +506,7 @@
                                     </v-btn>
                                 </v-col>  
                                 <v-col cols="12" md="4" v-if="movimiento=='ENTRADA'">
-                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="[v => ( Number(v) >= 1 && Number(v) <= this.cantidadMaxima ) || 'El número no debe sobrepasar '+ this.cantidadMaxima]" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
+                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadEntradaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
                                          @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>      
@@ -467,34 +543,40 @@
                                 </v-col> 
                                
                                 <v-col cols="12" md="4" v-if="movimiento=='SALIDA'">
-                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="[v => ( Number(v) >= 1 && Number(v) <= this.cantidadMaximaItem ) || 'El número no debe sobrepasar '+ this.cantidadMaximaItem]" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
+                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadSalidaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
                                          @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>   
+
+                                <v-col cols="12" sm="4" md="12"></v-col>
                                    
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconvv v-if="botonActInv == 1" class="mx-4"  dark color="#0A62BF" :disabled='movimiento==null'
-                                            @click="editarInv()" style="float: left"
-                                            title="ACTUALIZAR INFORMACIÓN">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                            ACTUALIZAR
-                                        </v-btn>
-                                        <v-btn iconv v-if="botonActInv == 0" class="mx-4"  dark color="#0ABF55" :disabled='movimiento==null'
-                                            @click="registrarInv()" style="float: left" title="REGISTRAR TRANSACCION">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                        </v-btn>
-                                </v-col>                      
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()" :disabled='movimiento==null'
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped >
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonActInv == 1" color="#0A62BF" @click="editarInv()" :disabled='movimiento==null'
+                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonActInv == 0" color="#0ABF55" @click="registrarInv()" :disabled='movimiento==null'
+                                                style="float: left" title="REGISTRAR TRANSACCIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large :disabled='movimiento==null'
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
+                               
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
                                         @click="closeModalAgregarTransaccion()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -558,7 +640,7 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchAlmacenConStock" append-icon="mdi-magnify" label="BUSCAR ALMACENES ACTIVOS"
+                                    <v-text-field v-model="searchAlmacenConStock" append-icon="mdi-magnify" label="BUSCAR ALMACENES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -585,6 +667,9 @@
                 </v-card-text>
             </v-card>
         </v-dialog>   
+
+
+       
 
 
         <v-dialog v-model="tipoModal" persistent :overlay="false" max-width="900px">
@@ -667,7 +752,7 @@
                                 </v-col> 
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="limitecritico" label="LIMITE CRITICO" type="number" :counter="25"
-                                         @input="limitecritico = limitecritico.toUpperCase()" :rules="limiteRules"
+                                         @input="limitecritico = limitecritico" :rules="limiteRules"
                                         required></v-text-field>
                                 </v-col> 
                                 <v-col cols="12" md="4">
@@ -677,29 +762,35 @@
                                     :rules="[v => !!v || 'El Metodo de Valuación es requerido']"
                                     ></v-select>
                                 </v-col>                   
-                                <v-col cols="12" md="4"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconvv v-if="botonActIt == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="editarIt()" style="float: left"
-                                            title="ACTUALIZAR INFORMACIÓN">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                            ACTUALIZAR
-                                        </v-btn>
-                                        <v-btn iconv v-if="botonActIt == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarIt()" style="float: left" title="REGISTRAR ITEM">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                        </v-btn>
-                                </v-col>                      
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
+                                <v-col cols="12" md="12"> </v-col>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped >
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonActIt == 1" color="#0A62BF" @click="editarIt()"
+                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonActIt == 0" color="#0ABF55" @click="registrarIt()" 
+                                                style="float: left" title="REGISTRAR ITEM" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large 
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
+                               
+                              
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
                                         @click="closeModalAgregarItem()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -728,29 +819,34 @@
                                         :rules="nombreTipoRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>                         
-                                <v-col cols="12" md="4"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconvv v-if="botonActTT == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="editarTipo()" style="float: left"
-                                            title="ACTUALIZAR INFORMACIÓN">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                            ACTUALIZAR
-                                        </v-btn>
-                                        <v-btn iconv v-if="botonActTT == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarTipo()" style="float: left" title="REGISTRAR TIPO">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                        </v-btn>
-                                </v-col>                      
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
+                                <v-col cols="12" md="12"> </v-col>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped >
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonActTT == 1" color="#0A62BF" @click="editarTipo()"
+                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarTipo()" 
+                                                style="float: left" title="REGISTRAR TIPO DE ITEM" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large 
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
+
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
                                         @click="closeModalAgregarTipoItem()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -884,23 +980,30 @@
                                 </v-col>     
                         
                                     
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                        <v-btn iconv class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarPrecioItem()" style="float: left" title="REGISTRAR NUEVO PRECIO">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                        </v-btn>
-                                </v-col>                      
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
+                                <v-col cols="12" md="12"> </v-col>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped >
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#0ABF55" @click="registrarPrecioItem()" 
+                                                style="float: left" title="REGISTRAR NUEVO PRECIO" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large 
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
+                                
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
                                         @click="closeRevalorizarInventarioModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -943,12 +1046,76 @@
             </v-card>
         </v-dialog>
 
+        <v-dialog
+            v-model="detalleProductosAlmacenados"
+            persistent :overlay="false"
+            max-width="900px"
+            transition="dialog-transition"
+        >
+            <v-card>
+                <v-card-title>
+                    <v-text-field v-model="searchProductoAlmacen" append-icon="mdi-magnify" label="BUSCAR PRODUCTO"
+                        single-line hide-details></v-text-field>
+                </v-card-title>
+            </v-card>
+            <v-card>
+                    <v-data-table :headers="headerProductos" :items="datosProductos" :search="searchProductoAlmacen"
+                        :items-per-page="5" class="elevation-1">
+                    </v-data-table>
+            </v-card>
+            <v-card>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red" dark x-big  @click="closeDetalleAlmacenamientoProducto()">
+                        <v-icon dark> mdi-close-circle-outline </v-icon> SALIR
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog
+            v-model="saldoAlmacenItemModal"
+            persistent :overlay="false"
+            max-width="900px"
+            transition="dialog-transition"
+        >
+            <v-card>
+                <v-card-title>
+                    <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACEN"
+                        single-line hide-details></v-text-field>
+                </v-card-title>
+            </v-card>
+            <v-card>
+                    <v-data-table :headers="headerSaldoAlmacenItem" :items="datosSaldoAlmacenItem" :search="searchAlmacen"
+                        :items-per-page="5" class="elevation-1">
+                    </v-data-table>
+            </v-card>
+            <v-card>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red" dark x-big  @click="closeSaldoAlmacenItemModal()">
+                        <v-icon dark> mdi-close-circle-outline </v-icon> SALIR
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+
      </v-card>
      
  
  </template>
  <script>
  import axios from "axios";
+ import * as XLSX from 'xlsx';
+
+ import Papa from "papaparse";
+
+ import jsPDF from "jspdf";
+ import 'jspdf-autotable';
+
  export default {
      data() {
          return {
@@ -983,60 +1150,69 @@
             estado: "ACTIVO",
              valid: true,
              nombreRules: [
-               (v) => !!v || "Se requiere el nombre del proveedor.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL PROVEEDOR.",
                (v) =>
                (v && v.length <= 60) ||
-                 "el nombre del proveedor no debe sobrepasar los 60 caracteres.",
+                 "EL NOMBRE DEL PROVEEDOR NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreItemRules: [
-               (v) => !!v || "Se requiere el nombre del item.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL ITEM.",
                (v) =>
                (v && v.length <= 60) ||
-                 "el nombre del item no debe sobrepasar los 60 caracteres.",
+                 "EL NOMBRE DEL ITEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreTipoRules: [
-               (v) => !!v || "Se requiere el nombre del tipo de item.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL TIPO DE ITEM.",
                (v) =>
                (v && v.length <= 60) ||
-                 "el nombre del tipo no debe sobrepasar los 60 caracteres.",
+                 "EL NOMBRE DEL TIPO NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreAlmacenRules: [
-               (v) => !!v || "Se requiere el nombre del almacen.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL ALMACEN.",
                (v) =>
                (v && v.length <= 60) ||
-                 "el nombre del almacen no debe sobrepasar los 60 caracteres.",
+                 "EL NOMBRE DEL ALMACEN NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+             ],
+             cantidadSalidaRules: [
+               (v) => !!v || "SE REQUIERE LA CANTIDAD.",
+               (v) => ( Number(v) >= 1 && Number(v) <= this.cantidadMaximaItem ) || 'EL NÚMERO NO DEBE SOBREPASAR '+ this.cantidadMaximaItem,
+             ],
+
+             cantidadEntradaRules: [
+               (v) => !!v || "SE REQUIERE LA CANTIDAD.",
+               (v) => ( Number(v) >= 1 && Number(v) <= this.cantidadMaxima ) || 'EL NÚMERO NO DEBE SOBREPASAR '+ this.cantidadMaxima,
              ],
 
             valorRules: [
-            (v) => parseFloat(v) >= 0 || "El valor debe ser mayor a 0.",
-            (v) => !!v || "El valor es obligatorio.",
-            (v) => !isNaN(parseFloat(v)) && isFinite(v) || "Ingresa un valor numérico válido."
+                (v) => parseFloat(v) >= 0 || "EL VALOR DEBE SER MAYOR A 0.",
+                (v) => !!v || "EL VALOR ES OBLIGATORIO.",
+                (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO."
             ],
 
             limiteRules: [
-            (v) => !!v || "El limite es obligatorio.",
-            (v) => parseFloat(v) >= 0 || "El limite debe ser mayor a 0.",
-            (v) => !isNaN(parseFloat(v)) && isFinite(v) || "Ingresa un valor numérico válido."
+                (v) => !!v || "EL LIMITE ES OBLIGATORIO.",
+                (v) => parseFloat(v) >= 0 || "EL LIMITE DEBE SER MAYOR A 0.",
+                (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO."
             ],
                         
             descripcionRules: [
-            (v) => !!v || "Se requiere la descripción.",
-            (v) => (v === null || v.length <= 150) || "La descripción no debe superar los 150 caracteres.",
+                (v) => !!v || "SE REQUIERE LA DESCRIPCIÓN.",
+                (v) => (v === null || v.length <= 150) || "LA DESCRIPCIÓN NO DEBE SUPERAR LOS 150 CARACTERES.",
             ],
              phone1Rules: [
-               (v) => !!v || "Se requiere un numero telefonico o celular.",
+               (v) => !!v || "SE REQUIERE UN NUMERO TELEFONICO O CELULAR.",
                (v) =>
                (v && v.length <= 10) ||
-                 "El telephono principal debe tener hasta 10 caracteres.",
+                 "EL TELEPHONO PRINCIPAL DEBE TENER HASTA 10 CARACTERES.",
              ],
              phone2Rules: [
                (v) =>
                (v && v===null || v.length <= 10) ||
-                 "El telephono secundario debe tener hasta 10 caracteres.",
+                 "EL TELEPHONO SECUNDARIO DEBE TENER HASTA 10 CARACTERES.",
              ],
              emailRules: [
-               (v) => !!v || "Se requiere el correo electronico del proveedor",
-               (v) => /.+@.+\..+/.test(v) || "Debe ser un correo electronico valido",
+               (v) => !!v || "SE REQUIERE EL CORREO ELECTRONICO DEL PROVEEDOR.",
+               (v) => /.+@.+\..+/.test(v) || "DEBE SER UN CORREO ELECTRONICO VALIDO.",
               ],
              datosInventario: [],
              headerInventario: [
@@ -1093,6 +1269,18 @@
              ],
             searchStock: "",
             detalleStockDialog: false,
+
+            datosProductos:[],
+            datosProductoAlmacen:[],
+            headerProductos: [
+                { text: "NOMBRE DE PRODUCTO", value: "nombreprod", sortable: true },
+                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: true },
+                { text: "TIPO", value: "nombretipo", sortable: true },
+                { text: "TOTAL", value: "total", sortable: false },
+            ],
+           
+            searchProductoAlmacen: "",
+            detalleProductosAlmacenados: false,
  
              datosItem: [],
              headerItem: [
@@ -1195,6 +1383,25 @@
              botonActTT:0,
 
 
+             saldoAlmacenItemModal: false,
+
+             datosSaldoItem: [],
+             headerSaldoItem: [
+                 
+                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "LIMITE CRITICO", value: "limite", sortable: true },
+                 { text: "CANTIDAD", value: "total", sortable: true },
+                 { text: "ACCIONES", value: "actions", sortable: false }
+             ],
+             datosSaldoAlmacenItem: [],
+             headerSaldoAlmacenItem: [
+                { text: "CODIGO ALMACEN", value: "codigo", sortable: true },
+                { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
+                { text: "TOTAL", value: "total", sortable: true },
+            ],
+
              snackbarOK: false,
              snackbarError : false,
              //#endregion
@@ -1205,6 +1412,8 @@
        this.listarItem();
        this.listarTipoItem();
        this.listarstock();
+       this.listaralmacenproducto();
+       this.listarSaldoItem();
        this.getListaExistencias().then(() => {
        this.getAlertas();
         });
@@ -1240,10 +1449,7 @@
                     }
                 }
                 for (let i = 0; i < items.length; i++) {
-                    if ( limite[i] >= stock[i]  ) {
-                        console.log(limite[i])
-                        console.log(stock[i])
-                        alert(limite[i]+' u '+stock[i] )
+                    if ( Number(limite[i]) >= Number(stock[i])  ) {
                         this.existencias=false;
                         this.itemsCriticos += items[i]+' ';
                     }
@@ -1875,10 +2081,57 @@
         },
 
 
+        listaralmacenproducto() {
+             this.listarProductoAlmacen();
+         },
+         async listarProductoAlmacen() {
+           let me = this;
+           await axios
+             .get("/almacen/listaralmacenConProd/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datosProductoAlmacen = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datosProductoAlmacen = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+        
+
+        async listarDetalleAlmacenamientoProductos(idAlmacen) {
+          let me = this;
+          await axios
+            .get("/inventario/listarProductos/"+idAlmacen)
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosProductos = [];
+              } else {
+                me.datosProductos = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
+
         mostrarItems(item){
             this.idAlmacen = item.idalmacen;
             this.listarDetalleStock(this.idAlmacen);
             this.detalleStockDialog = true;
+            
+        },
+
+        
+        mostrarProductos(item){
+            this.idAlmacen = item.idalmacen;
+            this.listarDetalleAlmacenamientoProductos(this.idAlmacen);
+            this.detalleProductosAlmacenados = true;
             
         },
 
@@ -1888,7 +2141,62 @@
             this.detalleStockDialog = false;
         },
 
+        closeDetalleAlmacenamientoProducto(){
+            this.detalleProductosAlmacenados = false;
+        },
 
+
+
+        listarSaldoItem() {
+            this.listarSaldoItemAlmacen();
+        },
+        async listarSaldoItemAlmacen() {
+            let me = this;
+            await axios
+                .get("/inventario/listarsaldoalmacenitem/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosSaldoItem = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosSaldoItem = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+
+        async listarDetalleSaldoItem(idItem) {
+            let me = this;
+            await axios
+                .get("/inventario/listarsaldoitem/" + idItem)
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosSaldoAlmacenItem = [];
+                        //console.log(response.data);
+                    } else {
+                        me.datosSaldoAlmacenItem = response.data.resultado;
+                        //console.log(response.data);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+
+        verAlmacenes(item){
+            this.idtiem = item.iditem;
+            this.listarDetalleSaldoItem(this.idtiem);
+            this.saldoAlmacenItemModal = true;
+        },
+
+        closeSaldoAlmacenItemModal(){
+            this.saldoAlmacenItemModal = false;
+        },
 
 
      
@@ -1950,7 +2258,8 @@
             this.idItem = item.iditem;
             this.nombreItem = item.nombreitem;
             this.descripcion = item.descripcion;
-            this.limitecritico = item.limitecritico;
+            this.limitecritico = item.limite;
+            this.metodoValuacion = item.metodovaluacion;
             this.estado = item.estado;
             this.agregarItemModal = true;
         },
@@ -2147,12 +2456,111 @@
             this.getListaExistencias();
         },
 
-        
-   
+      
+        async exportToCSV() {
+        try {
+            const response = await axios.get(`/inventario/listarinventarioactivo/`);
+            const jsonData = response.data.resultado || [];
+
+            const csvData = Papa.unparse(jsonData);
+
+            const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = "inventario.csv";
+            link.click();
+        } catch (error) {
+            console.error(error);
+        }
+        },
+
+        async exportToExcel() {
+        try {
+            const response = await axios.get(`/inventario/listarinventarioactivo/`);
+            const jsonData = response.data.resultado || [];
+            const worksheet = XLSX.utils.json_to_sheet(jsonData);
+            const workbook = XLSX.utils.book_new();
+
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Hoja1");
+
+            XLSX.writeFile(workbook, "inventario.xlsx", { compression: true });
+           
+        } catch (error) {
+            console.error(error);
+        }
+        },
+
+
+        async exportToPDF() {
+            try {
+                const response = await axios.get(`/inventario/listarinventarioactivo/`);
+                const jsonData = response.data.resultado || [];
+                console.log(jsonData)
+                const bodyData = jsonData.map(item => [
+                    item.idTransaccion, 
+                    item.nombreitem,
+                    item.nombrealmacen,
+                    item.movimiento,
+                    item.cantidad,
+                    item.metodoValuacion
+                ]);
+                const doc = new jsPDF();
+                    doc.text("Detalle de Inventario", 10, 10);
+                    doc.autoTable({ head: [["Número de Transacción", "Item", "Almacén", "Movimiento", "Cantidad", "Método de Valuación"]], body: bodyData });
+                    doc.save("inventario.pdf");
+            } catch (error) {
+                console.error(error);
+            }
+            },
+
+
+            async exportToPDFDetailed(item) {
+            try {
+                const response = await axios.get(`/inventario/listarstock/`+item.idalmacen);
+                const jsonData = response.data.resultado || [];
+                console.log(jsonData)
+                const bodyData = jsonData.map(data => [
+                    data.nombreitem, 
+                    data.descripcion,
+                    data.nombretipoitem,
+                    data.valor,
+                    data.total
+                ]);
+                const doc = new jsPDF();
+                    doc.text("Reporte de Almacen: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
+                   doc.autoTable({ head: [["Item", "Descripcion", "Tipo de Item", "Precio Unitario", "Stock"]], body: bodyData });
+                    doc.save("inventario.pdf");
+            } catch (error) {
+                console.error(error);
+            }
+            },
+
+
+            async exportToPDFProductDetailed(item) {
+            try {
+                const response = await axios.get(`/inventario/listarProductos/`+item.idalmacen);
+                const jsonData = response.data.resultado || [];
+                console.log(jsonData)
+                const bodyData = jsonData.map(data => [
+                    data.nombreprod, 
+                    data.codprod,
+                    data.nombretipo,
+                    data.total
+                ]);
+                const doc = new jsPDF();
+                    doc.text("Reporte de Almacen: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
+                   doc.autoTable({ head: [["Producto", "Código de Producto", "Tipo de Producto",  "Cantidad"]], body: bodyData });
+                    doc.save("inventario.pdf");
+            } catch (error) {
+                console.error(error);
+            }
+            },
 
       
          //#endregion
        },
+
  };
  
  </script>

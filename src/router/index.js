@@ -186,6 +186,11 @@ const routes = [
     name: "Pagos",
     component: () => import("@/components/Pagos.vue"),
   },
+  {
+    path: "asistencias",
+    name: "Asistencias",
+    component: () => import("@/components/Asistencia.vue"),
+  },
 ];
 
 const router = new VueRouter({

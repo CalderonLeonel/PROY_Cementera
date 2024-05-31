@@ -25,7 +25,7 @@
             <div class="text-h6">
                 SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
             </div>
-            POR FAVOR, NOTIFIQUE A ADQUISICIONES PARA ADQUIRIR EXISTENCIAS DE <strong>${nombreitem}</strong>
+            POR FAVOR, NOTIFIQUE A ADQUISICIONES PARA ADQUIRIR EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong>
         </v-alert>
         <v-alert v-if="existencias == true" type="success" color="green darken-2" dismissible dense prominent>
             <div class="text-h5">
@@ -240,27 +240,32 @@
                                         label="DOCUMENTO DE ALMACEN" required :disabled="storageState" @change="enableButton"
                                     ></v-file-input>
                                 </v-col>-->
-
-                                <v-col cols="12" sm="4" md="2">
-                                    <v-btn iconvv v-if="botonActAl == 1" dark color="#0A62BF" @click="editarAlm()"
-                                        style="float: left" title="ACTUALIZAR INFORMACIÓN">
-                                        <v-icon dark> mdi-pencil </v-icon>
-                                        ACTUALIZAR
-                                    </v-btn>
-                                    <v-btn iconv v-if="botonActAl == 0" dark color="#0ABF55" @click="registrarAlm()"
-                                        style="float: left" title="REGISTRAR ALMACEN">
-                                        <v-icon dark> mdi-content-save </v-icon>
-                                        GUARDAR
-                                    </v-btn>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonActAl == 1" color="#0A62BF" @click="editarAlm()"
+                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonActAl == 0" color="#0ABF55" @click="registrarAlm()"
+                                                style="float: left" title="REGISTRAR ALMACEN" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="12" sm="4" md="3">
-                                    <v-btn iconv color="#BF120A" dark @click="limpiar()" style="float: left"
-                                        title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="12" sm="4" md="6">
+                                <v-col cols="12" sm="4" md="8">
                                     <v-btn iconv dark color="#00A1B1" @click="closeModalAgregarAlma()"
                                         style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -329,8 +334,7 @@
                             <v-row>
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="nombreSeccion" label="NOMBRE SECCIÓN" :counter="60"
-                                         @input="nombreSeccion = nombreSeccion.toUpperCase()"
-                                        required></v-text-field>
+                                        @input="nombreSeccion = nombreSeccion.toUpperCase()" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="almacenRules"
@@ -340,12 +344,15 @@
                                 </v-col>
                                 <v-col cols="12" md="3">
                                     <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACEN" :counter="60"
-                                      @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
-                                        disabled required></v-text-field>
+                                        @input="nombreAlmacen = nombreAlmacen.toUpperCase()" disabled
+                                        required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12"> </v-col>
 
-                                <v-col cols="6"></v-col>
+                                <v-col cols="6">
+
+                                </v-col>
+
                                 <v-col cols="2">
                                     <v-btn iconvv v-if="botonActSe == 1" class="mx-4" dark color="#0A62BF"
                                         @click="editarSec()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
@@ -429,8 +436,7 @@
                             <v-row>
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="nombreStand" label="NOMBRE STAND" :counter="60"
-                                        @input="nombreStand = nombreStand.toUpperCase()"
-                                        required></v-text-field>
+                                        @input="nombreStand = nombreStand.toUpperCase()" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="seccionRules"
@@ -440,8 +446,8 @@
                                 </v-col>
                                 <v-col cols="12" md="3">
                                     <v-text-field v-model="nombreSeccion" label="NOMBRE SECCIÓN" :counter="60"
-                                         @input="nombreSeccion = nombreSeccion.toUpperCase()"
-                                        disabled required></v-text-field>
+                                        @input="nombreSeccion = nombreSeccion.toUpperCase()" disabled
+                                        required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12"> </v-col>
                                 <v-col cols="6"></v-col>
@@ -679,21 +685,21 @@ export default {
             mensajeSnackbarError: "REGISTRO FALLIDO",
 
             nombreRules: [
-              (v) => !!v || "Se requiere el nombre del almacen.",
-              (v) =>
-              (v && v.length <= 60) ||
-                "El nombre del almacen no debe sobrepasar los 60 caracteres.",
+                (v) => !!v || "SE REQUIERE EL NOMBRE DEL ALMACEN.",
+                (v) =>
+                    (v && v.length <= 60) ||
+                    "EL NOMBRE DEL ALMACEN NO DEBE SOBREPASAR LOS 60 CARACTERES.",
             ],
 
             descripcionRules: [
-            (v) => !!v || "Se requiere la descripción del almacen.",
-            (v) => (v === null || v.length <= 100) || "La descripción no debe superar los 100 caracteres.",
+                (v) => !!v || "SE REQUIERE LA DESCRIPCIÓN DEL ALMACEN.",
+                (v) => (v === null || v.length <= 100) || "LA DESCRIPCIÓN NO DEBE SUPERAR LOS 100 CARACTERES.",
             ],
 
 
 
 
-            
+
 
             existencias: true,
             itemsCriticos: '',
@@ -701,7 +707,7 @@ export default {
 
             documentoArchivo: '',
 
-            
+
 
             //#region Almacenamiento
             idAlmacen: "",
@@ -719,7 +725,7 @@ export default {
             snackbarOK: false,
             snackbarError: false,
 
-            
+
             datosAlmacen: [],
             headerAlmacen: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
@@ -803,9 +809,11 @@ export default {
     },
     created: function () {
         this.listarAlmacen();
-        this.listarSeccion();
-        this.listarStand();
+        //this.listarSeccion();
+        //this.listarStand();
+        this.getListaExistencias().then(() => {
         this.getAlertas();
+        });
     },
     methods: {
 
@@ -849,10 +857,7 @@ export default {
                     }
                 }
                 for (let i = 0; i < items.length; i++) {
-                    if (limite[i] >= stock[i]) {
-                        console.log(limite[i])
-                        console.log(stock[i])
-                        alert(limite[i] + ' u ' + stock[i])
+                    if (Number(limite[i]) >= Number(stock[i]) ) {
                         this.existencias = false;
                         this.itemsCriticos += items[i] + ' ';
                     }
@@ -925,7 +930,7 @@ export default {
 
         registrarAlm() {
             if (this.$refs.form.validate()) {
-            this.registrarAlmacen(this.nombreAlmacen, this.descripcionAlmacen, this.estado);
+                this.registrarAlmacen(this.nombreAlmacen, this.descripcionAlmacen, this.estado);
             }
             //this.almacenarArchivo(this.documentoArchivo)
             //this.guardarDocumento(this.documentoArchivo.name,this.nombreAlmacen,"inv000","ACTIVO");
@@ -1334,6 +1339,7 @@ export default {
             this.botonActAl = 1;
             this.idAlmacen = item.idalmacen;
             this.nombreAlmacen = item.nombrealmacen;
+            this.descripcionAlmacen = item.descripcion;
             this.estado = item.estado;
             this.agregarAlmacenModal = true;
         },

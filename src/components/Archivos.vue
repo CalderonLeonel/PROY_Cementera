@@ -54,34 +54,6 @@
                     </v-data-table>
                 </v-col>
             </v-row>
-            <v-row v-if="user == 'admin'">
-                <v-col cols="12" md="12">
-                    <v-text-field v-model="searchArchivoInv" append-icon="mdi-magnify" label="BUSCAR ARCHIVO"
-                        single-line hide-details></v-text-field>
-                    <v-data-table :headers="headerArchivo" :items="datosArchivoInv" :search="searchArchivoInv"
-                        class="elevation-1">
-                        <template #[`item.url`]="{ item }">
-                            <v-btn color="primary" icon :href="`${axios.defaults.baseURL}${item.url}`" target="">
-                                <v-icon>mdi-file</v-icon> Abrir
-                            </v-btn>
-                        </template>
-                    </v-data-table>
-                </v-col>
-            </v-row>
-            <v-row v-if="user == 'admin'">
-                <v-col cols="12" md="12">
-                    <v-text-field v-model="searchArchivoAdq" append-icon="mdi-magnify" label="BUSCAR ARCHIVO"
-                        single-line hide-details></v-text-field>
-                    <v-data-table :headers="headerArchivo" :items="datosArchivoAdq" :search="searchArchivoAdq"
-                        class="elevation-1">
-                        <template #[`item.url`]="{ item }">
-                            <v-btn color="primary" icon :href="`${axios.defaults.baseURL}${item.url}`" target="">
-                                <v-icon>mdi-file</v-icon> Abrir
-                            </v-btn>
-                        </template>
-                    </v-data-table>
-                </v-col>
-            </v-row>
             <v-row v-if="user != 'admin'">
 
                 <v-col cols="12" md="12">
@@ -107,6 +79,106 @@
 
 
 
+                    </v-data-table>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col cols="12" md="12">
+                    <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>ARCHIVOS COTIZACIONES</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                    <v-text-field v-model="searchArchivoCotizacion" append-icon="mdi-magnify"
+                        label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
+                    <v-data-table :headers="headerDocumentoAdquisicion" :items="datosDocumentoCotizacion" :search="searchDsearchArchivoCotizacionocumento"
+                        :custom-filter="customFilter" class="elevation-1">
+
+                        <template #[`item.archivo`]="{ item }">
+                                    <v-text v-if="item.archivo == null || item.arch == 'null'">
+                                        NO TIENE UN ARCHIVO
+                                    </v-text>
+                                    <v-btn v-else-if="item.archivo !=null" color="primary" icon
+                                        :href="`${axios.defaults.baseURL}${'documento/adquisicion/' + item.archivo}`" target="">
+                                        <v-icon>mdi-file</v-icon> ABRIR
+                                    </v-btn>
+                                </template>
+
+                    </v-data-table>
+                </v-col>
+            </v-row>
+
+            <v-row>
+                <v-col cols="12" md="12">
+                    <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>ARCHIVOS PROVEEDORES</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                    <v-text-field  v-model="searchArchivoProveedor" append-icon="mdi-magnify"
+                        label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
+                    <v-data-table :headers="headerDocumentoProveedor" :items="datosDocumentoProveedor" :search="searchArchivoProveedor"
+                        :custom-filter="customFilter" class="elevation-1">
+
+                        <template #[`item.archivo`]="{ item }">
+                                    <v-text v-if="item.archivo == null || item.arch == 'null'">
+                                        NO TIENE UN ARCHIVO
+                                    </v-text>
+                                    <v-btn v-else-if="item.archivo !=null" color="primary" icon
+                                        :href="`${axios.defaults.baseURL}${'documento/adquisicion/' + item.archivo}`" target="">
+                                        <v-icon>mdi-file</v-icon> ABRIR
+                                    </v-btn>
+                        </template>
+
+                    </v-data-table>
+                </v-col>
+            </v-row>
+
+            <v-row>
+                <v-col cols="12" md="12">
+                    <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>CONTRATOS</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                    <v-text-field  v-model="searchArchivoContratos" append-icon="mdi-magnify"
+                        label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
+                    <v-data-table :headers="headerDocumentoContrato" :items="datosDocumentoContrato" :search="searchArchivoContratos"
+                        :custom-filter="customFilter" class="elevation-1">
+
+                        <template #[`item.archivo`]="{ item }">
+                                    <v-text v-if="item.archivo == null || item.arch == 'null'">
+                                        NO TIENE UN ARCHIVO
+                                    </v-text>
+                                    <v-btn v-else-if="item.archivo !=null" color="primary" icon
+                                        :href="`${axios.defaults.baseURL}${'documento/descargar/' + item.archivo}`" target="">
+                                        <v-icon>mdi-file</v-icon> ABRIR
+                                    </v-btn>
+                                </template>
+
+                    </v-data-table>
+                </v-col>
+            </v-row>
+
+            <v-row>
+                <v-col cols="12" md="12">
+                    <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>ALERTAS</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                    <v-text-field v-if="user == 'admin'" v-model="searchArchivoAlertas" append-icon="mdi-magnify"
+                        label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
+                    <v-data-table :headers="headerDocumentoAlerta" :items="datosDocumentoAlerta" :search="searchArchivoAlertas"
+                        :custom-filter="customFilter" class="elevation-1">
+
+                        <template #[`item.archivo`]="{ item }">
+                            <v-btn color="primary" icon
+                                :href="`${axios.defaults.baseURL}${'documento/descargarImagen/' + item.archivo}`"
+                                target="">
+                                <v-icon>mdi-file</v-icon> DESCARGAR
+                            </v-btn>
+                        </template>
                     </v-data-table>
                 </v-col>
             </v-row>
@@ -136,28 +208,33 @@
                                         required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="4"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconvv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="editarDocumento()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
-                                        <v-icon dark> mdi-pencil </v-icon>
-                                        ACTUALIZAR
-                                    </v-btn>
-                                    <v-btn iconv v-if="botonAct == 0" class="mx-4" dark color="#0ABF55"
-                                        @click="registrarDocumento()" style="float: left" title="REGISTRAR DOCUMENTO">
-                                        <v-icon dark> mdi-content-save </v-icon>
-                                        GUARDAR
-                                    </v-btn>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonAct == 1" color="#0A62BF" @click="editarDocumento()"
+                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonAct == 0" color="#0ABF55" @click="registrarDocumento()"
+                                                style="float: left" title="REGISTRAR DOCUMENTO" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="2">
+
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeAgregarDocumento()"
                                         style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -241,21 +318,55 @@ export default {
             snackbarError: false,
 
             fileRules: [
-                (v) => !!v || "El archivo es obligatorio.", 
+                (v) => !!v || "EL ARCHIVO ES OBLIGATORIO.", 
             ],
 
 
             codigoRules: [
-              (v) => !!v || "Se requiere el codigo del archivo.",
+              (v) => !!v || "SE REQUIERE EL CODIGO DEL ARCHIVO.",
               (v) =>
               (v && v.length <= 25 ) ||
-                "El codigo no debe sobrepasar los 25 caracteres.",
+                "EL CODIGO NO DEBE SOBREPASAR LOS 25 CARACTERES.",
             ],
 
             descripcionRules: [
-            (v) => !!v || "Se requiere la descripción del archivo.",
-            (v) => (v === null || v.length <= 150) || "La descripción no debe superar los 150 caracteres.",
+            (v) => !!v || "SE REQUIERE LA DESCRIPCIÓN DEL ARCHIVO.",
+            (v) => (v === null || v.length <= 150) || "LA DESCRIPCIÓN NO DEBE SUPERAR LOS 150 CARACTERES.",
             ],
+
+
+            headerDocumentoAdquisicion: [
+                { text: "DOCUMENTO", value: "nombrecotizacion", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: true },
+            ],
+
+            searchArchivoCotizacion: '',
+            datosDocumentoCotizacion: [],
+
+            headerDocumentoProveedor: [
+                { text: "DOCUMENTO", value: "nombreproveedor", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: true },
+            ],
+
+            searchArchivoProveedor: '',
+            datosDocumentoProveedor: [],
+
+            headerDocumentoContrato: [
+                { text: "DOCUMENTO", value: "nombreempleado", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: true },
+            ],
+
+            searchArchivoContratos: '',
+            datosDocumentoContrato: [],
+
+            headerDocumentoAlerta: [
+                { text: "DOCUMENTO", value: "title", sortable: true },
+                { text: "DESCRIPCION", value: "description", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: true },
+            ],
+
+            searchArchivoAlertas: '',
+            datosDocumentoAlerta: [],
         }
     },
     created: function () {
@@ -346,6 +457,10 @@ export default {
         },
         listarArchivo() {
             this.listarArchivos();
+            this.listarArchivosCotizacion();
+            this.listarArchivosProveedor();
+            this.listarArchivosContrato();
+            this.listarArchivosAlerta();
         },
         async listarArchivos() {
             let me = this;
@@ -364,6 +479,81 @@ export default {
                     console.log(error);
                 });
         },
+
+        async listarArchivosCotizacion() {
+            let me = this;
+            await axios
+                .get("/documento/listardocumentosadquisicion/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosDocumentoCotizacion = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosDocumentoCotizacion = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+
+        async listarArchivosProveedor() {
+            let me = this;
+            await axios
+                .get("/documento/listardocumentosproveedor/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosDocumentoProveedor = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosDocumentoProveedor = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+        async listarArchivosContrato() {
+            let me = this;
+            await axios
+                .get("/documento/listardocumentoscontrato/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosDocumentoContrato = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosDocumentoContrato = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+        async listarArchivosAlerta() {
+            let me = this;
+            await axios
+                .get("/documento/listardocumentosalerta/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosDocumentoAlerta = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosDocumentoAlerta = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+
         async listarArchivosInv() {
             let me = this;
             await axios
