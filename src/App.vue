@@ -248,7 +248,7 @@
             </v-list-item-title>
           </v-list-item>
 
-          <v-list-item :to="{ name: 'Pagos' }">
+          <v-list-item :to="{ name: 'Planilla' }">
             <v-list-item-title>
               <h6>PAGOS</h6>
             </v-list-item-title>
