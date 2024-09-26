@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="5" outlined>
+    <v-card elevation="5" outlined v-if="checkAccess(8, 'SUPERVISOR') || checkAccess(8, 'COMUN')">
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
@@ -57,7 +57,7 @@
                          <v-col cols="3" md="2">
                              <v-btn color="success" @click="showModalAgregarTransaccion()">NUEVO INVENTARIO</v-btn>
                          </v-col>
-                         <v-col cols="3" md="3">
+                         <v-col cols="3" md="3" v-if="checkAccess(8, 'SUPERVISOR')">
                              <v-btn color="success" @click="showRevalorizarInventarioModal()">REVALORIZACIÓN DE INVENTARIO</v-btn>
                          </v-col>
                         
@@ -209,7 +209,7 @@
                          </v-col>
                      </v-row>
 
-                     <v-row>
+                     <v-row v-if="checkAccess(8, 'SUPERVISOR')">
                          <v-col cols="12" md="4">
                              <v-btn color="success" @click="showModalAgregarItem()">NUEVO ITEM</v-btn>
                          </v-col>
@@ -255,7 +255,7 @@
                              </v-data-table>
                          </v-col>
                      </v-row>
-                     <v-row>
+                     <v-row v-if="checkAccess(8, 'SUPERVISOR')">
                          <v-col cols="12" md="4">
                              <v-btn color="success" @click="showModalAgregarTipoItem()">NUEVO TIPO DE ITEM</v-btn>
                          </v-col>
@@ -1120,6 +1120,9 @@
      data() {
          return {
 
+            drawer: false,
+            user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+
             mensajeSnackbarError: "REGISTRO FALLIDO",
 
             existencias: true,
@@ -1417,6 +1420,16 @@
        this.getListaExistencias().then(() => {
        this.getAlertas();
         });
+
+        if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+        }
+        if (this.user == null) {
+        if (this.$route.path != '/login') {
+            this.$router.push("/login");
+        }
+        }
+        console.log("UserData: " + JSON.stringify(this.user));
        
      },
      methods: {
@@ -2557,7 +2570,33 @@
             }
             },
 
-      
+            checkAccess(accesoCorrecto, tipoCorrecto) {
+                //this.user = JSON.parse(sessionStorage.getItem('session'));
+                if (this.user == null) {
+                    return false;
+                }
+                else {
+                    let checkedAccess = false;
+                    let checkedType = false;
+                    //Si accesoCorrecto es 0, no se requiere ningun acceso para acceder
+                    if (accesoCorrecto != 0) {
+                    this.user['accesos'].forEach(access => {
+                        if (access == accesoCorrecto)
+                        checkedAccess = true;
+                    });
+                    } else checkedAccess = true;
+
+                    //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
+                    if (tipoCorrecto != '0') {
+                    if (this.user['tipo'] == tipoCorrecto) {
+                        checkedType = true;
+                    }
+                    } else checkedType = true;
+                    if (checkedAccess && checkedType) { return true }
+                    else return false;
+                }
+
+                },
          //#endregion
        },
 

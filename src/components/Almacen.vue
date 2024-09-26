@@ -682,6 +682,10 @@ import axios from "axios";
 export default {
     data() {
         return {
+
+            drawer: false,
+            user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+
             mensajeSnackbarError: "REGISTRO FALLIDO",
 
             nombreRules: [
@@ -1623,6 +1627,33 @@ export default {
 
                 });
         },
+        checkAccess(accesoCorrecto, tipoCorrecto) {
+                //this.user = JSON.parse(sessionStorage.getItem('session'));
+                if (this.user == null) {
+                    return false;
+                }
+                else {
+                    let checkedAccess = false;
+                    let checkedType = false;
+                    //Si accesoCorrecto es 0, no se requiere ningun acceso para acceder
+                    if (accesoCorrecto != 0) {
+                    this.user['accesos'].forEach(access => {
+                        if (access == accesoCorrecto)
+                        checkedAccess = true;
+                    });
+                    } else checkedAccess = true;
+
+                    //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
+                    if (tipoCorrecto != '0') {
+                    if (this.user['tipo'] == tipoCorrecto) {
+                        checkedType = true;
+                    }
+                    } else checkedType = true;
+                    if (checkedAccess && checkedType) { return true }
+                    else return false;
+                }
+
+                },
     },
 };
 
