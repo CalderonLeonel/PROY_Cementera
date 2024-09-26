@@ -6,13 +6,13 @@
             </v-alert>
         </div>
         <v-container>
-            <v-row v-if="user == 'admin'">
+            <v-row v-if="checkAccess(9, 'COMUN') || checkAccess(9, 'SUPERVISOR')">
                 <v-col cols="12" md="4">
                     <v-btn color="success" @click="showAgregarDocumento()">GUARDAR DOCUMENTO</v-btn>
                 </v-col>
 
             </v-row>
-            <v-row v-if="user == 'admin'">
+            <v-row v-if="checkAccess(9, 'COMUN') || checkAccess(9, 'SUPERVISOR')">
 
                 <v-col cols="12" md="12">
                     <v-text-field v-if="user == 'admin'" v-model="searchDocumento" append-icon="mdi-magnify"
@@ -40,7 +40,7 @@
                     </v-data-table>
                 </v-col>
             </v-row>
-            <v-row v-if="user == 'admin'">
+            <v-row v-if="checkAccess(9, 'COMUN') || checkAccess(9, 'SUPERVISOR')">
                 <v-col cols="12" md="12">
                     <v-text-field v-model="searchArchivo" append-icon="mdi-magnify" label="BUSCAR ARCHIVO" single-line
                         hide-details></v-text-field>
@@ -54,10 +54,10 @@
                     </v-data-table>
                 </v-col>
             </v-row>
-            <v-row v-if="user != 'admin'">
+            <v-row v-if="checkAccess(9, 'COMUN') || checkAccess(9, 'SUPERVISOR')">
 
                 <v-col cols="12" md="12">
-                    <v-text-field v-if="user == 'admin'" v-model="searchDocumento" append-icon="mdi-magnify"
+                    <v-text-field v-if="checkAccess(9, 'COMUN') || checkAccess(9, 'SUPERVISOR')" v-model="searchDocumento" append-icon="mdi-magnify"
                         label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
                     <v-data-table :headers="headerDocumento" :items="datosDocumento" :search="searchDocumento"
                         :custom-filter="customFilter" class="elevation-1">
@@ -83,7 +83,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col cols="12" md="12">
+                <v-col cols="12" md="12" v-if="checkAccess(9, 'SUPERVISOR')">
                     <v-list-item>
                                 <v-list-item-title class="text-center">
                                     <h5>ARCHIVOS COTIZACIONES</h5>
@@ -109,7 +109,7 @@
             </v-row>
 
             <v-row>
-                <v-col cols="12" md="12">
+                <v-col cols="12" md="12" v-if="checkAccess(9, 'SUPERVISOR')">
                     <v-list-item>
                                 <v-list-item-title class="text-center">
                                     <h5>ARCHIVOS PROVEEDORES</h5>
@@ -135,7 +135,7 @@
             </v-row>
 
             <v-row>
-                <v-col cols="12" md="12">
+                <v-col cols="12" md="12" v-if="checkAccess(9, 'SUPERVISOR')">
                     <v-list-item>
                                 <v-list-item-title class="text-center">
                                     <h5>CONTRATOS</h5>
@@ -161,7 +161,7 @@
             </v-row>
 
             <v-row>
-                <v-col cols="12" md="12">
+                <v-col cols="12" md="12" v-if="checkAccess(9, 'SUPERVISOR')">
                     <v-list-item>
                                 <v-list-item-title class="text-center">
                                     <h5>ALERTAS</h5>
@@ -183,7 +183,7 @@
                 </v-col>
             </v-row>
         </v-container>
-        <v-dialog v-model="agregarDocumento" persistent :overlay="false" max-width="1000px">
+        <v-dialog v-model="agregarDocumento" persistent :overlay="false" max-width="1000px" v-if="checkAccess(9, 'COMUN')">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>AÑADIR DOCUMENTO</span>
@@ -279,6 +279,9 @@ export default {
     data() {
         return {
 
+            drawer: false,
+            user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+
             mensajeSnackbarError: "REGISTRO FALLIDO",
 
             user: 'admin',
@@ -370,51 +373,32 @@ export default {
         }
     },
     created: function () {
-        switch (this.user) {
-            case 'admin':
-                this.listarDocumento();
-                this.listarArchivo();
-                this.listarArchivosInv();
-                this.listarArchivosAdq();
-                break;
-            case 'inventario':
-                searchDocumento = 'inv000'
-                this.listarDocumento();
-                this.listarArchivo();
-                this.listarArchivosInv();
-                break;
-            case 'adquisicion':
-                searchDocumento = 'adq000'
-                this.listarDocumento();
-                this.listarArchivo();
-                break;
-            case 'adqboss':
-                searchDocumento = 'pro000'
-                this.listarDocumento();
-                this.listarArchivo();
-                this.listarArchivosAdq();
-                break;
-            case 'prod':
-                searchDocumento = 'prd000'
-                this.listarDocumento();
-                this.listarArchivo();
-                break;
-            case 'ventas':
-                searchDocumento = 'ven000'
-                this.listarDocumento();
-                this.listarArchivo();
-                break;
-            case 'cont':
-                searchDocumento = 'con000'
-                this.listarDocumento();
-                this.listarArchivo();
-                break;
-            default:
-                this.listarDocumento();
-                this.listarArchivo();
-                break;
-        }
+  
     },
+    computed: {
+        logueado() {
+            if (this.user != null) {
+                this.user = JSON.parse(sessionStorage.getItem('session'));
+            }
+            return this.user;
+            }
+        }, created: function () {
+
+            if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+            }
+
+
+            //this.user.dispath("autologin");
+            if (this.user == null) {
+            if (this.$route.path != '/login') {
+                this.$router.push("/login");
+            }
+            }
+            console.log("UserData: " + JSON.stringify(this.user));
+
+            
+        },
     methods: {
 
         showAgregarDocumento() {
@@ -731,6 +715,33 @@ export default {
             this.$refs.form.reset()
 
         },
+        checkAccess(accesoCorrecto, tipoCorrecto) {
+      //this.user = JSON.parse(sessionStorage.getItem('session'));
+      if (this.user == null) {
+        return false;
+      }
+      else {
+        let checkedAccess = false;
+        let checkedType = false;
+        //Si accesoCorrecto es 0, no se requiere ningun acceso para acceder
+        if (accesoCorrecto != 0) {
+          this.user['accesos'].forEach(access => {
+            if (access == accesoCorrecto)
+              checkedAccess = true;
+          });
+        } else checkedAccess = true;
+
+        //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
+        if (tipoCorrecto != '0') {
+          if (this.user['tipo'] == tipoCorrecto) {
+            checkedType = true;
+          }
+        } else checkedType = true;
+        if (checkedAccess && checkedType) { return true }
+        else return false;
+      }
+
+    },
 
 
     }

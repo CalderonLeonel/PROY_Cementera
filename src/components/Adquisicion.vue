@@ -651,6 +651,9 @@ export default {
     data() {
         return {
 
+            drawer: false,
+            user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+
             existencias: true,
             itemsCriticos: '',
             datosExistencia: [],
@@ -860,8 +863,40 @@ export default {
         this.listarCotizacionItem()
         this.getListaExistencias().then(() => {
         this.getAlertas();
+
+        if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+        }
+            if (this.user == null) {
+        if (this.$route.path != '/login') {
+            this.$router.push("/login");
+        }
+    }
+    console.log("UserData: " + JSON.stringify(this.user));
         });
     },
+    computed: {
+        logueado() {
+            if (this.user != null) {
+                this.user = JSON.parse(sessionStorage.getItem('session'));
+            }
+            return this.user;
+            }
+        }, created: function () {
+
+            if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+            }
+
+
+            //this.user.dispath("autologin");
+            if (this.user == null) {
+            if (this.$route.path != '/login') {
+                this.$router.push("/login");
+            }
+            }
+            console.log("UserData: " + JSON.stringify(this.user));
+        },
     methods: {
 
         getAlertas() {
@@ -1861,7 +1896,37 @@ export default {
                 console.error(error);
             }
             },
+        checkAccess(accesoCorrecto, tipoCorrecto) {
+            if (this.user == null) {
+                return false;
+            }
+            else {
+                let checkedAccess = false;
+                let checkedType = false;
+                //Si accesoCorrecto es 0, no se requiere ningun acceso para acceder
+                if (accesoCorrecto != 0) {
+                this.user['accesos'].forEach(access => {
+                    if (access == accesoCorrecto)
+                    checkedAccess = true;
+                });
+                } else checkedAccess = true;
+
+                //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
+                if (tipoCorrecto != '0') {
+                if (this.user['tipo'] == tipoCorrecto) {
+                    checkedType = true;
+                }
+                } else checkedType = true;
+                if (checkedAccess && checkedType) { return true }
+                else return false;
+            }
+
+        },
+        
+
     },
+    
+ 
 };
 
 </script>

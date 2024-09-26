@@ -87,7 +87,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="#00A1B1" value="true">
+        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(2, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-test-tube</v-icon>
@@ -137,7 +137,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="#00A1B1" value="true">
+        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(2, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-account-group</v-icon>
@@ -249,7 +249,7 @@
           
         </v-list-group>
 
-        <v-list-group no-action color="#00A1B1" value="true">
+        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(2, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-point-of-sale</v-icon>
@@ -265,7 +265,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="#00A1B1" value="true">
+        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(2, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-chart-bar</v-icon>
@@ -282,7 +282,7 @@
           </v-list-item>
         </v-list-group>
       
-        <v-list-group no-action color="light-blue darken-4" value="true">
+        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(2, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-package</v-icon>
@@ -329,7 +329,7 @@
           </v-list-item>
         </v-list-group>
        
-        <v-list-group no-action color="light-blue darken-4" value="true">
+        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(2, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
@@ -345,7 +345,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="#00A1B1" value="true">
+        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(2, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-wallet-outline</v-icon>
@@ -374,7 +374,7 @@
             </v-list-item-content>
           </template>
 
-          <v-list-item :to="{ name: 'Proveedor' }">
+          <v-list-item :to="{ name: 'Proveedor' }" v-if="checkAccess(7, 'SUPERVISOR')">
             <v-list-item-title>
               <h6>PROVEEDOR</h6>
             </v-list-item-title>
@@ -403,7 +403,7 @@
               <h6>INVENTARIO</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Almacen' }">
+          <v-list-item :to="{ name: 'Almacen' }" v-if="checkAccess(8, 'SUPERVISOR')">
             <v-list-item-title>
               <h6>ALMACEN</h6>
             </v-list-item-title>
@@ -427,7 +427,7 @@
               <h6>GESTIÓN DE DOCUMENTOS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'ArchivosEmpleado' }">
+          <v-list-item :to="{ name: 'ArchivosEmpleado' }" v-if="checkAccess(9, 'SUPERVISOR')">
             <v-list-item-title>
               <h6>DOCUMENTOS DE PERSONAL</h6>
             </v-list-item-title>
@@ -491,9 +491,6 @@ export default {
     if (this.user != null) {
       this.user = JSON.parse(sessionStorage.getItem('session'));
     }
-
-
-    //this.user.dispath("autologin");
     if (this.user == null) {
       if (this.$route.path != '/login') {
         this.$router.push("/login");
