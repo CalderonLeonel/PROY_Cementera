@@ -262,7 +262,7 @@
                          <v-col cols="12">
                              <v-list-item>
                                  <v-list-item-title class="text-center">
-                                     <h5>TIPOS DE ITEMS</h5>
+                                     <h5>TIPOS DE ITEM</h5>
                                  </v-list-item-title>
                              </v-list-item>
  
@@ -751,7 +751,7 @@
                                     </v-btn>
                                 </v-col> 
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="limitecritico" label="LIMITE CRITICO" type="number" :counter="25"
+                                    <v-text-field v-model="limitecritico" label="LIMITE CRÍTICO" type="number" :counter="25"
                                          @input="limitecritico = limitecritico" :rules="limiteRules"
                                         required></v-text-field>
                                 </v-col> 
@@ -1237,7 +1237,7 @@
                 
                 { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
                 { text: "DESCRIPCIÓN DE ALMACEN", value: "descripcion", sortable: true },
-                { text: "CODIGO ALMACEN", value: "codigo", sortable: true },
+                { text: "CÓDIGO ALMACEN", value: "codigo", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -1252,7 +1252,7 @@
             datosStockAlmacen:[],
             headerStockAlmacen: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
-                { text: "CODIGO ALMACEN", value: "codigo", sortable: true },
+                { text: "CÓDIGO ALMACEN", value: "codigo", sortable: true },
                 { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
                 { text: "TOTAL", value: "total", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false },
@@ -1277,7 +1277,7 @@
             datosProductoAlmacen:[],
             headerProductos: [
                 { text: "NOMBRE DE PRODUCTO", value: "nombreprod", sortable: true },
-                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: true },
+                { text: "CÓDIGO DE PRODUCTO", value: "codprod", sortable: true },
                 { text: "TIPO", value: "nombretipo", sortable: true },
                 { text: "TOTAL", value: "total", sortable: false },
             ],
@@ -1292,7 +1292,7 @@
                  { text: "DESCRIPCION", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
-                 { text: "LIMITE CRITICO", value: "limite", sortable: true },
+                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -1316,7 +1316,7 @@
                  { text: "DESCRIPCION", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
-                 { text: "LIMITE CRITICO", value: "limite", sortable: true },
+                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
@@ -1348,7 +1348,7 @@
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCION", value: "descripcion", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
-                 { text: "LIMITE CRITICO", value: "limite", sortable: true },
+                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -1394,13 +1394,13 @@
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCION", value: "descripcion", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
-                 { text: "LIMITE CRITICO", value: "limite", sortable: true },
+                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
              ],
              datosSaldoAlmacenItem: [],
              headerSaldoAlmacenItem: [
-                { text: "CODIGO ALMACEN", value: "codigo", sortable: true },
+                { text: "CÓDIGO ALMACEN", value: "codigo", sortable: true },
                 { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
                 { text: "TOTAL", value: "total", sortable: true },
             ],

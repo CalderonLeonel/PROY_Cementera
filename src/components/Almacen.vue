@@ -417,7 +417,7 @@ export default {
             datosAlmacen: [],
             headerAlmacen: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
-                { text: "CODIGO ALMACEN", value: "codigo", sortable: true },
+                { text: "CÓDIGO ALMACEN", value: "codigo", sortable: true },
                 { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
                 { text: "DESCRIPCIÓN DE ALMACEN", value: "descripcion", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },

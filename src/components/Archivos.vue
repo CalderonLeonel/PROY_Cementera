@@ -309,7 +309,7 @@ export default {
                 { text: "DOCUMENTO", value: "namedoc", sortable: true },
                 { text: "ARCHIVO", value: "doc", sortable: true },
                 { text: "DESCRIPCIÓN", value: "descrip", sortable: true },
-                { text: "CODIGO", value: "codigo", sortable: true },
+                { text: "CÓDIGO", value: "codigo", sortable: true },
             ],
 
 
@@ -326,10 +326,10 @@ export default {
 
 
             codigoRules: [
-              (v) => !!v || "SE REQUIERE EL CODIGO DEL ARCHIVO.",
+              (v) => !!v || "SE REQUIERE EL CÓDIGO DEL ARCHIVO.",
               (v) =>
               (v && v.length <= 25 ) ||
-                "EL CODIGO NO DEBE SOBREPASAR LOS 25 CARACTERES.",
+                "EL CÓDIGO NO DEBE SOBREPASAR LOS 25 CARACTERES.",
             ],
 
             descripcionRules: [
