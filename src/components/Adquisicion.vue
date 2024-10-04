@@ -790,7 +790,7 @@ export default {
             headerItem: [
 
                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                 { text: "MEDIDA", value: "medida", sortable: true },
                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },

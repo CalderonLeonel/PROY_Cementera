@@ -43,17 +43,17 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showModalAgregarAlmacen()">NUEVO ALMACEN</v-btn>
+                            <v-btn color="success" @click="showModalAgregarAlmacen()">NUEVO ALMACÉN</v-btn>
                         </v-col>
                         <v-col cols="12">
                             <v-list-item>
                                 <v-list-item-title class="text-center">
-                                    <h5>ALMACEN</h5>
+                                    <h5>ALMACÉN</h5>
                                 </v-list-item-title>
                             </v-list-item>
 
                             <v-card-title>
-                                <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACEN"
+                                <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACÉN"
                                     single-line hide-details></v-text-field>
                             </v-card-title>
 
@@ -73,11 +73,11 @@
                                         mdi-pencil
                                     </v-icon>
                                     <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2"
-                                        @click="activar(item)" title="ACTIVAR ALMACEN">
+                                        @click="activar(item)" title="ACTIVAR ALMACÉN">
                                         mdi-check-circle-outline
                                     </v-icon>
                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2"
-                                        @click="confirmacionAnulacionAlmacen(item)" title="DESACTIVAR ALMACEN">
+                                        @click="confirmacionAnulacionAlmacen(item)" title="DESACTIVAR ALMACÉN">
                                         mdi-close-circle
                                     </v-icon>
                                 </template>
@@ -224,12 +224,12 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACEN" :counter="60"
+                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACÉN" :counter="60"
                                         :rules="nombreRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="descripcionAlmacen" label="DESCRIPCION ALMACEN"
+                                    <v-text-field v-model="descripcionAlmacen" label="DESCRIPCIÓN ALMACÉN"
                                         :counter="100" :rules="descripcionRules"
                                         @input="descripcionAlmacen = descripcionAlmacen.toUpperCase()"
                                         required></v-text-field>
@@ -253,7 +253,7 @@
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
                                             <v-btn icon v-if="botonActAl == 0" color="#0ABF55" @click="registrarAlm()"
-                                                style="float: left" title="REGISTRAR ALMACEN" class="mx-2" large>
+                                                style="float: left" title="REGISTRAR ALMACÉN" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -291,7 +291,7 @@
                             <v-col cols="12">
                                 <v-card-title>
                                     <v-text-field v-model="buscarAlmacen" append-icon="mdi-magnify"
-                                        label="BUSCAR ALMACEN" single-line hide-details></v-text-field>
+                                        label="BUSCAR ALMACÉN" single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
 
@@ -338,7 +338,7 @@
                             <v-col cols="3"></v-col>
                             <v-col cols="3">
                                 <v-btn class="mx-2" dark x-big color="#BF120A" @click="anularAlmacen()"
-                                    style="float: right" title="ANULAR ALMACEN">
+                                    style="float: right" title="ANULAR ALMACÉN">
                                     <v-icon dark> mdi-close-circle-outline </v-icon>
                                     ANULAR
                                 </v-btn>
@@ -373,14 +373,14 @@ export default {
             mensajeSnackbarError: "REGISTRO FALLIDO",
 
             nombreRules: [
-                (v) => !!v || "SE REQUIERE EL NOMBRE DEL ALMACEN.",
+                (v) => !!v || "SE REQUIERE EL NOMBRE DEL ALMACÉN.",
                 (v) =>
                     (v && v.length <= 60) ||
                     "EL NOMBRE DEL ALMACEN NO DEBE SOBREPASAR LOS 60 CARACTERES.",
             ],
 
             descripcionRules: [
-                (v) => !!v || "SE REQUIERE LA DESCRIPCIÓN DEL ALMACEN.",
+                (v) => !!v || "SE REQUIERE LA DESCRIPCIÓN DEL ALMACÉN.",
                 (v) => (v === null || v.length <= 100) || "LA DESCRIPCIÓN NO DEBE SUPERAR LOS 100 CARACTERES.",
             ],
 
@@ -417,9 +417,9 @@ export default {
             datosAlmacen: [],
             headerAlmacen: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
-                { text: "CÓDIGO ALMACEN", value: "codigo", sortable: true },
-                { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
-                { text: "DESCRIPCIÓN DE ALMACEN", value: "descripcion", sortable: true },
+                { text: "CÓDIGO ALMACÉN", value: "codigo", sortable: true },
+                { text: "NOMBRE DE ALMACÉN", value: "nombrealmacen", sortable: true },
+                { text: "DESCRIPCIÓN DE ALMACÉN", value: "descripcion", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -429,7 +429,7 @@ export default {
             headerSeccion: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
                 { text: "NOMBRE DE SECCION", value: "nombreseccion", sortable: true },
-                { text: "ALMACEN", value: "nombrealmacen", sortable: true },
+                { text: "ALMACÉN", value: "nombrealmacen", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -448,7 +448,7 @@ export default {
             headerAlmacenamiento: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
                 { text: "ITEM", value: "nombreitem", sortable: true },
-                { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                 { text: "TIPO", value: "nombretipoitem", sortable: true },
                 { text: "MEDIDA", value: "medida", sortable: true },
                 { text: "CANTIDAD", value: "cantidad", sortable: true },

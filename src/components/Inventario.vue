@@ -93,11 +93,11 @@
                                          mdi-pencil
                                      </v-icon>
                                      <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="confirmarActivacionInv(item)"
-                                         title="ACTIVAR ALMACEN">
+                                         title="ACTIVAR ALMACÉN">
                                          mdi-check-circle-outline
                                      </v-icon>
                                      <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionInv(item)"
-                                         title="DESACTIVAR ALMACEN">
+                                         title="DESACTIVAR ALMACÉN">
                                          mdi-close-circle
                                      </v-icon>             
                                  </template>
@@ -166,7 +166,7 @@
  
                                  <template #[`item.actions`]="{ item }">
                                      <v-icon x-large color="primary" class="mr-2" @click="mostrarProductos(item)"
-                                         title="VER STOCK DE ALMACEN">
+                                         title="VER STOCK DE ALMACÉN">
                                          mdi-eye
                                      </v-icon>  
                                      <v-icon  x-large color="primary" class="mr-2" @click="exportToPDFProductDetailed(item)"
@@ -428,7 +428,7 @@
         <v-dialog v-model="itemAlmacenModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE ITEMS DISPONIBLES EN EL ALMACEN</span>
+                    <span>LISTA DE ITEMS DISPONIBLES EN EL ALMACÉN</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -494,14 +494,14 @@
                                 </v-col> 
 
                                 <v-col cols="12" md="11" v-if="movimiento=='ENTRADA'">
-                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACEN"
+                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACÉN"
                                         :rules="nombreAlmacenRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null' 
-                                        @click="openAlmacenModal()" style="float: right" title="BUSCAR ALMACEN">
+                                        @click="openAlmacenModal()" style="float: right" title="BUSCAR ALMACÉN">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>  
@@ -517,7 +517,7 @@
                              
 
                                 <v-col cols="12" md="11" v-if="movimiento=='SALIDA'">
-                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACEN"
+                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACÉN"
                                         :rules="nombreAlmacenRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
@@ -728,7 +728,7 @@
                                         required></v-text-field>
                                 </v-col>   
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="descripcion" label="DESCRIPCION" :counter="150"
+                                    <v-text-field v-model="descripcion" label="DESCRIPCIÓN" :counter="150"
                                         :rules="descripcionRules" @input="descripcion = descripcion.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>   
@@ -1082,7 +1082,7 @@
         >
             <v-card>
                 <v-card-title>
-                    <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACEN"
+                    <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACÉN"
                         single-line hide-details></v-text-field>
                 </v-card-title>
             </v-card>
@@ -1171,10 +1171,10 @@
                  "EL NOMBRE DEL TIPO NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreAlmacenRules: [
-               (v) => !!v || "SE REQUIERE EL NOMBRE DEL ALMACEN.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL ALMACÉN.",
                (v) =>
                (v && v.length <= 60) ||
-                 "EL NOMBRE DEL ALMACEN NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+                 "EL NOMBRE DEL ALMACÉN NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              cantidadSalidaRules: [
                (v) => !!v || "SE REQUIERE LA CANTIDAD.",
@@ -1222,7 +1222,7 @@
                  
                  { text: "NUMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
                  { text: "ITEM", value: "nombreitem", sortable: true },
-                 { text: "ALMACEN", value: "nombrealmacen", sortable: true },
+                 { text: "ALMACÉN", value: "nombrealmacen", sortable: true },
                  { text: "MOVIMIENTO", value: "movimiento", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodoValuacion", sortable: true },
@@ -1235,9 +1235,9 @@
             headerAlmacen: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
                 
-                { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
-                { text: "DESCRIPCIÓN DE ALMACEN", value: "descripcion", sortable: true },
-                { text: "CÓDIGO ALMACEN", value: "codigo", sortable: true },
+                { text: "NOMBRE DE ALMACÉN", value: "nombrealmacen", sortable: true },
+                { text: "DESCRIPCIÓN DE ALMACÉN", value: "descripcion", sortable: true },
+                { text: "CÓDIGO ALMACÉN", value: "codigo", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -1252,8 +1252,8 @@
             datosStockAlmacen:[],
             headerStockAlmacen: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
-                { text: "CÓDIGO ALMACEN", value: "codigo", sortable: true },
-                { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
+                { text: "CÓDIGO ALMACÉN", value: "codigo", sortable: true },
+                { text: "NOMBRE DE ALMACÉN", value: "nombrealmacen", sortable: true },
                 { text: "TOTAL", value: "total", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false },
                 //{ text: "ACCIONES", value: "actions", sortable: false }
@@ -1264,7 +1264,7 @@
             datosStock: [],
             headerStock: [   
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
                  { text: "STOCK", value: "total", sortable: true },
@@ -1289,7 +1289,7 @@
              headerItem: [
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
@@ -1313,7 +1313,7 @@
              headerItemDisponibles: [
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
@@ -1333,7 +1333,7 @@
              headerItemPrecio: [
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
@@ -1346,7 +1346,7 @@
              headerItemAlmacen: [
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
@@ -1392,7 +1392,7 @@
              headerSaldoItem: [
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
@@ -1400,8 +1400,8 @@
              ],
              datosSaldoAlmacenItem: [],
              headerSaldoAlmacenItem: [
-                { text: "CÓDIGO ALMACEN", value: "codigo", sortable: true },
-                { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
+                { text: "CÓDIGO ALMACÉN", value: "codigo", sortable: true },
+                { text: "NOMBRE DE ALMACÉN", value: "nombrealmacen", sortable: true },
                 { text: "TOTAL", value: "total", sortable: true },
             ],
 
@@ -2541,8 +2541,8 @@
                     data.total
                 ]);
                 const doc = new jsPDF();
-                    doc.text("Reporte de Almacen: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
-                   doc.autoTable({ head: [["Item", "Descripcion", "Tipo de Item", "Precio Unitario", "Stock"]], body: bodyData });
+                    doc.text("Reporte de Almacén: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
+                   doc.autoTable({ head: [["Item", "Descripción", "Tipo de Item", "Precio Unitario", "Stock"]], body: bodyData });
                     doc.save("inventario.pdf");
             } catch (error) {
                 console.error(error);
@@ -2562,7 +2562,7 @@
                     data.total
                 ]);
                 const doc = new jsPDF();
-                    doc.text("Reporte de Almacen: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
+                    doc.text("Reporte de Almacén: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
                    doc.autoTable({ head: [["Producto", "Código de Producto", "Tipo de Producto",  "Cantidad"]], body: bodyData });
                     doc.save("inventario.pdf");
             } catch (error) {
