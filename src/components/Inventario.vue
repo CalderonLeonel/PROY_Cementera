@@ -468,7 +468,7 @@
          <v-dialog v-model="agregarInventarioModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>AGREGAR TRANSACCIÓN</span>
+                    <span>GESTIÓN DE TRANSACCIONES DE INVENTARIO</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -716,7 +716,7 @@
          <v-dialog v-model="agregarItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>AGREGAR ITEM</span>
+                    <span>GESTIÓN DE ITEMS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -808,7 +808,7 @@
          <v-dialog v-model="agregarTipoItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>AGREGAR TIPO DE ITEM</span>
+                    <span>GESTIÓN DE TIPO DE ITEMS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
