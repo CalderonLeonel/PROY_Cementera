@@ -60,7 +60,7 @@
                         <v-col cols="12">
                             <v-list-item>
                                 <v-list-item-title class="text-center">
-                                    <h5>Proveedores</h5>
+                                    <h5>PROVEEDORES</h5>
                                 </v-list-item-title>
                             </v-list-item>
 
@@ -124,7 +124,7 @@
         <v-dialog v-model="agregarProveedorModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>AGREGAR PROVEEDOR</span>
+                    <span>GESTIÓN DE PROVEEDOR</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>

@@ -199,11 +199,11 @@
 
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-text-field v-model="codigoArchivo" type="text" label="CODIGO" :counter="25" :rules="codigoRules"
+                                    <v-text-field v-model="codigoArchivo" type="text" label="CÓDIGO" :counter="25" :rules="codigoRules"
                                         @input="codigoArchivo = codigoArchivo.toUpperCase()" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="descripcionArchivo" type="text" label="DESCRIPCION" :rules="descripcionRules"
+                                    <v-text-field v-model="descripcionArchivo" type="text" label="DESCRIPCIÓN" :rules="descripcionRules"
                                         :counter="150" @input="descripcionArchivo = descripcionArchivo.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -309,7 +309,7 @@ export default {
                 { text: "DOCUMENTO", value: "namedoc", sortable: true },
                 { text: "ARCHIVO", value: "doc", sortable: true },
                 { text: "DESCRIPCIÓN", value: "descrip", sortable: true },
-                { text: "CODIGO", value: "codigo", sortable: true },
+                { text: "CÓDIGO", value: "codigo", sortable: true },
             ],
 
 
@@ -326,10 +326,10 @@ export default {
 
 
             codigoRules: [
-              (v) => !!v || "SE REQUIERE EL CODIGO DEL ARCHIVO.",
+              (v) => !!v || "SE REQUIERE EL CÓDIGO DEL ARCHIVO.",
               (v) =>
               (v && v.length <= 25 ) ||
-                "EL CODIGO NO DEBE SOBREPASAR LOS 25 CARACTERES.",
+                "EL CÓDIGO NO DEBE SOBREPASAR LOS 25 CARACTERES.",
             ],
 
             descripcionRules: [
@@ -364,7 +364,7 @@ export default {
 
             headerDocumentoAlerta: [
                 { text: "DOCUMENTO", value: "title", sortable: true },
-                { text: "DESCRIPCION", value: "description", sortable: true },
+                { text: "DESCRIPCIÓN", value: "description", sortable: true },
                 { text: "ARCHIVO", value: "archivo", sortable: true },
             ],
 

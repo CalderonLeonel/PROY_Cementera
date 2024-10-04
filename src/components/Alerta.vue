@@ -65,7 +65,7 @@
         <v-dialog v-model="agregarAlerta" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>Agregar Alerta</span>
+                    <span>GESTIÓN DE ALERTA</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" lazy-validation>

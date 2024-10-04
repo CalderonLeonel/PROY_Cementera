@@ -231,7 +231,7 @@
       <v-dialog v-model="agregarCotizacionAdquisicionModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>AGREGAR COTRIZACION DE ADQUISICION</span>
+                    <span>GESTIÓN DE COTIZACIÓN DE ADQUISICIÓN</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -447,7 +447,7 @@
         <v-dialog v-model="agregarCotizacionItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>AGREGAR COTIZACION DE UN ITEM</span>
+                    <span>GESTIÓN DE COTIZACIÓN DE UN ITEM</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -790,7 +790,7 @@ export default {
             headerItem: [
 
                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                 { text: "MEDIDA", value: "medida", sortable: true },
                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
