@@ -25,7 +25,7 @@
             <div class="text-h6">
                 SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
             </div>
-            POR FAVOR, COTICE UNA ADQUISICION PARA TENER EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong> NECESARIAS PARA
+            POR FAVOR, COTICE UNA ADQUISICIÓN PARA TENER EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong> NECESARIAS PARA
             EL
             FUNCIONAMIENTO DE LA FABRICA
         </v-alert>
@@ -46,7 +46,7 @@
 
                     <v-row>
                         <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showModalAgregarCotizacionAdquisicion()">NUEVA COTIZACION DE
+                            <v-btn color="success" @click="showModalAgregarCotizacionAdquisicion()">NUEVA COTIZACIÓN DE
                                 ADQUISICIONES</v-btn>
                         </v-col>
                         <v-col cols="12">
@@ -250,7 +250,7 @@
                                 </v-col>
 
                                 <v-col cols="12" md="8">
-                                    <v-text-field v-model="nombreCotizacion" label="NOMBRE DE LA COTIZACION"
+                                    <v-text-field v-model="nombreCotizacion" label="NOMBRE DE LA COTIZACIÓN"
                                         :counter="100" @input="nombreCotizacion = nombreCotizacion.toUpperCase()"
                                         :rules="nombreCotizacionRules" required></v-text-field>
                                 </v-col>
@@ -274,7 +274,7 @@
                                 <v-col cols="12" md="12">
                                     <v-file-input v-model="documentoArchivo"
                                         accept=".jpg, .jpeg, .webp, .png, .gif, .bmp, .docx, .xlsx, .pptx, .pdf, .csv, .xml"
-                                        label="DOCUMENTO DE COTIZACION"></v-file-input>
+                                        label="DOCUMENTO DE COTIZACIÓN"></v-file-input>
                                 </v-col>
 
 
@@ -293,7 +293,7 @@
                                             </v-btn>
                                             <v-btn icon v-if="botonactCot == 0" color="#0ABF55"
                                                 @click="registrarCotizacionAdq()" style="float: left"
-                                                title="REGISTRAR COTIZACION DE ADQUISICION" class="mx-2" large>
+                                                title="REGISTRAR COTIZACIÓN DE ADQUISICIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -507,7 +507,7 @@
                                             </v-btn>
                                             <v-btn icon v-if="botonactCotIt == 0" color="#0ABF55" :disabled='nombreCotizacion==null'
                                                 @click="registrarCotizacionIt()" style="float: left"
-                                                title="REGISTRAR COTIZACION DE ITEM" class="mx-2" large>
+                                                title="REGISTRAR COTIZACIÓN DE ITEM" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -548,7 +548,7 @@
                             <v-col cols="3"></v-col>
                             <v-col cols="3">
                                 <v-btn class="mx-2" dark x-big color="#BF120A" @click="anularCotizacionAdquisicion()"
-                                    style="float: right" title="ANULAR COTIZACION DE ADQUISICION">
+                                    style="float: right" title="ANULAR COTIZACIÓN DE ADQUISICIÓN">
                                     <v-icon dark> mdi-close-circle-outline </v-icon>
                                     ANULAR
                                 </v-btn>
@@ -1761,7 +1761,7 @@ export default {
             let me = this;
             if (contenido == null) {
                 contenido = [];
-                me.mensajeSnackbarError = "NO SE PUEDE APROBAR UNA COTIZACION SIN ITEMS, POR FAVOR AGREGUE EL DETALLE DE LA COTIZACIÓN";
+                me.mensajeSnackbarError = "NO SE PUEDE APROBAR UNA COTIZACIÓN SIN ITEMS, POR FAVOR AGREGUE EL DETALLE DE LA COTIZACIÓN";
                 me.snackbarError = true;
             } else {
                 this.idCotizacion = item.idCotizacion;
