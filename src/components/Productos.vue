@@ -10,8 +10,8 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="buscarFormato" append-icon="mdi-magnify" label="BUSCAR FORMATO"
-                                        single-line hide-details></v-text-field>
+                                    <v-text-field v-model="buscarFormato" append-icon="mdi-magnify"
+                                        label="BUSCAR FORMATO" single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
 
@@ -78,8 +78,8 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6" @click="closeTipos()"
-                                    style="float: right" title="SALIR">
+                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
+                                    @click="closeTipos()" style="float: right" title="SALIR">
                                     <v-icon dark> mdi-close-circle-outline </v-icon>
                                 </v-btn>
                             </v-col>
@@ -105,8 +105,8 @@
                                 </v-list-item>
 
                                 <v-card-title>
-                                    <v-text-field v-model="buscarFabricas" append-icon="mdi-magnify" label="BUSCAR FABRICAS"
-                                        single-line hide-details></v-text-field>
+                                    <v-text-field v-model="buscarFabricas" append-icon="mdi-magnify"
+                                        label="BUSCAR FABRICAS" single-line hide-details></v-text-field>
                                 </v-card-title>
 
 
@@ -146,13 +146,15 @@
                             <v-row>
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="nombreProducto" label="NOMBRE PRODUCTO" :counter="100"
-                                        :rules="nombreProductoRules" @input="nombreProducto = nombreProducto.toUpperCase()"
-                                        required disabled></v-text-field>
+                                        :rules="nombreProductoRules"
+                                        @input="nombreProducto = nombreProducto.toUpperCase()" required
+                                        disabled></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="codigoProducto" label="CODIGO PRODUCTO" :counter="100"
-                                        :rules="codigoProductoRules" @input="codigoProducto = codigoProducto.toUpperCase()"
-                                        required disabled></v-text-field>
+                                        :rules="codigoProductoRules"
+                                        @input="codigoProducto = codigoProducto.toUpperCase()" required
+                                        disabled></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="nombreFormato" label="NOMBRE FORMATO" :counter="50"
@@ -198,13 +200,13 @@
                             <v-row>
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="nombreProducto" label="NOMBRE PRODUCTO" :counter="100"
-                                        :rules="nombreProductoRules" @input="nombreProducto = nombreProducto.toUpperCase()"
-                                        required></v-text-field>
+                                        :rules="nombreProductoRules"
+                                        @input="nombreProducto = nombreProducto.toUpperCase()" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="codigoProducto" label="CODIGO PRODUCTO" :counter="100"
-                                        :rules="codigoProductoRules" @input="codigoProducto = codigoProducto.toUpperCase()"
-                                        required></v-text-field>
+                                        :rules="codigoProductoRules"
+                                        @input="codigoProducto = codigoProducto.toUpperCase()" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="ProductoRules"
@@ -224,8 +226,8 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="3">
-                                    <v-text-field v-model="nombreTipoProducto" label="NOMBRE TIPO PRODUCTO" :counter="50"
-                                        :rules="nombreTipoProductoRules"
+                                    <v-text-field v-model="nombreTipoProducto" label="NOMBRE TIPO PRODUCTO"
+                                        :counter="50" :rules="nombreTipoProductoRules"
                                         @input="nombreTipoProducto = nombreTipoProducto.toUpperCase()" disabled
                                         required></v-text-field>
                                 </v-col>
@@ -250,7 +252,8 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="#EE680B"
-                                            @click="editarProductos()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
+                                            @click="editarProductos()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
                                         <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="#EE680B"
@@ -307,7 +310,7 @@
                                     LIST
                                     PROD.
                                 </v-tab>
-                                
+
                                 <v-tab>
                                     <v-icon left>
                                         mdi-list-box
@@ -327,14 +330,16 @@
                                                 <v-container>
                                                     <v-row>
                                                         <v-col cols="12" md="4">
-                                                            <v-text-field v-model="nombreProducto" label="NOMBRE PRODUCTO"
-                                                                :counter="100" :rules="nombreProductoRules"
+                                                            <v-text-field v-model="nombreProducto"
+                                                                label="NOMBRE PRODUCTO" :counter="100"
+                                                                :rules="nombreProductoRules"
                                                                 @input="nombreProducto = nombreProducto.toUpperCase()"
                                                                 required></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" md="4">
-                                                            <v-text-field v-model="codigoProducto" label="CODIGO PRODUCTO"
-                                                                :counter="100" :rules="codigoProductoRules"
+                                                            <v-text-field v-model="codigoProducto"
+                                                                label="CODIGO PRODUCTO" :counter="100"
+                                                                :rules="codigoProductoRules"
                                                                 @input="codigoProducto = codigoProducto.toUpperCase()"
                                                                 required></v-text-field>
                                                         </v-col>
@@ -353,8 +358,8 @@
                                                         </v-col>
                                                         <v-col cols="12" md="1">
                                                             <v-btn class="mx-2" fab dark x-small color="cyan"
-                                                                :rules="tipoRules" @click="showTipos()" style="float: right"
-                                                                title="BUSCAR TIPO PRODUCTO">
+                                                                :rules="tipoRules" @click="showTipos()"
+                                                                style="float: right" title="BUSCAR TIPO PRODUCTO">
                                                                 <v-icon dark> mdi-magnify </v-icon>
                                                             </v-btn>
                                                         </v-col>
@@ -373,14 +378,16 @@
                                                             </v-btn>
                                                         </v-col>
                                                         <v-col cols="12" md="3">
-                                                            <v-text-field v-model="nombreFabrica" label="NOMBRE FABRICAS"
-                                                                :counter="50" :rules="nombreFabricaRules"
+                                                            <v-text-field v-model="nombreFabrica"
+                                                                label="NOMBRE FABRICAS" :counter="50"
+                                                                :rules="nombreFabricaRules"
                                                                 @input="nombreFabrica = nombreFabrica.toUpperCase()"
                                                                 disabled required></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" md="4">
-                                                            <v-text-field v-model="precioUnitario" label="PRECIO PRODUCTO"
-                                                                :counter="100" :rules="precioUnitarioRules"
+                                                            <v-text-field v-model="precioUnitario"
+                                                                label="PRECIO PRODUCTO" :counter="100"
+                                                                :rules="precioUnitarioRules"
                                                                 @input="precioUnitario = precioUnitario.toUpperCase()"
                                                                 required></v-text-field>
                                                         </v-col>
@@ -393,15 +400,17 @@
                                                                         OPCIONES
                                                                     </h6>
                                                                 </v-toolbar-title>
-                                                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small
-                                                                    color="#EE680B" @click="actualizarProductos()"
-                                                                    style="float: left" title="ACTUALIZAR INFORMACIÓN">
+                                                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark
+                                                                    x-small color="#EE680B"
+                                                                    @click="actualizarProductos()" style="float: left"
+                                                                    title="ACTUALIZAR INFORMACIÓN">
                                                                     <v-icon dark> mdi-pencil </v-icon>
                                                                 </v-btn>
-                                                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small
-                                                                    color="#EE680B" @click="registrarProducto()"
+                                                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark
+                                                                    x-small color="#EE680B" @click="registrarProducto()"
                                                                     style="float: left" title="REGISTRAR PRODUCTO">
-                                                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                                                    <v-icon dark> mdi-content-save-plus-outline
+                                                                    </v-icon>
                                                                 </v-btn>
                                                                 <v-btn color="#EE680B" class="mx-2" fab dark x-small
                                                                     @click="limpiar()" style="float: left"
@@ -441,9 +450,20 @@
                                                                     single-line hide-details></v-text-field>
                                                             </v-card-title>
 
-                                                            <v-data-table :headers="headersProducto" :items="datosProducto"
-                                                                :search="searchProductos" :items-per-page="5"
-                                                                class="elevation-1" id="tableId">
+                                                            <v-card-title>
+                                                                <v-btn color="primary"
+                                                                    @click="exportToPDFProductos()">PDF</v-btn>
+
+                                                                <v-btn color="primary"
+                                                                    @click="exportToCSVProductos()">CSV</v-btn>
+
+                                                                <v-btn color="primary"
+                                                                    @click="exportToExcelProductos()">EXCEL</v-btn>
+                                                            </v-card-title>
+
+                                                            <v-data-table :headers="headersProducto"
+                                                                :items="datosProducto" :search="searchProductos"
+                                                                :items-per-page="5" class="elevation-1" id="tableId">
 
                                                                 <template #[`item.est`]="{ item }">
                                                                     <v-chip :color="colorEstado(item.est)" dark>
@@ -457,8 +477,8 @@
                                                                         title="ACTIVAR PRODUCTO">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
-                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small
-                                                                        class="mr-2" @click="desactivar(item)"
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red"
+                                                                        small class="mr-2" @click="desactivar(item)"
                                                                         title="DESACTIVAR PRODUCTO">
                                                                         mdi-cancel
                                                                     </v-icon>
@@ -521,8 +541,8 @@
                                                                         title="ACTIVAR productoS">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
-                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small
-                                                                        class="mr-2" @click="desactivar(item)"
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red"
+                                                                        small class="mr-2" @click="desactivar(item)"
                                                                         title="DESACTIVAR productoS">
                                                                         mdi-cancel
                                                                     </v-icon>
@@ -548,7 +568,8 @@
                     </v-row>
 
                     <div class="text-center">
-                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
+                            outlined>
                             <strong>{{ mensajeSnackbar }}</strong>
 
 
@@ -584,6 +605,12 @@
 import axios from "axios";
 import { async } from "regenerator-runtime";
 
+import Papa from "papaparse";
+
+import jsPDF from "jspdf";
+import 'jspdf-autotable';
+
+
 export default {
     data() {
         return {
@@ -594,6 +621,7 @@ export default {
             nombreProducto: "",
             codigoProducto: "",
             precioUnitario: "",
+            searchProductos: "",
             datosProducto: [],
             headersProducto: [
                 { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
@@ -988,6 +1016,117 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 });
+
+        },
+        //#endregion
+
+        //#region Reports
+        async exportToCSVProductos() {
+            try {
+                const response = await axios.get(`/producto/listarproductos/`); // Ruta adaptada para productos
+                const jsonData = response.data.resultado || [];
+
+                const csvData = Papa.unparse(jsonData);
+
+                const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                link.href = url;
+                link.download = "productos.csv";
+                link.click();
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        async exportToExcelProductos() {
+            try {
+                const response = await axios.get(`/productos/listarproductosactivos/`); // Ruta adaptada para productos
+                const jsonData = response.data.resultado || [];
+                const worksheet = XLSX.utils.json_to_sheet(jsonData);
+                const workbook = XLSX.utils.book_new();
+
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Hoja1");
+
+                XLSX.writeFile(workbook, "productos.xlsx", { compression: true });
+
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        async exportToPDFProductos() {
+            try {
+                const response = await axios.get(`/producto/listarproductos/`); // Ruta adaptada para productos
+                const jsonData = response.data.resultado || [];
+                console.log(jsonData)
+                const bodyData = jsonData.map(item => [
+                    item.codprod,
+                    item.nomprod,
+                    item.est,
+                    item.precioUnitario
+                ]);
+                const doc = new jsPDF();
+                doc.text("Listado de Productos", 10, 10);
+                doc.autoTable({
+                    head: [["Código de Producto", "Nombre de Producto", "Estado", "Precio Unitario"]],
+                    body: bodyData
+                });
+                doc.save("productos.pdf");
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        async exportToPDFProductDetailed(item) {
+            try {
+                const response = await axios.get(`/productos/detalleproducto/` + item.idProducto); // Ruta adaptada para detalle de productos
+                const jsonData = response.data.resultado || [];
+                console.log(jsonData)
+                const bodyData = jsonData.map(data => [
+                    data.nombreprod,
+                    data.descripcion,
+                    data.nombretipo,
+                    data.precio,
+                    data.stock
+                ]);
+                const doc = new jsPDF();
+                doc.text("Detalle del Producto: " + item.nombreProducto.charAt(0).toUpperCase() + item.nombreProducto.slice(1).toLowerCase(), 10, 10);
+                doc.autoTable({
+                    head: [["Producto", "Descripción", "Tipo de Producto", "Precio Unitario", "Stock"]],
+                    body: bodyData
+                });
+                doc.save("detalle_producto.pdf");
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        checkAccess(accesoCorrecto, tipoCorrecto) {
+            //this.user = JSON.parse(sessionStorage.getItem('session'));
+            if (this.user == null) {
+                return false;
+            }
+            else {
+                let checkedAccess = false;
+                let checkedType = false;
+                //Si accesoCorrecto es 0, no se requiere ningun acceso para acceder
+                if (accesoCorrecto != 0) {
+                    this.user['accesos'].forEach(access => {
+                        if (access == accesoCorrecto)
+                            checkedAccess = true;
+                    });
+                } else checkedAccess = true;
+
+                //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
+                if (tipoCorrecto != '0') {
+                    if (this.user['tipo'] == tipoCorrecto) {
+                        checkedType = true;
+                    }
+                } else checkedType = true;
+                if (checkedAccess && checkedType) { return true }
+                else return false;
+            }
 
         },
         //#endregion

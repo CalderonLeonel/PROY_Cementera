@@ -14,7 +14,7 @@
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn @click="calcularTotal()">Calcular Total</v-btn>
-                            <v-btn @click="pagarPlanillas()" color="primary">Pagar Planilla</v-btn>
+                            <v-btn @click="registrarPagos()" color="primary">Pagar Planilla</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-col>
@@ -45,6 +45,7 @@ export default {
                 { text: 'NOMBRE', value: 'nom', sortable: false },
                 { text: 'APELLIDO PATERNO', value: 'pat', sortable: false },
                 { text: 'APELLIDO MATERNO', value: 'mat', sortable: false },
+                { text: 'CARGO', value: 'nomcar', sortable: false },
                 { text: 'SALARIO', value: 'sal', sortable: false },
             ],
             datosPlanilla: [],
@@ -118,7 +119,7 @@ export default {
             return numeroReferencia;
         },
 
-        generarPlantillas(){
+        generarPlantillas() {
             this.generarPlantilla();
         },
 
@@ -129,7 +130,7 @@ export default {
                 .then(function (response) {
                     if (response.data.resultado == null) {
                         me.datosPlanilla = [];
-                    } else {    
+                    } else {
                         me.datosPlanilla = response.data.resultado;
                     }
                 })
@@ -161,8 +162,9 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.limpiar();
                     me.registrarAsientoContable();
+                    me.registrarPagoEmpleados();
+                    me.limpiar();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -176,27 +178,28 @@ export default {
 
         async registrarPagos(
             idCuentaContable,
-            totalSalarios
+            totalSalarios,
         ) {
             let me = this;
-            await axios
-                .post(
-                    "/empleado/pagarplanilla/" +
-                    this.idCuentaContable +
-                    "," +
-                    this.totalSalarios
-
-                )
-                .then(function (response) {
-
-                    me.mensajeSnackbar = response.data.message;
-                    me.snackbarOK = true;
-                    me.limpiar();
-                    me.registrarAsientoContable();
-                })
-                .catch(function (error) {
-                    me.snackbarError = true;
-                });
+            for (let empleado of this.datosPlanilla) {
+                await axios
+                    .post(
+                        "/empleado/addpago/" +
+                        this.idCuentaContable +
+                        "," +
+                        empleado.sal +
+                        "," +
+                        empleado.idempl +
+                        "," +
+                        empleado.idcar
+                    )
+                    .then(function (response) {
+                        console.log("Pago registrado para empleado ID:", empleado.idempl);
+                    })
+                    .catch(function (error) {
+                        console.error(`Error al registrar el pago para el empleado ID: ${empleado.idempl}`, error);
+                    });
+            }
         },
 
         registrarAsientosContables() {
@@ -225,33 +228,40 @@ export default {
             }
         },
 
-        async registrarAsientoContable(numeroReferencia, descripcionAsiento, idCuentaContable, montoDebito, montoCredito) {
-            try {
-                let me = this;
-
-                await axios.post("/contabilidad/addasiento/" +
+        async registrarAsientoContable() {
+            let me = this;
+            this.numeroReferencia = this.generarNumeroReferencia();
+            await axios
+                .post(
+                    "/contabilidad/addasiento/" +
                     this.numeroReferencia +
                     "," +
                     this.descripcionAsiento +
                     "," +
                     this.idCuentaContable +
                     "," +
-                    this.montoDebito +
+                    this.totalSalarios + // Asumiendo que tanto débito como crédito son iguales al total
                     "," +
-                    this.montoCredito
+                    this.totalSalarios
                 )
-                    .then(function (response) {
-                        me.mensajeSnackbar = response.data.message;
-                        me.snackbarOK = true;
-                    })
-                    .catch(function (error) {
-                        me.mensajeSnackbar = error.response.data.message;
-                        me.snackbarError = true;
-                    });
+                .then(function (response) {
+                    me.mensajeSnackbar = "Asiento contable registrado correctamente.";
+                    me.snackbarOK = true;
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    console.error("Error al registrar el asiento contable:", error);
+                });
+        },
 
-            } catch (error) {
-                // Manejar errores en caso de que la solicitud falle
-                console.error("Error al registrar el pago de planilla:", error);
+        async procesarPagoPlanilla() {
+            this.calcularTotal();
+            this.idCuentaContable = this.seleccionarCuentaContable();
+
+            if (this.idCuentaContable && this.totalSalarios > 0) {
+                await this.pagarPlanilla();
+            } else {
+                console.error("No se pudo procesar el pago. Verifique los datos.");
             }
         },
 
