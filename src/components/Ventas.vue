@@ -22,8 +22,8 @@
                                             label="BUSCAR CLIENTES" single-line hide-details
                                             @input="buscarClientes = buscarClientes.toUpperCase()"></v-text-field>
                                     </v-card-title>
-                                    <v-data-table :headers="headersClientes" :items="datosClientes" :search="buscarClientes"
-                                        :items-per-page="5" class="elevation-1" id="tableId">
+                                    <v-data-table :headers="headersClientes" :items="datosClientes"
+                                        :search="buscarClientes" :items-per-page="5" class="elevation-1" id="tableId">
 
                                         <template #[`item.est`]="{ item }">
                                             <v-chip :color="colorEstado(item.est)" dark>
@@ -43,8 +43,8 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closeClienteModal()"
-                                        style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
+                                        @click="closeClienteModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -100,14 +100,15 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="1">
-                            <v-btn class="mx-2" fab dark x-small color="cyan" :rules="clienteRules" @click="showClientes()"
-                                style="float: right" title="BUSCAR CLIENTES">
+                            <v-btn class="mx-2" fab dark x-small color="cyan" :rules="clienteRules"
+                                @click="showClientes()" style="float: right" title="BUSCAR CLIENTES">
                                 <v-icon dark> mdi-magnify </v-icon>
                             </v-btn>
                         </v-col>
                         <v-col cols="12" md="5">
-                            <v-text-field v-model="nombreCliente" label="CLIENTE" :counter="100" :rules="nombreClienteRules"
-                                @input="nombreCliente = nombreCliente.toUpperCase()" required disabled></v-text-field>
+                            <v-text-field v-model="nombreCliente" label="CLIENTE" :counter="100"
+                                :rules="nombreClienteRules" @input="nombreCliente = nombreCliente.toUpperCase()"
+                                required disabled></v-text-field>
                         </v-col>
                         <v-col cols="12" md="3">
                             <v-text-field v-model="paterno" label="PATERNO CLIENTE" :counter="100" :rules="paternoRules"
@@ -132,8 +133,8 @@
                             </v-list-item>
 
                             <v-card-title>
-                                <v-text-field v-model="buscarproducto" append-icon="mdi-magnify" label="BUSCAR PRODUCTOS"
-                                    single-line hide-details></v-text-field>
+                                <v-text-field v-model="buscarproducto" append-icon="mdi-magnify"
+                                    label="BUSCAR PRODUCTOS" single-line hide-details></v-text-field>
                             </v-card-title>
                         </v-col>
 
@@ -195,7 +196,8 @@
                     </v-row>
 
                     <div class="text-center">
-                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
+                            outlined>
                             <strong>{{ mensajeSnackbar }}</strong>
 
 
@@ -206,6 +208,7 @@
                             </template>
                         </v-snackbar>
                     </div>
+
                     <div class="text-center">
 
                         <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
@@ -219,8 +222,34 @@
                             </template>
                         </v-snackbar>
                     </div>
+
                 </v-container>
             </v-form>
+        </div>
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
+                <strong>{{ mensajeSnackbar }}</strong>
+
+
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+
+        <div class="text-center">
+
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
         </div>
     </v-card>
 </template>
@@ -391,7 +420,7 @@ export default {
             return numeroReferencia;
         },
 
-        generarFactura(item){
+        generarFactura(item) {
 
         },
         //#region Listados
@@ -463,7 +492,7 @@ export default {
         listarCuenta() {
             this.listarCuentas();
         },
-        
+
         async listarCuentas() {
             let me = this;
             await axios

@@ -11,8 +11,8 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="buscarFormato" append-icon="mdi-magnify" label="BUSCAR FORMATO"
-                                        single-line hide-details></v-text-field>
+                                    <v-text-field v-model="buscarFormato" append-icon="mdi-magnify"
+                                        label="BUSCAR FORMATO" single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
 
@@ -79,13 +79,76 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6" @click="closeTipos()"
-                                    style="float: right" title="SALIR">
+                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
+                                    @click="closeTipos()" style="float: right" title="SALIR">
                                     <v-icon dark> mdi-close-circle-outline </v-icon>
                                 </v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <!-- Modal para revisión del producto -->
+        <v-dialog v-model="revisionModal" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>REVISAR PRODUCTO</span>
+                </v-card-title>
+
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+
+                                <v-col cols="12">
+                                    <v-text-field v-model="nombreProducto" label="Nombre de Producto"
+                                        readonly></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-text-field v-model="codigoProducto" label="Código de Producto"
+                                        readonly></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-textarea v-model="observaciones" label="Comentarios"></v-textarea>
+                                </v-col>
+
+
+                                <v-spacer></v-spacer>
+                                <v-col cols="12" md="8"> </v-col>
+                                <v-col cols="12" md="4">
+                                    <v-toolbar dense shaped color="#001781">
+                                        <v-toolbar-title style="color: #ffffff;">
+                                            <h6>
+                                                OPCIONES
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="avanzarFase()"
+                                            tyle="float: left" title="AVANZAR FASE">
+                                            <v-icon dark> mdi-page-next-outline </v-icon>
+                                        </v-btn>
+                                        <v-btn v-if="est === 'FINALIZADO'" class="mx-2" fab dark x-small color="#EE680B"
+                                            @click="moverAProduccion()" style="float: left" title="MOVER A PRODUCCION">
+                                            <v-icon dark> mdi-page-next-outline </v-icon>
+                                        </v-btn>
+                                        <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                            @click="registrarObservacionLabo()" style="float: left"
+                                            title="REGISTRAR OBSERVACION PRODUCTO LABORATORIO">
+                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                        </v-btn>
+                                    </v-toolbar>
+                                </v-col>
+                                <v-col cols="10"></v-col>
+                                <v-col cols="2">
+                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
+                                        @click="closeRevisionModal()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
                 </v-card-text>
             </v-card>
         </v-dialog>
@@ -110,15 +173,15 @@
                                 required></v-text-field>
                         </v-col>
                         <v-col cols="12" md="1">
-                            <v-btn class="mx-2" fab dark x-small color="cyan" :rules="ProductoRules" @click="showFormato()"
-                                style="float: right" title="BUSCAR FORMATO">
+                            <v-btn class="mx-2" fab dark x-small color="cyan" :rules="ProductoRules"
+                                @click="showFormato()" style="float: right" title="BUSCAR FORMATO">
                                 <v-icon dark> mdi-magnify </v-icon>
                             </v-btn>
                         </v-col>
                         <v-col cols="12" md="3">
                             <v-text-field v-model="nombreFormato" label="NOMBRE FORMATO" :counter="50"
-                                :rules="nombreFormatoRules" @input="nombreFormato = nombreFormato.toUpperCase()" disabled
-                                required></v-text-field>
+                                :rules="nombreFormatoRules" @input="nombreFormato = nombreFormato.toUpperCase()"
+                                disabled required></v-text-field>
                         </v-col>
 
                         <v-col cols="12" md="1">
@@ -143,8 +206,8 @@
                                         OPCIONES
                                     </h6>
                                 </v-toolbar-title>
-                                <v-btn color="#EE680B" class="mx-2" fab dark x-small @click="limpiar()" style="float: left"
-                                    title="BUSCAR PRODUCTO DEL LABORATORIO">
+                                <v-btn color="#EE680B" class="mx-2" fab dark x-small @click="limpiar()"
+                                    style="float: left" title="BUSCAR PRODUCTO DEL LABORATORIO">
                                     <v-icon dark> mdi-magnify-plus </v-icon>
                                 </v-btn>
                                 <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="#EE680B"
@@ -157,8 +220,8 @@
                                     title="REGISTRAR PRODUCTO LABORATORIO">
                                     <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                 </v-btn>
-                                <v-btn color="#EE680B" class="mx-2" fab dark x-small @click="limpiar()" style="float: left"
-                                    title="LIMPIAR FORMULARIO">
+                                <v-btn color="#EE680B" class="mx-2" fab dark x-small @click="limpiar()"
+                                    style="float: left" title="LIMPIAR FORMULARIO">
                                     <v-icon dark> mdi-eraser </v-icon>
                                 </v-btn>
                             </v-toolbar>
@@ -194,6 +257,13 @@
                                 <v-card elevation="5" outlined shaped>
                                     <v-row>
                                         <v-col cols="12">
+
+                                            <!-- Combobox para seleccionar la fase -->
+                                            <v-combobox v-model="faseSeleccionada" :items="fases"
+                                                label="Seleccionar Fase" @change="listarProductosLaboxFase()"
+                                                single-line>
+                                            </v-combobox>
+
                                             <v-list-item>
                                                 <v-list-item-title class="text-center">
                                                     <h5>Prod. Laboratorio</h5>
@@ -308,12 +378,38 @@
                                     </v-row>
                                 </v-card>
                             </v-tab-item>
+
                         </v-tabs>
                     </v-col>
                 </v-row>
             </v-card-actions>
         </v-card>
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="light-green darken-2 ">
+                {{ mensajeSnackbar }}
+
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+
+        <div class="text-center">
+
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarWarning = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
     </v-card>
+
 </template>
 
 <script>
@@ -326,6 +422,8 @@ export default {
         return {
             flag: 1,
             //#region Producto Laboratorio
+            fases: ["FASE INICIAL", "PRUEBAS", "FINALIZADO"],
+            faseSeleccionada: "FASE INICIAL",
             idProducto: "",
             nombreProducto: "",
             codigoProducto: "",
@@ -377,10 +475,20 @@ export default {
             //#region Modals
             formatoModal: 0,
             tipoProductoModal: 0,
+            revisionModal: 0,
             //#endregion
             botonAct: 0,
             idFabrica: 1,
             idUsuario: 1,
+            selectedProduct: null,
+
+            //#region SnackBars
+            snackbarOK: false,
+            mensajeSnackbar: "",
+            snackbarError: false,
+            mensajeSnackbarError: "REGISTRO FALLIDO",
+            timeout: 2000,
+
 
         }
     },
@@ -403,6 +511,27 @@ export default {
             let me = this;
             await axios
                 .get("/producto/listarproductoslabo")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosProdLabo = [];
+
+                    } else {
+                        me.datosProdLabo = response.data.resultado;
+
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+        listarProductoLaboxFase() {
+            this.listarProductosLaboxFase();
+        },
+        async listarProductosLaboxFase() {
+            let me = this;
+            await axios
+                .get("/producto/listarproductoslaboxfase/" + this.faseSeleccionada)
                 .then(function (response) {
                     if (response.data.resultado == null) {
                         me.datosProdLabo = [];
@@ -552,6 +681,31 @@ export default {
                     me.snackbarError = true;
                 });
         },
+
+        avanzarFaseLaboratorio() {
+            this.avanzarFase(this.idProducto)
+        },
+        async avanzarFase(
+            idProducto
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/producto/avanzarfaseprod/" +
+                    this.idProducto
+
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarProductosLabo();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                });
+        },
         //#endregion
 
         //#region Modals
@@ -590,10 +744,14 @@ export default {
             this.nombreTipoProducto = item.nomtipo;
             this.idFormato = item.idform;
             this.nombreFormato = item.nomform;
+            this.revisionModal = true;
         },
         seleccionarObservacion(item) {
             this.idObservacion = item.idobs;
             this.observaciones = item.des;
+        },
+        closeRevisionModal() {
+            this.revisionModal = false;
         },
         //#endregion
 
@@ -611,6 +769,10 @@ export default {
             doc.save('observaciones.pdf');
         },
         //#endregion
+
+        filtrarProductosPorFase(fase) {
+            return this.datosProdLabo.filter((producto) => producto.est === fase.toUpperCase());
+        },
 
     },
 

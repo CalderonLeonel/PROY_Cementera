@@ -353,7 +353,7 @@
 
                                                         <v-col cols="12" md="8"> </v-col>
                                                         <v-col cols="12" md="4">
-                                                            <v-toolbar dense shaped>
+                                                            <v-toolbar dense shaped color="#001781">
                                                                 <v-toolbar-title>
                                                                     <h6>
                                                                         OPCIONES
