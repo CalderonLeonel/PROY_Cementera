@@ -356,19 +356,20 @@ export default {
         ],
 
         headersAsistencia: [
-            { text: "FECHA", value: "fec" },
             { text: "HORA", value: "hor" },
+            { text: "FECHA", value: "fec" },
             { text: "ID", value: "idempl" },
             { text: "NOMBRES", value: "nom" },
-            { text: "ESTADO", value: "act" },
+            //{ text: "ESTADO", value: "act" },
             { text: "OPCIONES", value: "actions", sortable: false },
         ],
         headersAsistenciaDelDia: [
             { text: "HORA", value: "hor" },
+            { text: "FECHA", value: "fec" },
             { text: "ID", value: "idempl" },
             { text: "NOMBRES", value: "nom" },
-            { text: "N° CARNET", value: "ci" },
-            { text: "FECHA", value: "fec" },
+            { text: "N° CARNET", value: "ci" }
+            
             //{ text: "ESTADO", value: "act" },
             //{ text: "OPCIONES", value: "actions", sortable: false },
         ],
