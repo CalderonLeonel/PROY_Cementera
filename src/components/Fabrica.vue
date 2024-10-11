@@ -69,8 +69,8 @@
                                 </v-col>
                                 <v-col cols="12" md="5">
                                     <v-text-field v-model="ciudad" label="NOMBRE CIUDAD" :counter="50"
-                                        :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()" disabled
-                                        required></v-text-field>
+                                        :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()"
+                                        disabled required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="12">
@@ -87,16 +87,17 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn v-if="botonact == 1" color="#EE680B" @click="editarFabricas()" class="mx-2"
-                                            fab dark x-small style="float: left" title="ACTUALIZAR FABRICA">
+                                        <v-btn v-if="botonact == 1" color="#EE680B" @click="editarFabricas()"
+                                            class="mx-2" fab dark x-small style="float: left"
+                                            title="ACTUALIZAR FABRICA">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn v-if="botonact == 0" color="#EE680B" @click="registroFabrica()" class="mx-2"
-                                            fab dark x-small style="float: left" title="REGISTRAR FABRICA">
+                                        <v-btn v-if="botonact == 0" color="#EE680B" @click="registroFabrica()"
+                                            class="mx-2" fab dark x-small style="float: left" title="REGISTRAR FABRICA">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
-                                        <v-btn @click="limpiar()" color="#EE680B" style="float: left" class="mx-2" fab dark
-                                            x-small title="LIMPIAR FORMULARIO">
+                                        <v-btn @click="limpiar()" color="#EE680B" style="float: left" class="mx-2" fab
+                                            dark x-small title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
                                     </v-toolbar>
@@ -147,8 +148,9 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="ciudad" label="NOMBRE CIUDAD" :counter="50" :rules="ciudadRules"
-                                        @input="ciudad = ciudad.toUpperCase()" disabled required></v-text-field>
+                                    <v-text-field v-model="ciudad" label="NOMBRE CIUDAD" :counter="50"
+                                        :rules="ciudadRules" @input="ciudad = ciudad.toUpperCase()" disabled
+                                        required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="lineaRules"
@@ -170,7 +172,8 @@
                                 </v-col>
                                 <v-col cols="12" md="11">
                                     <v-text-field v-model="direccionFabrica" label="DIRECCION FABRICA" :counter="100"
-                                        :rules="direccionRules" @input="direccionFabrica = direccionFabrica.toUpperCase()"
+                                        :rules="direccionRules"
+                                        @input="direccionFabrica = direccionFabrica.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
 
@@ -190,7 +193,8 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-btn icon v-if="botonact == 1" color="#EE680B" @click="editarFabricas()"
-                                            style="float: left" title="ACTUALIZAR INFabricaCIÓN" width="28px" height="28px">
+                                            style="float: left" title="ACTUALIZAR INFabricaCIÓN" width="28px"
+                                            height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
                                         <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarFabrica()"
@@ -233,7 +237,8 @@
                                         </v-card-title>
                                     </v-col>
                                     <v-data-table :headers="headersDepartamento" :items="datosDepartamento"
-                                        :search="buscarDepartamentos" :items-per-page="5" class="elevation-1" id="tableId">
+                                        :search="buscarDepartamentos" :items-per-page="5" class="elevation-1"
+                                        id="tableId">
 
                                         <template #[`item.actions`]="{ item }">
                                             <v-icon small class="mr-2" @click="seleccionarDepartamento(item)"
@@ -274,7 +279,8 @@
                                         </v-card-title>
                                     </v-col>
                                     <v-data-table :headers="headersCiudad" :items="datosCiudad"
-                                        :search="buscarDepartamentos" :items-per-page="5" class="elevation-1" id="tableId">
+                                        :search="buscarDepartamentos" :items-per-page="5" class="elevation-1"
+                                        id="tableId">
 
                                         <template #[`item.actions`]="{ item }">
                                             <v-icon small class="mr-2" @click="seleccionarCiudad(item)" color="#0091EA"
@@ -305,8 +311,8 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closeInfoLineaModal()"
-                                        style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
+                                        @click="closeInfoLineaModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -321,7 +327,7 @@
 
 
         <div>
-            <v-alert dense style="color: #ffffff;" color="grey">
+            <v-alert dense color="cyan">
                 <h5>Fabricas</h5>
             </v-alert>
         </div>
@@ -389,10 +395,11 @@
                                                             </v-btn>
                                                         </v-col>
                                                         <v-col cols="12" md="5">
-                                                            <v-text-field v-model="departamento" label="NOMBRE DEPARTAMENTO"
-                                                                :counter="50" :rules="nombreLineaRules"
-                                                                @input="nombreLinea = nombreLinea.toUpperCase()" disabled
-                                                                required></v-text-field>
+                                                            <v-text-field v-model="departamento"
+                                                                label="NOMBRE DEPARTAMENTO" :counter="50"
+                                                                :rules="nombreLineaRules"
+                                                                @input="nombreLinea = nombreLinea.toUpperCase()"
+                                                                disabled required></v-text-field>
                                                         </v-col>
 
                                                         <v-col cols="12" md="1">
@@ -405,8 +412,8 @@
                                                         <v-col cols="12" md="5">
                                                             <v-text-field v-model="ciudad" label="NOMBRE CIUDAD"
                                                                 :counter="50" :rules="nombreLineaRules"
-                                                                @input="nombreLinea = nombreLinea.toUpperCase()" disabled
-                                                                required></v-text-field>
+                                                                @input="nombreLinea = nombreLinea.toUpperCase()"
+                                                                disabled required></v-text-field>
                                                         </v-col>
 
                                                         <v-col cols="12" md="12">
@@ -419,23 +426,26 @@
 
                                                         <v-col cols="12" md="8"> </v-col>
                                                         <v-col cols="12" md="4">
-                                                            <v-toolbar dense shaped color="#001781">
+                                                            <v-toolbar dense shaped>
                                                                 <v-toolbar-title>
                                                                     <h6>
                                                                         OPCIONES
                                                                     </h6>
                                                                 </v-toolbar-title>
-                                                                <v-btn v-if="botonact == 1" color="#EE680B"
-                                                                    @click="editarFabricas()" class="mx-2" fab dark x-small
-                                                                    style="float: left" title="ACTUALIZAR FABRICA">
+                                                                <v-btn icon v-if="botonact == 1" color="#0A62BF"
+                                                                    @click="editarFabricas()" class="mx-2" fab dark
+                                                                    style="float: left"
+                                                                    title="ACTUALIZAR FABRICA">
                                                                     <v-icon dark> mdi-pencil </v-icon>
                                                                 </v-btn>
-                                                                <v-btn v-if="botonact == 0" color="#EE680B"
-                                                                    @click="registroFabrica()" class="mx-2" fab dark x-small
-                                                                    style="float: left" title="REGISTRAR FABRICA">
-                                                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                                                <v-btn icon v-if="botonact == 0" color="#0ABF55"
+                                                                    @click="registroFabrica()" class="mx-2" fab dark
+                                                                    style="float: left"
+                                                                    title="REGISTRAR FABRICA">
+                                                                    <v-icon dark> mdi-content-save-plus-outline
+                                                                    </v-icon>
                                                                 </v-btn>
-                                                                <v-btn @click="limpiar()" color="#EE680B"
+                                                                <v-btn icon @click="limpiar()" color="#EE680B"
                                                                     style="float: left" class="mx-2" fab dark x-small
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>
@@ -472,9 +482,9 @@
                                                             </v-card-title>
 
 
-                                                            <v-data-table :headers="headersFabricas" :items="datosFabricas"
-                                                                :search="buscarFabricas" :items-per-page="5"
-                                                                class="elevation-1" id="tableId">
+                                                            <v-data-table :headers="headersFabricas"
+                                                                :items="datosFabricas" :search="buscarFabricas"
+                                                                :items-per-page="5" class="elevation-1" id="tableId">
 
                                                                 <template #[`item.est`]="{ item }">
                                                                     <v-chip :color="colorEstado(item.est)" dark>
@@ -485,21 +495,21 @@
 
                                                                 <template #[`item.actions`]="{ item }">
                                                                     <v-icon v-if="item.est == 'INACTIVO'" color="green"
-                                                                        small class="mr-2" @click="activar(item)"
+                                                                        class="mx-2" large @click="activar(item)"
                                                                         title="ACTIVAR Fabrica">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
-                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small
-                                                                        class="mr-2" @click="desactivar(item)"
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red"
+                                                                        class="mx-2" large @click="desactivar(item)"
                                                                         title="DESACTIVAR Fabrica">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                    <v-icon class="mx-2" large color="#001781"
                                                                         @click="showEditFabricaModal(item)"
                                                                         title="ACTUALIZAR INFORMACION">
                                                                         mdi-pencil
                                                                     </v-icon>
-                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                    <v-icon class="mx-2" large color="#001781"
                                                                         @click="showInfoFabrica(item)"
                                                                         title="VER INFORMACION">
                                                                         mdi-eye
@@ -553,8 +563,8 @@
                                                                         title="ACTIVAR FABRICA">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
-                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small
-                                                                        class="mr-2" @click="desactivar(item)"
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red"
+                                                                        small class="mr-2" @click="desactivar(item)"
                                                                         title="DESACTIVAR FABRICA">
                                                                         mdi-cancel
                                                                     </v-icon>

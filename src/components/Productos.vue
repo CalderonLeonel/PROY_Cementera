@@ -283,7 +283,7 @@
         </v-dialog>
 
         <div>
-            <v-alert dense style="color: #ffffff;" color="grey">
+            <v-alert dense color="cyan">
                 <h5>PRODUCTOS</h5>
             </v-alert>
         </div>
@@ -394,25 +394,25 @@
 
                                                         <v-col cols="12" md="8"> </v-col>
                                                         <v-col cols="12" md="4">
-                                                            <v-toolbar dense shaped color="#001781">
-                                                                <v-toolbar-title style="color: #ffffff;">
+                                                            <v-toolbar dense shaped >
+                                                                <v-toolbar-title>
                                                                     <h6>
                                                                         OPCIONES
                                                                     </h6>
                                                                 </v-toolbar-title>
-                                                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark
-                                                                    x-small color="#EE680B"
+                                                                <v-btn icon v-if="botonAct == 1" class="mx-2" fab dark
+                                                                     color="#0A62BF"
                                                                     @click="actualizarProductos()" style="float: left"
                                                                     title="ACTUALIZAR INFORMACIÓN">
                                                                     <v-icon dark> mdi-pencil </v-icon>
                                                                 </v-btn>
-                                                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark
-                                                                    x-small color="#EE680B" @click="registrarProducto()"
+                                                                <v-btn icon v-if="botonAct == 0" class="mx-2" fab dark
+                                                                    color="#0ABF55" @click="registrarProducto()"
                                                                     style="float: left" title="REGISTRAR PRODUCTO">
                                                                     <v-icon dark> mdi-content-save-plus-outline
                                                                     </v-icon>
                                                                 </v-btn>
-                                                                <v-btn color="#EE680B" class="mx-2" fab dark x-small
+                                                                <v-btn icon color="#EE680B" class="mx-2" fab dark 
                                                                     @click="limpiar()" style="float: left"
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>
@@ -473,21 +473,21 @@
 
                                                                 <template #[`item.actions`]="{ item }">
                                                                     <v-icon v-if="item.est == 'INACTIVO'" color="green"
-                                                                        small class="mr-2" @click="activar(item)"
+                                                                        class="mx-2" large @click="activar(item)"
                                                                         title="ACTIVAR PRODUCTO">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
                                                                     <v-icon v-if="item.est == 'ACTIVO'" color="red"
-                                                                        small class="mr-2" @click="desactivar(item)"
+                                                                        class="mx-2" large @click="desactivar(item)"
                                                                         title="DESACTIVAR PRODUCTO">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                    <v-icon class="mx-2" large color="#001781"
                                                                         @click="showEditarProducto(item)"
                                                                         title="ACTUALIZAR INFORMACION">
                                                                         mdi-pencil
                                                                     </v-icon>
-                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                    <v-icon class="mx-2" large color="#001781"
                                                                         @click="showInfoProducto(item)"
                                                                         title="VER INFORMACION">
                                                                         mdi-eye
@@ -604,6 +604,8 @@
 <script>
 import axios from "axios";
 import { async } from "regenerator-runtime";
+import * as XLSX from 'xlsx';
+
 
 import Papa from "papaparse";
 
