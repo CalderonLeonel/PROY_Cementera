@@ -223,7 +223,7 @@
                         <v-col cols="12">
                             <v-list-item>
                                 <v-list-item-title class="text-center">
-                                    <h5>SECTORES 1</h5>
+                                    <h5>SECTORES</h5>
                                 </v-list-item-title>
                             </v-list-item>
                             <v-col cols="12" md="4">
@@ -254,18 +254,18 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
+                                    <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2" color="#0ABF55" @click="activar(item)"
                                         title="ACTIVAR SECTOR">
                                         mdi-check-circle-outline
                                     </v-icon>
-                                    <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
+                                    <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2" color="#BF120A" @click="desactivar(item)"
                                         title="DESACTIVAR SECTOR">
                                         mdi-cancel
                                     </v-icon>
-                                    <v-icon small class="mr-2" @click="showEditSector(item)" title="EDITAR INFORMACION">
+                                    <v-icon large class="mr-2" color="#0A628F" @click="showEditSector(item)" title="EDITAR INFORMACION">
                                         mdi-pencil
                                     </v-icon>
-                                    <v-icon small class="mr-2" @click="showTurno(item)" title="VER TURNOS">
+                                    <v-icon large class="mr-2" color="#0A628F" @click="showTurno(item)" title="VER TURNOS">
                                         mdi-clock-plus
                                     </v-icon>
 
@@ -349,7 +349,7 @@ export default {
         ],
 
         headersSector: [
-            { text: "SECTOR", value: "nom", sortable: false },
+            { text: "SECTOR", value: "sect", sortable: false },
             { text: "DEPARTAMENTO", value: "dep", sortable: false },
             { text: "ESTADO", value: "act", sortable: false },
             { text: "FECHA CREACION", value: "credte", sortable: false },
@@ -403,8 +403,6 @@ export default {
         },
         seleccionarTurno(item) {
             this.idTurno = item.idturn;
-            //this.nombreTurnoLabel = item.pat +" "+item.nom
-            //this.email = item.emal
             this.asignarTurnoASector();
             //this.closeEmpleado();
         },
@@ -520,7 +518,7 @@ export default {
         },
 
         llenarCamposSector(item) {
-            this.sector = item.nom;
+            this.sector = item.sect;
             this.idDepartamento = item.iddep;
             this.idSector = item.idsect;
         },
