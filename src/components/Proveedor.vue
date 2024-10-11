@@ -1,5 +1,5 @@
 <template>
-   <v-card elevation="5" outlined>
+   <v-card elevation="5" outlined  v-if="checkAccess(7, 'SUPERVISOR')">
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
@@ -60,7 +60,7 @@
                         <v-col cols="12">
                             <v-list-item>
                                 <v-list-item-title class="text-center">
-                                    <h5>Proveedores</h5>
+                                    <h5>PROVEEDORES</h5>
                                 </v-list-item-title>
                             </v-list-item>
 
@@ -124,7 +124,7 @@
         <v-dialog v-model="agregarProveedorModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>AGREGAR PROVEEDOR</span>
+                    <span>GESTIÓN DE PROVEEDOR</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -237,6 +237,10 @@ import axios from "axios";
 export default {
     data() {
         return {
+
+            drawer: false,
+            user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+
             mensajeSnackbarError: "REGISTRO FALLIDO",
             mensajeSnackbar: '',
             
@@ -305,7 +309,16 @@ export default {
       this.getListaExistencias().then(() => {
         this.getAlertas();
         });
-    },
+        if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+        }
+        if (this.user == null) {
+        if (this.$route.path != '/login') {
+            this.$router.push("/login");
+        }
+        }
+        console.log("UserData: " + JSON.stringify(this.user));
+        },
     methods: {
 
         getAlertas(){
@@ -789,6 +802,34 @@ export default {
                 });
         },
       },
+      
+      checkAccess(accesoCorrecto, tipoCorrecto) {
+                
+                if (this.user == null) {
+                    return false;
+                }
+                else {
+                    let checkedAccess = false;
+                    let checkedType = false;
+                    
+                    if (accesoCorrecto != 0) {
+                    this.user['accesos'].forEach(access => {
+                        if (access == accesoCorrecto)
+                        checkedAccess = true;
+                    });
+                    } else checkedAccess = true;
+
+                    
+                    if (tipoCorrecto != '0') {
+                    if (this.user['tipo'] == tipoCorrecto) {
+                        checkedType = true;
+                    }
+                    } else checkedType = true;
+                    if (checkedAccess && checkedType) { return true }
+                    else return false;
+                }
+
+                },
 };
 
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="5" outlined>
+    <v-card elevation="5" outlined v-if="checkAccess(8, 'SUPERVISOR') || checkAccess(8, 'COMUN')">
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
@@ -57,7 +57,7 @@
                          <v-col cols="3" md="2">
                              <v-btn color="success" @click="showModalAgregarTransaccion()">NUEVO INVENTARIO</v-btn>
                          </v-col>
-                         <v-col cols="3" md="3">
+                         <v-col cols="3" md="3" v-if="checkAccess(8, 'SUPERVISOR')">
                              <v-btn color="success" @click="showRevalorizarInventarioModal()">REVALORIZACIÓN DE INVENTARIO</v-btn>
                          </v-col>
                         
@@ -93,11 +93,11 @@
                                          mdi-pencil
                                      </v-icon>
                                      <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="confirmarActivacionInv(item)"
-                                         title="ACTIVAR ALMACEN">
+                                         title="ACTIVAR ALMACÉN">
                                          mdi-check-circle-outline
                                      </v-icon>
                                      <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionInv(item)"
-                                         title="DESACTIVAR ALMACEN">
+                                         title="DESACTIVAR ALMACÉN">
                                          mdi-close-circle
                                      </v-icon>             
                                  </template>
@@ -166,7 +166,7 @@
  
                                  <template #[`item.actions`]="{ item }">
                                      <v-icon x-large color="primary" class="mr-2" @click="mostrarProductos(item)"
-                                         title="VER STOCK DE ALMACEN">
+                                         title="VER STOCK DE ALMACÉN">
                                          mdi-eye
                                      </v-icon>  
                                      <v-icon  x-large color="primary" class="mr-2" @click="exportToPDFProductDetailed(item)"
@@ -209,7 +209,7 @@
                          </v-col>
                      </v-row>
 
-                     <v-row>
+                     <v-row v-if="checkAccess(8, 'SUPERVISOR')">
                          <v-col cols="12" md="4">
                              <v-btn color="success" @click="showModalAgregarItem()">NUEVO ITEM</v-btn>
                          </v-col>
@@ -255,14 +255,14 @@
                              </v-data-table>
                          </v-col>
                      </v-row>
-                     <v-row>
+                     <v-row v-if="checkAccess(8, 'SUPERVISOR')">
                          <v-col cols="12" md="4">
                              <v-btn color="success" @click="showModalAgregarTipoItem()">NUEVO TIPO DE ITEM</v-btn>
                          </v-col>
                          <v-col cols="12">
                              <v-list-item>
                                  <v-list-item-title class="text-center">
-                                     <h5>TIPOS DE ITEMS</h5>
+                                     <h5>TIPOS DE ITEM</h5>
                                  </v-list-item-title>
                              </v-list-item>
  
@@ -428,7 +428,7 @@
         <v-dialog v-model="itemAlmacenModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE ITEMS DISPONIBLES EN EL ALMACEN</span>
+                    <span>LISTA DE ITEMS DISPONIBLES EN EL ALMACÉN</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -468,7 +468,7 @@
          <v-dialog v-model="agregarInventarioModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>AGREGAR TRANSACCIÓN</span>
+                    <span>GESTIÓN DE TRANSACCIONES DE INVENTARIO</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -494,14 +494,14 @@
                                 </v-col> 
 
                                 <v-col cols="12" md="11" v-if="movimiento=='ENTRADA'">
-                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACEN"
+                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACÉN"
                                         :rules="nombreAlmacenRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null' 
-                                        @click="openAlmacenModal()" style="float: right" title="BUSCAR ALMACEN">
+                                        @click="openAlmacenModal()" style="float: right" title="BUSCAR ALMACÉN">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>  
@@ -517,7 +517,7 @@
                              
 
                                 <v-col cols="12" md="11" v-if="movimiento=='SALIDA'">
-                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACEN"
+                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACÉN"
                                         :rules="nombreAlmacenRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
@@ -716,7 +716,7 @@
          <v-dialog v-model="agregarItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>AGREGAR ITEM</span>
+                    <span>GESTIÓN DE ITEMS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -728,7 +728,7 @@
                                         required></v-text-field>
                                 </v-col>   
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="descripcion" label="DESCRIPCION" :counter="150"
+                                    <v-text-field v-model="descripcion" label="DESCRIPCIÓN" :counter="150"
                                         :rules="descripcionRules" @input="descripcion = descripcion.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>   
@@ -751,7 +751,7 @@
                                     </v-btn>
                                 </v-col> 
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="limitecritico" label="LIMITE CRITICO" type="number" :counter="25"
+                                    <v-text-field v-model="limitecritico" label="LIMITE CRÍTICO" type="number" :counter="25"
                                          @input="limitecritico = limitecritico" :rules="limiteRules"
                                         required></v-text-field>
                                 </v-col> 
@@ -808,7 +808,7 @@
          <v-dialog v-model="agregarTipoItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>AGREGAR TIPO DE ITEM</span>
+                    <span>GESTIÓN DE TIPO DE ITEMS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -1082,7 +1082,7 @@
         >
             <v-card>
                 <v-card-title>
-                    <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACEN"
+                    <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACÉN"
                         single-line hide-details></v-text-field>
                 </v-card-title>
             </v-card>
@@ -1119,6 +1119,9 @@
  export default {
      data() {
          return {
+
+            drawer: false,
+            user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
 
             mensajeSnackbarError: "REGISTRO FALLIDO",
 
@@ -1168,10 +1171,10 @@
                  "EL NOMBRE DEL TIPO NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreAlmacenRules: [
-               (v) => !!v || "SE REQUIERE EL NOMBRE DEL ALMACEN.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL ALMACÉN.",
                (v) =>
                (v && v.length <= 60) ||
-                 "EL NOMBRE DEL ALMACEN NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+                 "EL NOMBRE DEL ALMACÉN NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              cantidadSalidaRules: [
                (v) => !!v || "SE REQUIERE LA CANTIDAD.",
@@ -1219,7 +1222,7 @@
                  
                  { text: "NUMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
                  { text: "ITEM", value: "nombreitem", sortable: true },
-                 { text: "ALMACEN", value: "nombrealmacen", sortable: true },
+                 { text: "ALMACÉN", value: "nombrealmacen", sortable: true },
                  { text: "MOVIMIENTO", value: "movimiento", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodoValuacion", sortable: true },
@@ -1232,9 +1235,9 @@
             headerAlmacen: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
                 
-                { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
-                { text: "DESCRIPCIÓN DE ALMACEN", value: "descripcion", sortable: true },
-                { text: "CODIGO ALMACEN", value: "codigo", sortable: true },
+                { text: "NOMBRE DE ALMACÉN", value: "nombrealmacen", sortable: true },
+                { text: "DESCRIPCIÓN DE ALMACÉN", value: "descripcion", sortable: true },
+                { text: "CÓDIGO ALMACÉN", value: "codigo", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -1249,8 +1252,8 @@
             datosStockAlmacen:[],
             headerStockAlmacen: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
-                { text: "CODIGO ALMACEN", value: "codigo", sortable: true },
-                { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
+                { text: "CÓDIGO ALMACÉN", value: "codigo", sortable: true },
+                { text: "NOMBRE DE ALMACÉN", value: "nombrealmacen", sortable: true },
                 { text: "TOTAL", value: "total", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false },
                 //{ text: "ACCIONES", value: "actions", sortable: false }
@@ -1261,7 +1264,7 @@
             datosStock: [],
             headerStock: [   
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
                  { text: "STOCK", value: "total", sortable: true },
@@ -1274,7 +1277,7 @@
             datosProductoAlmacen:[],
             headerProductos: [
                 { text: "NOMBRE DE PRODUCTO", value: "nombreprod", sortable: true },
-                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: true },
+                { text: "CÓDIGO DE PRODUCTO", value: "codprod", sortable: true },
                 { text: "TIPO", value: "nombretipo", sortable: true },
                 { text: "TOTAL", value: "total", sortable: false },
             ],
@@ -1286,10 +1289,10 @@
              headerItem: [
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
-                 { text: "LIMITE CRITICO", value: "limite", sortable: true },
+                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -1310,10 +1313,10 @@
              headerItemDisponibles: [
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
-                 { text: "LIMITE CRITICO", value: "limite", sortable: true },
+                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
@@ -1330,7 +1333,7 @@
              headerItemPrecio: [
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
@@ -1343,9 +1346,9 @@
              headerItemAlmacen: [
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
-                 { text: "LIMITE CRITICO", value: "limite", sortable: true },
+                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -1389,16 +1392,16 @@
              headerSaldoItem: [
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                 { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                 { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
-                 { text: "LIMITE CRITICO", value: "limite", sortable: true },
+                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
              ],
              datosSaldoAlmacenItem: [],
              headerSaldoAlmacenItem: [
-                { text: "CODIGO ALMACEN", value: "codigo", sortable: true },
-                { text: "NOMBRE DE ALMACEN", value: "nombrealmacen", sortable: true },
+                { text: "CÓDIGO ALMACÉN", value: "codigo", sortable: true },
+                { text: "NOMBRE DE ALMACÉN", value: "nombrealmacen", sortable: true },
                 { text: "TOTAL", value: "total", sortable: true },
             ],
 
@@ -1417,6 +1420,16 @@
        this.getListaExistencias().then(() => {
        this.getAlertas();
         });
+
+        if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+        }
+        if (this.user == null) {
+        if (this.$route.path != '/login') {
+            this.$router.push("/login");
+        }
+        }
+        console.log("UserData: " + JSON.stringify(this.user));
        
      },
      methods: {
@@ -2528,8 +2541,8 @@
                     data.total
                 ]);
                 const doc = new jsPDF();
-                    doc.text("Reporte de Almacen: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
-                   doc.autoTable({ head: [["Item", "Descripcion", "Tipo de Item", "Precio Unitario", "Stock"]], body: bodyData });
+                    doc.text("Reporte de Almacén: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
+                   doc.autoTable({ head: [["Item", "Descripción", "Tipo de Item", "Precio Unitario", "Stock"]], body: bodyData });
                     doc.save("inventario.pdf");
             } catch (error) {
                 console.error(error);
@@ -2549,7 +2562,7 @@
                     data.total
                 ]);
                 const doc = new jsPDF();
-                    doc.text("Reporte de Almacen: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
+                    doc.text("Reporte de Almacén: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
                    doc.autoTable({ head: [["Producto", "Código de Producto", "Tipo de Producto",  "Cantidad"]], body: bodyData });
                     doc.save("inventario.pdf");
             } catch (error) {
@@ -2557,7 +2570,33 @@
             }
             },
 
-      
+            checkAccess(accesoCorrecto, tipoCorrecto) {
+                //this.user = JSON.parse(sessionStorage.getItem('session'));
+                if (this.user == null) {
+                    return false;
+                }
+                else {
+                    let checkedAccess = false;
+                    let checkedType = false;
+                    //Si accesoCorrecto es 0, no se requiere ningun acceso para acceder
+                    if (accesoCorrecto != 0) {
+                    this.user['accesos'].forEach(access => {
+                        if (access == accesoCorrecto)
+                        checkedAccess = true;
+                    });
+                    } else checkedAccess = true;
+
+                    //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
+                    if (tipoCorrecto != '0') {
+                    if (this.user['tipo'] == tipoCorrecto) {
+                        checkedType = true;
+                    }
+                    } else checkedType = true;
+                    if (checkedAccess && checkedType) { return true }
+                    else return false;
+                }
+
+                },
          //#endregion
        },
 
