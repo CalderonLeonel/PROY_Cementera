@@ -147,15 +147,15 @@
                                     </template>
 
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
+                                        <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2" color="#0ABF55" @click="activar(item)"
                                             title="ACTIVAR DEPARTAMENTO">
                                             mdi-check-circle-outline
                                         </v-icon>
-                                        <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
+                                        <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2" color="#BF120A" @click="desactivar(item)"
                                             title="DESACTIVAR DEPARTAMENTO">
                                             mdi-cancel
                                         </v-icon>
-                                        <v-icon small class="mr-2" @click="showEditDepartamento(item)"
+                                        <v-icon large class="mr-2" color="#0A628F" @click="showEditDepartamento(item)"
                                             title="EDITAR INFORMACION">
                                             mdi-pencil
                                         </v-icon>
