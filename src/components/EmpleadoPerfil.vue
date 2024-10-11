@@ -656,7 +656,7 @@ export default {
         tipo: 'PERMANENTE',
         datosTipo: ["PERMANENTE", "TEMPORAL"],
         fechaInicio: "",//(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-        fechaFinal: "",//(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+        fechaFinal: null,//(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         isDisabled: true,
         datePicker1: false,
         datePicker2: false,
@@ -749,14 +749,14 @@ export default {
         showAddContrato() {
             this.botonAct = 0;
             this.contratoModal = true;
-            /*
+            
             if (this.documentoArchivo != '') {
                 this.inputState = false;
             }
             else {
                 this.inputState = true;
             }
-            */
+            
         },
         showEditContrato(item) {
             this.botonAct = 1;
@@ -790,10 +790,10 @@ export default {
                 });
         },
         registrarContrato() {
-            alert(this.documentoArchivo);
-            //this.almacenarArchivo(this.documentoArchivo);
-            //this.registrarContrato(this.documentoArchivo.name);
-            //this.contratoModal = true;
+            //alert(this.documentoArchivo.name);
+            this.almacenarArchivo(this.documentoArchivo);
+            this.registrarContratos(this.documentoArchivo);
+            this.contratoModal = true;
         },
         async almacenarArchivo(documentoArchivo) {
             const formData = new FormData();
@@ -816,19 +816,17 @@ export default {
                 });
         },
 
-        async registrarContrato(documentoArchivo) {
-            //const ext = documentoArchivo.split('.');
-            //const date = new Date();
-            //const fechaHoraActual = date.getDate().toString().padStart(2, '0') + '_' + (date.getMonth() + 1).toString().padStart(2, '0') + '_' + date.getFullYear();
-            //const nombreArchivo = ext[0] + '_' + fechaHoraActual + '.' + ext[1];
+        async registrarContratos(documentoArchivo) {
             let me = this;
-
+            const ext = documentoArchivo.name.split('.');
+            const date = new Date();
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0') + '_' + (date.getMonth() + 1).toString().padStart(2, '0') + '_' + date.getFullYear();
+            const nombreArchivo = ext[0] + '_' + fechaHoraActual + '.' + ext[1];
+            if(this.fechaFinal == '' || this.fechaFinal == null) {this.fechaFinal = 'null';}
             await axios
                 .post(
                     "/contrato/addcontrato/" +
-                    //ext[0] +
-                    //"," +
-                    "documentoArchivo" +
+                    nombreArchivo +
                     "," +
                     this.fechaInicio +
                     "," +
