@@ -427,7 +427,7 @@
               <h6>GESTIÓN DE DOCUMENTOS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'ArchivosEmpleado' }" v-if="checkAccess(9, 'SUPERVISOR')">
+          <v-list-item :to="{ name: 'ArchivosEmpleado' }" v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
             <v-list-item-title>
               <h6>DOCUMENTOS DE PERSONAL</h6>
             </v-list-item-title>
