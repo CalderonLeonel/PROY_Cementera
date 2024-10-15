@@ -186,6 +186,11 @@ const routes = [
     name: "Asistencias",
     component: () => import("@/components/Asistencia.vue"),
   },
+  {
+    path: "planilla",
+    name: "Planilla",
+    component: () => import("@/components/PlanillaPagos.vue"),
+  },
 ];
 
 const router = new VueRouter({

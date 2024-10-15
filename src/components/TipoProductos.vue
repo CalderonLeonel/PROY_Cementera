@@ -34,8 +34,8 @@
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="nombreLinea" label="NOMBRE LINEA" :counter="50"
-                                        :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()" disabled
-                                        required></v-text-field>
+                                        :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()"
+                                        disabled required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4"></v-col>
 
@@ -55,7 +55,8 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarTipo()"
-                                            style="float: left" title="ACTUALIZAR INtipoCIÓN" width="28px" height="28px">
+                                            style="float: left" title="ACTUALIZAR INtipoCIÓN" width="28px"
+                                            height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
                                         <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarTipo()"
@@ -104,8 +105,8 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closeInfoTipoModal()"
-                                        style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
+                                        @click="closeInfoTipoModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -152,8 +153,8 @@
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="nombreLinea" label="NOMBRE LINEA" :counter="50"
-                                        :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()" disabled
-                                        required></v-text-field>
+                                        :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()"
+                                        disabled required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4"></v-col>
 
@@ -178,8 +179,8 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closeAgregarTipo()"
-                                        style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
+                                        @click="closeAgregarTipo()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -203,8 +204,8 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closeInfoTipoModal()"
-                                        style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
+                                        @click="closeInfoTipoModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -234,8 +235,8 @@
                                     </v-list-item>
 
                                     <v-card-title>
-                                        <v-text-field v-model="buscarLineas" append-icon="mdi-magnify" label="BUSCAR LINEAS"
-                                            single-line hide-details></v-text-field>
+                                        <v-text-field v-model="buscarLineas" append-icon="mdi-magnify"
+                                            label="BUSCAR LINEAS" single-line hide-details></v-text-field>
                                     </v-card-title>
                                     <v-data-table :headers="headersLineas" :items="datosLineas" :search="buscarLineas"
                                         :items-per-page="5" class="elevation-1" id="tableId">
@@ -274,7 +275,7 @@
 
 
         <div>
-            <v-alert dense style="color: #ffffff;" color="grey">
+            <v-alert dense color="cyan">
                 <h5>Tipos</h5>
             </v-alert>
         </div>
@@ -346,8 +347,8 @@
                                                         <v-col cols="12" md="4">
                                                             <v-text-field v-model="nombreLinea" label="NOMBRE LINEA"
                                                                 :counter="50" :rules="nombreLineaRules"
-                                                                @input="nombreLinea = nombreLinea.toUpperCase()" disabled
-                                                                required></v-text-field>
+                                                                @input="nombreLinea = nombreLinea.toUpperCase()"
+                                                                disabled required></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" md="4"></v-col>
 
@@ -359,18 +360,20 @@
                                                                         OPCIONES
                                                                     </h6>
                                                                 </v-toolbar-title>
-                                                                <v-btn v-if="botonact == 1" class="mx-2" fab dark x-small color="#EE680B"
-                                                                    @click="actualizarTipo()" style="float: left"
-                                                                    title="ACTUALIZAR TIPO">
+                                                                <v-btn icon v-if="botonact == 1" class="mx-2" fab dark
+                                                                    color="#0A62BF" @click="actualizarTipo()"
+                                                                    style="float: left" title="ACTUALIZAR TIPO">
                                                                     <v-icon dark> mdi-pencil </v-icon>
                                                                 </v-btn>
-                                                                <v-btn v-if="botonact == 0" class="mx-2" fab dark x-small color="#EE680B"
-                                                                    @click="registrarTipo()" style="float: left"
-                                                                    title="REGISTRAR TIPO">
-                                                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                                                <v-btn icon v-if="botonact == 0" class="mx-2" fab dark
+                                                                    color="#0ABF55" @click="registrarTipo()"
+                                                                    style="float: left" title="REGISTRAR TIPO">
+                                                                    <v-icon dark> mdi-content-save-plus-outline
+                                                                    </v-icon>
                                                                 </v-btn>
-                                                                <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="limpiar()"
-                                                                    style="float: left" title="LIMPIAR FORMULARIO">
+                                                                <v-btn icon class="mx-2" fab dark color="#EE680B"
+                                                                    @click="limpiar()" style="float: left"
+                                                                    title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>
                                                                 </v-btn>
                                                             </v-toolbar>
@@ -406,6 +409,17 @@
                                                                     single-line hide-details></v-text-field>
                                                             </v-card-title>
 
+                                                            <v-card-title>
+                                                                <v-btn color="primary"
+                                                                    @click="exportToPDFTipos()">PDF</v-btn>
+
+                                                                <v-btn color="primary"
+                                                                    @click="exportToCSVTipos()">CSV</v-btn>
+
+                                                                <v-btn color="primary"
+                                                                    @click="exportToExcelTipos()">EXCEL</v-btn>
+                                                            </v-card-title>
+
 
                                                             <v-data-table :headers="headersTipos" :items="datosTipos"
                                                                 :search="buscarTipos" :items-per-page="5"
@@ -420,22 +434,23 @@
 
                                                                 <template #[`item.actions`]="{ item }">
                                                                     <v-icon v-if="item.est == 'INACTIVO'" color="green"
-                                                                        small class="mr-2" @click="activar(item)"
+                                                                        class="mx-2" large @click="activar(item)"
                                                                         title="ACTIVAR TIPO">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
-                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small
-                                                                        class="mr-2" @click="desactivar(item)"
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red"
+                                                                        class="mx-2" large @click="desactivar(item)"
                                                                         title="DESACTIVAR TIPO">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                    <v-icon class="mx-2" large color="#001781"
                                                                         @click="showEditTipoModal(item)"
                                                                         title="ACTUALIZAR INFORMACION">
                                                                         mdi-pencil
                                                                     </v-icon>
-                                                                    <v-icon small class="mr-2" color="#001781"
-                                                                        @click="showInfoTipo(item)" title="VER INFORMACION">
+                                                                    <v-icon class="mx-2" large color="#001781"
+                                                                        @click="showInfoTipo(item)"
+                                                                        title="VER INFORMACION">
                                                                         mdi-eye
                                                                     </v-icon>
                                                                 </template>
@@ -471,9 +486,9 @@
                                                                     append-icon="mdi-magnify" label="BUSCAR TipoS"
                                                                     single-line hide-details></v-text-field>
                                                             </v-card-title>
-                                                            <v-data-table :headers="headersTiposInh" :items="datosTiposInh"
-                                                                :search="buscarTipos" :items-per-page="5"
-                                                                class="elevation-1" id="tableId">
+                                                            <v-data-table :headers="headersTiposInh"
+                                                                :items="datosTiposInh" :search="buscarTipos"
+                                                                :items-per-page="5" class="elevation-1" id="tableId">
 
                                                                 <template #[`item.est`]="{ item }">
                                                                     <v-chip :color="colorEstado(item.est)" dark>
@@ -488,13 +503,14 @@
                                                                         title="ACTIVAR TipoS">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
-                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small
-                                                                        class="mr-2" @click="desactivar(item)"
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red"
+                                                                        small class="mr-2" @click="desactivar(item)"
                                                                         title="DESACTIVAR TipoS">
                                                                         mdi-cancel
                                                                     </v-icon>
                                                                     <v-icon small class="mr-2" color="#001781"
-                                                                        @click="showInfoTipo(item)" title="VER INtipoCION">
+                                                                        @click="showInfoTipo(item)"
+                                                                        title="VER INtipoCION">
                                                                         mdi-eye
                                                                     </v-icon>
                                                                 </template>
@@ -542,6 +558,12 @@
 </template>
 <script>
 import axios from 'axios'
+import * as XLSX from 'xlsx';
+
+import Papa from "papaparse";
+
+import jsPDF from "jspdf";
+import 'jspdf-autotable';
 
 export default {
     data() {
@@ -825,6 +847,116 @@ export default {
             this.idLinea = item.idlin;
             this.nombreLinea = item.nomlin;
             this.lineasModal = false;
+        },
+        //#endregion
+
+        //#region Reports
+        async exportToCSVTipos() {
+            try {
+                const response = await axios.get(`/tipoproducto/listartiposactivos/`); // Ruta adaptada para tipos de productos
+                const jsonData = response.data.resultado || [];
+
+                const csvData = Papa.unparse(jsonData);
+
+                const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                link.href = url;
+                link.download = "tipos_productos.csv";
+                link.click();
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        async exportToExcelTipos() {
+            try {
+                const response = await axios.get(`/tipoproducto/listartiposactivos/`); // Ruta adaptada para tipos de productos
+                const jsonData = response.data.resultado || [];
+                const worksheet = XLSX.utils.json_to_sheet(jsonData);
+                const workbook = XLSX.utils.book_new();
+
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Hoja1");
+
+                XLSX.writeFile(workbook, "tipos_productos.xlsx", { compression: true });
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        async exportToPDFTipos() {
+            try {
+                const response = await axios.get(`/tipoproducto/listartiposactivos/`); // Ruta adaptada para tipos de productos
+                const jsonData = response.data.resultado || [];
+                console.log(jsonData)
+                const bodyData = jsonData.map(item => [
+                    item.codtipo,
+                    item.nomtipo,
+                    item.nomlin,
+                    item.est
+                ]);
+                const doc = new jsPDF();
+                doc.text("Listado de Tipos de Productos", 10, 10);
+                doc.autoTable({
+                    head: [["Código de Tipo", "Nombre de Tipo", "Nombre de Línea", "Estado"]],
+                    body: bodyData
+                });
+                doc.save("tipos_productos.pdf");
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        async exportToPDFTipoDetailed(item) {
+            try {
+                const response = await axios.get(`/tipoproducto/detalletipo/` + item.idTipoProducto); // Ruta adaptada para detalle de tipo de producto
+                const jsonData = response.data.resultado || [];
+                console.log(jsonData)
+                const bodyData = jsonData.map(data => [
+                    data.codtipo,
+                    data.nomtipo,
+                    data.nomlin,
+                    data.descripcion,
+                    data.est
+                ]);
+                const doc = new jsPDF();
+                doc.text("Detalle del Tipo de Producto: " + item.nombreTipo.charAt(0).toUpperCase() + item.nombreTipo.slice(1).toLowerCase(), 10, 10);
+                doc.autoTable({
+                    head: [["Código", "Nombre", "Línea", "Descripción", "Estado"]],
+                    body: bodyData
+                });
+                doc.save("detalle_tipo_producto.pdf");
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        checkAccess(accesoCorrecto, tipoCorrecto) {
+            //this.user = JSON.parse(sessionStorage.getItem('session'));
+            if (this.user == null) {
+                return false;
+            }
+            else {
+                let checkedAccess = false;
+                let checkedType = false;
+                //Si accesoCorrecto es 0, no se requiere ningun acceso para acceder
+                if (accesoCorrecto != 0) {
+                    this.user['accesos'].forEach(access => {
+                        if (access == accesoCorrecto)
+                            checkedAccess = true;
+                    });
+                } else checkedAccess = true;
+
+                //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
+                if (tipoCorrecto != '0') {
+                    if (this.user['tipo'] == tipoCorrecto) {
+                        checkedType = true;
+                    }
+                } else checkedType = true;
+                if (checkedAccess && checkedType) { return true }
+                else return false;
+            }
+
         },
         //#endregion
     },

@@ -40,7 +40,8 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarFormato()"
-                                            style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px" height="28px">
+                                            style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px"
+                                            height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
                                         <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarFormato()"
@@ -137,7 +138,8 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-btn class="mx-2" fab dark small icon v-if="botonact == 1" color="#EE680B"
-                                            @click="editarFormatos()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
+                                            @click="editarFormatos()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
                                         <v-btn class="mx-2" fab dark small icon v-if="botonact == 0" color="#EE680B"
@@ -153,8 +155,8 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closeAgregarFormato()"
-                                        style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
+                                        @click="closeAgregarFormato()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -231,7 +233,7 @@
 
 
         <div>
-            <v-alert dense style="color: #ffffff;" color="grey">
+            <v-alert dense color="cyan">
                 <h5>FORMATOS</h5>
             </v-alert>
         </div>
@@ -294,23 +296,24 @@
 
                                                         <v-col cols="12" md="8"> </v-col>
                                                         <v-col cols="12" md="4">
-                                                            <v-toolbar dense shaped color="#001781">
+                                                            <v-toolbar dense shaped>
                                                                 <v-toolbar-title>
                                                                     <h6>
                                                                         OPCIONES
                                                                     </h6>
                                                                 </v-toolbar-title>
-                                                                <v-btn v-if="botonact == 1" class="mx-2" fab dark x-small
-                                                                    color="#EE680B" @click="actualizarFormato()"
+                                                                <v-btn icon v-if="botonact == 1" class="mx-2" fab dark
+                                                                    color="#0A62BF" @click="actualizarFormato()"
                                                                     style="float: left" title="ACTUALIZAR INFORMACIÓN">
                                                                     <v-icon dark> mdi-pencil </v-icon>
                                                                 </v-btn>
-                                                                <v-btn v-if="botonact == 0" class="mx-2" fab dark x-small
-                                                                    color="#EE680B" @click="registrarFormato()"
+                                                                <v-btn icon v-if="botonact == 0" class="mx-2" fab dark
+                                                                    color="#0ABF55" @click="registrarFormato()"
                                                                     style="float: left" title="REGISTRAR FORMATO">
-                                                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                                                    <v-icon dark> mdi-content-save-plus-outline
+                                                                    </v-icon>
                                                                 </v-btn>
-                                                                <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                                                <v-btn icon class="mx-2" fab dark x-small color="#EE680B"
                                                                     @click="limpiar()" style="float: left"
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>
@@ -346,10 +349,21 @@
                                                                     single-line hide-details></v-text-field>
                                                             </v-card-title>
 
+                                                            <v-card-title>
+                                                                <v-btn color="primary"
+                                                                    @click="exportToPDFFormatos()">PDF</v-btn>
 
-                                                            <v-data-table :headers="headersFormatos" :items="datosFormatos"
-                                                                :search="buscarFormatos" :items-per-page="5"
-                                                                class="elevation-1" id="tableId">
+                                                                <v-btn color="primary"
+                                                                    @click="exportToCSVFormatos()">CSV</v-btn>
+
+                                                                <v-btn color="primary"
+                                                                    @click="exportToExcelFormatos()">EXCEL</v-btn>
+                                                            </v-card-title>
+
+
+                                                            <v-data-table :headers="headersFormatos"
+                                                                :items="datosFormatos" :search="buscarFormatos"
+                                                                :items-per-page="5" class="elevation-1" id="tableId">
 
                                                                 <template #[`item.est`]="{ item }">
                                                                     <v-chip :color="colorEstado(item.est)" dark>
@@ -360,21 +374,21 @@
 
                                                                 <template #[`item.actions`]="{ item }">
                                                                     <v-icon v-if="item.est == 'INACTIVO'" color="green"
-                                                                        small class="mr-2" @click="activar(item)"
+                                                                        class="mx-2" large @click="activar(item)"
                                                                         title="ACTIVAR FormatoS">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
-                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small
-                                                                        class="mr-2" @click="desactivar(item)"
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red"
+                                                                        class="mx-2" large @click="desactivar(item)"
                                                                         title="DESACTIVAR FormatoS">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                    <v-icon class="mx-2" large color="#001781"
                                                                         @click="showEditFormatoModal(item)"
                                                                         title="ACTUALIZAR INFORMACION">
                                                                         mdi-pencil
                                                                     </v-icon>
-                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                    <v-icon class="mx-2" large color="#001781"
                                                                         @click="showInfoFormato(item)"
                                                                         title="VER INFORMACION">
                                                                         mdi-eye
@@ -428,8 +442,8 @@
                                                                         title="ACTIVAR FormatoS">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
-                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small
-                                                                        class="mr-2" @click="desactivar(item)"
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red"
+                                                                        small class="mr-2" @click="desactivar(item)"
                                                                         title="DESACTIVAR FormatoS">
                                                                         mdi-cancel
                                                                     </v-icon>
@@ -456,7 +470,8 @@
                     </v-row>
 
                     <div class="text-center">
-                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
+                            outlined>
                             <strong>{{ mensajeSnackbar }}</strong>
 
 
@@ -488,6 +503,12 @@
 </template>
 <script>
 import axios from "axios";
+import * as XLSX from 'xlsx';
+
+import Papa from "papaparse";
+
+import jsPDF from "jspdf";
+import 'jspdf-autotable';
 
 export default {
     data() {
@@ -674,7 +695,7 @@ export default {
             await axios
                 .post("/formato/offformato/" + this.idFormato).then(function (response) {
 
-                    me.listarFormatosInh(); 
+                    me.listarFormatosInh();
                     me.listarFormatos();
 
                 })
@@ -714,7 +735,115 @@ export default {
             this.nombreFormato = "";
             this.codigoFormato = "";
             this.idFormato = "";
-        }
+        },
+        //#region Reports
+        async exportToCSVFormatos() {
+            try {
+                const response = await axios.get(`/formato/listarformatos/`); // Ruta adaptada para formatos
+                const jsonData = response.data.resultado || [];
+
+                const csvData = Papa.unparse(jsonData);
+
+                const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                link.href = url;
+                link.download = "formatos.csv";
+                link.click();
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        async exportToExcelFormatos() {
+            try {
+                const response = await axios.get(`/formato/listarformatos/`); // Ruta adaptada para formatos
+                const jsonData = response.data.resultado || [];
+                const worksheet = XLSX.utils.json_to_sheet(jsonData);
+                const workbook = XLSX.utils.book_new();
+
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Hoja1");
+
+                XLSX.writeFile(workbook, "formatos.xlsx", { compression: true });
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        async exportToPDFFormatos() {
+            try {
+                const response = await axios.get(`/formato/listarformatos/`); // Ruta adaptada para formatos
+                const jsonData = response.data.resultado || [];
+                console.log(jsonData)
+                const bodyData = jsonData.map(item => [
+                    item.codforma,
+                    item.nomforma,
+                    item.est
+                ]);
+                const doc = new jsPDF();
+                doc.text("Listado de Formatos", 10, 10);
+                doc.autoTable({
+                    head: [["Código de Formato", "Nombre de Formato", "Estado"]],
+                    body: bodyData
+                });
+                doc.save("formatos.pdf");
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        async exportToPDFFormatoDetailed(item) {
+            try {
+                const response = await axios.get(`/formato/listarformatos/` + item.idFormato); // Ruta adaptada para detalle de formatos
+                const jsonData = response.data.resultado || [];
+                console.log(jsonData)
+                const bodyData = jsonData.map(data => [
+                    data.codforma,
+                    data.nomforma,
+                    data.descripcion,
+                    data.est
+                ]);
+                const doc = new jsPDF();
+                doc.text("Detalle del Formato: " + item.nombreFormato.charAt(0).toUpperCase() + item.nombreFormato.slice(1).toLowerCase(), 10, 10);
+                doc.autoTable({
+                    head: [["Código", "Nombre", "Descripción", "Estado"]],
+                    body: bodyData
+                });
+                doc.save("detalle_formato.pdf");
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        checkAccess(accesoCorrecto, tipoCorrecto) {
+            //this.user = JSON.parse(sessionStorage.getItem('session'));
+            if (this.user == null) {
+                return false;
+            }
+            else {
+                let checkedAccess = false;
+                let checkedType = false;
+                //Si accesoCorrecto es 0, no se requiere ningun acceso para acceder
+                if (accesoCorrecto != 0) {
+                    this.user['accesos'].forEach(access => {
+                        if (access == accesoCorrecto)
+                            checkedAccess = true;
+                    });
+                } else checkedAccess = true;
+
+                //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
+                if (tipoCorrecto != '0') {
+                    if (this.user['tipo'] == tipoCorrecto) {
+                        checkedType = true;
+                    }
+                } else checkedType = true;
+                if (checkedAccess && checkedType) { return true }
+                else return false;
+            }
+
+        },
+        //#endregion
+
     },
 }
 </script>

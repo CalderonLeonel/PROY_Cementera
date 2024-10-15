@@ -25,7 +25,7 @@
             <div class="text-h6">
                 SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
             </div>
-            POR FAVOR, COTICE UNA ADQUISICION PARA TENER EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong> NECESARIAS PARA
+            POR FAVOR, COTICE UNA ADQUISICIÓN PARA TENER EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong> NECESARIAS PARA
             EL
             FUNCIONAMIENTO DE LA FABRICA
         </v-alert>
@@ -46,7 +46,7 @@
 
                     <v-row>
                         <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showModalAgregarCotizacionAdquisicion()">NUEVA COTIZACION DE
+                            <v-btn color="success" @click="showModalAgregarCotizacionAdquisicion()">NUEVA COTIZACIÓN DE
                                 ADQUISICIONES</v-btn>
                         </v-col>
                         <v-col cols="12">
@@ -231,7 +231,7 @@
       <v-dialog v-model="agregarCotizacionAdquisicionModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>AGREGAR COTRIZACION DE ADQUISICION</span>
+                    <span>GESTIÓN DE COTIZACIÓN DE ADQUISICIÓN</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -250,7 +250,7 @@
                                 </v-col>
 
                                 <v-col cols="12" md="8">
-                                    <v-text-field v-model="nombreCotizacion" label="NOMBRE DE LA COTIZACION"
+                                    <v-text-field v-model="nombreCotizacion" label="NOMBRE DE LA COTIZACIÓN"
                                         :counter="100" @input="nombreCotizacion = nombreCotizacion.toUpperCase()"
                                         :rules="nombreCotizacionRules" required></v-text-field>
                                 </v-col>
@@ -274,7 +274,7 @@
                                 <v-col cols="12" md="12">
                                     <v-file-input v-model="documentoArchivo"
                                         accept=".jpg, .jpeg, .webp, .png, .gif, .bmp, .docx, .xlsx, .pptx, .pdf, .csv, .xml"
-                                        label="DOCUMENTO DE COTIZACION"></v-file-input>
+                                        label="DOCUMENTO DE COTIZACIÓN"></v-file-input>
                                 </v-col>
 
 
@@ -293,7 +293,7 @@
                                             </v-btn>
                                             <v-btn icon v-if="botonactCot == 0" color="#0ABF55"
                                                 @click="registrarCotizacionAdq()" style="float: left"
-                                                title="REGISTRAR COTIZACION DE ADQUISICION" class="mx-2" large>
+                                                title="REGISTRAR COTIZACIÓN DE ADQUISICIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -447,7 +447,7 @@
         <v-dialog v-model="agregarCotizacionItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>AGREGAR COTIZACION DE UN ITEM</span>
+                    <span>GESTIÓN DE COTIZACIÓN DE UN ITEM</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -507,7 +507,7 @@
                                             </v-btn>
                                             <v-btn icon v-if="botonactCotIt == 0" color="#0ABF55" :disabled='nombreCotizacion==null'
                                                 @click="registrarCotizacionIt()" style="float: left"
-                                                title="REGISTRAR COTIZACION DE ITEM" class="mx-2" large>
+                                                title="REGISTRAR COTIZACIÓN DE ITEM" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -548,7 +548,7 @@
                             <v-col cols="3"></v-col>
                             <v-col cols="3">
                                 <v-btn class="mx-2" dark x-big color="#BF120A" @click="anularCotizacionAdquisicion()"
-                                    style="float: right" title="ANULAR COTIZACION DE ADQUISICION">
+                                    style="float: right" title="ANULAR COTIZACIÓN DE ADQUISICIÓN">
                                     <v-icon dark> mdi-close-circle-outline </v-icon>
                                     ANULAR
                                 </v-btn>
@@ -650,6 +650,9 @@ import 'jspdf-autotable';
 export default {
     data() {
         return {
+
+            drawer: false,
+            user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
 
             existencias: true,
             itemsCriticos: '',
@@ -787,7 +790,7 @@ export default {
             headerItem: [
 
                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                { text: "DESCRIPCION", value: "descripcion", sortable: true },
+                { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                 { text: "MEDIDA", value: "medida", sortable: true },
                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
@@ -860,8 +863,40 @@ export default {
         this.listarCotizacionItem()
         this.getListaExistencias().then(() => {
         this.getAlertas();
+
+        if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+        }
+            if (this.user == null) {
+        if (this.$route.path != '/login') {
+            this.$router.push("/login");
+        }
+    }
+    console.log("UserData: " + JSON.stringify(this.user));
         });
     },
+    computed: {
+        logueado() {
+            if (this.user != null) {
+                this.user = JSON.parse(sessionStorage.getItem('session'));
+            }
+            return this.user;
+            }
+        }, created: function () {
+
+            if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+            }
+
+
+            //this.user.dispath("autologin");
+            if (this.user == null) {
+            if (this.$route.path != '/login') {
+                this.$router.push("/login");
+            }
+            }
+            console.log("UserData: " + JSON.stringify(this.user));
+        },
     methods: {
 
         getAlertas() {
@@ -1726,7 +1761,7 @@ export default {
             let me = this;
             if (contenido == null) {
                 contenido = [];
-                me.mensajeSnackbarError = "NO SE PUEDE APROBAR UNA COTIZACION SIN ITEMS, POR FAVOR AGREGUE EL DETALLE DE LA COTIZACIÓN";
+                me.mensajeSnackbarError = "NO SE PUEDE APROBAR UNA COTIZACIÓN SIN ITEMS, POR FAVOR AGREGUE EL DETALLE DE LA COTIZACIÓN";
                 me.snackbarError = true;
             } else {
                 this.idCotizacion = item.idCotizacion;
@@ -1861,7 +1896,37 @@ export default {
                 console.error(error);
             }
             },
+        checkAccess(accesoCorrecto, tipoCorrecto) {
+            if (this.user == null) {
+                return false;
+            }
+            else {
+                let checkedAccess = false;
+                let checkedType = false;
+                //Si accesoCorrecto es 0, no se requiere ningun acceso para acceder
+                if (accesoCorrecto != 0) {
+                this.user['accesos'].forEach(access => {
+                    if (access == accesoCorrecto)
+                    checkedAccess = true;
+                });
+                } else checkedAccess = true;
+
+                //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
+                if (tipoCorrecto != '0') {
+                if (this.user['tipo'] == tipoCorrecto) {
+                    checkedType = true;
+                }
+                } else checkedType = true;
+                if (checkedAccess && checkedType) { return true }
+                else return false;
+            }
+
+        },
+        
+
     },
+    
+ 
 };
 
 </script>
