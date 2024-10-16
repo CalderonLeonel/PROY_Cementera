@@ -1,260 +1,377 @@
 <template>
     <v-card elevation="5" outlined shaped>
         <div> <!-- Encabezado -->
-            <v-alert dense color="#00A1B1" style="color: #ffffff; text-align: center;">
-                <h5>PERFIL DE EMPLEADO</h5>
+            <v-alert dense color="#00A1B1" style="color: #ffffff; text-align: left;">
+                <h5>EMPLEADOS</h5>
             </v-alert>
         </div>
         <v-container> <!-- Datos del Empleado -->
             <v-row>
-                <v-col cols="12" md="3">
-                    <v-alert dense color="#00A1B1" style="color: #ffffff">
-                        <h5>NOMBRE DEL EMPLEADO:</h5>
-                    </v-alert>
+                <!-- V-TABS -->
+                <v-col cols="12">
+                    <v-tabs horizontal color="#002245" center-active grow>
+                        <v-tab>
+                            <v-icon left>
+                                mdi-account-box
+                            </v-icon>
+                            PERFIL
+                        </v-tab>
+                        <v-tab>
+                            <v-icon left>
+                                mdi-file-sign
+                            </v-icon>
+                            CONTRATOS
+                        </v-tab>
+                        <v-tab>
+                            <v-icon left>
+                                mdi-eye-circle
+                            </v-icon>
+                            OBSERVACIONES
+                        </v-tab>
+                        <v-tab>
+                            <v-icon left>
+                                mdi-palm-tree
+                            </v-icon>
+                            VACACIONES
+                        </v-tab>
+
+                        <v-tab-item v-if="flag == 1">
+                            <v-card elevation="5" outlined shaped>
+                                <v-card-title>
+                                    <span>PERFIL DEL EMPLEADO</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-form ref="form" v-model="valid" lazy-validation>
+                                        <v-container>
+                                            <v-row>
+                                                <!-- datos de empleado en screen -->
+                                                <v-col cols="12" md="3">
+                                                    <v-alert dense color="#00A1B1" style="color: #ffffff">
+                                                        <h5>NOMBRE DEL EMPLEADO:</h5>
+                                                    </v-alert>
+                                                </v-col>
+                                                <v-col cols="12" md="6">
+                                                    <v-alert dense>
+                                                        <h5 dense> {{ this.$route.params.nom + " " +
+                            this.$route.params.pat + " " +
+                            this.$route.params.mat }}
+                                                        </h5>
+                                                        <hr>
+                                                    </v-alert>
+                                                </v-col>
+                                                <v-col cols="12" md="3">
+                                                    <v-row></v-row>
+                                                    <!-- FOTO CARNET -->
+                                                </v-col>
+                                                <v-col cols="12" md="3">
+                                                    <v-alert dense color="#00A1B1" style="color: #ffffff">
+                                                        <h5>CORREO ELECTRÓNICO:</h5>
+                                                    </v-alert>
+                                                </v-col>
+                                                <v-col cols="12" md="6">
+                                                    <v-alert dense>
+                                                        <h5 dense> {{ this.$route.params.emal }}
+                                                        </h5>
+                                                        <hr>
+                                                    </v-alert>
+                                                </v-col>
+                                                <v-col cols="12" md="3">
+                                                    <v-row></v-row>
+                                                    <!-- FOTO CARNET -->
+                                                </v-col>
+                                                <v-col cols="12" md="3">
+                                                    <v-alert dense color="#00A1B1" style="color: #ffffff">
+                                                        <h5>CONTACTOS:</h5>
+                                                    </v-alert>
+                                                </v-col>
+                                                <v-col cols="12" md="3">
+                                                    <v-alert dense>
+                                                        <h5>{{ this.$route.params.tel }}</h5>
+                                                        <hr>
+                                                    </v-alert>
+                                                </v-col>
+                                                <v-col cols="12" md="3">
+                                                    <v-alert dense color="#00A1B1" style="color: #ffffff">
+                                                        <h5>ESTADO CIVIL:</h5>
+                                                    </v-alert>
+                                                </v-col>
+                                                <v-col cols="12" md="3">
+                                                    <v-alert dense>
+                                                        <h5>{{ this.$route.params.est }}</h5>
+                                                        <hr>
+                                                    </v-alert>
+                                                </v-col>
+                                                <!-- FOTO CARNET -->
+                                                <v-col cols="12" md="3">
+                                                    <v-alert dense color="#00A1B1" style="color: #ffffff">
+                                                        <h5>NUMERO DE CARNET:</h5>
+                                                    </v-alert>
+                                                </v-col>
+                                                <v-col cols="12" md="9">
+                                                    <v-alert dense>
+                                                        <h5>{{ this.$route.params.ci }}</h5>
+                                                        <hr>
+                                                    </v-alert>
+                                                </v-col>
+                                            </v-row>
+                                        </v-container>
+                                    </v-form>
+                                </v-card-text>
+                            </v-card>
+                        </v-tab-item>
+
+                        <v-tab-item v-if="flag == 1">
+                            <v-card elevation="5" outlined shaped>
+                                <v-card-title>
+                                    <span>HISTORIAL DE CONTRATOS</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Contratos -->
+                                        <v-container>
+                                            <v-row>
+                                                <v-col cols="12" md="12">
+                                                    <v-col cols="12">
+                                                        <div> <!-- Encabezado -->
+                                                            <v-alert dense color="#00A1B1"
+                                                                style="color: #ffffff; text-align: center;">
+                                                                <h5>CONTRATOS</h5>
+                                                            </v-alert>
+                                                        </div>
+                                                        <v-col cols="12" md="4">
+                                                            <v-btn color="success" @click="showAddContrato()">+ Nuevo
+                                                                Contrato</v-btn>
+                                                        </v-col>
+
+                                                        <v-card-title>
+                                                            <v-text-field v-model="searchContrato"
+                                                                append-icon="mdi-magnify" label="BUSCAR CONTRATOS"
+                                                                single-line hide-details></v-text-field>
+                                                        </v-card-title>
+
+                                                        <v-data-table :headers="headersContrato" :items="datosContrato"
+                                                            :search="searchContrato" :items-per-page="5"
+                                                            class="elevation-1" id="tableId">
+                                                            <template #[`item.tip`]="{ item }">
+                                                                <td v-if="item.fecfin == null">PERMANENTE</td>
+                                                                <td v-if="item.fecfin != null">TEMPORAL</td>
+                                                            </template>
+                                                            <template #[`item.fecini`]="{ item }">
+                                                                <td>{{ new Date(item.fecini).toLocaleDateString('es-ES',
+                            {
+                                day: 'numeric', month:
+                                    'long', year: 'numeric'
+                            }) }}</td>
+                                                            </template>
+                                                            <template #[`item.fecfin`]="{ item }">
+                                                                <td v-if="item.fecfin == null">-</td>
+                                                                <td v-if="item.fecfin != null">{{ new
+                            Date(item.fecfin).toLocaleDateString('es-ES',
+                                { day: 'numeric', month: 'long', year: 'numeric' })
+                                                                    }}</td>
+                                                            </template>
+                                                            <template #[`item.act`]="{ item }">
+                                                                <v-chip :color="getColor(item.act)" dark>
+                                                                    {{ item.act }}
+                                                                </v-chip>
+                                                            </template>
+                                                            <template #[`item.actions`]="{ item }">
+                                                                <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2"
+                                                                    @click="activarContrato(item)"
+                                                                    title="ACTIVAR CONTRATO">
+                                                                    mdi-check-circle-outline
+                                                                </v-icon>
+                                                                <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2"
+                                                                    @click="desactivarContrato(item)"
+                                                                    title="DESACTIVAR CONTRATO">
+                                                                    mdi-cancel
+                                                                </v-icon>
+                                                                <v-icon large class="mr-2"
+                                                                    @click="showEditContrato(item)"
+                                                                    title="EDITAR INFORMACION">
+                                                                    mdi-pencil
+                                                                </v-icon>
+                                                            </template>
+                                                        </v-data-table>
+                                                    </v-col>
+                                                </v-col>
+                                            </v-row>
+                                        </v-container>
+                                    </v-form>
+                                </v-card-text>
+                            </v-card>
+                        </v-tab-item>
+
+                        <v-tab-item v-if="flag == 1">
+                            <v-card elevation="5" outlined shaped>
+                                <v-card-title>
+                                    <span>LISTA DE OBSERVACIONES</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Observaciones -->
+                                        <v-container>
+                                            <v-row>
+                                                <v-col cols="12" md="12">
+                                                    <v-col cols="12">
+                                                        <div> <!-- Encabezado -->
+                                                            <v-alert dense color="#00A1B1"
+                                                                style="color: #ffffff; text-align: center;">
+                                                                <h5>OBSERVACIONES</h5>
+                                                            </v-alert>
+                                                        </div>
+                                                        <v-col cols="12" md="4">
+                                                            <v-btn color="success" @click="showAddObservacion()">+ Nueva
+                                                                Observacion</v-btn>
+                                                        </v-col>
+
+                                                        <v-card-title>
+                                                            <v-text-field v-model="searchObservacion"
+                                                                append-icon="mdi-magnify" label="BUSCAR OBSERVACIONES"
+                                                                single-line hide-details></v-text-field>
+                                                        </v-card-title>
+
+                                                        <v-data-table :headers="headersObservacion"
+                                                            :items="datosObservacion" :search="searchObservacion"
+                                                            :items-per-page="5" class="elevation-1" id="tableId">
+                                                            <template #[`item.fec`]="{ item }">
+                                                                <td>{{ new Date(item.fec).toLocaleDateString('es-ES', {
+                            day: 'numeric', month:
+                                'long', year: 'numeric'
+                        }) }}</td>
+                                                            </template>
+                                                            <template #[`item.act`]="{ item }">
+                                                                <v-chip :color="getColor(item.act)" dark>
+                                                                    {{ item.act }}
+                                                                </v-chip>
+                                                            </template>
+                                                            <template #[`item.actions`]="{ item }">
+                                                                <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2"
+                                                                    @click="activarObservacion(item)"
+                                                                    title="ACTIVAR OBSERVACION">
+                                                                    mdi-check-circle-outline
+                                                                </v-icon>
+                                                                <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2"
+                                                                    @click="desactivarObservacion(item)"
+                                                                    title="DESACTIVAR OBSERVACION">
+                                                                    mdi-cancel
+                                                                </v-icon>
+                                                                <v-icon large class="mr-2"
+                                                                    @click="showEditObservacion(item)"
+                                                                    title="EDITAR INFORMACION">
+                                                                    mdi-pencil
+                                                                </v-icon>
+                                                            </template>
+                                                        </v-data-table>
+                                                    </v-col>
+                                                </v-col>
+                                            </v-row>
+                                        </v-container>
+                                    </v-form>
+                                </v-card-text>
+                            </v-card>
+                        </v-tab-item>
+
+                        <v-tab-item v-if="flag == 1">
+                            <v-card elevation="5" outlined shaped>
+                                <v-card-title>
+                                    <span>HISTORIAL DE VACACIONES</span><br>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Vacaciones -->
+                                        <v-container>
+                                            <v-row>
+                                                <v-col cols="12" md="12">
+                                                    <v-col cols="12">
+                                                        <div> <!-- Encabezado -->
+                                                            <v-alert dense color="#00A1B1"
+                                                                style="color: #ffffff; text-align: center;">
+                                                                <h5>VACACIONES</h5>
+                                                            </v-alert>
+                                                        </div>
+                                                        <v-col cols="12" md="4">
+                                                            <v-btn color="success" @click="showAddVacacion()">+
+                                                                Registrar Vacacion</v-btn>
+                                                        </v-col>
+                                                        <v-card-title>
+                                                            <v-text-field v-model="searchVacacion"
+                                                                append-icon="mdi-magnify" label="BUSCAR REGISTROS"
+                                                                single-line hide-details></v-text-field>
+                                                        </v-card-title>
+
+                                                        <v-data-table :headers="headersVacacion" :items="datosVacacion"
+                                                            :search="searchVacacion" :items-per-page="5"
+                                                            class="elevation-1" id="tableId">
+                                                            <template #[`item.fecini`]="{ item }">
+                                                                <td>{{ new Date(item.fecini).toLocaleDateString('es-ES',
+                            {
+                                day: 'numeric', month:
+                                    'long', year: 'numeric'
+                            }) }}</td>
+                                                            </template>
+                                                            <template #[`item.fecfin`]="{ item }">
+                                                                <td>{{ new Date(item.fecfin).toLocaleDateString('es-ES',
+                            {
+                                day: 'numeric', month:
+                                    'long', year: 'numeric'
+                            }) }}</td>
+                                                            </template>
+                                                            <template #[`item.act`]="{ item }">
+                                                                <v-chip :color="getColor(item.act)" dark>
+                                                                    {{ item.act }}
+                                                                </v-chip>
+                                                            </template>
+                                                            <template #[`item.actions`]="{ item }">
+                                                                <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2"
+                                                                    @click="activarVacacion(item)"
+                                                                    title="ACTIVAR VACACION">
+                                                                    mdi-check-circle-outline
+                                                                </v-icon>
+                                                                <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2"
+                                                                    @click="desactivarVacacion(item)"
+                                                                    title="ANULAR VACACION">
+                                                                    mdi-cancel
+                                                                </v-icon>
+                                                                <v-icon large class="mr-2"
+                                                                    @click="showEditVacacion(item)"
+                                                                    title="EDITAR INFORMACION">
+                                                                    mdi-pencil
+                                                                </v-icon>
+                                                            </template>
+                                                        </v-data-table>
+                                                    </v-col>
+                                                </v-col>
+                                            </v-row>
+                                        </v-container>
+                                    </v-form>
+                                </v-card-text>
+                            </v-card>
+                        </v-tab-item>
+
+                    </v-tabs>
                 </v-col>
-                <v-col cols="12" md="6">
-                    <v-alert dense>
-                        <h5 dense> {{ this.$route.params.nom + " " + this.$route.params.pat + " " + this.$route.params.mat }}
-                        </h5>
-                        <hr>
-                    </v-alert>
-                </v-col>
-                <v-col cols="12" md="3">
-                    <v-row></v-row>
-                    <!-- FOTO CARNET -->
-                </v-col>
-                <v-col cols="12" md="3">
-                    <v-alert dense color="#00A1B1" style="color: #ffffff">
-                        <h5>CORREO ELECTRÓNICO:</h5>
-                    </v-alert>
-                </v-col>
-                <v-col cols="12" md="6">
-                    <v-alert dense>
-                        <h5 dense> {{ this.$route.params.emal }}
-                        </h5>
-                        <hr>
-                    </v-alert>
-                </v-col>
-                <v-col cols="12" md="3">
-                    <v-row></v-row>
-                    <!-- FOTO CARNET -->
-                </v-col>
-                <v-col cols="12" md="3">
-                    <v-alert dense color="#00A1B1" style="color: #ffffff">
-                        <h5>CONTACTOS:</h5>
-                    </v-alert>
-                </v-col>
-                <v-col cols="12" md="3">
-                    <v-alert dense>
-                        <h5>{{ this.$route.params.tel }}</h5>
-                        <hr>
-                    </v-alert>
-                </v-col>
-                <v-col cols="12" md="3">
-                    <v-alert dense color="#00A1B1" style="color: #ffffff">
-                        <h5>ESTADO CIVIL:</h5>
-                    </v-alert>
-                </v-col>
-                <v-col cols="12" md="3">
-                    <v-alert dense>
-                        <h5>{{ this.$route.params.est }}</h5>
-                        <hr>
-                    </v-alert>
-                </v-col>
-                    <!-- FOTO CARNET -->
-                <v-col cols="12" md="3">
-                    <v-alert dense color="#00A1B1" style="color: #ffffff">
-                        <h5>NUMERO DE CARNET:</h5>
-                    </v-alert>
-                </v-col>
-                <v-col cols="12" md="9">
-                    <v-alert dense>
-                        <h5>{{ this.$route.params.ci }}</h5>
-                        <hr>
-                    </v-alert>
-                </v-col>
+
             </v-row>
         </v-container>
-            <!-- Snackbars -->
+        <!-- Snackbars -->
         <div class="text-center">
-                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
-                        outlined>
-                    <strong>{{ mensajeSnackbar }}</strong>
-                    <template v-slot:action="{ attrs }">
-                        <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                                mdi-close
-                        </v-icon>
-                    </template>
-                </v-snackbar>
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
+                <strong>{{ mensajeSnackbar }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
         </div>
         <div class="text-center">
-                <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense
-                        color="#EE680B" outlined>
-                    <strong>{{ mensajeSnackbarError }}</strong>
-                    <template v-slot:action="{ attrs }">
-                        <v-icon right v-bind="attrs" @click="snackbarError = false">
-                                mdi-close
-                        </v-icon>
-                    </template>
-                </v-snackbar>
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
         </div>
-        
-        <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Contratos -->
-            <v-container>
-                <v-row>
-                    <v-col cols="12" md="12">
-                        <v-col cols="12">
-                            <div> <!-- Encabezado -->
-                                <v-alert dense color="#00A1B1" style="color: #ffffff; text-align: center;">
-                                    <h5>CONTRATOS</h5>
-                                </v-alert>
-                            </div>
-                            <v-col cols="12" md="4">
-                                <v-btn color="success" @click="showAddContrato()">+ Nuevo Contrato</v-btn>
-                            </v-col>
-
-                            <v-card-title>
-                                <v-text-field v-model="searchContrato" append-icon="mdi-magnify" label="BUSCAR CONTRATOS"
-                                    single-line hide-details></v-text-field>
-                            </v-card-title>
-
-                            <v-data-table :headers="headersContrato" :items="datosContrato" :search="searchContrato"
-                                :items-per-page="5" class="elevation-1" id="tableId">
-                                <template #[`item.tip`]="{ item }">
-                                    <td v-if="item.fecfin == null">PERMANENTE</td>
-                                    <td v-if="item.fecfin != null">TEMPORAL</td>
-                                </template>
-                                <template #[`item.fecini`]="{ item }">
-                                    <td>{{ new Date(item.fecini).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
-                                </template>
-                                <template #[`item.fecfin`]="{ item }">
-                                    <td v-if="item.fecfin == null">-</td>
-                                    <td v-if="item.fecfin != null">{{ new Date(item.fecfin).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
-                                </template>
-                                <template #[`item.act`]="{ item }">
-                                    <v-chip :color="getColor(item.act)" dark>
-                                        {{ item.act }}
-                                    </v-chip>
-                                </template>
-                                <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activarContrato(item)"
-                                        title="ACTIVAR CONTRATO">
-                                        mdi-check-circle-outline
-                                    </v-icon>
-                                    <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivarContrato(item)"
-                                        title="DESACTIVAR CONTRATO">
-                                        mdi-cancel
-                                    </v-icon>
-                                    <v-icon small class="mr-2" @click="showEditContrato(item)" title="EDITAR INFORMACION">
-                                        mdi-pencil
-                                    </v-icon>
-                                </template>
-                            </v-data-table>
-                        </v-col>
-                    </v-col>
-                </v-row>
-            </v-container>
-        </v-form>
-
-        <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Observaciones -->
-            <v-container>
-                <v-row>
-                    <v-col cols="12" md="12">
-                        <v-col cols="12">
-                            <div> <!-- Encabezado -->
-                                <v-alert dense color="#00A1B1" style="color: #ffffff; text-align: center;">
-                                    <h5>OBSERVACIONES</h5>
-                                </v-alert>
-                            </div>
-                            <v-col cols="12" md="4">
-                                <v-btn color="success" @click="showAddObservacion()">+ Nueva Observacion</v-btn>
-                            </v-col>
-
-                            <v-card-title>
-                                <v-text-field v-model="searchObservacion" append-icon="mdi-magnify" label="BUSCAR OBSERVACIONES"
-                                    single-line hide-details></v-text-field>
-                            </v-card-title>
-
-                            <v-data-table :headers="headersObservacion" :items="datosObservacion" :search="searchObservacion"
-                                :items-per-page="5" class="elevation-1" id="tableId">
-                                <template #[`item.fec`]="{ item }">
-                                    <td>{{ new Date(item.fec).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
-                                </template>
-                                <template #[`item.act`]="{ item }">
-                                    <v-chip :color="getColor(item.act)" dark>
-                                        {{ item.act }}
-                                    </v-chip>
-                                </template>
-                                <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activarObservacion(item)"
-                                        title="ACTIVAR OBSERVACION">
-                                        mdi-check-circle-outline
-                                    </v-icon>
-                                    <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivarObservacion(item)"
-                                        title="DESACTIVAR OBSERVACION">
-                                        mdi-cancel
-                                    </v-icon>
-                                    <v-icon small class="mr-2" @click="showEditObservacion(item)" title="EDITAR INFORMACION">
-                                        mdi-pencil
-                                    </v-icon>
-                                </template>
-                            </v-data-table>
-                        </v-col>
-                    </v-col>
-                </v-row>
-            </v-container>
-        </v-form>
-
-        <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Vacaciones -->
-            <v-container>
-                <v-row>
-                    <v-col cols="12" md="12">
-                        <v-col cols="12">
-                            <div> <!-- Encabezado -->
-                                <v-alert dense color="#00A1B1" style="color: #ffffff; text-align: center;">
-                                    <h5>VACACIONES</h5>
-                                </v-alert>
-                            </div>
-                            <v-col cols="12" md="4">
-                                <v-btn color="success" @click="showAddVacacion()">+ Registrar Vacacion</v-btn>
-                            </v-col>
-                            <v-card-title>
-                                <v-text-field v-model="searchVacacion" append-icon="mdi-magnify" label="BUSCAR REGISTROS"
-                                    single-line hide-details></v-text-field>
-                            </v-card-title>
-
-                            <v-data-table :headers="headersVacacion" :items="datosVacacion" :search="searchVacacion"
-                                :items-per-page="5" class="elevation-1" id="tableId">
-                                <template #[`item.fecini`]="{ item }">
-                                    <td>{{ new Date(item.fecini).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
-                                </template>
-                                <template #[`item.fecfin`]="{ item }">
-                                    <td>{{ new Date(item.fecfin).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
-                                </template>
-                                <template #[`item.act`]="{ item }">
-                                    <v-chip :color="getColor(item.act)" dark>
-                                        {{ item.act }}
-                                    </v-chip>
-                                </template>
-                                <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activarVacacion(item)"
-                                        title="ACTIVAR VACACION">
-                                        mdi-check-circle-outline
-                                    </v-icon>
-                                    <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivarVacacion(item)"
-                                        title="ANULAR VACACION">
-                                        mdi-cancel
-                                    </v-icon>
-                                    <v-icon small class="mr-2" @click="showEditVacacion(item)" title="EDITAR INFORMACION">
-                                        mdi-pencil
-                                    </v-icon>
-                                </template>
-                            </v-data-table>
-                        </v-col>
-                    </v-col>
-                </v-row>
-            </v-container>
-        </v-form>
 
         <v-dialog v-model="contratoModal" persistent :overlay="false" max-width="1080px"> <!-- Modal Contratos-->
             <v-card elevation="5" outlined shaped>
@@ -268,27 +385,33 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="12">
-                                    <v-file-input v-model="documentoArchivo"
-                                        accept=".docx, .xlsx, .pptx, .pdf, .xml" label="Contrato archivo">
+                                    <v-file-input v-model="documentoArchivo" accept=".docx, .xlsx, .pptx, .pdf, .xml"
+                                        label="Contrato archivo">
                                     </v-file-input>
-                                    <v-select v-model="tipo" :items="datosTipo" label="Selecciona el tipo de contrato a registrar"
-                                        prepend-icon="mdi-pick" required v-on:change="isDisabled = !isDisabled; fechaFinal = null">
+                                    <v-select v-model="tipo" :items="datosTipo"
+                                        label="Selecciona el tipo de contrato a registrar" prepend-icon="mdi-pick"
+                                        required v-on:change="isDisabled = !isDisabled; fechaFinal = null">
                                     </v-select>
                                     <v-menu v-model="datePicker1" :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-text-field v-model="fechaInicio" label="Fecha de inicio del contrato"
-                                                prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+                                                prepend-icon="mdi-calendar" readonly v-bind="attrs"
+                                                v-on="on"></v-text-field>
                                         </template>
-                                        <v-date-picker v-model="fechaInicio" @input="datePicker1 = false"></v-date-picker>
+                                        <v-date-picker v-model="fechaInicio"
+                                            @input="datePicker1 = false"></v-date-picker>
                                     </v-menu>
                                     <v-menu v-model="datePicker2" :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="fechaFinal" label="Fecha de finalización del Contrato" :disabled="isDisabled"
-                                                prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+                                            <v-text-field v-model="fechaFinal"
+                                                label="Fecha de finalización del Contrato" :disabled="isDisabled"
+                                                prepend-icon="mdi-calendar" readonly v-bind="attrs"
+                                                v-on="on"></v-text-field>
                                         </template>
-                                        <v-date-picker v-model="fechaFinal" @input="datePicker2 = false"></v-date-picker>
+                                        <v-date-picker v-model="fechaFinal"
+                                            @input="datePicker2 = false"></v-date-picker>
                                     </v-menu>
                                 </v-col>
 
@@ -296,7 +419,8 @@
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
                                     <v-btn iconv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="actualizarContrato()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
+                                        @click="actualizarContrato()" style="float: left"
+                                        title="ACTUALIZAR INFORMACIÓN">
                                         <v-icon dark> mdi-pencil </v-icon>
                                         ACTUALIZAR
                                     </v-btn>
@@ -307,8 +431,8 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiarContrato()" style="float: left"
-                                        title="LIMPIAR FORMULARIO">
+                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiarContrato()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                         LIMPIAR
                                     </v-btn>
@@ -340,16 +464,19 @@
                             <v-row>
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="observacion" :counter="50" :rules="observacionRules"
-                                        @input="observacion = observacion.toUpperCase()" label="Titulo de la Observacion" required>
+                                        @input="observacion = observacion.toUpperCase()"
+                                        label="Titulo de la Observacion" required>
                                     </v-text-field>
                                     <v-textarea v-model="comentario" :counter="250" :rules="comentarioRules" outlined
-                                        @input="comentario = comentario.toUpperCase()" label="Descripción o comentario" required>
+                                        @input="comentario = comentario.toUpperCase()" label="Descripción o comentario"
+                                        required>
                                     </v-textarea>
                                     <v-menu v-model="datePicker3" :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="fecha" label="Fecha del evento ocurrido" :rules="fechaRules"
-                                                prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+                                            <v-text-field v-model="fecha" label="Fecha del evento ocurrido"
+                                                :rules="fechaRules" prepend-icon="mdi-calendar" readonly v-bind="attrs"
+                                                v-on="on"></v-text-field>
                                         </template>
                                         <v-date-picker v-model="fecha" @input="datePicker3 = false"></v-date-picker>
                                     </v-menu>
@@ -360,7 +487,8 @@
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
                                     <v-btn iconv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="actualizarObservacion()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
+                                        @click="actualizarObservacion()" style="float: left"
+                                        title="ACTUALIZAR INFORMACIÓN">
                                         <v-icon dark> mdi-pencil </v-icon>
                                         ACTUALIZAR
                                     </v-btn>
@@ -371,8 +499,8 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiarObservacion()" style="float: left"
-                                        title="LIMPIAR FORMULARIO">
+                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiarObservacion()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                         LIMPIAR
                                     </v-btn>
@@ -387,8 +515,8 @@
                             </v-row>
 
                             <div class="text-center">
-                                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
-                                    outlined>
+                                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense
+                                    color="#00FF00" outlined>
                                     <strong>{{ mensajeSnackbar }}</strong>
 
 
@@ -434,7 +562,8 @@
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-text-field v-model="diaInicio" label="Fecha Inicio" :rules="fechaRules"
-                                                prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+                                                prepend-icon="mdi-calendar" readonly v-bind="attrs"
+                                                v-on="on"></v-text-field>
                                         </template>
                                         <v-date-picker v-model="diaInicio" @input="datePicker4 = false"></v-date-picker>
                                     </v-menu>
@@ -442,7 +571,8 @@
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-text-field v-model="diaFinal" label="Fecha Final" :rules="fechaRules"
-                                                prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+                                                prepend-icon="mdi-calendar" readonly v-bind="attrs"
+                                                v-on="on"></v-text-field>
                                         </template>
                                         <v-date-picker v-model="diaFinal" @input="datePicker5 = false"></v-date-picker>
                                     </v-menu>
@@ -452,7 +582,8 @@
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
                                     <v-btn iconv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="actualizarVacacion()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
+                                        @click="actualizarVacacion()" style="float: left"
+                                        title="ACTUALIZAR INFORMACIÓN">
                                         <v-icon dark> mdi-pencil </v-icon>
                                         ACTUALIZAR
                                     </v-btn>
@@ -463,8 +594,8 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiarVacacion()" style="float: left"
-                                        title="LIMPIAR FORMULARIO">
+                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiarVacacion()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                         LIMPIAR
                                     </v-btn>
@@ -479,8 +610,8 @@
                             </v-row>
 
                             <div class="text-center">
-                                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
-                                    outlined>
+                                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense
+                                    color="#00FF00" outlined>
                                     <strong>{{ mensajeSnackbar }}</strong>
                                     <template v-slot:action="{ attrs }">
                                         <v-icon right v-bind="attrs" @click="snackbarOK = false">
@@ -508,23 +639,24 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+
     </v-card>
 </template>
 <script>
 import axios from "axios";
-import ContratoVue from './Contrato.vue'; // one
 
 export default {
     data: () => ({
         idEmpleado: "",
         valid: true,
+        flag: 1,
 
         idContrato: '',
         documentoArchivo: 'documentoArchivo',
         tipo: 'PERMANENTE',
-        datosTipo: ["PERMANENTE","TEMPORAL"],
+        datosTipo: ["PERMANENTE", "TEMPORAL"],
         fechaInicio: "",//(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-        fechaFinal: "",//(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+        fechaFinal: null,//(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         isDisabled: true,
         datePicker1: false,
         datePicker2: false,
@@ -585,7 +717,6 @@ export default {
             { text: "ESTADO", value: "act" },
             { text: "OPCIONES", value: "actions", sortable: false },
         ],
-
         observacionRules: [
             (v) => !!v || "TITULO ES REQUERIDO",
             (v) =>
@@ -609,9 +740,6 @@ export default {
         this.listarObservaciones();
         this.listarVacaciones();
     },
-    components: { //one/
-        ContratoVue
-    },
 
     methods: {
         formatearFecha(fecha) {
@@ -621,14 +749,14 @@ export default {
         showAddContrato() {
             this.botonAct = 0;
             this.contratoModal = true;
-            /*
+            
             if (this.documentoArchivo != '') {
                 this.inputState = false;
             }
             else {
                 this.inputState = true;
             }
-            */
+            
         },
         showEditContrato(item) {
             this.botonAct = 1;
@@ -662,10 +790,10 @@ export default {
                 });
         },
         registrarContrato() {
-            alert(this.documentoArchivo);
-            //this.almacenarArchivo(this.documentoArchivo);
-            //this.registrarContrato(this.documentoArchivo.name);
-            //this.contratoModal = true;
+            //alert(this.documentoArchivo.name);
+            this.almacenarArchivo(this.documentoArchivo);
+            this.registrarContratos(this.documentoArchivo);
+            this.contratoModal = true;
         },
         async almacenarArchivo(documentoArchivo) {
             const formData = new FormData();
@@ -684,24 +812,21 @@ export default {
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "REGISTRO DE ARCHIVO FALLIDO",
-                    me.snackbarError = true;
+                        me.snackbarError = true;
                 });
         },
 
-        async registrarContrato(documentoArchivo) {
-            //const ext = documentoArchivo.split('.');
-            //const date = new Date();
-            //const fechaHoraActual = date.getDate().toString().padStart(2, '0') + '_' + (date.getMonth() + 1).toString().padStart(2, '0') + '_' + date.getFullYear();
-            //const nombreArchivo = ext[0] + '_' + fechaHoraActual + '.' + ext[1];
+        async registrarContratos(documentoArchivo) {
             let me = this;
-
-            //let me=this;
+            const ext = documentoArchivo.name.split('.');
+            const date = new Date();
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0') + '_' + (date.getMonth() + 1).toString().padStart(2, '0') + '_' + date.getFullYear();
+            const nombreArchivo = ext[0] + '_' + fechaHoraActual + '.' + ext[1];
+            if(this.fechaFinal == '' || this.fechaFinal == null) {this.fechaFinal = 'null';}
             await axios
                 .post(
                     "/contrato/addcontrato/" +
-                    //ext[0] +
-                    //"," +
-                    "documentoArchivo" +
+                    nombreArchivo +
                     "," +
                     this.fechaInicio +
                     "," +
@@ -718,7 +843,7 @@ export default {
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "REGISTRO FALLIDO",
-                    me.snackbarError = true;
+                        me.snackbarError = true;
 
                 });
         },
@@ -744,7 +869,7 @@ export default {
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "ACTUALIZACION FALLIDA",
-                    me.snackbarError = true;
+                        me.snackbarError = true;
                 });
         },
         desactivarContrato(item) {
@@ -774,7 +899,7 @@ export default {
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "YA HAY UN CONTRATO ACTIVO",
-                    me.snackbarError = true;
+                        me.snackbarError = true;
                     console.log(error);
                 })
 
@@ -821,7 +946,7 @@ export default {
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "REGISTRO DE OBSERVACION FALLIDO",
-                    me.snackbarError = true;
+                        me.snackbarError = true;
                 });
         },
         actualizarObservacion() {
@@ -849,7 +974,7 @@ export default {
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "ACTUALIZACION FALLIDA",
-                    me.snackbarError = true;
+                        me.snackbarError = true;
                 });
         },
         desactivarObservacion(item) {
@@ -920,7 +1045,7 @@ export default {
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "REGISTRO DE VACACIÓN FALLIDO",
-                    me.snackbarError = true;
+                        me.snackbarError = true;
                 });
         },
         actualizarVacacion() {
@@ -946,7 +1071,7 @@ export default {
                 })
                 .catch(function (error) {
                     me.mensajeSnackbarError = "ACTUALIZACION FALLIDA",
-                    me.snackbarError = true;
+                        me.snackbarError = true;
                 });
         },
         desactivarVacacion(item) {
@@ -979,7 +1104,7 @@ export default {
                 });
 
         },
-        
+
         showAddVacacion() {
             this.botonAct = 0;
             this.vacacionModal = true;
@@ -1002,14 +1127,14 @@ export default {
             this.idContrato = item.idcontr;
             this.documentoArchivo = 'documentoArchivo';
             if (item.fecini) {// && !isNaN(new Date(item.fecini))) {
-                this.fechaInicio  = new Date(item.fecini).toISOString().split('T')[0];
+                this.fechaInicio = new Date(item.fecini).toISOString().split('T')[0];
             }
             if (item.fecfin) {
                 this.fechaFinal = new Date(item.fecfin).toISOString().split('T')[0];
-            } else {this.fechaFinal = null;}
+            } else { this.fechaFinal = null; }
 
-            if(item.fecfin == null) { this.tipo == 'TEMPORAL';console.log("CAMBIADO A TEMPORAL"); } else { this.tipo == 'PERMANENTE';console.log("CAMBIADO A PERMANENTE"); }
-            console.log("fecfin: "+item.fecfin);
+            if (item.fecfin == null) { this.tipo == 'TEMPORAL'; console.log("CAMBIADO A TEMPORAL"); } else { this.tipo == 'PERMANENTE'; console.log("CAMBIADO A PERMANENTE"); }
+            console.log("fecfin: " + item.fecfin);
         },
         llenarCamposObservacion(item) {
             this.idObservacion = item.idobs;

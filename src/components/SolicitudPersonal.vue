@@ -129,35 +129,32 @@
                                     </template>
 
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon v-if="item.act == 'PENDIENTE' && user.tipo != 'COMUN'" small class="mr-3" @click="aceptar(item)"
+                                        <v-icon v-if="item.act == 'PENDIENTE' && user.tipo != 'COMUN'" large class="mr-3" color="#0ABF55" @click="aceptar(item)"
                                             title="ACEPTAR SOLICITUD">
                                             mdi-check-circle
                                         </v-icon>
-                                        <v-icon v-if="item.act == 'PENDIENTE' && user.tipo != 'COMUN'" small class="mr-4" @click="rechazar(item)"
+                                        <v-icon v-if="item.act == 'PENDIENTE' && user.tipo != 'COMUN'" large class="mr-4" color="#BF120A" @click="rechazar(item)"
                                             title="RECHAZAR SOLICITUD">
                                             mdi-close-octagon
                                         </v-icon>
-                                        <v-icon v-if="item.act == 'PENDIENTE' && user.tipo == 'COMUN'" small class="mr-2" @click="showEditSolicitud(item)"
+                                        <v-icon v-if="item.act == 'PENDIENTE' && user.tipo == 'COMUN'" large class="mr-2" color="#0A628F" @click="showEditSolicitud(item)"
                                             title="EDITAR INFORMACION">
                                             mdi-pencil
                                         </v-icon>
-                                        <v-icon v-if="item.act != 'PENDIENTE'" small class="mr-2"
+                                        <v-icon v-if="item.act != 'PENDIENTE'" large color="#BF120A" class="mr-2"
                                             title="ELIMINAR SOLICITUD">
                                             mdi-delete
                                         </v-icon>
-                                      
                                     </template>
                                 </v-data-table>
                             </v-col>
                         </v-col>
                     </v-row>
-
+                    <!-- Snackbar -->
                     <div class="text-center">
                         <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
                             outlined>
                             <strong>{{ mensajeSnackbar }}</strong>
-
-
                             <template v-slot:action="{ attrs }">
                                 <v-icon right v-bind="attrs" @click="snackbarOK = false">
                                     mdi-close
@@ -166,11 +163,9 @@
                         </v-snackbar>
                     </div>
                     <div class="text-center">
-
                         <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
                             outlined>
                             <strong>{{ mensajeSnackbarError }}</strong>
-
                             <template v-slot:action="{ attrs }">
                                 <v-icon right v-bind="attrs" @click="snackbarError = false">
                                     mdi-close

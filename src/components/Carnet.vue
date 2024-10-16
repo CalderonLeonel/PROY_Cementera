@@ -1,5 +1,32 @@
 <template>
     <v-card elevation="5" outlined shaped>
+        <div> <!-- Encabezado -->
+            <v-alert dense color="#00A1B1" style="color: #ffffff">
+                <h5>CARNET</h5>
+            </v-alert>
+        </div>
+        <!-- Snackbar -->
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00">
+                {{ mensajeSnackBar }}
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+        <div class="text-center">
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B">
+                {{ mensajeError }}
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+
         <v-dialog v-model="empleadosModal" max-width="800" class="text-center">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
@@ -19,7 +46,7 @@
                                 </v-list-item>
 
                                 <v-card-title>
-                                    <v-text-field v-model="searchProductos" append-icon="mdi-magnify"
+                                    <v-text-field v-model="searchEmpleado" append-icon="mdi-magnify"
                                         label="BUSCAR PRODUCTOS" single-line hide-details></v-text-field>
                                 </v-card-title>
 
@@ -35,8 +62,8 @@
 
                             <v-col cols="10"> </v-col>
                             <v-col cols="2">
-                                <v-btn class="mx-2" fab dark small color="red darken-1" @click="close" style="float: right"
-                                    title="SALIR">
+                                <v-btn class="mx-2" fab dark small color="red darken-1" @click="close"
+                                    style="float: right" title="SALIR">
                                     <v-icon dark> mdi-close-circle-outline </v-icon>
                                 </v-btn>
                             </v-col>
@@ -49,12 +76,6 @@
         <v-simple-table style="border: hidden">
             <template>
                 <thead bgcolor="#EE680B">
-
-                    <div>
-                        <v-alert dense color="#EE680B" style="color: #ffffff">
-                            <h5>INFORMACIÓN DEL EMPLEADO </h5>
-                        </v-alert>
-                    </div>
 
                     <th class="text-left"></th>
                     <th class="text-left"></th>
@@ -97,7 +118,7 @@
 
         <v-divider></v-divider>
 
-        <v-card class="white--text" color="grey lighten-4" max-width="100%">
+        <v-card class="white--text" color="grey lighten-4" max-width="150%">
 
             <v-list-item>
                 <v-list-item-title>
@@ -105,24 +126,23 @@
                 </v-list-item-title>
             </v-list-item>
 
-            <v-card style="position: absolute; top: 0px; left: 600px; width: 313px; height: 190px; ">
+            <v-card style="position: absolute; top: 0px; left: 400px; width: 150px; height: 150px; ">
 
                 <div class="camera-shutter" :class="{ 'flash': isShotPhoto }"></div>
 
-                <v-img v-if="showUrl" :src=urlFoto style="width: 313px; height: 230px; "></v-img>
+                <v-img v-if="showUrl" :src=urlFoto style="width: 150px; height: 150px; "></v-img>
                 <div v-else>
-                    <canvas id="photoTaken2" ref="canvas2" style="width: 313px; height: 230px; "></canvas>
+                    <canvas id="photoTaken2" ref="canvas2" style="width: 150px; height: 150px; "></canvas>
                 </div>
 
-                <v-col cols="12" md="5"></v-col>
                 <v-col cols="12" md="3" class="camera-box" :class="{ 'flash': isShotPhoto }" v-if="isCameraOpen"
                     v-show="!isLoading">
                     <div class="camera-shutter" :class="{ 'flash': isShotPhoto }"></div>
                     <v-col>
-                        <video v-show="!isPhotoTaken" ref="camera" style="width: 313px; height: 230px; " autoplay
+                        <video v-show="!isPhotoTaken" ref="camera" style="width: 150px; height: 150px; " autoplay
                             align-center></video>
                         <canvas v-show="isPhotoTaken" id="photoTaken" ref="canvas"
-                            style="width: 313px; height: 230px; "></canvas>
+                            style="width: 150px; height: 150px; "></canvas>
                     </v-col>
                     <v-col v-if="isPhotoTaken" class="camera-shoot">
                     </v-col>
@@ -132,34 +152,7 @@
 
             <v-list-item> </v-list-item>
 
-
-            <div class="text-center">
-
-                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="light-green darken-2 ">
-                    {{ mensajeSnackBar }}
-
-                    <template v-slot:action="{ attrs }">
-                        <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                            mdi-close
-                        </v-icon>
-                    </template>
-                </v-snackbar>
-            </div>
-            <div class="text-center">
-
-                <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="red darken-2 ">
-                    {{ mensajeError }}
-
-                    <template v-slot:action="{ attrs }">
-                        <v-icon right v-bind="attrs" @click="snackbarError = false">
-                            mdi-close
-                        </v-icon>
-                    </template>
-                </v-snackbar>
-            </div>
-
-
-            <v-col cols="12" md="2"> </v-col>
+            <v-col cols="12" md="8"></v-col>
             <v-col cols="12" md="4">
                 <v-toolbar dense shaped color="#002245">
                     <v-toolbar-title style="color:#ffffff">
@@ -189,14 +182,9 @@
                         title="BUSCAR EMPLEADO">
                         <v-icon dark> mdi-account-search </v-icon>
                     </v-btn>
-
-
                 </v-toolbar>
             </v-col>
-
-
         </v-card>
-
 
     </v-card>
 </template>
@@ -204,10 +192,6 @@
 import axios from "axios";
 import jsPDF from "jspdf";
 import QRCode from 'qrcode';
-
-
-
-
 
 export default {
     data() {
@@ -226,6 +210,14 @@ export default {
             idCargo: "",
             idDepartamento: "",
             valid: true,
+
+            isShotPhoto: false,
+            showUrl: false,
+            urlFoto: '',
+            isCameraOpen: false,
+            isPhotoTaken: false,
+            isLoading: false,
+            stream: null,
 
             searchEmpleado: "",
             datosEmpleado: [],
@@ -251,29 +243,24 @@ export default {
     },
     created: function () {
         this.user = JSON.parse(sessionStorage.getItem("session"));
-        //console.log(this.user.usuario);
+        console.log(this.user.usuario);
         this.usuario = this.user.personal;
         this.id_sede = this.user.id_sede;
         this.nomus = this.user.nombres + ' ' + this.user.paterno + ' ' + this.user.materno;
         this.patus = this.user.paterno;
         this.matus = this.user.materno;
 
-        this.listarGestion();
+        //this.listarGestion();
         //this.toDataURL();
         //this.datosCampoCarnet();
-
-
-    },
-    computed: {
     },
 
     methods: {
-
         async generarPDFCarnet(empleadoData) {
             const doc = new jsPDF();
 
             // Agregar la foto del empleado al PDF (reemplaza 'ruta_de_la_imagen_del_empleado.jpg' con la ruta real)
-            const imgData = 'ruta_de_la_imagen_del_empleado.jpg';
+            const imgData = this.urlFoto;
             await doc.addImage(imgData, 'JPEG', 15, 15, 60, 60);
 
             // Agregar los datos del empleado al PDF
@@ -302,7 +289,7 @@ export default {
             // Espera un momento antes de imprimir automáticamente
             setTimeout(() => {
                 printWindow.print();
-            }, 1000); // Ajusta el tiempo según sea necesario
+            }, 1500); // Ajusta el tiempo según sea necesario
         },
 
         imprimirCarnet() {
@@ -358,7 +345,71 @@ export default {
             this.idEmpleado = item.idempl;
             this.empleadosModal = false;
         },
+        actualizarEMPLEADOImg() {
+                this.actualizarempleadoIMG();
+        },
+        async actualizarempleadoIMG() {
+            let me = this;
+            await axios
+                .post(
+                    "/empleado/subirfoto", {
+                    p1: this.idEmpleado,
+                    p2: this.urlFoto,
+                }
+                )
+                .then(function (response) {
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarEmpleados(me.idEmpleado);
+                    me.limpiar();
+                    me.closeEmpleado();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                });
+        },
         //#endregion
+        async startCamera() {
+            try {
+                this.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                this.$refs.camera.srcObject = this.stream;
+            } catch (error) {
+                console.error('Error iniciando la cámara:', error);
+            }
+        },
+        stopCamera() {
+            if (this.stream) {
+                this.stream.getTracks().forEach(track => track.stop());
+                this.stream = null;
+            }
+        },
+        toggleCamera() {
+            if (this.isCameraOpen) {
+                this.stopCamera();
+                this.isCameraOpen = false;
+            } else {
+                this.startCamera();
+                this.isCameraOpen = true;
+            }
+        },
+        takePhoto() {
+            const video = this.$refs.camera;
+            const canvas = this.$refs.canvas;
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            this.urlFoto = canvas.toDataURL('image/jpeg');
+            this.isPhotoTaken = true;
+            this.showUrl = true;
+            this.isShotPhoto = true;
+            setTimeout(() => {
+                this.isShotPhoto = false;
+            }, 150);
+        },
+        resetPhoto() {
+            this.isPhotoTaken = false;
+            this.showUrl = false;
+            this.urlFoto = '';
+        },
     },
 
 };

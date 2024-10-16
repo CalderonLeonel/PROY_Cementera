@@ -7,16 +7,13 @@
             </v-alert>
         </div>
 
-        <v-dialog v-model="sectorModal" max-width="1080px"> <!-- Modal Sector-->
-
+        <v-dialog v-model="sectorModal" max-width="1080px" persistent> <!-- Modal Sector-->
             <v-card elevation="5" outlined shaped>
-
                 <v-card-title>
                     <span v-if="botonAct == 0">Nuevo Sector</span>
                     <span v-if="botonAct == 1">Editar Sector</span>
                 </v-card-title>
                 <v-card-text>
-
                     <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo Sector / Editar Sector -->
                         <v-container>
                             <v-row>
@@ -45,8 +42,8 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()" style="float: left"
-                                        title="LIMPIAR FORMULARIO">
+                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                         LIMPIAR
                                     </v-btn>
@@ -61,8 +58,8 @@
                             </v-row>
 
                             <div class="text-center">
-                                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
-                                    outlined>
+                                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense
+                                    color="#00FF00" outlined>
                                     <strong>{{ mensajeSnackbar }}</strong>
 
 
@@ -94,7 +91,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="turnoModal" max-width="1080px"> <!-- Modal Turno-->>
+        <v-dialog v-model="turnoModal" max-width="1080px"> <!-- Modal Seleccionar Turno-->>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>Lista de Turnos del Sector</span>
@@ -112,24 +109,25 @@
                                 <v-text-field v-model="searchTurno" append-icon="mdi-magnify" label="BUSCAR TURNOS"
                                     single-line hide-details></v-text-field>
                             </v-card-title> -->
-                                    <v-data-table :headers="headersTurno" :items="datosTurno" :items-per-page="5"  :group-by="groupBy" class="elevation-1">
+                                    <v-data-table :headers="headersTurno" :items="datosTurno" :items-per-page="5"
+                                        :group-by="groupBy" class="elevation-1">
                                         <template #[`item.credte`]="{ item }">
                                             <td>{{ new Date(item.credte).toLocaleDateString('es-ES', {
-                                                day: 'numeric',
-                                                month: 'long', year: 'numeric'
-                                            }) }}</td>
+            day: 'numeric',
+            month: 'long', year: 'numeric'
+        }) }}</td>
                                         </template>
                                         <template #[`item.upddte`]="{ item }">
                                             <td v-if="item.upddte == null">-</td>
                                             <td v-if="item.upddte != null">{{ new
-                                                Date(item.upddte).toLocaleDateString('es-ES', {
-                                                    day: 'numeric', month:
-                                                        'long', year: 'numeric'
-                                                }) }}</td>
+            Date(item.upddte).toLocaleDateString('es-ES', {
+                day: 'numeric', month:
+                    'long', year: 'numeric'
+            }) }}</td>
                                         </template>
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon small class="mr-2"
-                                                @click="removerTurno(item)" title="REMOVER TURNO DEL SECTOR">
+                                            <v-icon small class="mr-2" @click="removerTurno(item)"
+                                                title="REMOVER TURNO DEL SECTOR">
                                                 mdi-delete
                                             </v-icon>
                                         </template>
@@ -169,6 +167,7 @@
                 </v-form>
             </v-card>
         </v-dialog>
+
         <v-dialog v-model="asignarTurnoModal" max-width="1080px"> <!-- Asignar Turno Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
@@ -217,96 +216,92 @@
             </v-card>
         </v-dialog>
 
-        <v-col cols="12" md="4">
-            <v-btn color="success" @click="showAddSector()">+ Nuevo Sector</v-btn>
-        </v-col>
-
-        <div>
-            <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Sectores -->
-                <v-container>
-                    <v-row>
-                        <v-col cols="12" md="12">
-                            <v-col cols="12">
-                                <v-list-item>
-                                    <v-list-item-title class="text-center">
-                                        <h5>SECTORES</h5>
-                                    </v-list-item-title>
-                                </v-list-item>
-
-                                <v-card-title>
-                                    <v-text-field v-model="searchSector" append-icon="mdi-magnify" label="BUSCAR SECTORES"
-                                        single-line hide-details></v-text-field>
-                                </v-card-title>
-
-                                <v-data-table :headers="headersSector" :items="datosSector" :search="searchSector"
-                                    :items-per-page="5" class="elevation-1" id="tableId">
-                                    <template #[`item.credte`]="{ item }">
-                                        <td>{{ new Date(item.credte).toLocaleDateString('es-ES', {
-                                            day: 'numeric', month:
-                                                'long', year: 'numeric'
-                                        }) }}</td>
-                                    </template>
-                                    <template #[`item.upddte`]="{ item }">
-                                        <td v-if="item.upddte == null">-</td>
-                                        <td v-if="item.upddte != null">{{ new Date(item.upddte).toLocaleDateString('es-ES',
-                                            { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
-                                    </template>
-                                    <template #[`item.act`]="{ item }">
-                                        <v-chip :color="getColor(item.act)" dark>
-                                            {{ item.act }}
-                                        </v-chip>
-                                    </template>
-
-                                    <template #[`item.actions`]="{ item }">
-                                        <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
-                                            title="ACTIVAR SECTOR">
-                                            mdi-check-circle-outline
-                                        </v-icon>
-                                        <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
-                                            title="DESACTIVAR SECTOR">
-                                            mdi-cancel
-                                        </v-icon>
-                                        <v-icon small class="mr-2" @click="showEditSector(item)" title="EDITAR INFORMACION">
-                                            mdi-pencil
-                                        </v-icon>
-                                        <v-icon small class="mr-2" @click="showTurno(item)" title="VER TURNOS">
-                                            mdi-clock-plus
-                                        </v-icon>
-
-                                    </template>
-                                </v-data-table>
+        <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Sectores -->
+            <v-container>
+                <v-row>
+                    <v-col cols="12" md="12">
+                        <v-col cols="12">
+                            <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>SECTORES</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                            <v-col cols="12" md="4">
+                                <v-btn color="success" @click="showAddSector()">+ Nuevo Sector</v-btn>
                             </v-col>
+                            <v-card-title>
+                                <v-text-field v-model="searchSector" append-icon="mdi-magnify" label="BUSCAR SECTORES"
+                                    single-line hide-details></v-text-field>
+                            </v-card-title>
+
+                            <v-data-table :headers="headersSector" :items="datosSector" :search="searchSector"
+                                :items-per-page="5" class="elevation-1" id="tableId">
+                                <template #[`item.credte`]="{ item }">
+                                    <td>{{ new Date(item.credte).toLocaleDateString('es-ES', {
+            day: 'numeric', month:
+                'long', year: 'numeric'
+        }) }}</td>
+                                </template>
+                                <template #[`item.upddte`]="{ item }">
+                                    <td v-if="item.upddte == null">-</td>
+                                    <td v-if="item.upddte != null">{{ new Date(item.upddte).toLocaleDateString('es-ES',
+            { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
+                                </template>
+                                <template #[`item.act`]="{ item }">
+                                    <v-chip :color="getColor(item.act)" dark>
+                                        {{ item.act }}
+                                    </v-chip>
+                                </template>
+
+                                <template #[`item.actions`]="{ item }">
+                                    <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2" color="#0ABF55" @click="activar(item)"
+                                        title="ACTIVAR SECTOR">
+                                        mdi-check-circle-outline
+                                    </v-icon>
+                                    <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2" color="#BF120A" @click="desactivar(item)"
+                                        title="DESACTIVAR SECTOR">
+                                        mdi-cancel
+                                    </v-icon>
+                                    <v-icon large class="mr-2" color="#0A628F" @click="showEditSector(item)" title="EDITAR INFORMACION">
+                                        mdi-pencil
+                                    </v-icon>
+                                    <v-icon large class="mr-2" color="#0A628F" @click="showTurno(item)" title="VER TURNOS">
+                                        mdi-clock-plus
+                                    </v-icon>
+
+                                </template>
+                            </v-data-table>
                         </v-col>
-                    </v-row>
+                    </v-col>
+                </v-row>
 
-                    <div class="text-center">
-                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
-                            <strong>{{ mensajeSnackbar }}</strong>
+                <div class="text-center">
+                    <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
+                        <strong>{{ mensajeSnackbar }}</strong>
 
 
-                            <template v-slot:action="{ attrs }">
-                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                                    mdi-close
-                                </v-icon>
-                            </template>
-                        </v-snackbar>
-                    </div>
-                    <div class="text-center">
+                        <template v-slot:action="{ attrs }">
+                            <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                mdi-close
+                            </v-icon>
+                        </template>
+                    </v-snackbar>
+                </div>
+                <div class="text-center">
 
-                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
-                            outlined>
-                            <strong>{{ mensajeSnackbarError }}</strong>
+                    <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                        outlined>
+                        <strong>{{ mensajeSnackbarError }}</strong>
 
-                            <template v-slot:action="{ attrs }">
-                                <v-icon right v-bind="attrs" @click="snackbarError = false">
-                                    mdi-close
-                                </v-icon>
-                            </template>
-                        </v-snackbar>
-                    </div>
-                </v-container>
-            </v-form>
-        </div>
+                        <template v-slot:action="{ attrs }">
+                            <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                mdi-close
+                            </v-icon>
+                        </template>
+                    </v-snackbar>
+                </div>
+            </v-container>
+        </v-form>
 
     </v-card>
 </template>
@@ -354,7 +349,7 @@ export default {
         ],
 
         headersSector: [
-            { text: "SECTOR", value: "nom", sortable: false },
+            { text: "SECTOR", value: "sect", sortable: false },
             { text: "DEPARTAMENTO", value: "dep", sortable: false },
             { text: "ESTADO", value: "act", sortable: false },
             { text: "FECHA CREACION", value: "credte", sortable: false },
@@ -408,8 +403,6 @@ export default {
         },
         seleccionarTurno(item) {
             this.idTurno = item.idturn;
-            //this.nombreTurnoLabel = item.pat +" "+item.nom
-            //this.email = item.emal
             this.asignarTurnoASector();
             //this.closeEmpleado();
         },
@@ -525,7 +518,7 @@ export default {
         },
 
         llenarCamposSector(item) {
-            this.sector = item.nom;
+            this.sector = item.sect;
             this.idDepartamento = item.iddep;
             this.idSector = item.idsect;
         },

@@ -5,7 +5,29 @@
                 <h5>EMPLEADOS</h5>
             </v-alert>
         </div>
-        <v-dialog v-model="empleadoModal" max-width="1080px" lazy-validation> <!-- Modal-->
+        <!-- Snackbars-->
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
+                <strong>{{ mensajeSnackbar }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+        <div class="text-center">
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+
+        <v-dialog v-model="empleadoModal" max-width="1080px" lazy-validation persistent> <!-- Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span v-if="botonAct == 0">Nuevo Empleado</span>
@@ -51,8 +73,9 @@
                                     <v-menu v-model="datePicker" :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="fechaNacimiento" label="Fecha de Nacimiento"
-                                                prepend-icon="mdi-cake-variant-outline" readonly v-bind="attrs" v-on="on">
+                                            <v-text-field v-model="fechaNacimiento" label="Fecha de Nacimiento" :rules="fechaNacimientoRules"
+                                                prepend-icon="mdi-cake-variant-outline" readonly v-bind="attrs"
+                                                v-on="on">
 
                                             </v-text-field>
                                         </template>
@@ -61,8 +84,8 @@
                                     </v-menu>
                                 </v-col>
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="ci" :counter="50" :rules="ciRules" @input="ci = ci.toUpperCase()"
-                                        label="Número de Carnet"></v-text-field>
+                                    <v-text-field v-model="ci" :counter="50" :rules="ciRules"
+                                        @input="ci = ci.toUpperCase()" label="Número de Carnet"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
                                     <v-text-field type="number" v-model="telefono" :rules="telefonoRules"
@@ -70,21 +93,28 @@
                                 </v-col>
                                 <v-col cols="12" md="12">
                                     <v-select v-model="idCargo" :items="datosCargo" item-text="carg" item-value="idcarg"
-                                        label="Selecciona una Cargo" prepend-icon="mdi-account-tie-hat" :rules="cargoRules"
-                                        required>
+                                        label="Selecciona una Cargo" prepend-icon="mdi-account-tie-hat"
+                                        :rules="cargoRules" required>
                                     </v-select>
                                 </v-col>
-                                <v-col cols="12" md="12">
+                                <v-col cols="12" md="6">
                                     <v-select v-model="idDepartamento" :items="datosDepartamento" item-text="nom"
                                         item-value="iddep" label="Selecciona un Departamento" prepend-icon="mdi-sitemap"
-                                        :rules="departamentoRules" required>
+                                        :rules="departamentoRules" required v-on:change="listarSectoresDeDepartamento(idDepartamento);">
+                                    </v-select>
+                                </v-col>
+                                <v-col cols="12" md="6">
+                                    <v-select v-model="idSector" :items="datosSector" item-text="sect"
+                                        item-value="idsect" label="Selecciona un Sector" prepend-icon="mdi-sitemap"
+                                        :rules="sectorRules" required :disabled="idDepartamento==''">
                                     </v-select>
                                 </v-col>
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="6"></v-col>
                                 <v-col cols="2">
                                     <v-btn iconv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="actualizarEmpleado()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
+                                        @click="actualizarEmpleado()" style="float: left"
+                                        title="ACTUALIZAR INFORMACIÓN">
                                         <v-icon dark> mdi-pencil </v-icon>
                                         ACTUALIZAR
                                     </v-btn>
@@ -95,8 +125,8 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()" style="float: left"
-                                        title="LIMPIAR FORMULARIO">
+                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()"
+                                        style="float: left" title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                         LIMPIAR
                                     </v-btn>
@@ -111,8 +141,8 @@
                             </v-row>
 
                             <div class="text-center">
-                                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
-                                    outlined>
+                                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense
+                                    color="#00FF00" outlined>
                                     <strong>{{ mensajeSnackbar }}</strong>
 
 
@@ -144,99 +174,70 @@
             </v-card>
         </v-dialog>
 
+        <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Empleados -->
+            <v-container>
+                <v-row>
+                    <v-col cols="12" md="12">
+                        <v-col cols="12">
+                            <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>EMPLEADOS</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                            <v-col cols="12" md="4">
+                                <v-btn color="success" @click="showAddEmpleado()">+ Nuevo Empleado</v-btn>
+                            </v-col>
 
-        <div>
-            <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Empleados -->
-                <v-container>
-                    <v-row>
-                        <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showAddEmpleado()">+ Nuevo Empleado</v-btn>
-                        </v-col>
-                        <v-col cols="12" md="12">
+                            <v-card-title>
+                                <v-text-field v-model="searchEmpleado" append-icon="mdi-magnify"
+                                    label="BUSCAR EMPLEADOS" single-line hide-details></v-text-field>
+                            </v-card-title>
 
-                            <v-col cols="12">
-                                <v-list-item>
-                                    <v-list-item-title class="text-center">
-                                        <h5>EMPLEADOS</h5>
-                                    </v-list-item-title>
-                                </v-list-item>
-
-                                <v-card-title>
-                                    <v-text-field v-model="searchEmpleado" append-icon="mdi-magnify"
-                                        label="BUSCAR EMPLEADOS" single-line hide-details></v-text-field>
-                                </v-card-title>
-
-                                <v-data-table :headers="headersEmpleado" :items="datosEmpleado" :search="searchEmpleado"
-                                    :items-per-page="5" class="elevation-1" id="tableId">
-                                    <template #[`item.nom`]="{ item }">
-                                        <td>{{ item.nom }} {{ item.pat }} {{ item.mat }}</td>
-                                    </template>
-                                    <template #[`item.ism`]="{ item }">
-                                        <td v-if="item.ism == true">HOMBRE</td>
-                                        <td v-if="item.ism == false">MUJER</td>
-                                    </template>
-                                    <template #[`item.act`]="{ item }">
-                                        <v-chip :color="getColor(item.act)" dark>
-                                            {{ item.act }}
-                                        </v-chip>
-                                    </template>
-                                    <!--
+                            <v-data-table :headers="headersEmpleado" :items="datosEmpleado" :search="searchEmpleado"
+                                :items-per-page="5" class="elevation-1" id="tableId">
+                                <template #[`item.nom`]="{ item }">
+                                    <td>{{ item.nom }} {{ item.pat }} {{ item.mat }}</td>
+                                </template>
+                                <template #[`item.ism`]="{ item }">
+                                    <td v-if="item.ism == true">HOMBRE</td>
+                                    <td v-if="item.ism == false">MUJER</td>
+                                </template>
+                                <template #[`item.act`]="{ item }">
+                                    <v-chip :color="getColor(item.act)" dark>
+                                        {{ item.act }}
+                                    </v-chip>
+                                </template>
+                                <!--
                                     <template #[`item.credte`]="{ item }">
                                         <td>{{ new Date('2023-01-01T04:00:00.000Z').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}</td>
                                     </template>
                                 -->
 
-                                    <template #[`item.actions`]="{ item }">
-                                        <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
-                                            title="ACTIVAR EMPLEADO">
-                                            mdi-check-circle-outline
-                                        </v-icon>
-                                        <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
-                                            title="DESACTIVAR EMPLEADO">
-                                            mdi-cancel
-                                        </v-icon>
-                                        <v-icon small class="mr-2" @click="showEditEmpleado(item)"
-                                            title="EDITAR INFORMACION">
-                                            mdi-pencil
-                                        </v-icon>
-                                        <v-icon small class="mr-2" color="#001781" @click="goToEmpleadoPerfil(item)"
-                                            title="VER EMPLEADO">
-                                            mdi-eye
-                                        </v-icon>
-                                    </template>
-                                </v-data-table>
-                            </v-col>
+                                <template #[`item.actions`]="{ item }">
+                                    <v-icon large class="mr-2" color="#001781" @click="goToEmpleadoPerfil(item)"
+                                        title="VER EMPLEADO">
+                                        mdi-eye
+                                    </v-icon>
+                                    <v-icon large class="mr-2" color="#0A628F" @click="showEditEmpleado(item)"
+                                        title="EDITAR INFORMACION">
+                                        mdi-pencil
+                                    </v-icon>
+                                    <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2" color="#0ABF55"
+                                        @click="activar(item)" title="ACTIVAR EMPLEADO">
+                                        mdi-check-circle-outline
+                                    </v-icon>
+                                    <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2" color="#BF120A"
+                                        @click="desactivar(item)" title="DESACTIVAR EMPLEADO">
+                                        mdi-cancel
+                                    </v-icon>
+                                </template>
+                            </v-data-table>
                         </v-col>
-                    </v-row>
+                    </v-col>
+                </v-row>
 
-                    <div class="text-center">
-                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
-                            <strong>{{ mensajeSnackbar }}</strong>
-
-
-                            <template v-slot:action="{ attrs }">
-                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                                    mdi-close
-                                </v-icon>
-                            </template>
-                        </v-snackbar>
-                    </div>
-                    <div class="text-center">
-
-                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
-                            outlined>
-                            <strong>{{ mensajeSnackbarError }}</strong>
-
-                            <template v-slot:action="{ attrs }">
-                                <v-icon right v-bind="attrs" @click="snackbarError = false">
-                                    mdi-close
-                                </v-icon>
-                            </template>
-                        </v-snackbar>
-                    </div>
-                </v-container>
-            </v-form>
-        </div>
+            </v-container>
+        </v-form>
 
     </v-card>
 </template>
@@ -260,8 +261,11 @@ export default {
         lastDate: "",
         idCargo: "",
         idDepartamento: "",
+        idSector: "",
         datePicker: false,
         valid: false,
+
+        isDisabled: true,
 
         searchEmpleado: "",
         datosEmpleado: [],
@@ -269,6 +273,7 @@ export default {
         datosEstadoCivil: ['SOLTERO', 'CASADO', 'CONVIVIENTE', 'VIUDO'],
         datosCargo: [],
         datosDepartamento: [],
+        datosSector: [],
 
         snackbarOK: false,
         mensajeSnackbar: "",
@@ -293,22 +298,25 @@ export default {
         ],
         maternoRules: [
             (v) =>
-                (v && v.length <= 50) ||
+                (v.length <= 50) ||
                 "EL NOMBRE DEL EMPLEADO DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
         sexoRules: [
             (v) => !!v || "ASIGNAR UN SEXO ES REQUERIDO",
+            (v) => (v != undefined),
         ],
         estadoCivilRules: [
             (v) => !!v || "ASIGNAR UN ESTADO CIVIL ES REQUERIDO",
+            (v) => (v != undefined),
         ],
         emailRules: [
             (v) => !!v || "EMAIL DEL EMPLEADO ES REQUERIDO",
+            (v) => /.+@.+\..+/.test(v) || 'EMAIL DEBE SER VALIDO',
             (v) =>
                 (v && v.length <= 50) ||
                 "EL NOMBRE DEL EMPLEADO DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
-        fechaRules: [
+        fechaNacimientoRules: [
             (v) => !!v || "FECHA DE NACIMIENTO ES REQUERIDO",
         ],
         ciRules: [
@@ -328,6 +336,11 @@ export default {
         ],
         departamentoRules: [
             (v) => !!v || "ASIGNAR UN DEPARTAMENTO ES REQUERIDO",
+            (v) => (v != undefined),
+        ],
+        sectorRules: [
+            (v) => !!v || "ASIGNAR UN SECTOR ES REQUERIDO",
+            (v) => (v != undefined),
         ],
 
         headersEmpleado: [
@@ -397,18 +410,21 @@ export default {
             this.botonAct = 0;
             if (this.datosCargo.length == 0) this.listarCargos();
             if (this.datosDepartamento.length == 0) this.listarDepartamentos();
+            this.listarSectoresDeDepartamento(this.idDepartamento);
             this.empleadoModal = true;
         },
         showEditEmpleado(item) {
             this.botonAct = 1;
             if (this.datosCargo.length == 0) this.listarCargos();
             if (this.datosDepartamento.length == 0) this.listarDepartamentos();
+            this.listarSectoresDeDepartamento(this.idDepartamento);
             this.llenarCamposEmpleado(item);
             this.empleadoModal = true;
         },
 
         closeEmpleado() {
             this.empleadoModal = false;
+            this.datosSector == [];
         },
 
         llenarCamposEmpleado(item) {
@@ -423,22 +439,17 @@ export default {
             this.telefono = item.tel;
             this.idCargo = item.idcarg;
             this.idDepartamento = item.iddep;
+            this.idSector = item.idsect;
             this.idEmpleado = item.idempl;
         },
 
         actualizarEmpleado() {
-            this.actualizarempleado(
-                this.idEmpleado,
-                this.nombres,
-                this.idcarg,
-                this.iddep
-            );
+            if (this.$refs.form.validate()) {
+                this.actualizarempleado();
+            }
         },
-
-
         async actualizarempleado() {
             let me = this;
-
             await axios
                 .post(
                     "/empleado/editarempleado", {
@@ -454,34 +465,8 @@ export default {
                     p10: this.telefono,
                     p11: this.idCargo,
                     p12: this.idDepartamento,
-                }
-                    /*
-                    "/empleado/editarempleado/" +
-                    this.idEmpleado +
-                    "," +
-                    this.nombres +
-                    "," +
-                    this.paterno +
-                    "," +
-                    this.materno +
-                    "," +
-                    this.isMale +
-                    "," +
-                    this.estadoCivil +
-                    "," +
-                    this.email +
-                    "," +
-                    this.fechaNacimiento +
-                    "," +
-                    this.ci +
-                    "," +
-                    this.telefono +
-                    "," +
-                    this.idCargo +
-                    "," +
-                    this.idDepartamento
-                    */
-
+                    p12: this.idSector,
+                    }
                 )
                 .then(function (response) {
 
@@ -509,6 +494,7 @@ export default {
             this.telefono = "";
             this.idCargo = ""; this.datosCargo.idcarg = "";
             this.idDepartamento = ""; this.datosDepartamento.iddep = "";
+            this.idSector = ""; this.datosSector.idsect = "";
         },
 
         async listarEmpleados(idEmpleado) {
@@ -557,19 +543,102 @@ export default {
                     console.log(error);
                 });
         },
+        async listarSectoresDeDepartamento(idDepartamento) {
+            let me = this;
+            await axios
+                .get("/sector/listarsectoresdedepartamento/"+idDepartamento)
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosSector = [];
+                    } else {
+                        me.datosSector = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        async actualizarempleado() {
+            let me = this;
+            await axios
+                .post(
+                    "/empleado/editarempleado", {
+                    p1: this.idEmpleado,
+                    p2: this.nombres,
+                    p3: this.paterno,
+                    p4: this.materno,
+                    p5: this.isMale,
+                    p6: this.estadoCivil,
+                    p7: this.email,
+                    p8: this.fechaNacimiento,
+                    p9: this.ci,
+                    p10: this.telefono,
+                    p11: this.idCargo,
+                    p12: this.idDepartamento,
+                    p13: this.idSector
+                    }
+                )
+                .then(function (response) {
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarEmpleados(me.idEmpleado);
+                    me.limpiar();
+                    me.closeEmpleado();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                });
+        },
+
         registrarEmpleado() {
-            this.registrarEmpleados();
+            if (this.$refs.form.validate()) {
+                if(this.materno == '') { 
+                    this.registrarEmpleadosSinMaterno();
+                } 
+                else {
+                    this.registrarEmpleados();
+                }
+            }
+            
         },
         async registrarEmpleados() {
             let me = this;
             await axios
                 .post(
-                    "/empleado/addempleado/" +
+                    "/empleado/addempleado", {
+                    p1: this.nombres,
+                    p2: this.paterno,
+                    p3: this.materno,
+                    p4: this.isMale,
+                    p5: this.estadoCivil,
+                    p6: this.email,
+                    p7: this.fechaNacimiento,
+                    p8: this.ci,
+                    p9: this.telefono,
+                    p10: this.idCargo,
+                    p11: this.idDepartamento,
+                    p12: this.idSector
+                    }
+                )
+                .then(function (response) {
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarEmpleados(me.idEmpleado);
+                    me.limpiar();
+                    me.closeEmpleado();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                });
+        },
+        async registrarEmpleadosSinMaterno() {
+            let me = this;
+            await axios
+                .post(
+                    "/empleado/addempleadosinmaterno/" +
                     this.nombres +
                     "," +
                     this.paterno +
-                    "," +
-                    this.materno +
                     "," +
                     this.isMale +
                     "," +
@@ -585,11 +654,11 @@ export default {
                     "," +
                     this.idCargo +
                     "," +
-                    this.idDepartamento
-
+                    this.idDepartamento +
+                    "," +
+                    this.idSector
                 )
                 .then(function (response) {
-
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.listarEmpleados(me.idEmpleado);
