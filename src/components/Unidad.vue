@@ -32,7 +32,7 @@
         <v-dialog v-model="unidadModal" max-width="1080px" persistent> <!-- Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nuevo Unidad</span>
+                    <span v-if="botonAct == 0">Nueva Unidad</span>
                     <span v-if="botonAct == 1">Editar Unidad</span>
                 </v-card-title>
                 <v-card-text>
@@ -45,30 +45,37 @@
                                         @input="unidad = unidad.toUpperCase()" label="Nombre de la Unidad" required>
                                     </v-text-field>
                                 </v-col>
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="actualizarUnidad()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
-                                        <v-icon dark> mdi-pencil </v-icon>
-                                        ACTUALIZAR
-                                    </v-btn>
-                                    <v-btn iconv v-if="botonAct == 0" class="mx-4" dark color="#0ABF55"
-                                        @click="registrarUnidad()" style="float: left" title="REGISTRAR ITEM">
-                                        <v-icon dark> mdi-content-save </v-icon>
-                                        GUARDAR
-                                    </v-btn>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonAct == 1" color="#0A62BF"
+                                                @click="actualizarUnidad()" style="float: left"
+                                                title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonAct == 0" color="#0ABF55"
+                                                @click="registrarUnidad()" style="float: left"
+                                                title="REGISTRAR UNIDAD" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeUnidad()"
-                                        style="float: right" title="SALIR">
+                                <v-col cols="8">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeUnidad()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -93,7 +100,7 @@
                                 </v-list-item-title>
                             </v-list-item>
                             <v-col cols="12" md="4">
-                                <v-btn color="success" @click="showAddUnidad()">+ Nueva Unidad</v-btn>
+                                <v-btn color="success" @click="showAddUnidad()">Nueva Unidad</v-btn>
                             </v-col>
                             <v-card-title>
                                 <v-text-field v-model="searchUnidad" append-icon="mdi-magnify" label="BUSCAR UNIDADES"

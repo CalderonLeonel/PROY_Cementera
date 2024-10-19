@@ -138,7 +138,7 @@
                                                             </v-alert>
                                                         </div>
                                                         <v-col cols="12" md="4">
-                                                            <v-btn color="success" @click="showAddContrato()">+ Nuevo
+                                                            <v-btn color="success" @click="showAddContrato()">Nuevo
                                                                 Contrato</v-btn>
                                                         </v-col>
 
@@ -175,17 +175,17 @@
                                                                 </v-chip>
                                                             </template>
                                                             <template #[`item.actions`]="{ item }">
-                                                                <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2"
+                                                                <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2" color="#0ABF55"
                                                                     @click="activarContrato(item)"
                                                                     title="ACTIVAR CONTRATO">
                                                                     mdi-check-circle-outline
                                                                 </v-icon>
-                                                                <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2"
+                                                                <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2" color="#BF120A"
                                                                     @click="desactivarContrato(item)"
                                                                     title="DESACTIVAR CONTRATO">
                                                                     mdi-cancel
                                                                 </v-icon>
-                                                                <v-icon large class="mr-2"
+                                                                <v-icon large class="mr-2" color="#0A628F"
                                                                     @click="showEditContrato(item)"
                                                                     title="EDITAR INFORMACION">
                                                                     mdi-pencil
@@ -219,7 +219,7 @@
                                                             </v-alert>
                                                         </div>
                                                         <v-col cols="12" md="4">
-                                                            <v-btn color="success" @click="showAddObservacion()">+ Nueva
+                                                            <v-btn color="success" @click="showAddObservacion()">Nueva
                                                                 Observacion</v-btn>
                                                         </v-col>
 
@@ -244,17 +244,17 @@
                                                                 </v-chip>
                                                             </template>
                                                             <template #[`item.actions`]="{ item }">
-                                                                <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2"
+                                                                <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2" color="#0ABF55"
                                                                     @click="activarObservacion(item)"
                                                                     title="ACTIVAR OBSERVACION">
                                                                     mdi-check-circle-outline
                                                                 </v-icon>
-                                                                <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2"
+                                                                <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2" color="#BF120A"
                                                                     @click="desactivarObservacion(item)"
                                                                     title="DESACTIVAR OBSERVACION">
                                                                     mdi-cancel
                                                                 </v-icon>
-                                                                <v-icon large class="mr-2"
+                                                                <v-icon large class="mr-2" color="#0A628F"
                                                                     @click="showEditObservacion(item)"
                                                                     title="EDITAR INFORMACION">
                                                                     mdi-pencil
@@ -288,8 +288,7 @@
                                                             </v-alert>
                                                         </div>
                                                         <v-col cols="12" md="4">
-                                                            <v-btn color="success" @click="showAddVacacion()">+
-                                                                Registrar Vacacion</v-btn>
+                                                            <v-btn color="success" @click="showAddVacacion()">Registrar Vacacion</v-btn>
                                                         </v-col>
                                                         <v-card-title>
                                                             <v-text-field v-model="searchVacacion"
@@ -320,17 +319,17 @@
                                                                 </v-chip>
                                                             </template>
                                                             <template #[`item.actions`]="{ item }">
-                                                                <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2"
+                                                                <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2" color="#0ABF55"
                                                                     @click="activarVacacion(item)"
                                                                     title="ACTIVAR VACACION">
                                                                     mdi-check-circle-outline
                                                                 </v-icon>
-                                                                <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2"
+                                                                <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2" color="#BF120A"
                                                                     @click="desactivarVacacion(item)"
                                                                     title="ANULAR VACACION">
                                                                     mdi-cancel
                                                                 </v-icon>
-                                                                <v-icon large class="mr-2"
+                                                                <v-icon large class="mr-2" color="#0A628F"
                                                                     @click="showEditVacacion(item)"
                                                                     title="EDITAR INFORMACION">
                                                                     mdi-pencil
