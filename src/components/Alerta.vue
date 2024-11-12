@@ -368,8 +368,6 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarAlmacenamientos();
-                    me.closeModalAlmacenamiento();
                     me.limpiar();
                 })
                 .catch(function (error) {

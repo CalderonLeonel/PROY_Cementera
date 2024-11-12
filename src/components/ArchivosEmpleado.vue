@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="5" outlined>
+    <v-card elevation="5" outlined v-if=" checkAccess(9, 'SUPERVISOR' ) || checkAccess(9, 'GERENTE')">
         <div>
             <v-alert dense style="color: #ffffff;" color="blue">
                 <h3>GESTIÓN DE ARCHIVOS DE EMPLEADOS</h3>
@@ -11,8 +11,8 @@
                     <v-btn color="primary" @click="showGenerarMemorandum()">GENERAR MEMORÁNDUM</v-btn>
                 </v-col>
             </v-row>
-            <v-row>
-                <v-col cols="12" md="12">
+            <v-row >
+                <v-col cols="12" md="12" >
                     <v-text-field v-model="searchDocumento" append-icon="mdi-magnify" label="BUSCAR DOCUMENTO" single-line
                         hide-details></v-text-field>
                     <v-data-table :headers="headerDocumento" :items="datosDocumento" :search="searchDocumento"
@@ -161,6 +161,9 @@ export default {
     data() {
         return {
 
+            drawer: false,
+            user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+
             mensajeSnackbarError: "REGISTRO FALLIDO",
 
             generarMemorandum: false,
@@ -189,7 +192,15 @@ export default {
             }
     },
     created: function () {
-
+        if (this.user != null) {
+             this.user = JSON.parse(sessionStorage.getItem('session'));
+        }
+        if (this.user == null) {
+            if (this.$route.path != '/login') {
+                this.$router.push("/login");
+            }
+        }
+        console.log("UserData: " + JSON.stringify(this.user));
     },
     methods: {
         showGenerarMemorandum() {
@@ -251,6 +262,34 @@ export default {
 
         limpiar() {
             this.$refs.form.reset()
+
+        },
+
+        checkAccess(accesoCorrecto, tipoCorrecto) {
+            //this.user = JSON.parse(sessionStorage.getItem('session'));
+            if (this.user == null) {
+                return false;
+            }
+            else {
+                let checkedAccess = false;
+                let checkedType = false;
+                //Si accesoCorrecto es 0, no se requiere ningun acceso para acceder
+                if (accesoCorrecto != 0) {
+                this.user['accesos'].forEach(access => {
+                    if (access == accesoCorrecto)
+                    checkedAccess = true;
+                });
+                } else checkedAccess = true;
+
+                //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
+                if (tipoCorrecto != '0') {
+                if (this.user['tipo'] == tipoCorrecto) {
+                    checkedType = true;
+                }
+                } else checkedType = true;
+                if (checkedAccess && checkedType) { return true }
+                else return false;
+            }
 
         },
 
