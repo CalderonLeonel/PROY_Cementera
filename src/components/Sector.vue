@@ -493,12 +493,12 @@ export default {
 
         showAddSector() {
             this.botonAct = 0;
-            if (this.datosDepartamento.length == 0) this.listarDepartamentos();
+            if (this.datosDepartamento.length == 0) this.listarDepartamentosActivos();
             this.sectorModal = true;
         },
         showEditSector(item) {
             this.botonAct = 1;
-            if (this.datosDepartamento.length == 0) this.listarDepartamentos();
+            if (this.datosDepartamento.length == 0) this.listarDepartamentosActivos();
             this.llenarCamposSector(item);
             this.sectorModal = true;
         },
@@ -580,10 +580,10 @@ export default {
                     console.log(error);
                 });
         },
-        async listarDepartamentos(idDepartamento) {
+        async listarDepartamentosActivos(idDepartamento) {
             let me = this;
             await axios
-                .get("/departamento/listardepartamentos/")
+                .get("/departamento/listardepartamentosactivos/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
                         me.datosDepartamento = [];

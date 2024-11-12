@@ -280,8 +280,7 @@ export default {
                 "EL NOMBRE DEL EMPLEADO DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
         sexoRules: [
-            (v) => !!v || "ASIGNAR UN SEXO ES REQUERIDO",
-            (v) => (v != undefined),
+             (v) => v !== null && v !== undefined || "ASIGNAR UN SEXO ES REQUERIDO"
         ],
         estadoCivilRules: [
             (v) => !!v || "ASIGNAR UN ESTADO CIVIL ES REQUERIDO",
@@ -386,15 +385,15 @@ export default {
 
         showAddEmpleado() {
             this.botonAct = 0;
-            if (this.datosCargo.length == 0) this.listarCargos();
-            if (this.datosDepartamento.length == 0) this.listarDepartamentos();
+            if (this.datosCargo.length == 0) this.listarCargosActivos();
+            if (this.datosDepartamento.length == 0) this.listarDepartamentosActivos();
             this.listarSectoresDeDepartamento(this.idDepartamento);
             this.empleadoModal = true;
         },
         showEditEmpleado(item) {
             this.botonAct = 1;
-            if (this.datosCargo.length == 0) this.listarCargos();
-            if (this.datosDepartamento.length == 0) this.listarDepartamentos();
+            if (this.datosCargo.length == 0) this.listarCargosActivos();
+            if (this.datosDepartamento.length == 0) this.listarDepartamentosActivos();
             this.listarSectoresDeDepartamento(this.idDepartamento);
             this.llenarCamposEmpleado(item);
             this.empleadoModal = true;
@@ -408,7 +407,7 @@ export default {
         llenarCamposEmpleado(item) {
             this.nombres = item.nom;
             this.paterno = item.pat;
-            this.materno = item.mat;
+            if(item.mat == null){this.materno='';} else {this.materno = item.mat;};
             this.isMale = item.ism;
             this.estadoCivil = item.est
             this.email = item.emal;
@@ -490,10 +489,10 @@ export default {
                     console.log(error);
                 });
         },
-        async listarCargos(idCargo) {
+        async listarCargosActivos(idCargo) {
             let me = this;
             await axios
-                .get("/cargo/listarcargos/")
+                .get("/cargo/listarcargosactivos/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
                         me.datosCargo = [];
@@ -505,10 +504,10 @@ export default {
                     console.log(error);
                 });
         },
-        async listarDepartamentos(idDepartamento) {
+        async listarDepartamentosActivos(idDepartamento) {
             let me = this;
             await axios
-                .get("/departamento/listardepartamentos/")
+                .get("/departamento/listardepartamentosactivos/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
 
@@ -613,28 +612,19 @@ export default {
             let me = this;
             await axios
                 .post(
-                    "/empleado/addempleadosinmaterno/" +
-                    this.nombres +
-                    "," +
-                    this.paterno +
-                    "," +
-                    this.isMale +
-                    "," +
-                    this.estadoCivil +
-                    "," +
-                    this.email +
-                    "," +
-                    this.fechaNacimiento +
-                    "," +
-                    this.ci +
-                    "," +
-                    this.telefono +
-                    "," +
-                    this.idCargo +
-                    "," +
-                    this.idDepartamento +
-                    "," +
-                    this.idSector
+                    "/empleado/addempleadosinmaterno", {
+                    p1: this.nombres,
+                    p2: this.paterno,
+                    p3: this.isMale,
+                    p4: this.estadoCivil,
+                    p5: this.email,
+                    p6: this.fechaNacimiento,
+                    p7: this.ci,
+                    p8: this.telefono,
+                    p9: this.idCargo,
+                    p10: this.idDepartamento,
+                    p11: this.idSector
+                    }
                 )
                 .then(function (response) {
                     me.mensajeSnackbar = response.data.message;
