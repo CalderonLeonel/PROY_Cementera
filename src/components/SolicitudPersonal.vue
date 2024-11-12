@@ -147,7 +147,7 @@
                                             title="EDITAR INFORMACION">
                                             mdi-pencil
                                         </v-icon>
-                                        <v-icon v-if="item.act != 'PENDIENTE'" large color="#BF120A" class="mr-2"
+                                        <v-icon v-if="item.act != 'PENDIENTE'" large color="#BF120A" class="mr-2" @click="deleteSolicitudPersonal(item)"
                                             title="ELIMINAR SOLICITUD">
                                             mdi-delete
                                         </v-icon>
@@ -268,6 +268,22 @@ export default {
             let me = this;
             await axios
                 .post("/solicitud/denysolicitud/" + this.idSolicitud).then(function (response) {
+
+                    me.listarSolicitudes();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        },
+        deleteSolicitudPersonal(item) {
+            this.idSolicitud = item.idsoli;
+            this.deletesolicitudpersonal(this.idSolicitud);
+        },
+        async deletesolicitudpersonal(idSolicitud) {
+            let me = this;
+            await axios
+                .post("/solicitud/deletesolicitud/" + this.idSolicitud).then(function (response) {
 
                     me.listarSolicitudes();
                 })
