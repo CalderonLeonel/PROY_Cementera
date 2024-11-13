@@ -522,6 +522,8 @@ export default {
                 }
                 else {
                     this.editarProveedorArchivo(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name);                       
+                    this.almacenarArchivo(this.documentoArchivo)
+                    this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro"+this.idProveedor,"ACTIVO"); 
                     this.botonAct = 0;         
                 } 
             }
