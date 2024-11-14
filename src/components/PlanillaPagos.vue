@@ -4,17 +4,15 @@
             <v-row>
                 <v-col cols="12">
                     <v-card>
-                        <v-card-title>
-                            Planilla de Pagos
-                        </v-card-title>
+                        <v-card-title>Planilla de Pagos</v-card-title>
                         <v-card-text>
                             <v-data-table :headers="headersPlanilla" :items="datosPlanilla" :items-per-page="5"
                                 class="elevation-1" id="tableId"></v-data-table>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn @click="calcularTotal()">Calcular Total</v-btn>
-                            <v-btn @click="registrarPagos()" color="primary">Pagar Planilla</v-btn>
+                            <v-btn @click="calcularTotal">Calcular Total</v-btn>
+                            <v-btn @click="procesarPagoPlanilla" color="primary">Pagar Planilla</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-col>
@@ -22,9 +20,7 @@
             <v-row>
                 <v-col cols="12">
                     <v-card>
-                        <v-card-title>
-                            Total a Pagar
-                        </v-card-title>
+                        <v-card-title>Total a Pagar</v-card-title>
                         <v-card-text>
                             <p>Total: {{ totalSalarios }}</p>
                         </v-card-text>
@@ -32,8 +28,15 @@
                 </v-col>
             </v-row>
         </v-container>
+        <v-snackbar v-model="snackbarOK" :timeout="timeout" color="success">
+            {{ mensajeSnackbar }}
+        </v-snackbar>
+        <v-snackbar v-model="snackbarError" :timeout="timeout" color="error">
+            {{ mensajeSnackbarError }}
+        </v-snackbar>
     </div>
 </template>
+
 <script>
 import axios from 'axios';
 
@@ -50,49 +53,19 @@ export default {
             ],
             datosPlanilla: [],
             totalSalarios: 0,
-
-            //#region Asiento Contable
-            idAsientoContable: "",
+            idCuentaContable: "",
             numeroReferencia: "",
             descripcionAsiento: "PAGO PLANILLA",
-            idCuentaContable: "",
-            montoDebito: "",
-            montoCredito: "",
-            //#endregion
-
-            //#region Cuenta Contables
-            idCuentaContable: "",
-            numeroCuenta: "",
-            nombreCuenta: "",
-            descripcionCuenta: "",
-            tipoCuenta: "",
-            saldo: "",
-            tiposCuentas: [
-                'Activo', 'Pasivo', 'Capital', 'Ingreso', 'Gasto'
-            ],
             datosCuentas: [],
-            headersCuentas: [
-                { text: "NUM. CUENTA", value: "numcnt", sortable: true },
-                { text: "NOM. CUENTA", value: "nom", sortable: true },
-                { text: "DESCRIPCION", value: "des", sortable: true },
-                { text: "TIPO CUENTA", value: "tipoc", sortable: true },
-                { text: "ESTADO", value: "est", sortable: true },
-                { text: "OPCIONES", value: "actions", sortable: false },
-            ],
-            //#endregion
-
-            //#region SnackBars
             snackbarOK: false,
             mensajeSnackbar: "",
             snackbarError: false,
             mensajeSnackbarError: "REGISTRO FALLIDO",
             timeout: 2000,
-            //#endregion
-
         };
     },
 
-    created: function () {
+    created() {
         this.generarPlanilla();
         this.listarCuentas();
     },
@@ -100,158 +73,23 @@ export default {
     methods: {
         generarNumeroReferencia() {
             const fechaActual = new Date();
-
-            // Obtiene los componentes de la fecha y hora
             const año = fechaActual.getFullYear();
-            const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0'); // Añade ceros a la izquierda si es necesario
-            const dia = fechaActual.getDate().toString().padStart(2, '0');
-            const hora = fechaActual.getHours().toString().padStart(2, '0');
-            const minutos = fechaActual.getMinutes().toString().padStart(2, '0');
-            const segundos = fechaActual.getSeconds().toString().padStart(2, '0');
-
-            // Formatea el número de referencia utilizando la información de la fecha y hora
-            const numeroReferencia = `${año}${mes}${dia}${hora}${minutos}${segundos}`;
-
-            // Puedes ajustar el formato del número de referencia según tus necesidades
-            // Por ejemplo, puedes agregar un prefijo o un sufijo según tus requisitos.
-            // Ejemplo: const numeroReferencia = `REF-${año}${mes}${dia}${hora}${minutos}${segundos}`;
-
-            return numeroReferencia;
-        },
-
-        generarPlantillas() {
-            this.generarPlantilla();
+            const mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
+            const dia = String(fechaActual.getDate()).padStart(2, '0');
+            const hora = String(fechaActual.getHours()).padStart(2, '0');
+            const minutos = String(fechaActual.getMinutes()).padStart(2, '0');
+            const segundos = String(fechaActual.getSeconds()).padStart(2, '0');
+            return `${año}${mes}${dia}${hora}${minutos}${segundos}`;
         },
 
         async generarPlanilla() {
-            let me = this;
-            await axios
-                .get("/empleado/generarplanilla")
-                .then(function (response) {
-                    if (response.data.resultado == null) {
-                        me.datosPlanilla = [];
-                    } else {
-                        me.datosPlanilla = response.data.resultado;
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-
-        pagarPlanillas() {
-            this.idCuentaContable = this.seleccionarCuentaContable();
-            console.log(this.idCuentaContable)
-            this.pagarPlanilla(this.idCuentaContable, this.totalSalarios);
-        },
-
-        async pagarPlanilla(
-            idCuentaContable,
-            totalSalarios
-        ) {
-            let me = this;
-            await axios
-                .post(
-                    "/empleado/pagarplanilla/" +
-                    this.idCuentaContable +
-                    "," +
-                    this.totalSalarios
-
-                )
-                .then(function (response) {
-
-                    me.mensajeSnackbar = response.data.message;
-                    me.snackbarOK = true;
-                    me.registrarAsientoContable();
-                    me.registrarPagoEmpleados();
-                    me.limpiar();
-                })
-                .catch(function (error) {
-                    me.snackbarError = true;
-                });
-        },
-
-        registrarPago() {
-            this.idCuentaContable = this.seleccionarCuentaContable();
-            this.pagarPlanilla(this.idCuentaContable, this.totalSalarios);
-        },
-
-        async registrarPagos(
-            idCuentaContable,
-            totalSalarios,
-        ) {
-            let me = this;
-            for (let empleado of this.datosPlanilla) {
-                await axios
-                    .post(
-                        "/empleado/addpago/" +
-                        this.idCuentaContable +
-                        "," +
-                        empleado.sal +
-                        "," +
-                        empleado.idempl +
-                        "," +
-                        empleado.idcar
-                    )
-                    .then(function (response) {
-                        console.log("Pago registrado para empleado ID:", empleado.idempl);
-                    })
-                    .catch(function (error) {
-                        console.error(`Error al registrar el pago para el empleado ID: ${empleado.idempl}`, error);
-                    });
+            try {
+                const response = await axios.get("/empleado/generarplanilla");
+                this.datosPlanilla = response.data.resultado || [];
+            } catch (error) {
+                console.error("Error al generar planilla:", error);
+                this.mostrarError("Error al generar planilla");
             }
-        },
-
-        registrarAsientosContables() {
-            this.numeroReferencia = this.generarNumeroReferencia();
-            this.idCuentaContable = this.seleccionarCuentaContable();
-
-            // Actualizo el total de la venta
-            const totalSalarios = this.calcularTotal();
-
-            // Calculo los montos de débito y crédito
-            const { montoDebito, montoCredito } = this.listarCuentas();
-
-            const esIngreso = true; // Aquí debes determinar si es un ingreso o gasto
-
-            // Sumo el total de la venta al monto de crédito
-            const nuevoMontoCredito = montoCredito + totalVenta;
-
-            // Registro el asiento contable con los montos calculados
-            this.registrarAsientoContable(this.numeroReferencia, this.descripcionAsiento, this.idCuentaContable, montoDebito, nuevoMontoCredito);
-
-            // Después de registrar el asiento, aumentar o reducir el saldo según corresponda
-            if (esIngreso) {
-                this.aumentarSaldo();
-            } else {
-                this.pagarPlanillas();
-            }
-        },
-
-        async registrarAsientoContable() {
-            let me = this;
-            this.numeroReferencia = this.generarNumeroReferencia();
-            await axios
-                .post(
-                    "/contabilidad/addasiento/" +
-                    this.numeroReferencia +
-                    "," +
-                    this.descripcionAsiento +
-                    "," +
-                    this.idCuentaContable +
-                    "," +
-                    this.totalSalarios + // Asumiendo que tanto débito como crédito son iguales al total
-                    "," +
-                    this.totalSalarios
-                )
-                .then(function (response) {
-                    me.mensajeSnackbar = "Asiento contable registrado correctamente.";
-                    me.snackbarOK = true;
-                })
-                .catch(function (error) {
-                    me.snackbarError = true;
-                    console.error("Error al registrar el asiento contable:", error);
-                });
         },
 
         async procesarPagoPlanilla() {
@@ -259,72 +97,117 @@ export default {
             this.idCuentaContable = this.seleccionarCuentaContable();
 
             if (this.idCuentaContable && this.totalSalarios > 0) {
-                await this.pagarPlanilla();
+                try {
+                    await this.pagarPlanilla(this.idCuentaContable, this.totalSalarios);
+                    await this.registrarAsientoContable(
+                        this.generarNumeroReferencia(),
+                        this.descripcionAsiento,
+                        this.idCuentaContable,
+                        this.totalSalarios,
+                        this.totalSalarios
+                    );
+                    await this.registrarPagos(this.idCuentaContable);
+                    this.mensajeSnackbar = "Pago de planilla procesado correctamente";
+                    this.snackbarOK = true;
+                } catch (error) {
+                    this.mensajeSnackbarError = "Error al procesar pago de planilla";
+                    this.snackbarError = true;
+                    console.error("Error al procesar pago de planilla:", error);
+                }
             } else {
-                console.error("No se pudo procesar el pago. Verifique los datos.");
+                this.mensajeSnackbarError = "No se pudo procesar el pago. Verifique los datos.";
+                this.snackbarError = true;
+            }
+        },
+
+        async pagarPlanilla(idCuentaContable, totalSalarios) {
+            try {
+                const response = await axios.post(
+                    "/empleado/pagarplanilla/" + idCuentaContable + "," + totalSalarios
+                );
+                this.mensajeSnackbar = response.data.message;
+                this.snackbarOK = true;
+            } catch (error) {
+                this.mensajeSnackbarError = "Error al pagar planilla";
+                this.snackbarError = true;
+                console.error("Error al pagar planilla:", error);
+            }
+        },
+
+        async registrarPagos(idCuentaContable) {
+            for (let empleado of this.datosPlanilla) {
+                try {
+                    // Concatenar los parámetros en la URL
+                    const response = await axios.post(
+                        "/empleado/addpago/" +
+                        empleado.idempl + "," +
+                        empleado.idcar + "," +
+                        empleado.sal + "," +
+                        empleado.nomcar
+                    );
+
+                    console.log("Pago registrado para empleado ID:", empleado.idempl);
+                } catch (error) {
+                    console.error(`Error al registrar el pago para el empleado ID: ${empleado.idempl}`, error);
+                    this.mensajeSnackbarError = "Error al registrar pagos individuales";
+                    this.snackbarError = true;
+                    throw error;
+                }
+            }
+        },
+
+        async registrarAsientoContable(numeroReferencia, descripcionAsiento, idCuentaContable, montoDebito, montoCredito) {
+            try {
+                const response = await axios.post(
+                    "/contabilidad/addasiento/" +
+                    numeroReferencia + "," +
+                    descripcionAsiento + "," +
+                    idCuentaContable + "," +
+                    montoDebito + "," +
+                    montoCredito
+                );
+                this.mensajeSnackbar = response.data.message;
+                this.snackbarOK = true;
+            } catch (error) {
+                this.mensajeSnackbar = error.response?.data?.message || "Error al registrar el asiento contable";
+                this.snackbarError = true;
+                console.error("Error al registrar el asiento contable:", error);
             }
         },
 
         calcularTotal() {
-            this.totalSalarios = this.datosPlanilla.reduce((total, empleado) => {
-                return total + parseFloat(empleado.sal);
-            }, 0);
+            this.totalSalarios = this.datosPlanilla.reduce((total, empleado) => total + parseFloat(empleado.sal), 0);
         },
 
         seleccionarCuentaContable() {
             const cuentaGastos = this.datosCuentas.find(cuenta => cuenta.tipoc === "Gasto");
-
             if (cuentaGastos) {
-                // Devolver el idCuentaContable si se encuentra una cuenta de ventas
                 return cuentaGastos.idcnt;
             } else {
-                console.error("No se encontró una cuenta de ventas.");
-                // Puedes devolver un valor predeterminado o lanzar un error según tus necesidades
-                return null; // O devuelve un valor predeterminado
+                this.mostrarError("No se encontró una cuenta de gastos.");
+                return null;
             }
         },
 
-        //#region Listar
-        listarCuenta() {
-            this.listarCuentas();
-        },
-
         async listarCuentas() {
-            let me = this;
-            await axios
-                .get("/contabilidad/listarcuentas")
-                .then(function (response) {
-                    console.log("Respuesta del servidor:", response.data);
-                    if (response.data.resultado == null) {
-                        me.datosCuentas = [];
-
-                    } else {
-                        me.datosCuentas = response.data.resultado;
-
-                        /*// Recorrer las cuentas para calcular montoCredito y montoDebito
-                        me.montoCredito = me.datosCuentas.reduce((total, cuenta) => {
-                            if (cuenta.tipoc === "Ingreso") {
-                                return total + parseFloat(cuenta.saldac || 0);
-                            }
-                            return total;
-                        }, 0);
-
-                        me.montoDebito = me.datosCuentas.reduce((total, cuenta) => {
-                            if (cuenta.tipoc === "Gasto") {
-                                return total + parseFloat(cuenta.saldac || 0);
-                            }
-                            return total;
-                        }, 0);
-
-                        console.log("Monto Crédito:", me.montoCredito);
-                        console.log("Monto Débito:", me.montoDebito);*/
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            try {
+                const response = await axios.get("/contabilidad/listarcuentas");
+                this.datosCuentas = response.data.resultado || [];
+            } catch (error) {
+                console.error("Error al listar cuentas:", error);
+                this.mostrarError("Error al listar cuentas");
+            }
         },
-        //#endregion
+
+        mostrarMensaje(mensaje) {
+            this.mensajeSnackbar = mensaje;
+            this.snackbarOK = true;
+        },
+
+        mostrarError(mensaje) {
+            this.mensajeSnackbarError = mensaje;
+            this.snackbarError = true;
+        },
     },
 };
 </script>
