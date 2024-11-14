@@ -209,7 +209,7 @@
                          </v-col>
                      </v-row>
 
-                     <v-row v-if="checkAccess(8, 'SUPERVISOR')">
+                     <v-row v-if="checkAccess(8, 'SUPERVISOR') || checkAccess(8, 'GERENTE')">
                          <v-col cols="12" md="4">
                              <v-btn color="success" @click="showModalAgregarItem()">NUEVO ITEM</v-btn>
                          </v-col>
@@ -255,7 +255,7 @@
                              </v-data-table>
                          </v-col>
                      </v-row>
-                     <v-row v-if="checkAccess(8, 'SUPERVISOR')">
+                     <v-row v-if="checkAccess(8, 'SUPERVISOR') || checkAccess(8, 'GERENTE')">
                          <v-col cols="12" md="4">
                              <v-btn color="success" @click="showModalAgregarTipoItem()">NUEVO TIPO DE ITEM</v-btn>
                          </v-col>
