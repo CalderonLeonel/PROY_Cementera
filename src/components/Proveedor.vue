@@ -1,5 +1,5 @@
 <template>
-   <v-card elevation="5" outlined  v-if="checkAccess(7, 'SUPERVISOR')">
+   <v-card elevation="5" outlined >
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
@@ -522,6 +522,8 @@ export default {
                 }
                 else {
                     this.editarProveedorArchivo(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name);                       
+                    this.almacenarArchivo(this.documentoArchivo)
+                    this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro"+this.idProveedor,"ACTIVO"); 
                     this.botonAct = 0;         
                 } 
             }

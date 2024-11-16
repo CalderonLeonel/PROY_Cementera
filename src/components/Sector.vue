@@ -27,30 +27,37 @@
                                     </v-select>
 
                                 </v-col>
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="actualizarSector()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
-                                        <v-icon dark> mdi-pencil </v-icon>
-                                        ACTUALIZAR
-                                    </v-btn>
-                                    <v-btn iconv v-if="botonAct == 0" class="mx-4" dark color="#0ABF55"
-                                        @click="registrarSector()" style="float: left" title="REGISTRAR ITEM">
-                                        <v-icon dark> mdi-content-save </v-icon>
-                                        GUARDAR
-                                    </v-btn>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonAct == 1" color="#0A62BF"
+                                                @click="actualizarSector()" style="float: left"
+                                                title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonAct == 0" color="#0ABF55"
+                                                @click="registrarSector()" style="float: left"
+                                                title="REGISTRAR SECTOR" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeSector()"
-                                        style="float: right" title="SALIR">
+                                <v-col cols="8">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeSector()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -223,11 +230,11 @@
                         <v-col cols="12">
                             <v-list-item>
                                 <v-list-item-title class="text-center">
-                                    <h5>SECTORES 1</h5>
+                                    <h5>SECTORES</h5>
                                 </v-list-item-title>
                             </v-list-item>
                             <v-col cols="12" md="4">
-                                <v-btn color="success" @click="showAddSector()">+ Nuevo Sector</v-btn>
+                                <v-btn color="success" @click="showAddSector()">Nuevo Sector</v-btn>
                             </v-col>
                             <v-card-title>
                                 <v-text-field v-model="searchSector" append-icon="mdi-magnify" label="BUSCAR SECTORES"
@@ -254,18 +261,18 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
+                                    <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2" color="#0ABF55" @click="activar(item)"
                                         title="ACTIVAR SECTOR">
                                         mdi-check-circle-outline
                                     </v-icon>
-                                    <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
+                                    <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2" color="#BF120A" @click="desactivar(item)"
                                         title="DESACTIVAR SECTOR">
                                         mdi-cancel
                                     </v-icon>
-                                    <v-icon small class="mr-2" @click="showEditSector(item)" title="EDITAR INFORMACION">
+                                    <v-icon large class="mr-2" color="#0A628F" @click="showEditSector(item)" title="EDITAR INFORMACION">
                                         mdi-pencil
                                     </v-icon>
-                                    <v-icon small class="mr-2" @click="showTurno(item)" title="VER TURNOS">
+                                    <v-icon large class="mr-2" color="#0A628F" @click="showTurno(item)" title="VER TURNOS">
                                         mdi-clock-plus
                                     </v-icon>
 
@@ -349,7 +356,7 @@ export default {
         ],
 
         headersSector: [
-            { text: "SECTOR", value: "nom", sortable: false },
+            { text: "SECTOR", value: "sect", sortable: false },
             { text: "DEPARTAMENTO", value: "dep", sortable: false },
             { text: "ESTADO", value: "act", sortable: false },
             { text: "FECHA CREACION", value: "credte", sortable: false },
@@ -403,8 +410,6 @@ export default {
         },
         seleccionarTurno(item) {
             this.idTurno = item.idturn;
-            //this.nombreTurnoLabel = item.pat +" "+item.nom
-            //this.email = item.emal
             this.asignarTurnoASector();
             //this.closeEmpleado();
         },
@@ -488,12 +493,12 @@ export default {
 
         showAddSector() {
             this.botonAct = 0;
-            if (this.datosDepartamento.length == 0) this.listarDepartamentos();
+            if (this.datosDepartamento.length == 0) this.listarDepartamentosActivos();
             this.sectorModal = true;
         },
         showEditSector(item) {
             this.botonAct = 1;
-            if (this.datosDepartamento.length == 0) this.listarDepartamentos();
+            if (this.datosDepartamento.length == 0) this.listarDepartamentosActivos();
             this.llenarCamposSector(item);
             this.sectorModal = true;
         },
@@ -520,7 +525,7 @@ export default {
         },
 
         llenarCamposSector(item) {
-            this.sector = item.nom;
+            this.sector = item.sect;
             this.idDepartamento = item.iddep;
             this.idSector = item.idsect;
         },
@@ -575,10 +580,10 @@ export default {
                     console.log(error);
                 });
         },
-        async listarDepartamentos(idDepartamento) {
+        async listarDepartamentosActivos(idDepartamento) {
             let me = this;
             await axios
-                .get("/departamento/listardepartamentos/")
+                .get("/departamento/listardepartamentosactivos/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
                         me.datosDepartamento = [];

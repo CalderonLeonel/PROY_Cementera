@@ -28,31 +28,37 @@
                                 @input="descripcion = descripcion.toUpperCase()" label="Requerimientos del puesto" required>
                             </v-textarea>
                         </v-col>
-                        <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="actualizarSolicitud()" style="float: left"
-                                            title="ACTUALIZAR INFORMACIÓN">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                            ACTUALIZAR
-                                        </v-btn>
-                                        <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarSolicitud()" style="float: left" title="REGISTRAR ITEM">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                        </v-btn>
-                                </v-col>                      
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonAct == 1" color="#0A62BF"
+                                                @click="actualizarSolicitud()" style="float: left"
+                                                title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonAct == 0" color="#0ABF55"
+                                                @click="registrarSolicitud()" style="float: left"
+                                                title="REGISTRAR SOLICITUD DE PERSONAL" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeSolicitud()" style="float: right" title="SALIR">
+                                        @click="closeSolicitud()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -94,7 +100,7 @@
         </v-dialog>
 
         <v-col cols="12" md="4">
-            <v-btn color="success" @click="showAddSolicitud()">+ Nueva Solicitud</v-btn>
+            <v-btn color="success" @click="showAddSolicitud()">Nueva Solicitud</v-btn>
         </v-col>
         <div>
             <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Solicitudes -->
@@ -141,7 +147,7 @@
                                             title="EDITAR INFORMACION">
                                             mdi-pencil
                                         </v-icon>
-                                        <v-icon v-if="item.act != 'PENDIENTE'" large color="#BF120A" class="mr-2"
+                                        <v-icon v-if="item.act != 'PENDIENTE'" large color="#BF120A" class="mr-2" @click="deleteSolicitudPersonal(item)"
                                             title="ELIMINAR SOLICITUD">
                                             mdi-delete
                                         </v-icon>
@@ -262,6 +268,22 @@ export default {
             let me = this;
             await axios
                 .post("/solicitud/denysolicitud/" + this.idSolicitud).then(function (response) {
+
+                    me.listarSolicitudes();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        },
+        deleteSolicitudPersonal(item) {
+            this.idSolicitud = item.idsoli;
+            this.deletesolicitudpersonal(this.idSolicitud);
+        },
+        async deletesolicitudpersonal(idSolicitud) {
+            let me = this;
+            await axios
+                .post("/solicitud/deletesolicitud/" + this.idSolicitud).then(function (response) {
 
                     me.listarSolicitudes();
                 })

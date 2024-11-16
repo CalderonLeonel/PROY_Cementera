@@ -109,64 +109,42 @@
                                         :rules="sectorRules" required :disabled="idDepartamento==''">
                                     </v-select>
                                 </v-col>
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="actualizarEmpleado()" style="float: left"
-                                        title="ACTUALIZAR INFORMACIÓN">
-                                        <v-icon dark> mdi-pencil </v-icon>
-                                        ACTUALIZAR
-                                    </v-btn>
-                                    <v-btn iconv v-if="botonAct == 0" class="mx-4" dark color="#0ABF55"
-                                        @click="registrarEmpleado()" style="float: left" title="REGISTRAR ITEM">
-                                        <v-icon dark> mdi-content-save </v-icon>
-                                        GUARDAR
-                                    </v-btn>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonAct == 1" color="#0A62BF"
+                                                @click="actualizarEmpleado()" style="float: left"
+                                                title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonAct == 0" color="#0ABF55"
+                                                @click="registrarEmpleado()" style="float: left"
+                                                title="REGISTRAR EMPLEADO" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeEmpleado()"
-                                        style="float: right" title="SALIR">
+                                <v-col cols="8">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeEmpleado()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
                                 </v-col>
                             </v-row>
-
-                            <div class="text-center">
-                                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense
-                                    color="#00FF00" outlined>
-                                    <strong>{{ mensajeSnackbar }}</strong>
-
-
-                                    <template v-slot:action="{ attrs }">
-                                        <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                                            mdi-close
-                                        </v-icon>
-                                    </template>
-                                </v-snackbar>
-                            </div>
-
-                            <div class="text-center">
-
-                                <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense
-                                    color="#EE680B" outlined>
-                                    <strong>{{ mensajeSnackbarError }}</strong>
-
-                                    <template v-slot:action="{ attrs }">
-                                        <v-icon right v-bind="attrs" @click="snackbarError = false">
-                                            mdi-close
-                                        </v-icon>
-                                    </template>
-                                </v-snackbar>
-                            </div>
                         </v-container>
                     </v-form>
 
@@ -185,7 +163,7 @@
                                 </v-list-item-title>
                             </v-list-item>
                             <v-col cols="12" md="4">
-                                <v-btn color="success" @click="showAddEmpleado()">+ Nuevo Empleado</v-btn>
+                                <v-btn color="success" @click="showAddEmpleado()">Nuevo Empleado</v-btn>
                             </v-col>
 
                             <v-card-title>
@@ -302,8 +280,7 @@ export default {
                 "EL NOMBRE DEL EMPLEADO DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
         sexoRules: [
-            (v) => !!v || "ASIGNAR UN SEXO ES REQUERIDO",
-            (v) => (v != undefined),
+             (v) => v !== null && v !== undefined || "ASIGNAR UN SEXO ES REQUERIDO"
         ],
         estadoCivilRules: [
             (v) => !!v || "ASIGNAR UN ESTADO CIVIL ES REQUERIDO",
@@ -408,15 +385,15 @@ export default {
 
         showAddEmpleado() {
             this.botonAct = 0;
-            if (this.datosCargo.length == 0) this.listarCargos();
-            if (this.datosDepartamento.length == 0) this.listarDepartamentos();
+            if (this.datosCargo.length == 0) this.listarCargosActivos();
+            if (this.datosDepartamento.length == 0) this.listarDepartamentosActivos();
             this.listarSectoresDeDepartamento(this.idDepartamento);
             this.empleadoModal = true;
         },
         showEditEmpleado(item) {
             this.botonAct = 1;
-            if (this.datosCargo.length == 0) this.listarCargos();
-            if (this.datosDepartamento.length == 0) this.listarDepartamentos();
+            if (this.datosCargo.length == 0) this.listarCargosActivos();
+            if (this.datosDepartamento.length == 0) this.listarDepartamentosActivos();
             this.listarSectoresDeDepartamento(this.idDepartamento);
             this.llenarCamposEmpleado(item);
             this.empleadoModal = true;
@@ -430,7 +407,7 @@ export default {
         llenarCamposEmpleado(item) {
             this.nombres = item.nom;
             this.paterno = item.pat;
-            this.materno = item.mat;
+            if(item.mat == null){this.materno='';} else {this.materno = item.mat;};
             this.isMale = item.ism;
             this.estadoCivil = item.est
             this.email = item.emal;
@@ -512,10 +489,10 @@ export default {
                     console.log(error);
                 });
         },
-        async listarCargos(idCargo) {
+        async listarCargosActivos(idCargo) {
             let me = this;
             await axios
-                .get("/cargo/listarcargos/")
+                .get("/cargo/listarcargosactivos/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
                         me.datosCargo = [];
@@ -527,10 +504,10 @@ export default {
                     console.log(error);
                 });
         },
-        async listarDepartamentos(idDepartamento) {
+        async listarDepartamentosActivos(idDepartamento) {
             let me = this;
             await axios
-                .get("/departamento/listardepartamentos/")
+                .get("/departamento/listardepartamentosactivos/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
 
@@ -635,28 +612,19 @@ export default {
             let me = this;
             await axios
                 .post(
-                    "/empleado/addempleadosinmaterno/" +
-                    this.nombres +
-                    "," +
-                    this.paterno +
-                    "," +
-                    this.isMale +
-                    "," +
-                    this.estadoCivil +
-                    "," +
-                    this.email +
-                    "," +
-                    this.fechaNacimiento +
-                    "," +
-                    this.ci +
-                    "," +
-                    this.telefono +
-                    "," +
-                    this.idCargo +
-                    "," +
-                    this.idDepartamento +
-                    "," +
-                    this.idSector
+                    "/empleado/addempleadosinmaterno", {
+                    p1: this.nombres,
+                    p2: this.paterno,
+                    p3: this.isMale,
+                    p4: this.estadoCivil,
+                    p5: this.email,
+                    p6: this.fechaNacimiento,
+                    p7: this.ci,
+                    p8: this.telefono,
+                    p9: this.idCargo,
+                    p10: this.idDepartamento,
+                    p11: this.idSector
+                    }
                 )
                 .then(function (response) {
                     me.mensajeSnackbar = response.data.message;

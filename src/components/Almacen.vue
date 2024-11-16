@@ -38,7 +38,7 @@
                 <h3>ALMACENES</h3>
             </v-alert>
         </div>
-        <div>
+        <div v-if="checkAccess(8, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-container>
                     <v-row>
@@ -502,6 +502,16 @@ export default {
         this.getListaExistencias().then(() => {
         this.getAlertas();
         });
+
+        if (this.user != null) {
+             this.user = JSON.parse(sessionStorage.getItem('session'));
+        }
+        if (this.user == null) {
+            if (this.$route.path != '/login') {
+                this.$router.push("/login");
+            }
+        }
+        console.log("UserData: " + JSON.stringify(this.user));
     },
     methods: {
 

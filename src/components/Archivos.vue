@@ -6,13 +6,13 @@
             </v-alert>
         </div>
         <v-container>
-            <v-row v-if="checkAccess(9, 'COMUN') || checkAccess(9, 'SUPERVISOR')">
+            <v-row v-if="checkAccess(9, 'COMUN') || checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
                 <v-col cols="12" md="4">
                     <v-btn color="success" @click="showAgregarDocumento()">GUARDAR DOCUMENTO</v-btn>
                 </v-col>
 
             </v-row>
-            <v-row v-if="checkAccess(9, 'COMUN') || checkAccess(9, 'SUPERVISOR')">
+            <v-row v-if="checkAccess(9, 'COMUN') || checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
 
                 <v-col cols="12" md="12">
                     <v-text-field v-if="user == 'admin'" v-model="searchDocumento" append-icon="mdi-magnify"
@@ -40,7 +40,7 @@
                     </v-data-table>
                 </v-col>
             </v-row>
-            <v-row v-if="checkAccess(9, 'COMUN') || checkAccess(9, 'SUPERVISOR')">
+            <v-row v-if="checkAccess(9, 'COMUN') || checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
                 <v-col cols="12" md="12">
                     <v-text-field v-model="searchArchivo" append-icon="mdi-magnify" label="BUSCAR ARCHIVO" single-line
                         hide-details></v-text-field>
@@ -54,10 +54,10 @@
                     </v-data-table>
                 </v-col>
             </v-row>
-            <v-row v-if="checkAccess(9, 'COMUN') || checkAccess(9, 'SUPERVISOR')">
+            <v-row v-if="checkAccess(9, 'COMUN') || checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
 
                 <v-col cols="12" md="12">
-                    <v-text-field v-if="checkAccess(9, 'COMUN') || checkAccess(9, 'SUPERVISOR')" v-model="searchDocumento" append-icon="mdi-magnify"
+                    <v-text-field v-if="checkAccess(9, 'COMUN') || checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')" v-model="searchDocumento" append-icon="mdi-magnify"
                         label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
                     <v-data-table :headers="headerDocumento" :items="datosDocumento" :search="searchDocumento"
                         :custom-filter="customFilter" class="elevation-1">
@@ -83,7 +83,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col cols="12" md="12" v-if="checkAccess(9, 'SUPERVISOR')">
+                <v-col cols="12" md="12" v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
                     <v-list-item>
                                 <v-list-item-title class="text-center">
                                     <h5>ARCHIVOS COTIZACIONES</h5>
@@ -109,7 +109,7 @@
             </v-row>
 
             <v-row>
-                <v-col cols="12" md="12" v-if="checkAccess(9, 'SUPERVISOR')">
+                <v-col cols="12" md="12" v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
                     <v-list-item>
                                 <v-list-item-title class="text-center">
                                     <h5>ARCHIVOS PROVEEDORES</h5>
@@ -135,7 +135,7 @@
             </v-row>
 
             <v-row>
-                <v-col cols="12" md="12" v-if="checkAccess(9, 'SUPERVISOR')">
+                <v-col cols="12" md="12" v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
                     <v-list-item>
                                 <v-list-item-title class="text-center">
                                     <h5>CONTRATOS</h5>
@@ -161,7 +161,7 @@
             </v-row>
 
             <v-row>
-                <v-col cols="12" md="12" v-if="checkAccess(9, 'SUPERVISOR')">
+                <v-col cols="12" md="12" v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
                     <v-list-item>
                                 <v-list-item-title class="text-center">
                                     <h5>ALERTAS</h5>
@@ -183,7 +183,7 @@
                 </v-col>
             </v-row>
         </v-container>
-        <v-dialog v-model="agregarDocumento" persistent :overlay="false" max-width="1000px" v-if="checkAccess(9, 'COMUN')">
+        <v-dialog v-model="agregarDocumento" persistent :overlay="false" max-width="1000px" v-if="checkAccess(9, 'COMUN') || checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>AÑADIR DOCUMENTO</span>
@@ -373,7 +373,15 @@ export default {
         }
     },
     created: function () {
-  
+        if (this.user != null) {
+             this.user = JSON.parse(sessionStorage.getItem('session'));
+        }
+        if (this.user == null) {
+            if (this.$route.path != '/login') {
+                this.$router.push("/login");
+            }
+        }
+        console.log("UserData: " + JSON.stringify(this.user));
     },
     computed: {
         logueado() {

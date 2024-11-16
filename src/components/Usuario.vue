@@ -1,14 +1,33 @@
 <template>
     <v-card elevation="5" outlined shaped>
-
         <div> <!-- Encabezado -->
             <v-alert dense color="#00A1B1" style="color: #ffffff">
                 <h5>USUARIOS</h5>
             </v-alert>
         </div>
+        <!-- Snackbars-->
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"outlined>
+                <strong>{{ mensajeSnackbar }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+        <div class="text-center">
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
 
         <v-dialog v-model="usuarioModal" max-width="1080px"> <!-- Usuarios Modal-->
-            
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span v-if="botonAct == 0">Nuevo Usuario</span>
@@ -17,100 +36,78 @@
                 <v-card-text>
 
                     <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo Usuario / Editar Usuario -->
-                <v-container>
-                    <v-row>
-                        <v-col cols="12" md="1">
-                            <v-btn class="mx-2" fab dark x-small color="cyan"
-                                    @click="showEmpleado()" style="float: right" title="BUSCAR EMPLEADO">
-                                <v-icon dark> mdi-magnify </v-icon>
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="12" md="11">
-                            <v-text-field v-model="idEmpleado" :label="nombreEmpleadoLabel" type="hidden" disabled required>
-                            </v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="12">
-                            <v-text-field v-model="nombreUsuario" :counter="50" :rules="nombreRules"
-                                @input="nombreUsuario = nombreUsuario.toUpperCase()" label="Nombre de Usuario" disabled required>
-                            </v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="12">
-                                <v-select v-model="tipo" :items="datosTipo" label="Selecciona el tipo de cuenta"
-                                    prepend-icon="mdi-pick" required>
-                                </v-select>
-                        </v-col>
-                        <v-col cols="12" md="1">
-                            <v-btn class="mx-2" fab dark x-small color="cyan"
-                                    @click="showAcceso()" style="float: left" title="SELECCIONAR ACCESOS">
-                                <v-icon dark> mdi-key </v-icon>
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="12" md="11">
-                            <v-select v-model="accesos" item-value="idacc" item-text="idacc" :items="accesos" label="Seleccionar Permisos"
-                                multiple disabled
-                                ></v-select>
-                        </v-col>
-                        
-                        <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="actualizarUsuario()" style="float: left"
-                                            title="ACTUALIZAR INFORMACIÓN">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                            ACTUALIZAR
-                                        </v-btn>
-                                        <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
-                                            @click="registrarUsuario()" style="float: left" title="REGISTRAR ITEM">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                        </v-btn>
-                                </v-col>                      
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan"
+                                            @click="showEmpleado()" style="float: right" title="BUSCAR EMPLEADO">
+                                        <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
-                                <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeUsuario()" style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
+                                <v-col cols="12" md="11">
+                                    <v-text-field v-model="idEmpleado" :label="nombreEmpleadoLabel" type="hidden" disabled required>
+                                    </v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="12">
+                                    <v-text-field v-model="nombreUsuario" :counter="50" :rules="nombreRules"
+                                        @input="nombreUsuario = nombreUsuario.toUpperCase()" label="Nombre de Usuario" disabled required>
+                                    </v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="12">
+                                        <v-select v-model="tipo" :items="datosTipo" label="Selecciona el tipo de cuenta"
+                                            prepend-icon="mdi-pick" required>
+                                        </v-select>
+                                </v-col>
+                                <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan"
+                                            @click="showAcceso()" style="float: left" title="SELECCIONAR ACCESOS">
+                                        <v-icon dark> mdi-key </v-icon>
                                     </v-btn>
                                 </v-col>
-                    </v-row>
+                                <v-col cols="12" md="11">
+                                    <v-select v-model="accesos" item-value="idacc" item-text="idacc" :items="accesos" label="Seleccionar Permisos"
+                                        multiple disabled
+                                        ></v-select>
+                                </v-col>
+                                        <v-col cols="12" sm="4" md="4">
+                                            <v-toolbar dense shaped>
+                                                <v-toolbar-title>
+                                                    <h6>
+                                                        OPCIONES:
+                                                    </h6>
+                                                </v-toolbar-title>
+                                                <v-col cols="2">
+                                                    <v-btn icon v-if="botonAct == 1" color="#0A62BF"
+                                                        @click="actualizarUsuario()" style="float: left"
+                                                        title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                        <v-icon dark> mdi-pencil </v-icon>
+                                                    </v-btn>
+                                                    <v-btn icon v-if="botonAct == 0" color="#0ABF55"
+                                                        @click="registrarUsuario()" style="float: left"
+                                                        title="REGISTRAR USUARIO" class="mx-2" large>
+                                                        <v-icon dark> mdi-content-save </v-icon>
+                                                    </v-btn>
+                                                </v-col>
+                                                <v-col cols="2">
+                                                    <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
+                                                        class="mx-2" title="LIMPIAR FORMULARIO">
+                                                        <v-icon dark> mdi-eraser </v-icon>
+                                                    </v-btn>
+                                                </v-col>
+                                            </v-toolbar>
+                                        </v-col>
+                                        <v-col cols="8">
+                                            <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                                @click="closeUsuario()" style="float: right"
+                                                title="SALIR">
+                                                <v-icon dark> mdi-close-circle-outline </v-icon>
+                                                SALIR
+                                            </v-btn>
+                                        </v-col>
+                            </v-row>
 
-                    <div class="text-center">
-                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
-                            outlined>
-                            <strong>{{ mensajeSnackbar }}</strong>
-
-
-                            <template v-slot:action="{ attrs }">
-                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                                    mdi-close
-                                </v-icon>
-                            </template>
-                        </v-snackbar>
-                    </div>
-
-                    <div class="text-center">
-
-                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
-                            outlined>
-                            <strong>{{ mensajeSnackbarError }}</strong>
-
-                            <template v-slot:action="{ attrs }">
-                                <v-icon right v-bind="attrs" @click="snackbarError = false">
-                                    mdi-close
-                                </v-icon>
-                            </template>
-                        </v-snackbar>
-                    </div>
-                </v-container>
-            </v-form>
+                        </v-container>
+                    </v-form>
 
                 </v-card-text>
             </v-card>
@@ -141,16 +138,16 @@
                                 <v-data-table :headers="headersEmpleado" :items="datosEmpleado" :search="searchEmpleado"
                                     :items-per-page="5" class="elevation-1">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarEmpleado(item)"
+                                        <v-icon large class="mr-2" @click="seleccionarEmpleado(item)" color="#0ABF55"
                                             title="SELECCIONAR EMPLEADO">
                                             mdi-check-circle-outline
                                         </v-icon>
                                         <!--
-                                        <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
+                                        <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2" @click="desactivar(item)"
                                             title="DESACTIVAR EMPLEADO">
                                             mdi-cancel
                                         </v-icon>
-                                        <v-icon small class="mr-2" @click="showEditEmpleado(item)"
+                                        <v-icon large class="mr-2" @click="showEditEmpleado(item)"
                                             title="EDITAR INFORMACION">
                                             mdi-pencil
                                         </v-icon>
@@ -231,68 +228,33 @@
                         </v-col>
                     -->
                         </v-col>
-                        <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <!--
-                                    <v-btn iconv v-if="botonAct == 1" class="mx-4"  dark color="#0A62BF"
-                                            @click="actualizarUsuario()" style="float: left"
-                                            title="ACTUALIZAR INFORMACIÓN">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                                ACTUALIZAR
-                                    </v-btn> -->
-                                    <v-btn iconv v-if="botonAct == 0" class="mx-4"  dark color="#0ABF55"
-                                        @click="closeAcceso()" style="float: left" title="GUARDAR ACCESOS">
-                                        <v-icon dark> mdi-content-save </v-icon>
-                                            GUARDAR
-                                    </v-btn>
-                                </v-col> 
-                                <!--                     
-                                <v-col cols="2">                                        
-                                    <v-btn iconv color="#BF120A" class="mx-4"  dark  @click="limpiar()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                            LIMPIAR
-                                    </v-btn>
-                                </v-col> -->
-                                <v-col cols="2">
+                  
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#0ABF55"
+                                                @click="closeAcceso()" style="float: left"
+                                                title="GUARDAR ACCESOS" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
+                                </v-col>
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeAcceso()" style="float: right" title="SALIR">
+                                        @click="closeAcceso()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
                                 </v-col>
                     </v-row>
 
-
-
-                    <div class="text-center">
-                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
-                            outlined>
-                            <strong>{{ mensajeSnackbar }}</strong>
-
-
-                            <template v-slot:action="{ attrs }">
-                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                                    mdi-close
-                                </v-icon>
-                            </template>
-                        </v-snackbar>
-                    </div>
-
-                    <div class="text-center">
-
-                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
-                            outlined>
-                            <strong>{{ mensajeSnackbarError }}</strong>
-
-                            <template v-slot:action="{ attrs }">
-                                <v-icon right v-bind="attrs" @click="snackbarError = false">
-                                    mdi-close
-                                </v-icon>
-                            </template>
-                        </v-snackbar>
-                    </div>
                 </v-container>
                     </v-form>
 
@@ -300,9 +262,6 @@
             </v-card>
         </v-dialog>
 
-        <v-col cols="12" md="4">
-            <v-btn color="success" @click="showAddUsuario()">+ Nuevo Usuario</v-btn>
-        </v-col>
         <div>
             <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Usuarios -->
                 <v-container>
@@ -314,6 +273,9 @@
                                         <h5>USUARIOS</h5>
                                     </v-list-item-title>
                                 </v-list-item>
+                                <v-col cols="12" md="4">
+                                    <v-btn color="success" @click="showAddUsuario()">Nuevo Usuario</v-btn>
+                                </v-col>
 
                                 <v-card-title>
                                     <v-text-field v-model="searchUsuario" append-icon="mdi-magnify"
@@ -329,11 +291,11 @@
                                     </template>
 
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon v-if="item.act == 'INACTIVO'" small class="mr-2" @click="activar(item)"
+                                        <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2" @click="activar(item)" color="#0ABF55"
                                             title="ACTIVAR USUARIO">
                                             mdi-check-circle-outline
                                         </v-icon>
-                                        <v-icon v-if="item.act == 'ACTIVO'" small class="mr-2" @click="desactivar(item)"
+                                        <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2" @click="desactivar(item)" color="#BF120A"
                                             title="DESACTIVAR USUARIO">
                                             mdi-cancel
                                         </v-icon>
