@@ -256,8 +256,11 @@
                          </v-col>
                      </v-row>
                      <v-row v-if="checkAccess(8, 'SUPERVISOR') || checkAccess(8, 'GERENTE')">
-                         <v-col cols="12" md="4">
-                             <v-btn color="success" @click="showModalAgregarTipoItem()">NUEVO TIPO DE ITEM</v-btn>
+                         <v-col cols="12" md="2">
+                             <v-btn color="success" @click="showModalAgregarTipoItem()">NUEVO TIPO DE ITEM</v-btn>  
+                         </v-col>
+                         <v-col cols="12" md="12">
+                            <v-btn v-if="checkAccess(8, 'SUPERVISOR') || checkAccess(8, 'GERENTE')" color="primary" @click="showModalActivarTipo()">LISTA DE ITEMS DESACTIVADOS</v-btn>
                          </v-col>
                          <v-col cols="12">
                              <v-list-item>
@@ -307,6 +310,64 @@
    
  
          </div>
+
+         <v-dialog v-model="activarTipoItemModal" persistent max-width="800px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>TIPO DE ITEMS INACTIVOS</span><br>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-list-item>
+                                        <v-list-item-title class="text-center">
+                                            <h5>ITEMS</h5>
+                                        </v-list-item-title>
+                                    </v-list-item>
+
+                                    <v-card-title>
+                                        <v-text-field v-model="buscarTipoItem" append-icon="mdi-magnify"
+                                            label="BUSCAR TIPOS DE ITEM" single-line hide-details></v-text-field>
+                                    </v-card-title>
+                                    <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItemInactivos"
+                                        :search="buscarTipoItem" :items-per-page="5" class="elevation-1" id="tableId">
+
+                                        <template #[`item.estado`]="{ item }">
+                                            <v-chip :color="getColor(item.estado)" dark>
+                                                {{ item.estado }}
+                                            </v-chip>
+                                        </template>
+
+
+                                        <template #[`item.actions`]="{ item }">
+                                            <v-icon v-if="item.estado == 'INACTIVO'" color="green" x-large  class="mr-2"
+                                                @click="activar(item)" title="ACTIVAR">
+                                                mdi-check-circle-outline
+                                            </v-icon>
+                                
+            
+                                        </template>
+
+                                    </v-data-table>
+                                </v-col>
+                                <v-col cols="10"></v-col>
+                                <v-col cols="12">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeModalActivarTipo()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
 
          <v-dialog v-model="itemModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
@@ -1300,6 +1361,7 @@
              ],
  
              datosTipoDeItem: [],
+             datosTipoDeItemInactivos: [],
              headerTipoDeItem: [
                  
                  { text: "NOMBRE DE TIPO DE ITEM", value: "nombretipoitem", sortable: true },
@@ -1356,6 +1418,9 @@
              ],
              searchItemAlmacen: "",
              itemAlmacenModal: false,
+
+             activarTipoItemModal:false,
+
  
              buscarInventario: "",
              searchInventario: "",
@@ -1960,6 +2025,26 @@
              });
          },
 
+         listarTipoItemInactivo() {
+             this.listarTipoItemsInactivos();
+         },
+         async listarTipoItemsInactivos() {
+           let me = this;
+           await axios
+             .get("inventario/listartipodeiteminactivo/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datosTipoDeItemInactivos = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datosTipoDeItemInactivos = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
 
          registrarTipo() {
             if (this.$refs.form.validate()) {
@@ -2457,6 +2542,36 @@
             this.botonActTT = 0;
      
         },
+
+        showModalActivarTipo(){
+            this.listarTipoItemInactivo();
+            this.activarTipoItemModal = true;  
+        },
+
+        closeModalActivarTipo(){
+            this.activarTipoItemModal = false;
+        },
+
+        activar(item){
+            this.idTipoItem = item.idtipodeitem;
+            this.activarTipoItem(this.idTipoItem);
+            this.activarTipoItemModal = false;
+        },
+
+        async activarTipoItem(idTipoItem) {
+            let me = this;
+            await axios
+                .post("/inventario/activartipodeitem/" + this.idTipoItem).then(function (response) {
+
+                    me.listarTipoItem();
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        },
+   
 
 
         limpiar () {
