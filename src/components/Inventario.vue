@@ -795,8 +795,8 @@
                                 </v-col>   
                                 <v-col v-if="botonActIt == 0" cols="12" md="4">
                                     <v-select
-                                    label="MEDIDA"  v-model="medida" @input="medida = medida.toUpperCase()" required
-                                    :items="['Litros', 'Kilogramos', 'Mililitros', 'Toneladas', 'Gramos', 'Unidades']" 
+                                    label="MEDIDA"  v-model="medida" @input="medida =medida.toUpperCase()" required
+                                    :items="['LITROS', 'KILOGRAMOS', 'MILILITROS', 'TONELADAS', 'GRAMOS', 'UNIDADES']" 
                                     :rules="[v => !!v || 'La medida es requerida']"
                                     ></v-select>
                                 </v-col>    
