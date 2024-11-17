@@ -2131,10 +2131,13 @@
             await axios
                 .post("/inventario/eliminartipodeitem/" + this.idTipoItem).then(function (response) {
                     me.listarTipoItems();
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
                 })
                 .catch(function (error) {
                     console.log(error);
                     alert('error')
+                    me.snackbarError = true;
                 });
 
         },
@@ -2564,10 +2567,12 @@
                 .post("/inventario/activartipodeitem/" + this.idTipoItem).then(function (response) {
 
                     me.listarTipoItem();
-
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
                 })
                 .catch(function (error) {
                     console.log(error);
+                    me.snackbarError = true;
                 });
 
         },
