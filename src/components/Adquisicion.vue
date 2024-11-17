@@ -1356,10 +1356,13 @@ export default {
                     me.listarCotizacionesAdquisicionPendientes();
                     me.listarCotizacionesItem();
                     me.closeModalAgregarCotizacionAdquisicion();
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
                 })
                 .catch(function (error) {
                     console.log(error);
                     alert('error')
+                    me.snackbarError = true;
                 });
 
         },
