@@ -713,10 +713,13 @@ export default {
             let me = this;
             await axios
                 .post("/almacen/eliminaralmacen/" + this.idAlmacen).then(function (response) {
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
                 })
                 .catch(function (error) {
                     console.log(error);
                     alert('error')
+                    me.snackbarError = true;
                 });
 
         },
