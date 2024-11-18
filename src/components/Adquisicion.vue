@@ -174,7 +174,7 @@
                                     label="BUSCAR COTIZACIONES" single-line hide-details></v-text-field>
                             </v-card-title>
 
-                            <v-data-table :headers="headerCotizacion" :items="datosCotizacion"
+                            <v-data-table :headers="headerCotizacion" :items="datosCotizacionPendientes"
                                 :search="searchCotizacion" :items-per-page="5" class="elevation-1" id="tableId">
 
                                 <template #[`item.fechaVencimiento`]="{ item }">
@@ -731,6 +731,7 @@ export default {
             ],
 
             datosCotizacion: [],
+            datosCotizacionPendientes: [],
             estadoCotizacion: '',
             datosDetalleCotizacion: [],
             detalleCotizacionDialog: false,
@@ -852,6 +853,7 @@ export default {
 
 
             snackbarOK: false,
+            mensajeSnackbar:'',
             snackbarError: false,
             //#endregion
         }
@@ -1039,11 +1041,11 @@ export default {
                 .get("/adquisicion/listarcotizaciondeadquisicionpendiente/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
-                        me.datosCotizacion = [];
+                        me.datosCotizacionPendientes = [];
                         console.log(response.data);
                     } else {
                         console.log(response.data);
-                        me.datosCotizacion = response.data.resultado;
+                        me.datosCotizacionPendientes = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
@@ -1054,7 +1056,7 @@ export default {
         listarCotizacionAdquisicionActiva() {
             this.listarCotizacionesAdquisicionActivas();
         },
-        async listarCotizacionesAdquisicion() {
+        async listarCotizacionesAdquisicionActivas() {
             let me = this;
             await axios
                 .get("/adquisicion/listarcotizaciondeadquisicionactiva/")
@@ -1090,9 +1092,9 @@ export default {
                     if (response.data.resultado == null) {
                         me.datosCotizacionAdquisicion = [];
                         console.log(response.data);
-                    } else {
-                        console.log(response.data);
+                    } else {               
                         me.datosCotizacionAdquisicion = response.data.resultado;
+                        console.log(response.data);
                     }
                 })
                 .catch(function (error) {
@@ -1151,9 +1153,9 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarCotizacionAdquisicion();
-                    me.listarCotizacionAdquisicionPendiente();
-                    me.listarCotizacionItem();
+                    me.listarCotizacionesAdquisicion();
+                    me.listarCotizacionesAdquisicionPendientes();
+                    me.listarCotizacionesItem();
                     me.closeModalAgregarCotizacionAdquisicion();
                     me.limpiar();
                 })
@@ -1197,9 +1199,9 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarCotizacionAdquisicion();
-                    me.listarCotizacionAdquisicionPendiente();
-                    me.listarCotizacionItem();
+                    me.listarCotizacionesAdquisicion();
+                    me.listarCotizacionesAdquisicionPendientes();
+                    me.listarCotizacionesItem();
                     me.closeModalAgregarCotizacionAdquisicion();
                     me.limpiar();
                 })
@@ -1254,9 +1256,9 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarCotizacionAdquisicion();
-                    me.listarCotizacionAdquisicionPendiente();
-                    me.listarCotizacionItem();
+                    me.listarCotizacionesAdquisicion();
+                    me.listarCotizacionesAdquisicionPendientes();
+                    me.listarCotizacionesItem();
                     me.closeModalAgregarCotizacionAdquisicion();
                     me.limpiar();
 
@@ -1513,7 +1515,6 @@ export default {
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
-                    alert('error');
                 });
 
         },
@@ -1527,6 +1528,7 @@ export default {
         },
         anularCotizacionItem() {
             this.desactivarCotizacionItem(this.idCotizacionItem);
+            
             this.listarDetallesCotizacion(this.idCotizacionItem);
         },
         async desactivarCotizacionItem(idCotizacionItem) {
@@ -1758,7 +1760,7 @@ export default {
                 this.nombreCotizacion = item.nombreCotizacion;
                 this.fechaVencimiento = item.fechaVencimiento;
                 this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'ACTIVO');
-                me.mensajeSnackbarError = "REGISTRO FALLIDO";
+                this.limpiar();
             }
           
 
@@ -1770,6 +1772,7 @@ export default {
             this.nombreCotizacion = item.nombreCotizacion;
             this.fechaVencimiento = item.fechaVencimiento;
             this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'INACTIVO');
+            this.limpiar();
         },
 
 
