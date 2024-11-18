@@ -805,7 +805,6 @@ export default {
 
             searchCotizacion: "",
             cotizacionModal: false,
-            datosCotizacion: [],
 
 
 
@@ -858,9 +857,9 @@ export default {
         }
     },
     created: function () {
-        this.listarCotizacionAdquisicionPendiente()
-        this.listarCotizacionAdquisicion()
-        this.listarCotizacionItem()
+        this.listarCotizacionAdquisicion();
+        this.listarCotizacionAdquisicionPendiente();
+        this.listarCotizacionItem();
         this.getListaExistencias().then(() => {
         this.getAlertas();
 
@@ -882,21 +881,7 @@ export default {
             }
             return this.user;
             }
-        }, created: function () {
-
-            if (this.user != null) {
-            this.user = JSON.parse(sessionStorage.getItem('session'));
-            }
-
-
-            //this.user.dispath("autologin");
-            if (this.user == null) {
-            if (this.$route.path != '/login') {
-                this.$router.push("/login");
-            }
-            }
-            console.log("UserData: " + JSON.stringify(this.user));
-        },
+        }, 
     methods: {
 
         getAlertas() {
@@ -1166,9 +1151,9 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarCotizacionesAdquisicion();
-                    me.listarCotizacionesAdquisicionPendientes();
-                    me.listarCotizacionesItem();
+                    me.listarCotizacionAdquisicion();
+                    me.listarCotizacionAdquisicionPendiente();
+                    me.listarCotizacionItem();
                     me.closeModalAgregarCotizacionAdquisicion();
                     me.limpiar();
                 })
@@ -1212,9 +1197,9 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarCotizacionesAdquisicion();
-                    me.listarCotizacionesAdquisicionPendientes();
-                    me.listarCotizacionesItem();
+                    me.listarCotizacionAdquisicion();
+                    me.listarCotizacionAdquisicionPendiente();
+                    me.listarCotizacionItem();
                     me.closeModalAgregarCotizacionAdquisicion();
                     me.limpiar();
                 })
@@ -1269,9 +1254,9 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarCotizacionesAdquisicion();
-                    me.listarCotizacionesAdquisicionPendientes();
-                    me.listarCotizacionesItem();
+                    me.listarCotizacionAdquisicion();
+                    me.listarCotizacionAdquisicionPendiente();
+                    me.listarCotizacionItem();
                     me.closeModalAgregarCotizacionAdquisicion();
                     me.limpiar();
 
