@@ -21,7 +21,12 @@ export default {
                 { text: "ACCIONES", value: "actions", sortable: false }
             ],
 
-         
+            datosDetalleVenta: [],
+            headerDetalleVenta:  [
+                { text: "NOMPRE DE PRODCUTO", value: "nomprod", sortable: true },
+                { text: "CANTIDAD", value: "cant", sortable: true },
+                { text: "PRECIO UNITARIO", value: "precuni", sortable: true },
+            ],
 
         }
     },
@@ -64,7 +69,23 @@ export default {
         },
 
 
-       
+        async listarDetalleVenta(idVenta) {
+            let me = this;
+            await axios
+                .get("/venta/listarventas")
+                .then(function (response) {
+                    console.log("Respuesta del servidor:", response.data);
+                    if (response.data.resultado == null) {
+                        me.datosCuentas = [];
+
+                    } else {
+                        me.datosCuentas = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
 
         checkAccess(accesoCorrecto, tipoCorrecto) {
             if (this.user == null) {
