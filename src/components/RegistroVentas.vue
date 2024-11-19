@@ -10,6 +10,9 @@ import 'jspdf-autotable';
 export default {
     data() {
         return {
+            user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+
+
             datosVenta: [], 
             headerVenta:  [
                 { text: "NÚMERO DE VENTA", value: "idven", sortable: true },
@@ -32,6 +35,15 @@ export default {
     },
     created: function () {
         this.listarVentas();
+
+        if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+        }
+        if (this.user == null) {
+            if (this.$route.path != '/login') {
+            this.$router.push("/login");
+            }
+        }
     },
     computed: {
         logueado() {
