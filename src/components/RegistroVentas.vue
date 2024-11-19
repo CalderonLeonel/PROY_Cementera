@@ -31,7 +31,7 @@ export default {
         }
     },
     created: function () {
-
+        this.listarVentas();
     },
     computed: {
         logueado() {
