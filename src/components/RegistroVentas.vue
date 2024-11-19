@@ -1,5 +1,42 @@
 <template>
 
+<v-card elevation="5" outlined v-if=" checkAccess(2, 'SUPERVISOR' ) || checkAccess(2, 'GERENTE')">
+        <div>
+            <v-alert dense style="color: #ffffff;" color="blue">
+                <h3>REGISTROS DE VENTAS</h3>
+            </v-alert>
+        </div>
+        <v-container>
+            <v-row >
+                <v-col cols="12" md="12" >
+                    <v-text-field v-model="searchVenta" append-icon="mdi-magnify" label="BUSCAR VENTA" single-line
+                        hide-details></v-text-field>
+                    <v-data-table :headers="headerVenta" :items="datosVenta" :search="searchVenta"
+                        :custom-filter="customFilter" class="elevation-1">
+                        <template #[`item.actions`]="{ item }">
+                            <v-btn color="primary" small @click="imprimirFactura(item)">IMPRIMIR FACTURA</v-btn>
+                                            
+                            <v-btn color="secondary" small @click="imprimirRecibo(item)">IMPRIMIR RECIBO</v-btn>
+                        </template>
+                      
+                    </v-data-table>
+                </v-col>
+            </v-row>
+        </v-container>
+       
+
+        <div class="text-center">
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+    </v-card>
+
 </template>
 
 <script>
@@ -20,9 +57,10 @@ export default {
                 { text: "CÓDIGO DE CONTROL", value: "codctrl", sortable: true },
                 { text: "NIT", value: "nit", sortable: true },
                 { text: "RAZÓN SOCIAL", value: "razsoc", sortable: true },
-                { text: "ESTADO", value: "est", sortable: true },
                 { text: "ACCIONES", value: "actions", sortable: false }
             ],
+
+            searchVenta: "",
 
             datosDetalleVenta: [],
             headerDetalleVenta:  [
@@ -30,6 +68,9 @@ export default {
                 { text: "CANTIDAD", value: "cant", sortable: true },
                 { text: "PRECIO UNITARIO", value: "precuni", sortable: true },
             ],
+
+            searchProducto: "",
+
 
         }
     },
@@ -84,7 +125,7 @@ export default {
         async listarDetalleVenta(idVenta) {
             let me = this;
             await axios
-                .get("/venta/listarventas")
+                .get("/venta/listardetalleventa/" + idVenta)
                 .then(function (response) {
                     console.log("Respuesta del servidor:", response.data);
                     if (response.data.resultado == null) {
