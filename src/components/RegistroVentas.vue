@@ -336,16 +336,15 @@ export default {
                 const doc = new jsPDF();
 
                 doc.setFontSize(14);
-                doc.text("RECIBO", 105, 20, { align: "center" });
-                doc.text("Drymix Bolivia SRL.", 105, 40, { align: "center" });
+                doc.text("RECIBO", 105, 10, { align: "center" });
+                doc.text("Drymix Bolivia SRL.", 105, 20, { align: "center" });
                 doc.setFontSize(12);
 
-                doc.text(`Fecha: ${ this.getFormattedDate(item.creadate)}`, 105, 80, { align: "center" });
-                doc.text(`NOMBRE/RAZÓN SOCIAL: ${item.razsoc}`, 105, 100, { align: "center" });
-
-                doc.text(`DETALLE`, 105, 120, { align: "center" })
+                doc.text(`Fecha: ${ this.getFormattedDate(item.creadate)}`, 105, 30, { align: "center" });
+                doc.text(`NOMBRE: ${item.razsoc}`, 105, 40, { align: "center" });
+                doc.text(`DETALLE`, 105, 50, { align: "center" })
                 doc.setFontSize(9);
-                let startY = 130;   
+                let startY = 60;   
                 doc.autoTable({
                     startY: startY, 
                     styles: {
