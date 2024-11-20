@@ -71,7 +71,7 @@ export default {
 
             searchProducto: "",
 
-
+           
         }
     },
     created: function () {
@@ -95,6 +95,110 @@ export default {
             }
         }, 
     methods: {
+
+        getDate() {
+            var fecha = new Date().toISOString();
+            return fecha;
+        },
+
+
+        getFormattedDate(oldDate) {
+            let fecha = new Date(oldDate);
+            let dia = fecha.getDate();
+            let mes = fecha.getMonth() + 1;
+            let anio = fecha.getFullYear();
+            let hora = fecha.getUTCHours();
+            let minutos = fecha.getMinutes();
+            if (dia < 10) dia = '0' + dia;
+            if (mes < 10) mes = '0' + mes;
+
+            let fechaFormateada = dia + '-' + mes + '-' + anio + ' ' + hora + ':' + minutos;
+
+            return fechaFormateada;
+        },
+
+        getFormattedDateTime(oldDate) {
+            let fecha = new Date(oldDate);
+            let dia = fecha.getDate();
+            let mes = fecha.getMonth() + 1;
+            let anio = fecha.getFullYear();
+            let hora = fecha.getUTCHours();
+            let minutos = fecha.getMinutes();
+            if (dia < 10) dia = '0' + dia;
+            if (mes < 10) mes = '0' + mes;
+
+            let fechaFormateada = dia + '_' + mes + '_' + anio + '_' + hora + '_' + minutos;
+
+            return fechaFormateada;
+        },
+
+        numberToLetters(num) {
+            const unidades = ["", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"];
+            const decenas = [
+                "", "diez", "veinte", "treinta", "cuarenta", "cincuenta", 
+                "sesenta", "setenta", "ochenta", "noventa"
+            ];
+            const especiales = [
+                "diez", "once", "doce", "trece", "catorce", "quince", 
+                "dieciséis", "diecisiete", "dieciocho", "diecinueve"
+            ];
+            const centenas = [
+                "", "ciento", "doscientos", "trescientos", "cuatrocientos", 
+                "quinientos", "seiscientos", "setecientos", "ochocientos", "novecientos"
+            ];
+            
+            // Agregar la palabra "mil" al proceso
+            const miles = Math.floor(num / 1000);
+            num = num % 1000;
+
+            let texto = "";
+
+            if (miles > 0) {
+                if (miles === 1) {
+                    texto += "mil ";
+                } else {
+                    texto += numeroALetras(miles) + " mil ";
+                }
+            }
+
+            if (num === 0) return texto.trim();
+            if (num === 100) return texto + "cien";
+
+            // Centenas
+            if (Math.floor(num / 100) > 0) {
+                texto += centenas[Math.floor(num / 100)] + " ";
+                num %= 100;
+            }
+
+            // Decenas
+            if (num >= 10 && num < 20) {
+                texto += especiales[num - 10];
+                return texto.trim();
+            }
+
+            if (Math.floor(num / 10) > 0) {
+                texto += decenas[Math.floor(num / 10)];
+                num %= 10;
+
+                if (num > 0) texto += " y ";
+            }
+
+            // Unidades
+            if (num > 0) {
+                texto += unidades[num];
+            }
+
+            return texto.trim();
+        },
+
+
+        transformToBolivianos(num) {
+            const enteros = Math.floor(num);
+            const decimales = Math.round((num - enteros) * 100);
+            const literalEnteros = this.numberToLetters(enteros);
+            return `${literalEnteros} con ${decimales}/100 bolivianos`.trim();
+        },
+
 
 
 
@@ -140,6 +244,151 @@ export default {
                 });
         },
 
+        async imprimirFactura(item) {
+            try {
+                const response = await axios.get(`/venta/listardetalleventa/` + item.idven);
+                const jsonData = response.data.resultado || [];
+                
+                var total = 0
+                jsonData.forEach(detalle => {
+                total += detalle.precioUnitario * detalle.cantidad;
+                });
+               
+
+                const bodyData = jsonData.map(data => [ 
+                    data.nomprod,
+                    data.cant,
+                    data.precuni
+
+                ]);
+                const doc = new jsPDF();
+
+                doc.setFontSize(14);
+                doc.text("FACTURA", 105, 20, { align: "center" });
+                doc.text("CON DERECHO A CREDITO FISCAL", 105, 30, { align: "center" });
+                doc.text("Drymix Bolivia SRL.", 105, 40, { align: "center" });
+                doc.setFontSize(12);
+                doc.text(`NIT: 8456748562`, 105, 50, { align: "center" });
+                doc.text(`Factura`, 105, 60, { align: "center" });
+                doc.text(`N°: ${item.idven}`, 105, 70, { align: "center" });
+
+                doc.text(`Fecha: ${ this.getFormattedDate(item.creadate)}`, 105, 80, { align: "center" });
+                doc.text(`NIT/CI Cliente: ${item.nit}`, 105, 90, { align: "center" });
+                doc.text(`NOMBRE/RAZÓN SOCIAL: ${item.razsoc}`, 105, 100, { align: "center" });
+
+                doc.text(`DETALLE`, 105, 120, { align: "center" })
+                doc.setFontSize(9);
+                let startY = 130;   
+                doc.autoTable({
+                    startY: startY, 
+                    styles: {
+                        fillColor: [255, 255, 255], // Fondo blanco
+                        textColor: [0, 0, 0],      // Texto negro
+                        lineColor: [0, 0, 0],      // Bordes negros
+                        lineWidth: 0.1             // Grosor del borde
+                    },
+                    headStyles: {
+                        fillColor: [255, 255, 255], // Fondo blanco para encabezado
+                        textColor: [0, 0, 0],       // Texto negro
+                        lineColor: [0, 0, 0],       // Bordes negros
+                        lineWidth: 0.1              // Grosor del borde
+                    },
+                    head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO"]],
+                    body: bodyData
+                });
+                                //doc.autoTable({ head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO",]], body: bodyData, startY: 140 });
+                    //let finalY = doc.previousAutoTable.finalY;
+                    startY += 20;
+                    doc.setFont("helvetica", "bold");
+                    doc.text("Total: "+total.toFixed(2)+" Bs.", 150, 10 + startY)
+                    doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 150, 20 + startY )
+
+
+                    startY += 40;
+                    doc.setFontSize(8);
+                    doc.setFont("helvetica", "normal");
+                    doc.text("ESTA FACTURA CONTRIBUYE AL DESARROLLO DE NUESTRO PAÍS, EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LEY", 105, startY, { align: "center" });
+                    doc.text("Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los servicios que utilices.", 105, startY + 10, { align: "center" });
+
+                    doc.save("factura_"+this.getFormattedDateTime(item.creadate)+".pdf");
+            } catch (error) {
+                console.error(error);
+            }
+            },
+
+        async imprimirRecibo(item) {
+            try {
+                const response = await axios.get(`/venta/listardetalleventa/` + item.idven);
+                const jsonData = response.data.resultado || [];
+                
+                var total = 0
+                jsonData.forEach(detalle => {
+                total += detalle.precioUnitario * detalle.cantidad;
+                });
+               
+
+                const bodyData = jsonData.map(data => [ 
+                    data.nomprod,
+                    data.cant,
+                    data.precuni
+
+                ]);
+                const doc = new jsPDF();
+
+                doc.setFontSize(14);
+                doc.text("FACTURA", 105, 20, { align: "center" });
+                doc.text("CON DERECHO A CREDITO FISCAL", 105, 30, { align: "center" });
+                doc.text("Drymix Bolivia SRL.", 105, 40, { align: "center" });
+                doc.setFontSize(12);
+                doc.text(`NIT: 8456748562`, 105, 50, { align: "center" });
+                doc.text(`Factura`, 105, 60, { align: "center" });
+                doc.text(`N°: ${item.idven}`, 105, 70, { align: "center" });
+
+                doc.text(`Fecha: ${ this.getFormattedDate(item.creadate)}`, 105, 80, { align: "center" });
+                doc.text(`NIT/CI Cliente: ${item.nit}`, 105, 90, { align: "center" });
+                doc.text(`NOMBRE/RAZÓN SOCIAL: ${item.razsoc}`, 105, 100, { align: "center" });
+
+                doc.text(`DETALLE`, 105, 120, { align: "center" })
+                doc.setFontSize(9);
+                let startY = 130;   
+                doc.autoTable({
+                    startY: startY, 
+                    styles: {
+                        fillColor: [255, 255, 255], // Fondo blanco
+                        textColor: [0, 0, 0],      // Texto negro
+                        lineColor: [0, 0, 0],      // Bordes negros
+                        lineWidth: 0.1             // Grosor del borde
+                    },
+                    headStyles: {
+                        fillColor: [255, 255, 255], // Fondo blanco para encabezado
+                        textColor: [0, 0, 0],       // Texto negro
+                        lineColor: [0, 0, 0],       // Bordes negros
+                        lineWidth: 0.1              // Grosor del borde
+                    },
+                    head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO"]],
+                    body: bodyData
+                });
+                                //doc.autoTable({ head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO",]], body: bodyData, startY: 140 });
+                    //let finalY = doc.previousAutoTable.finalY;
+                    startY += 20;
+                    doc.setFont("helvetica", "bold");
+                    doc.text("Total: "+total.toFixed(2)+" Bs.", 150, 10 + startY)
+                    doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 150, 20 + startY )
+
+
+                    startY += 40;
+                    doc.setFontSize(8);
+                    doc.setFont("helvetica", "normal");
+                    doc.text("ESTA FACTURA CONTRIBUYE AL DESARROLLO DE NUESTRO PAÍS, EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LEY", 105, startY, { align: "center" });
+                    doc.text("Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los servicios que utilices.", 105, startY + 10, { align: "center" });
+
+                    doc.save("recibo_"+this.getFormattedDateTime(item.creadate)+".pdf");
+            } catch (error) {
+                console.error(error);
+            }
+            },
+
+
         checkAccess(accesoCorrecto, tipoCorrecto) {
             if (this.user == null) {
                 return false;
@@ -165,8 +414,10 @@ export default {
                 else return false;
             }
 
+            
+
         },
-    }
+            }
 
 }
 </script>
