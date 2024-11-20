@@ -133,18 +133,18 @@ export default {
         },
 
         numberToLetters(num) {
-            const unidades = ["", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"];
+            const unidades = ["", "UNO", "DOS", "TRES", "CUATRO", "CINCO", "SEIS", "SIETE", "OCHO", "NUEVE"];
             const decenas = [
-                "", "diez", "veinte", "treinta", "cuarenta", "cincuenta", 
-                "sesenta", "setenta", "ochenta", "noventa"
+                "", "DIEZ", "VEINTE", "TREINTA", "CUARENTA", "CINCUENTA", 
+                "SESENTA", "SETENTA", "OCHENTA", "NOVENTA"
             ];
             const especiales = [
-                "diez", "once", "doce", "trece", "catorce", "quince", 
-                "dieciséis", "diecisiete", "dieciocho", "diecinueve"
+                "DIEZ", "ONCE", "DOCE", "TRECE", "CATORCE", "QUINCE", 
+                "DIECISÉIS", "DIECISIETE", "DIECIOCHO", "DIECINUEVE"
             ];
             const centenas = [
-                "", "ciento", "doscientos", "trescientos", "cuatrocientos", 
-                "quinientos", "seiscientos", "setecientos", "ochocientos", "novecientos"
+                "", "CIENTO", "DOSCIENTOS", "TRESCIENTOS", "CUATROCIENTOS", 
+                "QUINIENTOS", "SEISCIENTOS", "SETECIENTOS", "OCHOCIENTOS", "NOVECIENTOS"
             ];
             
             // Agregar la palabra "mil" al proceso
@@ -196,7 +196,7 @@ export default {
             const enteros = Math.floor(num);
             const decimales = Math.round((num - enteros) * 100);
             const literalEnteros = this.numberToLetters(enteros);
-            return `${literalEnteros} con ${decimales}/100 bolivianos`.trim();
+            return `${literalEnteros} CON ${decimales}/100 BOLIVIANOS`.trim();
         },
 
 
@@ -251,7 +251,7 @@ export default {
                 
                 var total = 0
                 jsonData.forEach(detalle => {
-                total += detalle.precioUnitario * detalle.cantidad;
+                total += detalle.cant * detalle.precuni;
                 });
                
 
@@ -263,11 +263,11 @@ export default {
                 ]);
                 const doc = new jsPDF();
 
-                doc.setFontSize(14);
+                doc.setFontSize(12);
                 doc.text("FACTURA", 105, 20, { align: "center" });
                 doc.text("CON DERECHO A CREDITO FISCAL", 105, 30, { align: "center" });
                 doc.text("Drymix Bolivia SRL.", 105, 40, { align: "center" });
-                doc.setFontSize(12);
+                doc.setFontSize(11);
                 doc.text(`NIT: 8456748562`, 105, 50, { align: "center" });
                 doc.text(`Factura`, 105, 60, { align: "center" });
                 doc.text(`N°: ${item.idven}`, 105, 70, { align: "center" });
@@ -276,7 +276,7 @@ export default {
                 doc.text(`NIT/CI Cliente: ${item.nit}`, 105, 90, { align: "center" });
                 doc.text(`NOMBRE/RAZÓN SOCIAL: ${item.razsoc}`, 105, 100, { align: "center" });
 
-                doc.text(`DETALLE`, 105, 120, { align: "center" })
+                doc.text(`DETALLE`, 105, 110, { align: "center" })
                 doc.setFontSize(9);
                 let startY = 130;   
                 doc.autoTable({
@@ -300,8 +300,8 @@ export default {
                     //let finalY = doc.previousAutoTable.finalY;
                     startY += 20;
                     doc.setFont("helvetica", "bold");
-                    doc.text("Total: "+total.toFixed(2)+" Bs.", 150, 10 + startY)
-                    doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 150, 20 + startY )
+                    doc.text("Total: "+total.toFixed(2)+" Bs.", 110, 10 + startY)
+                    doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 120, 20 + startY )
 
 
                     startY += 40;
@@ -323,7 +323,7 @@ export default {
                 
                 var total = 0
                 jsonData.forEach(detalle => {
-                total += detalle.precioUnitario * detalle.cantidad;
+                total += detalle.cant * detalle.precuni;
                 });
                
 
@@ -336,16 +336,11 @@ export default {
                 const doc = new jsPDF();
 
                 doc.setFontSize(14);
-                doc.text("FACTURA", 105, 20, { align: "center" });
-                doc.text("CON DERECHO A CREDITO FISCAL", 105, 30, { align: "center" });
+                doc.text("RECIBO", 105, 20, { align: "center" });
                 doc.text("Drymix Bolivia SRL.", 105, 40, { align: "center" });
                 doc.setFontSize(12);
-                doc.text(`NIT: 8456748562`, 105, 50, { align: "center" });
-                doc.text(`Factura`, 105, 60, { align: "center" });
-                doc.text(`N°: ${item.idven}`, 105, 70, { align: "center" });
 
                 doc.text(`Fecha: ${ this.getFormattedDate(item.creadate)}`, 105, 80, { align: "center" });
-                doc.text(`NIT/CI Cliente: ${item.nit}`, 105, 90, { align: "center" });
                 doc.text(`NOMBRE/RAZÓN SOCIAL: ${item.razsoc}`, 105, 100, { align: "center" });
 
                 doc.text(`DETALLE`, 105, 120, { align: "center" })
@@ -372,16 +367,10 @@ export default {
                     //let finalY = doc.previousAutoTable.finalY;
                     startY += 20;
                     doc.setFont("helvetica", "bold");
-                    doc.text("Total: "+total.toFixed(2)+" Bs.", 150, 10 + startY)
-                    doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 150, 20 + startY )
+                    doc.text("Total: "+total.toFixed(2)+" Bs.", 105, 10 + startY)
+                    doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 105, 20 + startY )
 
-
-                    startY += 40;
-                    doc.setFontSize(8);
-                    doc.setFont("helvetica", "normal");
-                    doc.text("ESTA FACTURA CONTRIBUYE AL DESARROLLO DE NUESTRO PAÍS, EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LEY", 105, startY, { align: "center" });
-                    doc.text("Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los servicios que utilices.", 105, startY + 10, { align: "center" });
-
+            
                     doc.save("recibo_"+this.getFormattedDateTime(item.creadate)+".pdf");
             } catch (error) {
                 console.error(error);
