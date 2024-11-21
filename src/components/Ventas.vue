@@ -798,6 +798,81 @@ export default {
                 return null; // O devuelve un valor predeterminado
             }
         },
+
+        async imprimirFactura(item) {
+            try {
+                const response = await axios.get(`/venta/listardetalleventa/` + item.idven);
+                const jsonData = response.data.resultado || [];
+                
+                var total = 0
+                jsonData.forEach(detalle => {
+                total += detalle.cant * detalle.precuni;
+                });
+               
+
+                const bodyData = jsonData.map(data => [ 
+                    data.nomprod,
+                    data.cant,
+                    data.precuni
+
+                ]);
+                const doc = new jsPDF();
+
+                doc.setFontSize(12);
+                doc.text("FACTURA", 105, 20, { align: "center" });
+                doc.text("CON DERECHO A CREDITO FISCAL", 105, 30, { align: "center" });
+                doc.text("Drymix Bolivia SRL.", 105, 40, { align: "center" });
+                doc.setFontSize(11);
+                doc.text(`NIT: 8456748562`, 105, 50, { align: "center" });
+                doc.text(`Factura`, 105, 60, { align: "center" });
+                doc.text(`N°: ${item.idven}`, 105, 70, { align: "center" });
+
+                doc.text(`Fecha: ${ this.getFormattedDate(item.creadate)}`, 105, 80, { align: "center" });
+                doc.text(`NIT/CI Cliente: ${item.nit}`, 105, 90, { align: "center" });
+                doc.text(`NOMBRE/RAZÓN SOCIAL: ${item.razsoc}`, 105, 100, { align: "center" });
+
+                doc.text(`DETALLE`, 105, 110, { align: "center" })
+                doc.setFontSize(9);
+                let startY = 130;   
+                doc.autoTable({
+                    startY: startY, 
+                    styles: {
+                        fillColor: [255, 255, 255], // Fondo blanco
+                        textColor: [0, 0, 0],      // Texto negro
+                        lineColor: [0, 0, 0],      // Bordes negros
+                        lineWidth: 0.1             // Grosor del borde
+                    },
+                    headStyles: {
+                        fillColor: [255, 255, 255], // Fondo blanco para encabezado
+                        textColor: [0, 0, 0],       // Texto negro
+                        lineColor: [0, 0, 0],       // Bordes negros
+                        lineWidth: 0.1              // Grosor del borde
+                    },
+                    head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO"]],
+                    body: bodyData
+                });
+                                //doc.autoTable({ head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO",]], body: bodyData, startY: 140 });
+                    //let finalY = doc.previousAutoTable.finalY;
+                    startY += 20;
+                    doc.setFont("helvetica", "bold");
+                    doc.text("Total: "+total.toFixed(2)+" Bs.", 110, 10 + startY)
+                    doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 120, 20 + startY )
+
+
+                    startY += 40;
+                    doc.setFontSize(8);
+                    doc.setFont("helvetica", "normal");
+                    doc.text("ESTA FACTURA CONTRIBUYE AL DESARROLLO DE NUESTRO PAÍS, EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LEY", 105, startY, { align: "center" });
+                    doc.text("Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los servicios que utilices.", 105, startY + 10, { align: "center" });
+
+                    doc.save("factura_"+this.getFormattedDateTime(item.creadate)+".pdf");
+            } catch (error) {
+                console.error(error);
+            }
+            },
+
+       
+
         //#endregion
     },
 }
