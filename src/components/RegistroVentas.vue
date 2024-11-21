@@ -229,7 +229,7 @@ export default {
         async listarDetalleVenta(idVenta) {
             let me = this;
             await axios
-                .get("/venta/listardetalleventa/" + idVenta)
+                .get("/venta/listardetalle/" + idVenta)
                 .then(function (response) {
                     console.log("Respuesta del servidor:", response.data);
                     if (response.data.resultado == null) {
@@ -246,7 +246,7 @@ export default {
 
         async imprimirFactura(item) {
             try {
-                const response = await axios.get(`/venta/listardetalleventa/` + item.idven);
+                const response = await axios.get(`/venta/listardetalle/` + item.idven);
                 const jsonData = response.data.resultado || [];
                 
                 var total = 0
@@ -318,7 +318,7 @@ export default {
 
         async imprimirRecibo(item) {
             try {
-                const response = await axios.get(`/venta/listardetalleventa/` + item.idven);
+                const response = await axios.get(`/venta/listardetalle/` + item.idven);
                 const jsonData = response.data.resultado || [];
                 
                 var total = 0
