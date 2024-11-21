@@ -871,7 +871,65 @@ export default {
             }
             },
 
-       
+            async imprimirRecibo(item) {
+            try {
+                const response = await axios.get(`/venta/listardetalleventa/` + item.idven);
+                const jsonData = response.data.resultado || [];
+                
+                var total = 0
+                jsonData.forEach(detalle => {
+                total += detalle.cant * detalle.precuni;
+                });
+               
+
+                const bodyData = jsonData.map(data => [ 
+                    data.nomprod,
+                    data.cant,
+                    data.precuni
+
+                ]);
+                const doc = new jsPDF();
+
+                doc.setFontSize(14);
+                doc.text("RECIBO", 105, 10, { align: "center" });
+                doc.text("Drymix Bolivia SRL.", 105, 20, { align: "center" });
+                doc.setFontSize(12);
+
+                doc.text(`Fecha: ${ this.getFormattedDate(item.creadate)}`, 105, 30, { align: "center" });
+                doc.text(`NOMBRE: ${item.razsoc}`, 105, 40, { align: "center" });
+                doc.text(`DETALLE`, 105, 50, { align: "center" })
+                doc.setFontSize(9);
+                let startY = 60;   
+                doc.autoTable({
+                    startY: startY, 
+                    styles: {
+                        fillColor: [255, 255, 255], // Fondo blanco
+                        textColor: [0, 0, 0],      // Texto negro
+                        lineColor: [0, 0, 0],      // Bordes negros
+                        lineWidth: 0.1             // Grosor del borde
+                    },
+                    headStyles: {
+                        fillColor: [255, 255, 255], // Fondo blanco para encabezado
+                        textColor: [0, 0, 0],       // Texto negro
+                        lineColor: [0, 0, 0],       // Bordes negros
+                        lineWidth: 0.1              // Grosor del borde
+                    },
+                    head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO"]],
+                    body: bodyData
+                });
+                                //doc.autoTable({ head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO",]], body: bodyData, startY: 140 });
+                    //let finalY = doc.previousAutoTable.finalY;
+                    startY += 20;
+                    doc.setFont("helvetica", "bold");
+                    doc.text("Total: "+total.toFixed(2)+" Bs.", 105, 10 + startY)
+                    doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 105, 20 + startY )
+
+            
+                    doc.save("recibo_"+this.getFormattedDateTime(item.creadate)+".pdf");
+            } catch (error) {
+                console.error(error);
+            }
+            },
 
         //#endregion
     },
