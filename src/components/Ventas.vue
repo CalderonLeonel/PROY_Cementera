@@ -186,7 +186,7 @@
                                         OPCIONES
                                     </h6>
                                 </v-toolbar-title>
-                                <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="registrarVenta()"
+                                <v-btn class="mx-2" fab dark x-small color="#EE680B" @click=" imprimir()"
                                     style="float: left" title="REGISTRAR VENTA">
                                     <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                 </v-btn>
@@ -328,6 +328,7 @@ export default {
 
             //#region Ultima Venta
             idUltimaVenta: "",
+            fechaVenta: "",
             datosUltimaVenta: [],
             //#endregion
 
@@ -420,9 +421,7 @@ export default {
             return numeroReferencia;
         },
 
-        generarFactura(item) {
-
-        },
+    
         //#region Listados
         listarCliente() {
             this.listarClientes()
@@ -530,6 +529,16 @@ export default {
         },
         //#endregion
         //#region Registros
+        imprimir(){
+         
+            
+            this.recuperarUltimaVenta();
+            console.log(this.datosUltimaVenta)
+            this.idUltimaVenta = this.datosUltimaVenta.idven; 
+            console.log(this.idUltimaVenta)
+            this.imprimirFactura(this.idUltimaVenta);
+        },
+
         calcularTotalVenta() {
             return this.datosCarrito.reduce((total, producto) => total + producto.total, 0);
         },
@@ -566,6 +575,12 @@ export default {
                         me.registrarVentasCarrito();
                         //Registrar asiento contable
                         me.registrarAsientosContables();
+           
+                        this.idUltimaVenta = this.datosUltimaVenta.idven; 
+                        this.fechaVenta = this.datosUltimaVenta.creadate; 
+                        me.imprimirFactura(totalVenta, codigoControl, nit, razonSocial, idUltimaVenta, fechaVenta);
+                        
+                        me.imprimirRecibo(totalVenta, codigoControl, nit, razonSocial, idUltimaVenta, fechaVenta);
                         //Limpiamos el formulario
                         me.resetVenta();
                     })
@@ -799,9 +814,9 @@ export default {
             }
         },
 
-        async imprimirFactura(item) {
+        async imprimirFactura(totalVenta, codigoControl, nit, razonSocial, idventa, fechaVenta) {
             try {
-                const response = await axios.get(`/venta/listardetalleventa/` + item.idven);
+                const response = await axios.get(`/venta/listardetalle/` + idventa);
                 const jsonData = response.data.resultado || [];
                 
                 var total = 0
@@ -827,9 +842,9 @@ export default {
                 doc.text(`Factura`, 105, 60, { align: "center" });
                 doc.text(`N°: ${item.idven}`, 105, 70, { align: "center" });
 
-                doc.text(`Fecha: ${ this.getFormattedDate(item.creadate)}`, 105, 80, { align: "center" });
-                doc.text(`NIT/CI Cliente: ${item.nit}`, 105, 90, { align: "center" });
-                doc.text(`NOMBRE/RAZÓN SOCIAL: ${item.razsoc}`, 105, 100, { align: "center" });
+                doc.text(`Fecha: ${ this.getFormattedDate(fechaVenta)}`, 105, 80, { align: "center" });
+                doc.text(`NIT/CI Cliente: ${nit}`, 105, 90, { align: "center" });
+                doc.text(`NOMBRE/RAZÓN SOCIAL: ${razonSocial}`, 105, 100, { align: "center" });
 
                 doc.text(`DETALLE`, 105, 110, { align: "center" })
                 doc.setFontSize(9);
@@ -871,9 +886,9 @@ export default {
             }
             },
 
-            async imprimirRecibo(item) {
+            async imprimirRecibo(totalVenta, codigoControl, nit, razonSocial, idventa, fechaVenta) {
             try {
-                const response = await axios.get(`/venta/listardetalleventa/` + item.idven);
+                const response = await axios.get(`/venta/listardetalle/` + idventa);
                 const jsonData = response.data.resultado || [];
                 
                 var total = 0
@@ -895,7 +910,7 @@ export default {
                 doc.text("Drymix Bolivia SRL.", 105, 20, { align: "center" });
                 doc.setFontSize(12);
 
-                doc.text(`Fecha: ${ this.getFormattedDate(item.creadate)}`, 105, 30, { align: "center" });
+                doc.text(`Fecha: ${ this.getFormattedDate(fechaVenta)}`, 105, 30, { align: "center" });
                 doc.text(`NOMBRE: ${item.razsoc}`, 105, 40, { align: "center" });
                 doc.text(`DETALLE`, 105, 50, { align: "center" })
                 doc.setFontSize(9);
