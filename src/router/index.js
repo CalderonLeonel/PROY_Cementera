@@ -7,7 +7,7 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: require(/* webpackChunkName: "about" */ "../views/Home.vue")
+    component: require(/* webpackChunkName: "about" */ "../components/Home.vue")
       .default,
     //component: Login
   },
@@ -87,9 +87,9 @@ const routes = [
     component: require("../components/MateriasPrimas.vue").default,
   },
   {
-    path: "/departamento",
+    path: "/departamentos",
     name: "Departamentos",
-    component: require("../components/Departamentos.vue").default,
+    component: require("../components/Departamento.vue").default,
   },
   {
     path: "/cargos",
@@ -122,9 +122,9 @@ const routes = [
     component: require("../components/Area.vue").default,
   },
   {
-    path: "/departamentos",
-    name: "Departamentos",
-    component: require("../components/Departamento.vue").default,
+    path: "/departamento",
+    name: "Departamento",
+    component: require("../components/Departamentos.vue").default,
   },
   {
     path: "/solicitudes",
