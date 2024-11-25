@@ -1,7 +1,6 @@
 <template>
     <div> <!--one-->
         <!--<v-btn dark color="#00A1B1" @click.stop="showScheduleForm=true">Mostrar Areas</v-btn> --> <!--one -->
-        <ScheduleForm v-model="showScheduleForm" /> <!--one-->
         <v-card elevation="5" outlined shaped>
 
             <div> <!-- Encabezado -->
@@ -204,6 +203,7 @@
 
 
         </v-card>
+        <ScheduleForm v-model="showScheduleForm" /> <!--one-->
     </div> <!--one-->
 </template>
 <script>

@@ -1,6 +1,6 @@
 <template>
 
-<v-card elevation="5" outlined v-if=" checkAccess(2, 'SUPERVISOR' ) || checkAccess(2, 'GERENTE')">
+<v-card elevation="5" outlined v-if=" checkAccess(3, 'SUPERVISOR' ) || checkAccess(3, 'GERENTE')">
         <div>
             <v-alert dense style="color: #ffffff;" color="blue">
                 <h3>REGISTROS DE VENTAS</h3>
