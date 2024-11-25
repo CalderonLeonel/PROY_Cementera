@@ -328,6 +328,7 @@ export default {
 
             //#region Ultima Venta
             idUltimaVenta: "",
+            fechaVenta: "",
             datosUltimaVenta: [],
             //#endregion
 
@@ -445,10 +446,10 @@ export default {
                 const response = await axios.get("/contabilidad/listarcuentas");
                 this.datosCuentas = response.data.resultado || [];
 
-                this.montoCredito = this.datosCuentas.reduce((total, cuenta) => 
+                this.montoCredito = this.datosCuentas.reduce((total, cuenta) =>
                     cuenta.tipoc === "Ingreso" ? total + parseFloat(cuenta.saldac || 0) : total, 0);
 
-                this.montoDebito = this.datosCuentas.reduce((total, cuenta) => 
+                this.montoDebito = this.datosCuentas.reduce((total, cuenta) =>
                     cuenta.tipoc === "Gasto" ? total + parseFloat(cuenta.saldac || 0) : total, 0);
 
                 console.log("Monto Crédito:", this.montoCredito);
@@ -457,6 +458,94 @@ export default {
                 console.error("Error al listar cuentas:", error);
             }
         },
+        //#endregion
+        //#region Registros
+
+
+        numberToLetters(num) {
+            const unidades = ["", "UNO", "DOS", "TRES", "CUATRO", "CINCO", "SEIS", "SIETE", "OCHO", "NUEVE"];
+            const decenas = [
+                "", "DIEZ", "VEINTE", "TREINTA", "CUARENTA", "CINCUENTA",
+                "SESENTA", "SETENTA", "OCHENTA", "NOVENTA"
+            ];
+            const especiales = [
+                "DIEZ", "ONCE", "DOCE", "TRECE", "CATORCE", "QUINCE",
+                "DIECISÉIS", "DIECISIETE", "DIECIOCHO", "DIECINUEVE"
+            ];
+            const centenas = [
+                "", "CIENTO", "DOSCIENTOS", "TRESCIENTOS", "CUATROCIENTOS",
+                "QUINIENTOS", "SEISCIENTOS", "SETECIENTOS", "OCHOCIENTOS", "NOVECIENTOS"
+            ];
+
+            // Agregar la palabra "mil" al proceso
+            const miles = Math.floor(num / 1000);
+            num = num % 1000;
+
+            let texto = "";
+
+            if (miles > 0) {
+                if (miles === 1) {
+                    texto += "mil ";
+                } else {
+                    texto += numeroALetras(miles) + " mil ";
+                }
+            }
+
+            if (num === 0) return texto.trim();
+            if (num === 100) return texto + "cien";
+
+            // Centenas
+            if (Math.floor(num / 100) > 0) {
+                texto += centenas[Math.floor(num / 100)] + " ";
+                num %= 100;
+            }
+
+            // Decenas
+            if (num >= 10 && num < 20) {
+                texto += especiales[num - 10];
+                return texto.trim();
+            }
+
+            if (Math.floor(num / 10) > 0) {
+                texto += decenas[Math.floor(num / 10)];
+                num %= 10;
+
+                if (num > 0) texto += " y ";
+            }
+
+            // Unidades
+            if (num > 0) {
+                texto += unidades[num];
+            }
+
+            return texto.trim();
+        },
+
+
+        transformToBolivianos(num) {
+            const enteros = Math.floor(num);
+            const decimales = Math.round((num - enteros) * 100);
+            const literalEnteros = this.numberToLetters(enteros);
+            return `${literalEnteros} CON ${decimales}/100 BOLIVIANOS`.trim();
+        },
+
+        getFormattedDateTime(oldDate) {
+            let fecha = new Date(oldDate);
+            let dia = fecha.getDate();
+            let mes = fecha.getMonth() + 1;
+            let anio = fecha.getFullYear();
+            let hora = fecha.getUTCHours();
+            let minutos = fecha.getMinutes();
+            if (dia < 10) dia = '0' + dia;
+            if (mes < 10) mes = '0' + mes;
+
+            let fechaFormateada = dia + '_' + mes + '_' + anio + '_' + hora + '_' + minutos;
+
+            return fechaFormateada;
+        },
+
+
+
 
         calcularTotalVenta() {
             return this.datosCarrito.reduce((total, producto) => total + producto.total, 0);
@@ -478,12 +567,31 @@ export default {
                     this.mensajeSnackbar = response.data.message || "Venta registrada exitosamente";
                     this.snackbarOK = true;
                     this.snackbarError = false;
+                    // Recuperar la última venta
+                    me.recuperarUltimaVenta().then(() => {
+                        this.datosUltimaVenta.forEach((venta, index) => {
+                            console.log(`Venta ${index + 1}:`);
+                            this.idUltimaVenta = venta.idven;
+                            this.fechaVenta = venta.creadate;
+                        });
+                        me.imprimirFactura(nit, razonSocial, me.idUltimaVenta, me.fechaVenta);
+
+                        me.imprimirRecibo(razonSocial, me.idUltimaVenta, me.fechaVenta);
+                    });
+                    // Registrar productos del carrito
+                    me.registrarVentasCarrito();
+                    //Registrar asiento contable
+                    me.registrarAsientosContables();
 
                     await this.recuperarUltimaVenta();
                     await this.registrarVentasCarrito();
                     await this.registrarAsientosContables();
-                    
+
                     this.resetVenta();
+                    //Limpiamos el formulario
+                    me.resetVenta();
+
+
                 } else {
                     throw new Error(response.data.message || "Error desconocido al registrar la venta");
                 }
@@ -652,6 +760,159 @@ export default {
                 return null;
             }
         },
+
+        async imprimirFactura(nit, razonSocial, idventa, fechaVenta) {
+            try {
+                const response = await axios.get("/venta/listardetalle/" + idventa);
+                const jsonData = response.data.resultado || [];
+
+                var total = 0
+                jsonData.forEach(detalle => {
+                    total += detalle.cant * detalle.precuni;
+                });
+
+
+                const bodyData = jsonData.map(data => [
+                    data.nomprod,
+                    data.cant,
+                    data.precuni
+
+                ]);
+                const doc = new jsPDF();
+
+                doc.setFontSize(12);
+                doc.text("FACTURA", 105, 20, { align: "center" });
+                doc.text("CON DERECHO A CREDITO FISCAL", 105, 30, { align: "center" });
+                doc.text("Drymix Bolivia SRL.", 105, 40, { align: "center" });
+                doc.setFontSize(11);
+                doc.text(`NIT: 8456748562`, 105, 50, { align: "center" });
+                doc.text(`Factura`, 105, 60, { align: "center" });
+                doc.text(`N°: ${idventa}`, 105, 70, { align: "center" });
+
+                doc.text(`Fecha: ${this.getFormattedDate(fechaVenta)}`, 105, 80, { align: "center" });
+                doc.text(`NIT/CI Cliente: ${nit}`, 105, 90, { align: "center" });
+                doc.text(`NOMBRE/RAZÓN SOCIAL: ${razonSocial}`, 105, 100, { align: "center" });
+
+                doc.text(`DETALLE`, 105, 110, { align: "center" })
+                doc.setFontSize(9);
+                let startY = 130;
+                doc.autoTable({
+                    startY: startY,
+                    styles: {
+                        fillColor: [255, 255, 255], // Fondo blanco
+                        textColor: [0, 0, 0],      // Texto negro
+                        lineColor: [0, 0, 0],      // Bordes negros
+                        lineWidth: 0.1             // Grosor del borde
+                    },
+                    headStyles: {
+                        fillColor: [255, 255, 255], // Fondo blanco para encabezado
+                        textColor: [0, 0, 0],       // Texto negro
+                        lineColor: [0, 0, 0],       // Bordes negros
+                        lineWidth: 0.1              // Grosor del borde
+                    },
+                    head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO"]],
+                    body: bodyData
+                });
+                //doc.autoTable({ head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO",]], body: bodyData, startY: 140 });
+                //let finalY = doc.previousAutoTable.finalY;
+                startY += 20;
+                doc.setFont("helvetica", "bold");
+                doc.text("Total: " + total.toFixed(2) + " Bs.", 110, 10 + startY)
+                doc.text("Son: " + this.transformToBolivianos(total.toFixed(2)), 120, 20 + startY)
+
+
+                startY += 40;
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "normal");
+                doc.text("ESTA FACTURA CONTRIBUYE AL DESARROLLO DE NUESTRO PAÍS, EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LEY", 105, startY, { align: "center" });
+                doc.text("Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los servicios que utilices.", 105, startY + 10, { align: "center" });
+
+                doc.save("factura_" + this.getFormattedDateTime(fechaVenta) + ".pdf");
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        async imprimirRecibo(razonSocial, idventa, fechaVenta) {
+            try {
+                const response = await axios.get("/venta/listardetalle/" + idventa);
+                const jsonData = response.data.resultado || [];
+
+                var total = 0
+                jsonData.forEach(detalle => {
+                    total += detalle.cant * detalle.precuni;
+                });
+
+
+                const bodyData = jsonData.map(data => [
+                    data.nomprod,
+                    data.cant,
+                    data.precuni
+
+                ]);
+                const doc = new jsPDF();
+
+                doc.setFontSize(14);
+                doc.text("RECIBO", 105, 10, { align: "center" });
+                doc.text("Drymix Bolivia SRL.", 105, 20, { align: "center" });
+                doc.setFontSize(12);
+
+                doc.text(`Fecha: ${this.getFormattedDate(fechaVenta)}`, 105, 30, { align: "center" });
+                doc.text(`NOMBRE: ${razonSocial}`, 105, 40, { align: "center" });
+                doc.text(`DETALLE`, 105, 50, { align: "center" })
+                doc.setFontSize(9);
+                let startY = 60;
+                doc.autoTable({
+                    startY: startY,
+                    styles: {
+                        fillColor: [255, 255, 255], // Fondo blanco
+                        textColor: [0, 0, 0],      // Texto negro
+                        lineColor: [0, 0, 0],      // Bordes negros
+                        lineWidth: 0.1             // Grosor del borde
+                    },
+                    headStyles: {
+                        fillColor: [255, 255, 255], // Fondo blanco para encabezado
+                        textColor: [0, 0, 0],       // Texto negro
+                        lineColor: [0, 0, 0],       // Bordes negros
+                        lineWidth: 0.1              // Grosor del borde
+                    },
+                    head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO"]],
+                    body: bodyData
+                });
+                //doc.autoTable({ head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO",]], body: bodyData, startY: 140 });
+                //let finalY = doc.previousAutoTable.finalY;
+                startY += 20;
+                doc.setFont("helvetica", "bold");
+                doc.text("Total: " + total.toFixed(2) + " Bs.", 105, 10 + startY)
+                doc.text("Son: " + this.transformToBolivianos(total.toFixed(2)), 105, 20 + startY)
+
+
+                doc.save("recibo_" + this.getFormattedDateTime(fechaVenta) + ".pdf");
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        getDate() {
+            var fecha = new Date().toISOString();
+            return fecha;
+        },
+
+
+        getFormattedDate(oldDate) {
+            let fecha = new Date(oldDate);
+            let dia = fecha.getDate();
+            let mes = fecha.getMonth() + 1;
+            let anio = fecha.getFullYear();
+            if (dia < 10) dia = '0' + dia;
+            if (mes < 10) mes = '0' + mes;
+
+            let fechaFormateada = dia + '-' + mes + '-' + anio;
+
+            return fechaFormateada;
+        },
+
+        //#endregion
     },
 }
 </script>

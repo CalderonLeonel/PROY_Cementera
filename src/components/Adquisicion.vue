@@ -174,7 +174,7 @@
                                     label="BUSCAR COTIZACIONES" single-line hide-details></v-text-field>
                             </v-card-title>
 
-                            <v-data-table :headers="headerCotizacion" :items="datosCotizacion"
+                            <v-data-table :headers="headerCotizacion" :items="datosCotizacionPendientes"
                                 :search="searchCotizacion" :items-per-page="5" class="elevation-1" id="tableId">
 
                                 <template #[`item.fechaVencimiento`]="{ item }">
@@ -192,7 +192,7 @@
                                         NO TIENE UN ARCHIVO
                                     </v-text>
                                     <v-btn v-else-if="item.archivo !=null" color="primary" icon
-                                        :href="`${axios.defaults.baseURL}${'documento/adquisicion/' + item.archivo}`" target="">
+                                        :href="`${axios.defaults.baseURL}${'documento/descargar/' + item.archivo}`" target="">
                                         <v-icon>mdi-file</v-icon> ABRIR
                                     </v-btn>
                                 </template>
@@ -731,6 +731,7 @@ export default {
             ],
 
             datosCotizacion: [],
+            datosCotizacionPendientes: [],
             estadoCotizacion: '',
             datosDetalleCotizacion: [],
             detalleCotizacionDialog: false,
@@ -805,7 +806,6 @@ export default {
 
             searchCotizacion: "",
             cotizacionModal: false,
-            datosCotizacion: [],
 
 
 
@@ -853,14 +853,15 @@ export default {
 
 
             snackbarOK: false,
+            mensajeSnackbar:'',
             snackbarError: false,
             //#endregion
         }
     },
     created: function () {
-        this.listarCotizacionAdquisicionPendiente()
-        this.listarCotizacionAdquisicion()
-        this.listarCotizacionItem()
+        this.listarCotizacionAdquisicion();
+        this.listarCotizacionAdquisicionPendiente();
+        this.listarCotizacionItem();
         this.getListaExistencias().then(() => {
         this.getAlertas();
 
@@ -882,21 +883,7 @@ export default {
             }
             return this.user;
             }
-        }, created: function () {
-
-            if (this.user != null) {
-            this.user = JSON.parse(sessionStorage.getItem('session'));
-            }
-
-
-            //this.user.dispath("autologin");
-            if (this.user == null) {
-            if (this.$route.path != '/login') {
-                this.$router.push("/login");
-            }
-            }
-            console.log("UserData: " + JSON.stringify(this.user));
-        },
+        }, 
     methods: {
 
         getAlertas() {
@@ -1054,11 +1041,11 @@ export default {
                 .get("/adquisicion/listarcotizaciondeadquisicionpendiente/")
                 .then(function (response) {
                     if (response.data.resultado == null) {
-                        me.datosCotizacion = [];
+                        me.datosCotizacionPendientes = [];
                         console.log(response.data);
                     } else {
                         console.log(response.data);
-                        me.datosCotizacion = response.data.resultado;
+                        me.datosCotizacionPendientes = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
@@ -1069,7 +1056,7 @@ export default {
         listarCotizacionAdquisicionActiva() {
             this.listarCotizacionesAdquisicionActivas();
         },
-        async listarCotizacionesAdquisicion() {
+        async listarCotizacionesAdquisicionActivas() {
             let me = this;
             await axios
                 .get("/adquisicion/listarcotizaciondeadquisicionactiva/")
@@ -1105,9 +1092,9 @@ export default {
                     if (response.data.resultado == null) {
                         me.datosCotizacionAdquisicion = [];
                         console.log(response.data);
-                    } else {
-                        console.log(response.data);
+                    } else {               
                         me.datosCotizacionAdquisicion = response.data.resultado;
+                        console.log(response.data);
                     }
                 })
                 .catch(function (error) {
@@ -1356,10 +1343,13 @@ export default {
                     me.listarCotizacionesAdquisicionPendientes();
                     me.listarCotizacionesItem();
                     me.closeModalAgregarCotizacionAdquisicion();
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
                 })
                 .catch(function (error) {
                     console.log(error);
                     alert('error')
+                    me.snackbarError = true;
                 });
 
         },
@@ -1525,7 +1515,6 @@ export default {
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
-                    alert('error');
                 });
 
         },
@@ -1539,6 +1528,7 @@ export default {
         },
         anularCotizacionItem() {
             this.desactivarCotizacionItem(this.idCotizacionItem);
+            
             this.listarDetallesCotizacion(this.idCotizacionItem);
         },
         async desactivarCotizacionItem(idCotizacionItem) {
@@ -1770,7 +1760,7 @@ export default {
                 this.nombreCotizacion = item.nombreCotizacion;
                 this.fechaVencimiento = item.fechaVencimiento;
                 this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'ACTIVO');
-                me.mensajeSnackbarError = "REGISTRO FALLIDO";
+                this.limpiar();
             }
           
 
@@ -1782,6 +1772,7 @@ export default {
             this.nombreCotizacion = item.nombreCotizacion;
             this.fechaVencimiento = item.fechaVencimiento;
             this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'INACTIVO');
+            this.limpiar();
         },
 
 

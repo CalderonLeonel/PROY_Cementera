@@ -629,12 +629,14 @@ export default {
             let me = this;
             await axios
                 .post("/proveedor/anular/" + this.idProveedor).then(function (response) {
-
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
                     me.listarProveedores();
                 })
                 .catch(function (error) {
                     console.log(error);
                     alert('error')
+                    me.snackbarError = true;
                 });
 
         },

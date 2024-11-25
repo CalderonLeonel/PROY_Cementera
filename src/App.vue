@@ -135,6 +135,11 @@
               <h6>VENTAS</h6>
             </v-list-item-title>
           </v-list-item>
+          <v-list-item :to="{ name: 'RegistroVentas' }">
+            <v-list-item-title>
+              <h6>REGISTRO DE VENTAS</h6>
+            </v-list-item-title>
+          </v-list-item>
         </v-list-group>
 
         <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(3, '0') || checkAccess(3, 'GERENTE')">
