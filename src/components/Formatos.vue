@@ -104,7 +104,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="editFormatoModal" max-width="700px">
+        <v-dialog v-model="editFormatoModal" max-width="800px" persistent>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>EDITAR FORMATO</span>
@@ -156,7 +156,7 @@
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeAgregarFormato()" style="float: right" title="SALIR">
+                                        @click="closeEditFormatoModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -233,7 +233,7 @@
 
 
         <div>
-            <v-alert dense color="cyan">
+            <v-alert dense color="cyan" style="color: #ffffff">
                 <h5>FORMATOS</h5>
             </v-alert>
         </div>
@@ -715,6 +715,9 @@ export default {
             this.idFormato = item.idforma;
             this.nombreFormato = item.nomforma;
             this.codigoFormato = item.codforma;
+        },
+        closeEditFormatoModal(){
+            this.editFormatoModal = false;
         },
         showFormatosInhabilitados() {
             this.formatosInhabilitadosModal = true

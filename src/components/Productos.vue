@@ -189,7 +189,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="editarProductoModal" max-width="1000px">
+        <v-dialog v-model="editarProductoModal" max-width="1000px" persistent>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>EDITAR PRODUCTO</span>
@@ -283,7 +283,7 @@
         </v-dialog>
 
         <div>
-            <v-alert dense color="cyan">
+            <v-alert dense color="cyan" style="color: #ffffff">
                 <h5>PRODUCTOS</h5>
             </v-alert>
         </div>
@@ -294,7 +294,7 @@
                     <v-row>
 
                         <v-col cols="12">
-                            <v-tabs horizontal color="#002245" center-active grow>
+                            <v-tabs horizontal color="#000000" center-active grow>
                                 <v-tab>
                                     <v-icon left>
                                         mdi-list-box
@@ -394,16 +394,15 @@
 
                                                         <v-col cols="12" md="8"> </v-col>
                                                         <v-col cols="12" md="4">
-                                                            <v-toolbar dense shaped >
+                                                            <v-toolbar dense shaped>
                                                                 <v-toolbar-title>
                                                                     <h6>
                                                                         OPCIONES
                                                                     </h6>
                                                                 </v-toolbar-title>
                                                                 <v-btn icon v-if="botonAct == 1" class="mx-2" fab dark
-                                                                     color="#0A62BF"
-                                                                    @click="actualizarProductos()" style="float: left"
-                                                                    title="ACTUALIZAR INFORMACIÓN">
+                                                                    color="#0A62BF" @click="actualizarProductos()"
+                                                                    style="float: left" title="ACTUALIZAR INFORMACIÓN">
                                                                     <v-icon dark> mdi-pencil </v-icon>
                                                                 </v-btn>
                                                                 <v-btn icon v-if="botonAct == 0" class="mx-2" fab dark
@@ -412,7 +411,7 @@
                                                                     <v-icon dark> mdi-content-save-plus-outline
                                                                     </v-icon>
                                                                 </v-btn>
-                                                                <v-btn icon color="#EE680B" class="mx-2" fab dark 
+                                                                <v-btn icon color="#EE680B" class="mx-2" fab dark
                                                                     @click="limpiar()" style="float: left"
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>
@@ -891,7 +890,8 @@ export default {
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.listarProductos();
-                    me.editProductoModal = false;
+                    me.editarProductoModal = false;
+                    me.limpiar();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -1013,6 +1013,8 @@ export default {
                 .post("/producto/offproducto/" + this.idProducto).then(function (response) {
 
                     me.listarProductos();
+                    me.listarProductosInh();
+
 
                 })
                 .catch(function (error) {
@@ -1130,6 +1132,15 @@ export default {
                 else return false;
             }
 
+        },
+        limpiar() {
+            this.nombreProducto = "";
+            this.codigoProducto = "";
+            this.nombreFormato = "";
+            this.nombreTipo = "";
+            this.nombreFabrica = "";
+            this.precioUnitario = "";
+            this.botonAct = 0;
         },
         //#endregion
     },

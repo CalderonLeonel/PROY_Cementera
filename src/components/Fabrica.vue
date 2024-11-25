@@ -327,8 +327,8 @@
 
 
         <div>
-            <v-alert dense color="cyan">
-                <h5>Fabricas</h5>
+            <v-alert dense color="cyan" style="color: #ffffff">
+                <h5>FABRICAS</h5>
             </v-alert>
         </div>
         <div>

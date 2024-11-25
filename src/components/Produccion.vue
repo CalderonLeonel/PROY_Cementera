@@ -187,7 +187,7 @@
         </v-dialog>
 
         <div>
-            <v-alert dense color="cyan">
+            <v-alert dense color="cyan" style="color: #ffffff">
                 <h5>PRODUCCION</h5>
             </v-alert>
         </div>

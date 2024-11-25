@@ -385,7 +385,7 @@ export default {
             snackbarOK: false,
             mensajeSnackbar: "",
             snackbarError: false,
-            mensajeSnackbarError: "REGISTRO FALLIDO",
+            mensajeSnackbarError: "",
             timeout: 2000,
             //#endregion
         }
@@ -397,135 +397,66 @@ export default {
     },
     methods: {
         colorEstado(est) {
-            if (est == 'ACTIVO') return 'green'
-            else return 'red'
+            return est === 'ACTIVO' ? 'green' : 'red';
         },
+
         generarNumeroReferencia() {
             const fechaActual = new Date();
+            const formatNumber = (num) => num.toString().padStart(2, '0');
 
-            // Obtiene los componentes de la fecha y hora
             const año = fechaActual.getFullYear();
-            const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0'); // Añade ceros a la izquierda si es necesario
-            const dia = fechaActual.getDate().toString().padStart(2, '0');
-            const hora = fechaActual.getHours().toString().padStart(2, '0');
-            const minutos = fechaActual.getMinutes().toString().padStart(2, '0');
-            const segundos = fechaActual.getSeconds().toString().padStart(2, '0');
+            const mes = formatNumber(fechaActual.getMonth() + 1);
+            const dia = formatNumber(fechaActual.getDate());
+            const hora = formatNumber(fechaActual.getHours());
+            const minutos = formatNumber(fechaActual.getMinutes());
+            const segundos = formatNumber(fechaActual.getSeconds());
 
-            // Formatea el número de referencia utilizando la información de la fecha y hora
-            const numeroReferencia = `${año}${mes}${dia}${hora}${minutos}${segundos}`;
-
-            // Puedes ajustar el formato del número de referencia según tus necesidades
-            // Por ejemplo, puedes agregar un prefijo o un sufijo según tus requisitos.
-            // Ejemplo: const numeroReferencia = `REF-${año}${mes}${dia}${hora}${minutos}${segundos}`;
-
-            return numeroReferencia;
+            return `${año}${mes}${dia}${hora}${minutos}${segundos}`;
         },
 
-    
-        //#region Listados
-        listarCliente() {
-            this.listarClientes()
-        },
         async listarClientes() {
-            let me = this;
-            await axios
-                .get("/cliente/listarclientes")
-                .then(function (response) {
-                    if (response.data.resultado == null) {
-                        me.datosClientes = [];
+            try {
+                const response = await axios.get("/cliente/listarclientes");
+                this.datosClientes = response.data.resultado || [];
+            } catch (error) {
+                console.error("Error al listar clientes:", error);
+            }
+        },
 
-                    } else {
-                        me.datosClientes = response.data.resultado;
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-        listarProducto() {
-            this.listarProductos();
-        },
         async listarProductos() {
-            let me = this;
-            await axios
-                .get("/producto/listarproductos")
-                .then(function (response) {
-                    if (response.data.resultado == null) {
-                        me.datosProductos = [];
-
-                    } else {
-                        //console.log(response.data);
-                        me.datosProductos = response.data.resultado;
-
-                    }
-                    // me.listarAula(me.id_sede); actualizar tabla esta creando ciclos
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            try {
+                const response = await axios.get("/producto/listarproductos");
+                this.datosProductos = response.data.resultado || [];
+            } catch (error) {
+                console.error("Error al listar productos:", error);
+            }
         },
 
-        recuperarUltimasVentas() {
-            this.recuperarUltimaVenta();
-        },
         async recuperarUltimaVenta() {
-            let me = this;
-            await axios
-                .get("/venta/ultimaventa")
-                .then(function (response) {
-                    if (response.data.resultado == null) {
-                        me.datosUltimaVenta = [];
-
-                    } else {
-                        //console.log(response.data);
-                        me.datosUltimaVenta = response.data.resultado;
-
-                    }
-                    // me.listarAula(me.id_sede); actualizar tabla esta creando ciclos
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-
-        listarCuenta() {
-            this.listarCuentas();
+            try {
+                const response = await axios.get("/venta/ultimaventa");
+                this.datosUltimaVenta = response.data.resultado || [];
+            } catch (error) {
+                console.error("Error al recuperar última venta:", error);
+            }
         },
 
         async listarCuentas() {
-            let me = this;
-            await axios
-                .get("/contabilidad/listarcuentas")
-                .then(function (response) {
-                    console.log("Respuesta del servidor:", response.data);
-                    if (response.data.resultado == null) {
-                        me.datosCuentas = [];
+            try {
+                const response = await axios.get("/contabilidad/listarcuentas");
+                this.datosCuentas = response.data.resultado || [];
 
-                    } else {
-                        me.datosCuentas = response.data.resultado;
+                this.montoCredito = this.datosCuentas.reduce((total, cuenta) =>
+                    cuenta.tipoc === "Ingreso" ? total + parseFloat(cuenta.saldac || 0) : total, 0);
 
-                        // Recorrer las cuentas para calcular montoCredito y montoDebito
-                        me.montoCredito = me.datosCuentas.reduce((total, cuenta) => {
-                            if (cuenta.tipoc === "Ingreso") {
-                                return total + parseFloat(cuenta.saldac || 0);
-                            }
-                            return total;
-                        }, 0);
+                this.montoDebito = this.datosCuentas.reduce((total, cuenta) =>
+                    cuenta.tipoc === "Gasto" ? total + parseFloat(cuenta.saldac || 0) : total, 0);
 
-                        me.montoDebito = me.datosCuentas.reduce((total, cuenta) => {
-                            if (cuenta.tipoc === "Gasto") {
-                                return total + parseFloat(cuenta.saldac || 0);
-                            }
-                            return total;
-                        }, 0);
-
-                        console.log("Monto Crédito:", me.montoCredito);
-                        console.log("Monto Débito:", me.montoDebito);
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                console.log("Monto Crédito:", this.montoCredito);
+                console.log("Monto Débito:", this.montoDebito);
+            } catch (error) {
+                console.error("Error al listar cuentas:", error);
+            }
         },
         //#endregion
         //#region Registros
@@ -534,18 +465,18 @@ export default {
         numberToLetters(num) {
             const unidades = ["", "UNO", "DOS", "TRES", "CUATRO", "CINCO", "SEIS", "SIETE", "OCHO", "NUEVE"];
             const decenas = [
-                "", "DIEZ", "VEINTE", "TREINTA", "CUARENTA", "CINCUENTA", 
+                "", "DIEZ", "VEINTE", "TREINTA", "CUARENTA", "CINCUENTA",
                 "SESENTA", "SETENTA", "OCHENTA", "NOVENTA"
             ];
             const especiales = [
-                "DIEZ", "ONCE", "DOCE", "TRECE", "CATORCE", "QUINCE", 
+                "DIEZ", "ONCE", "DOCE", "TRECE", "CATORCE", "QUINCE",
                 "DIECISÉIS", "DIECISIETE", "DIECIOCHO", "DIECINUEVE"
             ];
             const centenas = [
-                "", "CIENTO", "DOSCIENTOS", "TRESCIENTOS", "CUATROCIENTOS", 
+                "", "CIENTO", "DOSCIENTOS", "TRESCIENTOS", "CUATROCIENTOS",
                 "QUINIENTOS", "SEISCIENTOS", "SETECIENTOS", "OCHOCIENTOS", "NOVECIENTOS"
             ];
-            
+
             // Agregar la palabra "mil" al proceso
             const miles = Math.floor(num / 1000);
             num = num % 1000;
@@ -620,235 +551,174 @@ export default {
             return this.datosCarrito.reduce((total, producto) => total + producto.total, 0);
         },
 
-        registrarVentas() {
-            this.venta.total = this.calcularTotalVenta(); // Calcula el total antes de registrar la venta
-            this.registrarVenta(this.totalVenta, this.codigoControl, this.nit, this.razonSocial, this.idCliente, this.idEmpleado);
-        },
-
-        async registrarVenta(totalVenta, codigoControl, nit, razonSocial, idCliente, idEmpleado) {
+        async registrarVenta() {
             try {
-                let me = this;
-
-                await axios.post("/venta/addventa/" +
-                    this.totalVenta +
-                    "," +
-                    this.venta.codigoControl +
-                    "," +
-                    this.nit +
-                    "," +
-                    this.razonSocial +
-                    "," +
-                    this.idCliente +
-                    "," +
+                this.venta.total = this.calcularTotalVenta();
+                const response = await axios.post("/venta/addventa/" +
+                    this.totalVenta + "," +
+                    this.venta.codigoControl + "," +
+                    this.nit + "," +
+                    this.razonSocial + "," +
+                    this.idCliente + "," +
                     this.venta.idEmpleado
-                )
-                    .then(function (response) {
-                        me.mensajeSnackbar = response.data.message;
-                        me.snackbarOK = true;
+                );
 
-                        // Recuperar la última venta
-                        me.recuperarUltimaVenta().then(() => {
-                            this.datosUltimaVenta.forEach((venta, index) => {
+                if (response.data && response.data.success) {
+                    this.mensajeSnackbar = response.data.message || "Venta registrada exitosamente";
+                    this.snackbarOK = true;
+                    this.snackbarError = false;
+                    // Recuperar la última venta
+                    me.recuperarUltimaVenta().then(() => {
+                        this.datosUltimaVenta.forEach((venta, index) => {
                             console.log(`Venta ${index + 1}:`);
-                            this.idUltimaVenta = venta.idven; 
-                            this.fechaVenta = venta.creadate; 
-                        }); 
-                        me.imprimirFactura( nit, razonSocial, me.idUltimaVenta, me.fechaVenta);
-                        
-                        me.imprimirRecibo(razonSocial, me.idUltimaVenta, me.fechaVenta);
+                            this.idUltimaVenta = venta.idven;
+                            this.fechaVenta = venta.creadate;
                         });
-                        // Registrar productos del carrito
-                        me.registrarVentasCarrito();
-                        //Registrar asiento contable
-                        me.registrarAsientosContables();
-           
-                       
-                        //Limpiamos el formulario
-                        me.resetVenta();
-                    })
-                    .catch(function (error) {
-                        me.mensajeSnackbar = error.response.data.message;
-                        me.snackbarError = true;
-                    });
+                        me.imprimirFactura(nit, razonSocial, me.idUltimaVenta, me.fechaVenta);
 
+                        me.imprimirRecibo(razonSocial, me.idUltimaVenta, me.fechaVenta);
+                    });
+                    // Registrar productos del carrito
+                    me.registrarVentasCarrito();
+                    //Registrar asiento contable
+                    me.registrarAsientosContables();
+
+                    await this.recuperarUltimaVenta();
+                    await this.registrarVentasCarrito();
+                    await this.registrarAsientosContables();
+
+                    this.resetVenta();
+                    //Limpiamos el formulario
+                    me.resetVenta();
+
+
+                } else {
+                    throw new Error(response.data.message || "Error desconocido al registrar la venta");
+                }
             } catch (error) {
-                // Manejar errores en caso de que la solicitud falle
                 console.error("Error al registrar la venta:", error);
+                this.mensajeSnackbarError = error.response?.data?.message || error.message || "Error al registrar la venta";
+                this.snackbarError = true;
+                this.snackbarOK = false;
             }
         },
 
         resetVenta() {
-            // Restablece los datos del cliente y el carrito
             this.nombreCliente = "";
             this.paterno = "";
             this.materno = "";
             this.nit = "";
             this.datosCarrito = [];
-            // Otros campos de reinicio según tus necesidades
         },
 
         async registrarVentasCarrito() {
-            // Obtener el ID de la última venta
-            this.idUltimaVenta = this.datosUltimaVenta.idven; // Asumiendo que "datosUltimaVenta" contiene el resultado de la última venta
-            // Iterar sobre los productos en el carrito y registrarlos utilizando el ID de la última venta
-            console.log(this.idUltimaVenta)
-
-            this.datosCarrito.forEach(producto => {
-                this.registrarVentaCarrito(producto.idprod, producto.cant, producto.precuni);
-            });
+            this.idUltimaVenta = this.datosUltimaVenta.idven;
+            for (const producto of this.datosCarrito) {
+                await this.registrarVentaCarrito(producto.idprod, producto.cant, producto.precuni);
+            }
         },
 
         async registrarVentaCarrito(idProducto, cantidad, precioUnitario) {
             try {
-                let me = this;
-
-                await axios.post("/venta/addventacarrito", {
-                    idProducto: idProducto,
-                    cantidad: cantidad,
-                    precioUnitario: precioUnitario
-                })
-                    .then(function (response) {
-                        me.mensajeSnackbar = response.data.message;
-                        me.snackbarOK = true;
-                    })
-                    .catch(function (error) {
-                        me.mensajeSnackbar = error.response.data.message;
-                        me.snackbarError = true;
-                    });
-
+                const response = await axios.post("/venta/addventacarrito", {
+                    idProducto,
+                    cantidad,
+                    precioUnitario
+                });
+                if (response.data && response.data.success) {
+                    this.mensajeSnackbar = response.data.message || "Producto agregado al carrito";
+                    this.snackbarOK = true;
+                    this.snackbarError = false;
+                } else {
+                    throw new Error(response.data.message || "Error al agregar producto al carrito");
+                }
             } catch (error) {
-                console.error("Error al registrar la venta:", error);
+                console.error("Error al registrar la venta del carrito:", error);
+                this.mensajeSnackbarError = error.response?.data?.message || error.message || "Error al registrar la venta del carrito";
+                this.snackbarError = true;
+                this.snackbarOK = false;
             }
         },
 
-        registrarAsientosContables() {
+        async registrarAsientosContables() {
             this.numeroReferencia = this.generarNumeroReferencia();
             this.idCuentaContable = this.seleccionarCuentaContableVentas();
-
-            // Actualizo el total de la venta
-            const totalVenta = this.datosCarrito.reduce((total, producto) => total + producto.total, 0);
-
-            // Calculo los montos de débito y crédito
-            const { montoDebito, montoCredito } = this.listarCuentas();
-
-            const esIngreso = true; // Aquí debes determinar si es un ingreso o gasto
-
-            // Sumo el total de la venta al monto de crédito
+            const totalVenta = this.calcularTotalVenta();
+            const { montoDebito, montoCredito } = await this.listarCuentas();
             const nuevoMontoCredito = montoCredito + totalVenta;
 
-            // Registro el asiento contable con los montos calculados
-            this.registrarAsientoContable(this.numeroReferencia, this.descripcionAsiento, this.idCuentaContable, montoDebito, nuevoMontoCredito);
+            await this.registrarAsientoContable(
+                this.numeroReferencia,
+                this.descripcionAsiento,
+                this.idCuentaContable,
+                montoDebito,
+                nuevoMontoCredito
+            );
 
-            // Después de registrar el asiento, aumentar o reducir el saldo según corresponda
-            if (esIngreso) {
-                this.aumentarSaldo();
-            } else {
-                this.reducirSaldo();
-            }
+            await this.aumentarSaldo();
         },
 
         async registrarAsientoContable(numeroReferencia, descripcionAsiento, idCuentaContable, montoDebito, montoCredito) {
             try {
-                let me = this;
-
-                await axios.post("/contabilidad/addasiento/" +
-                    this.numeroReferencia +
-                    "," +
-                    this.descripcionAsiento +
-                    "," +
-                    this.idCuentaContable +
-                    "," +
-                    this.montoDebito +
-                    "," +
-                    this.montoCredito
-                )
-                    .then(function (response) {
-                        me.mensajeSnackbar = response.data.message;
-                        me.snackbarOK = true;
-                    })
-                    .catch(function (error) {
-                        me.mensajeSnackbar = error.response.data.message;
-                        me.snackbarError = true;
-                    });
-
+                const response = await axios.post("/contabilidad/addasiento/" +
+                    numeroReferencia + "," +
+                    descripcionAsiento + "," +
+                    idCuentaContable + "," +
+                    montoDebito + "," +
+                    montoCredito
+                );
+                this.mensajeSnackbar = response.data.message;
+                this.snackbarOK = true;
             } catch (error) {
-                // Manejar errores en caso de que la solicitud falle
-                console.error("Error al registrar la venta:", error);
+                this.mensajeSnackbar = error.response?.data?.message || "Error al registrar el asiento contable";
+                this.snackbarError = true;
+                console.error("Error al registrar el asiento contable:", error);
             }
-        },
-
-        aumentarSaldos() {
-            this.aumentarSaldo()
         },
 
         async aumentarSaldo() {
             try {
-                let me = this
-                axios.post("/contabilidad/aumentarsaldo/" +
-                    this.idCuentaContable +
-                    "," +
+                const response = await axios.post("/contabilidad/aumentarsaldo/" +
+                    this.idCuentaContable + "," +
                     this.totalVenta
-                )
-                    .then(response => {
-                        // Manejar la respuesta si es necesario
-                        console.log(response.data.message);
-                    })
-                    .catch(error => {
-                        console.error("Error al aumentar el saldo:", error);
-                    });
+                );
+                console.log(response.data.message);
             } catch (error) {
-
+                console.error("Error al aumentar el saldo:", error);
             }
-        },
-
-        reducirSaldos() {
-            this.reducirSaldo()
         },
 
         async reducirSaldo() {
             try {
-                let me = this
-                axios.post("/contabilidad/reducirsaldo/" +
-                    this.idCuentaContable +
-                    "," +
+                const response = await axios.post("/contabilidad/reducirsaldo/" +
+                    this.idCuentaContable + "," +
                     this.totalVenta
-                )
-                    .then(response => {
-                        // Manejar la respuesta si es necesario
-                        console.log(response.data.message);
-                    })
-                    .catch(error => {
-                        console.error("Error al reducir el saldo:", error);
-                    });
+                );
+                console.log(response.data.message);
             } catch (error) {
-
+                console.error("Error al reducir el saldo:", error);
             }
         },
 
-        //#endregion
-        //#region Edicion
-        //#endregion
-        //#region Modals
         showClientes() {
             this.clientesModal = true;
             this.listarClientes();
         },
+
         closeClienteModal() {
             this.clientesModal = false;
         },
-        //#endregion
-        //#region Cambios Estado
-        //#endregion
-        //#region Seleccion Datos
+
         seleccionarCliente(item) {
             this.idCliente = item.idcli;
             this.nombreCliente = item.nom;
             this.paterno = item.pat;
             this.materno = item.mat;
             this.nit = item.nitcli;
-            this.razonSocial = item.nom + "" + item.pat + " " + item.mat;
+            this.razonSocial = `${item.nom} ${item.pat} ${item.mat}`.trim();
             this.clientesModal = false;
         },
+
         seleccionarProducto(item) {
             this.productoSeleccionado = item;
             this.venta.idProducto = item.idprod;
@@ -856,9 +726,10 @@ export default {
             this.venta.total = this.cantidad * item.precuni;
             this.cantidadModal = true;
         },
+
         agregarProductoAlCarrito() {
             if (this.cantidad > 0) {
-                this.venta.total = this.cantidad * this.venta.precioUnitario; // Actualiza el total de la venta
+                this.venta.total = this.cantidad * this.venta.precioUnitario;
                 const productoEnCarrito = {
                     idprod: this.venta.idProducto,
                     nomprod: this.productoSeleccionado.nomprod,
@@ -867,47 +738,41 @@ export default {
                     precuni: this.venta.precioUnitario,
                     total: this.venta.total,
                     est: this.productoSeleccionado.est,
-                    // Agrega otros campos necesarios aquí
                 };
                 this.datosCarrito.push(productoEnCarrito);
-                // Actualiza el totalVenta sumando el total del nuevo producto
                 this.totalVenta += this.venta.total;
 
-                console.log(this.datosCarrito)
+                console.log(this.datosCarrito);
                 console.log("Total de la venta:", this.totalVenta);
 
                 this.cantidadModal = false;
-                this.cantidad = 0; // Reinicia la cantidad
-                this.productoSeleccionado = null; // Reinicia el producto seleccionado
+                this.cantidad = 0;
+                this.productoSeleccionado = null;
             }
         },
 
         seleccionarCuentaContableVentas() {
-            // El tipo de cuenta para ventas es "Ingresos"
             const cuentaVentas = this.datosCuentas.find(cuenta => cuenta.tipoc === "Ingreso");
-
             if (cuentaVentas) {
-                // Devolver el idCuentaContable si se encuentra una cuenta de ventas
                 return cuentaVentas.idcnt;
             } else {
                 console.error("No se encontró una cuenta de ventas.");
-                // Puedes devolver un valor predeterminado o lanzar un error según tus necesidades
-                return null; // O devuelve un valor predeterminado
+                return null;
             }
         },
 
-        async imprimirFactura( nit, razonSocial, idventa, fechaVenta) {
+        async imprimirFactura(nit, razonSocial, idventa, fechaVenta) {
             try {
                 const response = await axios.get("/venta/listardetalle/" + idventa);
                 const jsonData = response.data.resultado || [];
-                
+
                 var total = 0
                 jsonData.forEach(detalle => {
-                total += detalle.cant * detalle.precuni;
+                    total += detalle.cant * detalle.precuni;
                 });
-               
 
-                const bodyData = jsonData.map(data => [ 
+
+                const bodyData = jsonData.map(data => [
                     data.nomprod,
                     data.cant,
                     data.precuni
@@ -924,15 +789,15 @@ export default {
                 doc.text(`Factura`, 105, 60, { align: "center" });
                 doc.text(`N°: ${idventa}`, 105, 70, { align: "center" });
 
-                doc.text(`Fecha: ${ this.getFormattedDate(fechaVenta)}`, 105, 80, { align: "center" });
+                doc.text(`Fecha: ${this.getFormattedDate(fechaVenta)}`, 105, 80, { align: "center" });
                 doc.text(`NIT/CI Cliente: ${nit}`, 105, 90, { align: "center" });
                 doc.text(`NOMBRE/RAZÓN SOCIAL: ${razonSocial}`, 105, 100, { align: "center" });
 
                 doc.text(`DETALLE`, 105, 110, { align: "center" })
                 doc.setFontSize(9);
-                let startY = 130;   
+                let startY = 130;
                 doc.autoTable({
-                    startY: startY, 
+                    startY: startY,
                     styles: {
                         fillColor: [255, 255, 255], // Fondo blanco
                         textColor: [0, 0, 0],      // Texto negro
@@ -948,38 +813,38 @@ export default {
                     head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO"]],
                     body: bodyData
                 });
-                                //doc.autoTable({ head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO",]], body: bodyData, startY: 140 });
-                    //let finalY = doc.previousAutoTable.finalY;
-                    startY += 20;
-                    doc.setFont("helvetica", "bold");
-                    doc.text("Total: "+total.toFixed(2)+" Bs.", 110, 10 + startY)
-                    doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 120, 20 + startY )
+                //doc.autoTable({ head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO",]], body: bodyData, startY: 140 });
+                //let finalY = doc.previousAutoTable.finalY;
+                startY += 20;
+                doc.setFont("helvetica", "bold");
+                doc.text("Total: " + total.toFixed(2) + " Bs.", 110, 10 + startY)
+                doc.text("Son: " + this.transformToBolivianos(total.toFixed(2)), 120, 20 + startY)
 
 
-                    startY += 40;
-                    doc.setFontSize(8);
-                    doc.setFont("helvetica", "normal");
-                    doc.text("ESTA FACTURA CONTRIBUYE AL DESARROLLO DE NUESTRO PAÍS, EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LEY", 105, startY, { align: "center" });
-                    doc.text("Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los servicios que utilices.", 105, startY + 10, { align: "center" });
+                startY += 40;
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "normal");
+                doc.text("ESTA FACTURA CONTRIBUYE AL DESARROLLO DE NUESTRO PAÍS, EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LEY", 105, startY, { align: "center" });
+                doc.text("Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los servicios que utilices.", 105, startY + 10, { align: "center" });
 
-                    doc.save("factura_"+this.getFormattedDateTime(fechaVenta)+".pdf");
+                doc.save("factura_" + this.getFormattedDateTime(fechaVenta) + ".pdf");
             } catch (error) {
                 console.error(error);
             }
-            },
+        },
 
-            async imprimirRecibo( razonSocial, idventa, fechaVenta) {
+        async imprimirRecibo(razonSocial, idventa, fechaVenta) {
             try {
                 const response = await axios.get("/venta/listardetalle/" + idventa);
                 const jsonData = response.data.resultado || [];
-                
+
                 var total = 0
                 jsonData.forEach(detalle => {
-                total += detalle.cant * detalle.precuni;
+                    total += detalle.cant * detalle.precuni;
                 });
-               
 
-                const bodyData = jsonData.map(data => [ 
+
+                const bodyData = jsonData.map(data => [
                     data.nomprod,
                     data.cant,
                     data.precuni
@@ -992,13 +857,13 @@ export default {
                 doc.text("Drymix Bolivia SRL.", 105, 20, { align: "center" });
                 doc.setFontSize(12);
 
-                doc.text(`Fecha: ${ this.getFormattedDate(fechaVenta)}`, 105, 30, { align: "center" });
+                doc.text(`Fecha: ${this.getFormattedDate(fechaVenta)}`, 105, 30, { align: "center" });
                 doc.text(`NOMBRE: ${razonSocial}`, 105, 40, { align: "center" });
                 doc.text(`DETALLE`, 105, 50, { align: "center" })
                 doc.setFontSize(9);
-                let startY = 60;   
+                let startY = 60;
                 doc.autoTable({
-                    startY: startY, 
+                    startY: startY,
                     styles: {
                         fillColor: [255, 255, 255], // Fondo blanco
                         textColor: [0, 0, 0],      // Texto negro
@@ -1014,38 +879,38 @@ export default {
                     head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO"]],
                     body: bodyData
                 });
-                                //doc.autoTable({ head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO",]], body: bodyData, startY: 140 });
-                    //let finalY = doc.previousAutoTable.finalY;
-                    startY += 20;
-                    doc.setFont("helvetica", "bold");
-                    doc.text("Total: "+total.toFixed(2)+" Bs.", 105, 10 + startY)
-                    doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 105, 20 + startY )
+                //doc.autoTable({ head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO",]], body: bodyData, startY: 140 });
+                //let finalY = doc.previousAutoTable.finalY;
+                startY += 20;
+                doc.setFont("helvetica", "bold");
+                doc.text("Total: " + total.toFixed(2) + " Bs.", 105, 10 + startY)
+                doc.text("Son: " + this.transformToBolivianos(total.toFixed(2)), 105, 20 + startY)
 
-            
-                    doc.save("recibo_"+this.getFormattedDateTime(fechaVenta)+".pdf");
+
+                doc.save("recibo_" + this.getFormattedDateTime(fechaVenta) + ".pdf");
             } catch (error) {
                 console.error(error);
             }
-            },
+        },
 
-            getDate() {
-                var fecha = new Date().toISOString();
-                return fecha;
-            },
+        getDate() {
+            var fecha = new Date().toISOString();
+            return fecha;
+        },
 
 
-            getFormattedDate(oldDate) {
-                let fecha = new Date(oldDate);
-                let dia = fecha.getDate();
-                let mes = fecha.getMonth() + 1;
-                let anio = fecha.getFullYear();
-                if (dia < 10) dia = '0' + dia;
-                if (mes < 10) mes = '0' + mes;
+        getFormattedDate(oldDate) {
+            let fecha = new Date(oldDate);
+            let dia = fecha.getDate();
+            let mes = fecha.getMonth() + 1;
+            let anio = fecha.getFullYear();
+            if (dia < 10) dia = '0' + dia;
+            if (mes < 10) mes = '0' + mes;
 
-                let fechaFormateada = dia + '-' + mes + '-' + anio;
+            let fechaFormateada = dia + '-' + mes + '-' + anio;
 
-                return fechaFormateada;
-            },
+            return fechaFormateada;
+        },
 
         //#endregion
     },
