@@ -380,12 +380,9 @@
 
       </v-container>
     </v-main>
-<<<<<<< HEAD
     
     
-=======
 
->>>>>>> 1e55657e392a81b32cdffb7a2af4bfa7f7753bb9
     <v-footer color="#00A1B1" padless>
       <v-row justify="center" no-gutters>
 
