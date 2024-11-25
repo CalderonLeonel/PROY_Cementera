@@ -1,5 +1,22 @@
 <template>
   <v-app>
+
+    <v-dialog v-model="loginModal" max-width="1000px" persistent>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn color="primary" v-bind="attrs" v-on="on">Login</v-btn>
+      </template>
+      <v-card>
+        <v-card-title class="headline">Iniciar Sesión</v-card-title>
+        <v-card-text>
+          <Login @close-modal="loginModal = false" />
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red" text @click="loginModal = false">Cancelar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-navigation-drawer v-model="drawer" app>
       <center>
         <v-toolbar color="#00A1B1" dark>
@@ -356,19 +373,26 @@
     </v-navigation-drawer>
 
     <v-app-bar color="#00A1B1" app>
-      <v-app-bar-nav-icon color="white" @click="drawer = !drawer">
-
-      </v-app-bar-nav-icon>
-
-      <v-btn class="mx-2" fab dark x-small color="#00A1B1" @click="salir()" style="float:right;" title="CERRAR SESSION">
-        <v-icon dark>
-          mdi-door-closed-lock
-        </v-icon>
+      <v-app-bar-nav-icon color="white" @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-btn class="mx-2" fab dark x-small color="#00A1B1" @click="salir()" style="float:right;" title="CERRAR SESIÓN">
+        <v-icon dark>mdi-door-closed-lock</v-icon>
       </v-btn>
-
+      <v-btn v-if="!logueado" class="mx-2" fab dark x-small color="#00A1B1" @click="openLoginModal()" style="float:right;"
+        title="INICIAR SESIÓN">
+        <v-icon dark>mdi-login</v-icon>
+      </v-btn>
     </v-app-bar>
 
-    <v-main>
+    <v-main v-if="logueado">
+      <v-container fluid>
+        <v-slide-y-transition mode="out-in">
+          <router-view />
+        </v-slide-y-transition>
+      </v-container>
+    </v-main>
+
+    <!-- Vista principal para cuando el usuario no está logueado -->
+    <v-main v-else>
       <v-container fluid>
         <v-slide-y-transition mode="out-in">
           <router-view />
@@ -386,6 +410,7 @@
         </v-carousel>
       </v-container>
     </v-main>
+
     <v-footer color="#00A1B1" padless>
       <v-row justify="center" no-gutters>
 
@@ -402,16 +427,19 @@
 import Empresa from '../src/components/Empresa.vue';
 import Productos from '../src/components/ProductosIni.vue';
 import Pedido from '../src/components/PedidosCliente.vue';
+import Login from './components/Login.vue';
 
 export default {
   data: () => ({
+    loginModal: false,
     drawer: false,
     user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '', id_fabrica: 0, }
   }),
   components: {
     Empresa,
     Productos,
-    Pedido
+    Pedido,
+    Login
   },
   computed: {
     logueado() {
@@ -420,19 +448,20 @@ export default {
       }
       return this.user;
     }
-  }, created: function () {
+  },
+  created: function () {
 
     if (this.user != null) {
       this.user = JSON.parse(sessionStorage.getItem('session'));
     }
-    if (this.user == null) {
-      if (this.$route.path != '/login') {
-        this.$router.push("/login");
-      }
-    }
+
     console.log("UserData: " + JSON.stringify(this.user));
   },
   methods: {
+    openLoginModal() {
+      this.loginModal = true;
+    },
+
     checkAccess(accesoCorrecto, tipoCorrecto) {
       //this.user = JSON.parse(sessionStorage.getItem('session'));
       if (this.user == null) {
@@ -463,16 +492,10 @@ export default {
     salir() {
       sessionStorage.clear();
       this.user = null;
-      if (this.$route.path != '/login') {
-        this.$router.push("/login");
+      if (this.$route.path != '/') {
+        this.$router.push("/");
       }
-    }
+    },
   }
 }
 </script>
-
-
-
-
-
-
