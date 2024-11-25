@@ -57,7 +57,7 @@
         </v-dialog>
 
         <div>
-            <v-alert dense style="color: #ffffff;" color="grey">
+            <v-alert dense style="color: #ffffff;" color="cyan">
                 <h5>MATERIA PRIMA</h5>
             </v-alert>
         </div>

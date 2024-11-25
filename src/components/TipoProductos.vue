@@ -119,7 +119,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="editTipoModal" max-width="700px">
+        <v-dialog v-model="editTipoModal" max-width="800px" persistent>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>EDITAR TIPO</span>
@@ -275,8 +275,8 @@
 
 
         <div>
-            <v-alert dense color="cyan">
-                <h5>Tipos</h5>
+            <v-alert dense color="cyan" style="color: #ffffff">
+                <h5>TIPOS</h5>
             </v-alert>
         </div>
         <div>
@@ -755,6 +755,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarTipos();
                     me.editTipoModal = false;
+                    me.limpiar();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -840,6 +841,7 @@ export default {
             this.idTipo = "";
             this.idLinea = "";
             this.nombreLinea = "";
+            this.botonact = 0;
         },
 
         //#region Seleccion Datos

@@ -482,6 +482,7 @@ export default {
                     await this.recuperarUltimaVenta();
                     await this.registrarVentasCarrito();
                     await this.registrarAsientosContables();
+                    
                     this.resetVenta();
                 } else {
                     throw new Error(response.data.message || "Error desconocido al registrar la venta");

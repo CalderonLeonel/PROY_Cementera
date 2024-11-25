@@ -487,8 +487,8 @@ export default {
     salir() {
       sessionStorage.clear();
       this.user = null;
-      if (this.$route.path != '/login') {
-        this.$router.push("/login");
+      if (this.$route.path != '/') {
+        this.$router.push("/");
       }
     },
   }

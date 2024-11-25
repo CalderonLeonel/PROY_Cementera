@@ -28,12 +28,31 @@
                 </v-col>
             </v-row>
         </v-container>
-        <v-snackbar v-model="snackbarOK" :timeout="timeout" color="success">
-            {{ mensajeSnackbar }}
-        </v-snackbar>
-        <v-snackbar v-model="snackbarError" :timeout="timeout" color="error">
-            {{ mensajeSnackbarError }}
-        </v-snackbar>
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
+                <strong>{{ mensajeSnackbar }}</strong>
+
+
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+
+        <div class="text-center">
+
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarError = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
     </div>
 </template>
 
@@ -62,6 +81,14 @@ export default {
             snackbarError: false,
             mensajeSnackbarError: "REGISTRO FALLIDO",
             timeout: 2000,
+
+            //#region SnackBars
+            snackbarOK: false,
+            mensajeSnackbar: "",
+            snackbarError: false,
+            mensajeSnackbarError: "",
+            timeout: 2000,
+            //#endregion
         };
     },
 

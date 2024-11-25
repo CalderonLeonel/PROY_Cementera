@@ -43,10 +43,10 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="editLineaModal" max-width="700px">
+        <v-dialog v-model="editLineaModal" max-width="700px" persistent>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>AGREGAR LINEA</span>
+                    <span>EDITAR LINEA</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -76,7 +76,7 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 1" color="#EE680B"
+                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 1" color="#0A62BF"
                                             @click="editarLineas()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
@@ -94,7 +94,7 @@
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeAgregarLinea()" style="float: right" title="SALIR">
+                                        @click="closeEditLineaModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -108,7 +108,7 @@
 
 
         <div>
-            <v-alert dense color="cyan">
+            <v-alert dense color="cyan" style="color: #ffffff">
                 <h5>LINEAS</h5>
             </v-alert>
         </div>
@@ -535,6 +535,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarLineas();
                     me.editLineaModal = false;
+                    me.limpiar();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -606,6 +607,7 @@ export default {
                 .post("/linea/offlinea/" + this.idLinea).then(function (response) {
 
                     me.listarLineas();
+                    me.listarLineasInh();
 
                 })
                 .catch(function (error) {
@@ -617,6 +619,7 @@ export default {
         limpiar() {
             this.nombreLinea = "";
             this.codigoLinea = "";
+            this.botonact = 0;
         },
 
         //#region Reports
