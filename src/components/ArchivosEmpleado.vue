@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="5" outlined v-if=" checkAccess(9, 'SUPERVISOR' ) || checkAccess(9, 'GERENTE')">
+    <v-card elevation="5" outlined v-if=" checkAccess(11, 'SUPERVISOR' ) || checkAccess(11, 'GERENTE')">
         <div>
             <v-alert dense style="color: #ffffff;" color="blue">
                 <h3>GESTIÓN DE ARCHIVOS DE EMPLEADOS</h3>

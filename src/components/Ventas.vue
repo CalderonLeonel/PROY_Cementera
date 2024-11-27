@@ -562,35 +562,46 @@ export default {
                     this.idCliente + "," +
                     this.venta.idEmpleado
                 );
+                if (response.status == 200 ||  response.data.success) {
+                        this.recuperarUltimaVenta().then(() => {
+                            this.datosUltimaVenta.forEach((venta, index) => {
+                                this.idUltimaVenta = venta.idven;
+                                this.fechaVenta = venta.creadate;
+                            });
+                        this.imprimirFactura(this.nit, this.razonSocial, this.idUltimaVenta, this.fechaVenta);
+
+                        this.imprimirRecibo(this.razonSocial, this.idUltimaVenta, this.fechaVenta);
+                    })
+                }
+                
 
                 if (response.data && response.data.success) {
-                    // Registrar productos del carrito
-                    me.registrarVentasCarrito();
-                    //Registrar asiento contable
-                    me.registrarAsientosContables();
-
-                    me.imprimirFactura(nit, razonSocial, me.idUltimaVenta, me.fechaVenta);
-
-                    me.imprimirRecibo(razonSocial, me.idUltimaVenta, me.fechaVenta);
-                    // Recuperar la última venta
-                    
                     this.mensajeSnackbar = response.data.message || "Venta registrada exitosamente";
+                    console.log('snackbar positivo');
                     this.snackbarOK = true;
                     this.snackbarError = false;
+                    // Recuperar la última venta
+                    console.log("recuperar ultima venta")
+                    this.recuperarUltimaVenta();
                     
-                    
-                     me.registrarVentasCarrito();
-                     me.registrarAsientosContables();
 
+                    this.recuperarUltimaVenta();
+                     this.registrarVentasCarrito();
+                     this.registrarAsientosContables();
 
                     this.resetVenta();
-                    //Limpiamos el formulario
-                    me.resetVenta();
 
 
-                } 
+                } else {
+                    console.log('snackbar error');
+                    console.log(response.data.Error);
+                    this.mensajeSnackbarError = response.data.message;
+                    throw new Error(response.data.message || "Error desconocido al registrar la venta");
+                }
             } catch (error) {
                 console.error("Error al registrar la venta:", error);
+                console.log(response.data.message);
+                console.log(error.response?.data?.message );
                 this.mensajeSnackbarError = error.response?.data?.message || error.message || "Error al registrar la venta";
                 this.snackbarError = true;
                 this.snackbarOK = false;

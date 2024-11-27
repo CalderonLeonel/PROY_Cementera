@@ -40,7 +40,7 @@
                 <h3>COTIZACIONES</h3>
             </v-alert>
         </div>
-        <div v-if="checkAccess(7, 'SUPERVISOR') || checkAccess(7, 'GERENTE')">
+        <div v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-container>
 

@@ -47,13 +47,13 @@
 
       <v-list nav dense>
 
-        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(1, '0') || checkAccess(1, 'GERENTE')">
+        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(1, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-package</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>SCM</v-list-item-title>
+              <v-list-item-title>PRODUCCION</v-list-item-title>
             </v-list-item-content>
           </template>
 
@@ -104,7 +104,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(2, '0') || checkAccess(2, 'GERENTE')">
+        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(2, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-test-tube</v-icon>
@@ -121,7 +121,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(2, '0') || checkAccess(2, 'GERENTE')">
+        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(3, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-point-of-sale</v-icon>
@@ -141,25 +141,7 @@
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
-
-        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(3, '0') || checkAccess(3, 'GERENTE')">
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon>mdi-chart-bar</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>REPORTES</v-list-item-title>
-            </v-list-item-content>
-          </template>
-
-          <v-list-item :to="{ name: 'Reportes' }">
-            <v-list-item-title>
-              <h6>REPORTES</h6>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list-group>
-
-        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(2, '0') || checkAccess(2, 'GERENTE')">
+        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(4, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-account-group</v-icon>
@@ -176,7 +158,26 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(5, '0') || checkAccess(5, 'GERENTE')">
+        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(5, '0')">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon>mdi-chart-bar</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>REPORTES</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item :to="{ name: 'Reportes' }">
+            <v-list-item-title>
+              <h6>REPORTES</h6>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+
+
+
+        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(6, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-package</v-icon>
@@ -228,34 +229,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(6, '0') || checkAccess(6, 'GERENTE')">
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>USUARIOS</v-list-item-title>
-            </v-list-item-content>
-          </template>
-          <v-list-item :to="{ name: 'Usuarios' }">
-            <v-list-item-title>
-              <h6>ASISTENCIAS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Carnet' }">
-            <v-list-item-title>
-              <h6>FORMATOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Tipos' }">
-            <v-list-item-title>
-              <h6>TIPOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-
-        </v-list-group>
-
-        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(2, '0') || checkAccess(2, 'GERENTE')">
+        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(7, '0')">
 
           <template v-slot:activator>
             <v-list-item-icon>
@@ -272,7 +246,7 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(2, '0') || checkAccess(2, 'GERENTE')">
+        <v-list-group no-action color="#00A1B1" value="true" v-if="checkAccess(8, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>mdi-wallet-outline</v-icon>
@@ -288,6 +262,12 @@
             </v-list-item-title>
           </v-list-item>
 
+          <v-list-item :to="{ name: 'Departamento' }">
+            <v-list-item-title>
+              <h6>CONT. DE DEPATAMENTOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+
           <v-list-item :to="{ name: 'Planilla' }">
             <v-list-item-title>
               <h6>PAGOS</h6>
@@ -296,7 +276,7 @@
 
         </v-list-group>
 
-        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(7, '0') || checkAccess(7, 'GERENTE')">
+        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(9, '0')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>
@@ -308,7 +288,7 @@
             </v-list-item-content>
           </template>
 
-          <v-list-item :to="{ name: 'Proveedor' }" v-if="checkAccess(7, 'SUPERVISOR') || checkAccess(7, 'GERENTE')">
+          <v-list-item :to="{ name: 'Proveedor' }" v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
             <v-list-item-title>
               <h6>PROVEEDOR</h6>
             </v-list-item-title>
@@ -320,7 +300,7 @@
           </v-list-item>
         </v-list-group>
         
-        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(8, '0') || checkAccess(8, 'GERENTE')">
+        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(10, '0') || checkAccess(10, 'GERENTE')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>
@@ -337,14 +317,14 @@
               <h6>INVENTARIO</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Almacen' }" v-if="checkAccess(8, 'SUPERVISOR') || checkAccess(8, 'GERENTE')">
+          <v-list-item :to="{ name: 'Almacen' }" v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
             <v-list-item-title>
               <h6>ALMACEN</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
 
-        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(9, '0') || checkAccess(9, 'GERENTE')">
+        <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(11, '0') || checkAccess(11, 'GERENTE')">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon>
@@ -361,7 +341,7 @@
               <h6>GESTIÓN DE DOCUMENTOS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'ArchivosEmpleado' }" v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
+          <v-list-item :to="{ name: 'ArchivosEmpleado' }" v-if="checkAccess(11, 'SUPERVISOR') || checkAccess(11, 'GERENTE')">
             <v-list-item-title>
               <h6>DOCUMENTOS DE PERSONAL</h6>
             </v-list-item-title>
@@ -397,19 +377,11 @@
         <v-slide-y-transition mode="out-in">
           <router-view />
         </v-slide-y-transition>
-        <v-carousel>
-          <v-carousel-item>
-            <Empresa />
-          </v-carousel-item>
-          <v-carousel-item>
-            <Productos />
-          </v-carousel-item>
-          <v-carousel-item>
-            <Pedido />
-          </v-carousel-item>
-        </v-carousel>
+
       </v-container>
     </v-main>
+    
+    
 
     <v-footer color="#00A1B1" padless>
       <v-row justify="center" no-gutters>
@@ -419,14 +391,11 @@
         </v-col>
       </v-row>
     </v-footer>
+
   </v-app>
 </template>
 
 <script>
-
-import Empresa from '../src/components/Empresa.vue';
-import Productos from '../src/components/ProductosIni.vue';
-import Pedido from '../src/components/PedidosCliente.vue';
 import Login from './components/Login.vue';
 
 export default {
@@ -436,9 +405,6 @@ export default {
     user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '', id_fabrica: 0, }
   }),
   components: {
-    Empresa,
-    Productos,
-    Pedido,
     Login
   },
   computed: {
