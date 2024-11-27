@@ -299,13 +299,13 @@ export default {
         ciRules: [
             (v) => !!v || "NUMERO DE CARNET ES REQUERIDO",
             (v) =>
-                (v && v.length <= 50) ||
+                (v && v.length <= 16) ||
                 "EL NOMBRE DEL EMPLEADO DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
         telefonoRules: [
             (v) => !!v || "NUMERO DE TELEFONO O CELULAR ES REQUERIDO",
             (v) =>
-                (v && v.length <= 50) ||
+                (v && v.length <= 24) ||
                 "EL NOMBRE DEL EMPLEADO DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
         cargoRules: [
