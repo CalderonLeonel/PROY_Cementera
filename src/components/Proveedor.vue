@@ -1,5 +1,5 @@
 <template>
-   <v-card elevation="5" outlined v-if=" checkAccess(7, 'SUPERVISOR' ) || checkAccess(7, 'GERENTE')">
+   <v-card elevation="5" outlined v-if="checkAccess(9, 'SUPERVISOR' ) || checkAccess(9, 'GERENTE')">
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
@@ -320,6 +320,33 @@ export default {
         console.log("UserData: " + JSON.stringify(this.user));
         },
     methods: {
+
+        checkAccess(accesoCorrecto, tipoCorrecto) {
+            if (this.user == null) {
+                return false;
+            }
+            else {
+                let checkedAccess = false;
+                let checkedType = false;
+                //Si accesoCorrecto es 0, no se requiere ningun acceso para acceder
+                if (accesoCorrecto != 0) {
+                this.user['accesos'].forEach(access => {
+                    if (access == accesoCorrecto)
+                    checkedAccess = true;
+                });
+                } else checkedAccess = true;
+
+                //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
+                if (tipoCorrecto != '0') {
+                if (this.user['tipo'] == tipoCorrecto) {
+                    checkedType = true;
+                }
+                } else checkedType = true;
+                if (checkedAccess && checkedType) { return true }
+                else return false;
+            }
+
+        },
 
         getAlertas(){
             var items = [];
@@ -807,33 +834,8 @@ export default {
         },
       },
       
-      checkAccess(accesoCorrecto, tipoCorrecto) {
-                
-                if (this.user == null) {
-                    return false;
-                }
-                else {
-                    let checkedAccess = false;
-                    let checkedType = false;
-                    
-                    if (accesoCorrecto != 0) {
-                    this.user['accesos'].forEach(access => {
-                        if (access == accesoCorrecto)
-                        checkedAccess = true;
-                    });
-                    } else checkedAccess = true;
-
-                    
-                    if (tipoCorrecto != '0') {
-                    if (this.user['tipo'] == tipoCorrecto) {
-                        checkedType = true;
-                    }
-                    } else checkedType = true;
-                    if (checkedAccess && checkedType) { return true }
-                    else return false;
-                }
-
-                },
+      
+        
 };
 
 </script>

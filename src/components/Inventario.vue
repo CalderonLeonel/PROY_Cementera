@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="5" outlined v-if="checkAccess(8, 'SUPERVISOR') || checkAccess(8, 'COMUN') || checkAccess(8, 'GERENTE')">
+    <v-card elevation="5" outlined v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'COMUN') || checkAccess(10, 'GERENTE')">
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
@@ -57,7 +57,7 @@
                          <v-col cols="3" md="2">
                              <v-btn color="success" @click="showModalAgregarTransaccion()">NUEVO INVENTARIO</v-btn>
                          </v-col>
-                         <v-col cols="3" md="3" v-if="checkAccess(8, 'SUPERVISOR')">
+                         <v-col cols="3" md="3" v-if="checkAccess(10, 'SUPERVISOR')">
                              <v-btn color="success" @click="showRevalorizarInventarioModal()">REVALORIZACIÓN DE INVENTARIO</v-btn>
                          </v-col>
                         
@@ -209,7 +209,7 @@
                          </v-col>
                      </v-row>
 
-                     <v-row v-if="checkAccess(8, 'SUPERVISOR') || checkAccess(8, 'GERENTE')">
+                     <v-row v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
                          <v-col cols="12" md="4">
                              <v-btn color="success" @click="showModalAgregarItem()">NUEVO ITEM</v-btn>
                          </v-col>
@@ -255,12 +255,12 @@
                              </v-data-table>
                          </v-col>
                      </v-row>
-                     <v-row v-if="checkAccess(8, 'SUPERVISOR') || checkAccess(8, 'GERENTE')">
+                     <v-row v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
                          <v-col cols="12" md="2">
                              <v-btn color="success" @click="showModalAgregarTipoItem()">NUEVO TIPO DE ITEM</v-btn>  
                          </v-col>
                          <v-col cols="12" md="12">
-                            <v-btn v-if="checkAccess(8, 'SUPERVISOR') || checkAccess(8, 'GERENTE')" color="primary" @click="showModalActivarTipo()">LISTA DE ITEMS DESACTIVADOS</v-btn>
+                            <v-btn v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')" color="primary" @click="showModalActivarTipo()">LISTA DE ITEMS DESACTIVADOS</v-btn>
                          </v-col>
                          <v-col cols="12">
                              <v-list-item>

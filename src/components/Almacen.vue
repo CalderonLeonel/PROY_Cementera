@@ -38,7 +38,7 @@
                 <h3>ALMACENES</h3>
             </v-alert>
         </div>
-        <div v-if="checkAccess(11, 'SUPERVISOR') || checkAccess(11, 'GERENTE')">
+        <div v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-container>
                     <v-row>
