@@ -636,6 +636,7 @@ export default {
         },
         async registrarAlmacen(
             nombreAlmacen,
+            descripcionAlmacen,
             estado
         ) {
             let me = this;
