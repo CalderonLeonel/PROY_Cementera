@@ -74,7 +74,7 @@
           </v-list-item>
           <v-list-item :to="{ name: 'Tipos' }">
             <v-list-item-title>
-              <h6>TIPOS</h6>
+              <h6>TIPOS DE PRODUCTOS</h6>
             </v-list-item-title>
           </v-list-item>
           <v-list-item :to="{ name: 'Fabricas' }">
@@ -92,11 +92,13 @@
               <h6>PRODUCCION</h6>
             </v-list-item-title>
           </v-list-item>
+          <!--
           <v-list-item :to="{ name: 'Transporte' }">
             <v-list-item-title>
               <h6>TRANSPORTE</h6>
             </v-list-item-title>
           </v-list-item>
+          -->
           <v-list-item :to="{ name: 'Materia' }">
             <v-list-item-title>
               <h6>MATERIA PRIMA</h6>
@@ -192,6 +194,11 @@
               <h6>EMPLEADOS</h6>
             </v-list-item-title>
           </v-list-item>
+          <v-list-item :to="{ name: 'Asistencias' }">
+            <v-list-item-title>
+              <h6>ASISTENCIA</h6>
+            </v-list-item-title>
+          </v-list-item>
           <v-list-item :to="{ name: 'Alerta' }">
             <v-list-item-title>
               <h6>ALERTAS</h6>
@@ -241,7 +248,7 @@
           </template>
           <v-list-item :to="{ name: 'Usuarios' }">
             <v-list-item-title>
-              <h6>CUENTAS</h6>
+              <h6>CUENTAS DE USUARIO</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>

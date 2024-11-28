@@ -73,9 +73,9 @@
                                     <v-menu v-model="datePicker" :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="fechaNacimiento" label="Fecha de Nacimiento" :rules="fechaNacimientoRules"
-                                                prepend-icon="mdi-cake-variant-outline" readonly v-bind="attrs"
-                                                v-on="on">
+                                            <v-text-field v-model="fechaNacimiento" label="Fecha de Nacimiento"
+                                                :rules="fechaNacimientoRules" prepend-icon="mdi-cake-variant-outline"
+                                                readonly v-bind="attrs" v-on="on">
 
                                             </v-text-field>
                                         </template>
@@ -100,13 +100,14 @@
                                 <v-col cols="12" md="6">
                                     <v-select v-model="idDepartamento" :items="datosDepartamento" item-text="nom"
                                         item-value="iddep" label="Selecciona un Departamento" prepend-icon="mdi-sitemap"
-                                        :rules="departamentoRules" required v-on:change="listarSectoresDeDepartamento(idDepartamento);">
+                                        :rules="departamentoRules" required
+                                        v-on:change="listarSectoresDeDepartamento(idDepartamento);">
                                     </v-select>
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-select v-model="idSector" :items="datosSector" item-text="sect"
                                         item-value="idsect" label="Selecciona un Sector" prepend-icon="mdi-sitemap"
-                                        :rules="sectorRules" required :disabled="idDepartamento==''">
+                                        :rules="sectorRules" required :disabled="idDepartamento == ''">
                                     </v-select>
                                 </v-col>
                                 <v-col cols="12" sm="4" md="4">
@@ -137,9 +138,8 @@
                                     </v-toolbar>
                                 </v-col>
                                 <v-col cols="8">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeEmpleado()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeEmpleado()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -280,7 +280,7 @@ export default {
                 "EL NOMBRE DEL EMPLEADO DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
         sexoRules: [
-             (v) => v !== null && v !== undefined || "ASIGNAR UN SEXO ES REQUERIDO"
+            (v) => v !== null && v !== undefined || "ASIGNAR UN SEXO ES REQUERIDO"
         ],
         estadoCivilRules: [
             (v) => !!v || "ASIGNAR UN ESTADO CIVIL ES REQUERIDO",
@@ -299,13 +299,13 @@ export default {
         ciRules: [
             (v) => !!v || "NUMERO DE CARNET ES REQUERIDO",
             (v) =>
-                (v && v.length <= 50) ||
+                (v && v.length <= 16) ||
                 "EL NOMBRE DEL EMPLEADO DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
         telefonoRules: [
             (v) => !!v || "NUMERO DE TELEFONO O CELULAR ES REQUERIDO",
             (v) =>
-                (v && v.length <= 50) ||
+                (v && v.length <= 24) ||
                 "EL NOMBRE DEL EMPLEADO DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
         cargoRules: [
@@ -394,8 +394,8 @@ export default {
             this.botonAct = 1;
             if (this.datosCargo.length == 0) this.listarCargosActivos();
             if (this.datosDepartamento.length == 0) this.listarDepartamentosActivos();
-            this.listarSectoresDeDepartamento(this.idDepartamento);
             this.llenarCamposEmpleado(item);
+            this.listarSectoresDeDepartamento(this.idDepartamento);
             this.empleadoModal = true;
         },
 
@@ -407,7 +407,7 @@ export default {
         llenarCamposEmpleado(item) {
             this.nombres = item.nom;
             this.paterno = item.pat;
-            if(item.mat == null){this.materno='';} else {this.materno = item.mat;};
+            if (item.mat == null) { this.materno = ''; } else { this.materno = item.mat; };
             this.isMale = item.ism;
             this.estadoCivil = item.est
             this.email = item.emal;
@@ -443,7 +443,7 @@ export default {
                     p11: this.idCargo,
                     p12: this.idDepartamento,
                     p12: this.idSector,
-                    }
+                }
                 )
                 .then(function (response) {
 
@@ -523,7 +523,7 @@ export default {
         async listarSectoresDeDepartamento(idDepartamento) {
             let me = this;
             await axios
-                .get("/sector/listarsectoresdedepartamento/"+idDepartamento)
+                .get("/sector/listarsectoresdedepartamento/" + idDepartamento)
                 .then(function (response) {
                     if (response.data.resultado == null) {
                         me.datosSector = [];
@@ -553,7 +553,7 @@ export default {
                     p11: this.idCargo,
                     p12: this.idDepartamento,
                     p13: this.idSector
-                    }
+                }
                 )
                 .then(function (response) {
                     me.mensajeSnackbar = response.data.message;
@@ -569,14 +569,14 @@ export default {
 
         registrarEmpleado() {
             if (this.$refs.form.validate()) {
-                if(this.materno == '') { 
+                if (this.materno == '') {
                     this.registrarEmpleadosSinMaterno();
-                } 
+                }
                 else {
                     this.registrarEmpleados();
                 }
             }
-            
+
         },
         async registrarEmpleados() {
             let me = this;
@@ -595,7 +595,7 @@ export default {
                     p10: this.idCargo,
                     p11: this.idDepartamento,
                     p12: this.idSector
-                    }
+                }
                 )
                 .then(function (response) {
                     me.mensajeSnackbar = response.data.message;
@@ -624,7 +624,7 @@ export default {
                     p9: this.idCargo,
                     p10: this.idDepartamento,
                     p11: this.idSector
-                    }
+                }
                 )
                 .then(function (response) {
                     me.mensajeSnackbar = response.data.message;
