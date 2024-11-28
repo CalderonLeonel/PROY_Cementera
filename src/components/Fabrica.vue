@@ -50,8 +50,8 @@
                                 </v-col>
 
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan"
-                                        @click="showPaises()" style="float: right" title="BUSCAR PAISES">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" @click="showPaises()"
+                                        style="float: right" title="BUSCAR PAISES">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -61,8 +61,8 @@
                                 </v-col>
 
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan"
-                                        @click="showCiudades()" style="float: right" title="BUSCAR CIUDAD">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" @click="showCiudades()"
+                                        style="float: right" title="BUSCAR CIUDAD">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -71,6 +71,18 @@
                                         :rules="nombreCiudadRules" @input="nombreCiudad = nombreCiudad.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
+                                <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" @click="showUnidades()"
+                                        style="float: right" title="BUSCAR UNIDAD">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="5">
+                                    <v-text-field v-model="unidad" label="NOMBRE UNIDAD" :counter="50"
+                                        :rules="unidadRules" @input="nombreUnidad = nombreUnidad.toUpperCase()" disabled
+                                        required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="5"></v-col>
 
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="direccionFabrica" label="DIRECCION FABRICA" :counter="100"
@@ -141,8 +153,8 @@
                                 </v-col>
 
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" 
-                                        @click="showCiudades()" style="float: right" title="BUSCAR CIUDAD">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" @click="showCiudades()"
+                                        style="float: right" title="BUSCAR CIUDAD">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -152,19 +164,31 @@
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan"
-                                        @click="showPaises()" style="float: right" title="BUSCAR PAISES">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" @click="showPaises()"
+                                        style="float: right" title="BUSCAR PAISES">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="pais" label="NOMBRE PAIS" :counter="50" 
+                                    <v-text-field v-model="pais" label="NOMBRE PAIS" :counter="50"
                                         @input="pais = pais.toUpperCase()" disabled required></v-text-field>
                                 </v-col>
+                                <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" @click="showUnidades()"
+                                        style="float: right" title="BUSCAR UNIDAD">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="5">
+                                    <v-text-field v-model="unidad" label="NOMBRE UNIDAD" :counter="50"
+                                        :rules="unidadRules" @input="nombreUnidad = nombreUnidad.toUpperCase()" disabled
+                                        required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="5"></v-col>
 
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" 
-                                        @click="showMapa()" style="float: right" title="ABRIR MAPA">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" @click="showMapa()"
+                                        style="float: right" title="ABRIR MAPA">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -337,6 +361,80 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+        <v-dialog v-model="unidadesModal" max-width="900px" lazy-validation persistent>
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>UNIDADES</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-list-item>
+                                        <v-list-item-title class="text-center">
+                                            <h5>UNIDADES</h5>
+                                        </v-list-item-title>
+                                    </v-list-item>
+                                    <v-col cols="12">
+                                        <v-card-title>
+                                            <v-text-field v-model="buscarUnidades" append-icon="mdi-magnify"
+                                                label="BUSCAR UNIDADES" single-line hide-details></v-text-field>
+                                        </v-card-title>
+                                    </v-col>
+                                    <v-data-table :headers="headersUnidad" :items="datosUnidad" :search="buscarUnidades"
+                                        :items-per-page="5" class="elevation-1" id="tableId">
+
+                                        <template #[`item.actions`]="{ item }">
+                                            <v-icon large class="mr-2" @click="seleccionarUnidad(item)" color="#0091EA"
+                                                title="SELECCIONAR UNIDAD">
+                                                mdi-check-circle
+                                            </v-icon>
+                                        </template>
+                                    </v-data-table>
+                                </v-col>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonAct == 1" color="#0A62BF"
+                                                @click="actualizarEmpleado()" style="float: left"
+                                                title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonAct == 0" color="#0ABF55"
+                                                @click="registrarEmpleado()" style="float: left"
+                                                title="REGISTRAR EMPLEADO" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
+                                </v-col>
+                                <v-col cols="8">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeUnidades()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+
+
+                            </v-row>
+                        </v-container>
+                    </v-form>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
 
         <v-dialog v-model="fabricasInhabilitadosModal" max-width="800px" lazy-validation>
             <v-card elevation="5" outlined shaped>
@@ -427,21 +525,23 @@
                                                         </v-col>
 
                                                         <v-col cols="12" md="1">
-                                                            <v-btn class="mx-2" fab dark x-small color="cyan" @click="showPaises()"
-                                                                style="float: right" title="BUSCAR PAISES">
+                                                            <v-btn class="mx-2" fab dark x-small color="cyan"
+                                                                @click="showPaises()" style="float: right"
+                                                                title="BUSCAR PAISES">
                                                                 <v-icon dark> mdi-magnify </v-icon>
                                                             </v-btn>
                                                         </v-col>
                                                         <v-col cols="12" md="5">
                                                             <v-text-field v-model="pais" label="NOMBRE PAIS"
-                                                                :counter="50" :rules="nombreCiudadRules"
-                                                                @input="nombreCiudad = nombreCiudad.toUpperCase()"
+                                                                :counter="50" :rules="nombrePaisRules"
+                                                                @input="nombrePais = nombrePais.toUpperCase()"
                                                                 disabled required></v-text-field>
                                                         </v-col>
 
                                                         <v-col cols="12" md="1">
-                                                            <v-btn class="mx-2" fab dark x-small color="cyan" @click="showCiudades()"
-                                                                style="float: right" title="BUSCAR CIUDAD">
+                                                            <v-btn class="mx-2" fab dark x-small color="cyan"
+                                                                @click="showCiudades()" style="float: right"
+                                                                title="BUSCAR CIUDAD">
                                                                 <v-icon dark> mdi-magnify </v-icon>
                                                             </v-btn>
                                                         </v-col>
@@ -451,6 +551,20 @@
                                                                 @input="nombreCiudad = nombreCiudad.toUpperCase()"
                                                                 disabled required></v-text-field>
                                                         </v-col>
+                                                        <v-col cols="12" md="1">
+                                                            <v-btn class="mx-2" fab dark x-small color="cyan"
+                                                                @click="showUnidades()" style="float: right"
+                                                                title="BUSCAR UNIDAD">
+                                                                <v-icon dark> mdi-magnify </v-icon>
+                                                            </v-btn>
+                                                        </v-col>
+                                                        <v-col cols="12" md="5">
+                                                            <v-text-field v-model="unidad" label="NOMBRE UNIDAD"
+                                                                :counter="50" :rules="unidadRules"
+                                                                @input="nombreUnidad = nombreUnidad.toUpperCase()"
+                                                                disabled required></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="5"></v-col>
 
                                                         <v-col cols="12" md="12">
                                                             <v-text-field v-model="direccionFabrica"
@@ -674,18 +788,22 @@ export default {
             pais: "",
             idCiudad: "",
             ciudad: "",
+            idUnidad: "",
+            unidad: "",
             valid: "",
 
             buscarFabricas: "",
             buscarPaises: "",
             buscarCiudades: "",
-            botonAct:"",
+            buscarUnidades: "",
+            botonAct: "",
             datosFabricas: [],
             headersFabricas: [
                 { text: "NOMBRE FABRICA", value: "nomfab", sortable: false },
                 { text: "CODIGO FABRICA", value: "codfab", sortable: false },
                 { text: "CIUDAD", value: "nomciu", sortable: false },
                 { text: "PAIS", value: "nompai", sortable: false },
+                { text: "UNIDAD", value: "nomuni", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -695,6 +813,7 @@ export default {
                 { text: "CODIGO FABRICA", value: "codfab", sortable: false },
                 { text: "CIUDAD", value: "nomciu", sortable: false },
                 { text: "PAIS", value: "nompai", sortable: false },
+                { text: "UNIDAD", value: "nomuni", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -708,29 +827,34 @@ export default {
                 { text: "NOMBRE", value: "nomciu", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
+            datosUnidad: [],
+            headersUnidad: [
+                { text: "NOMBRE", value: "unid", sortable: false },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
             nombreFabricaRules: [
-            (v) => !!v || "NOMBRE DE LA FABRICA ES REQUERIDO",
-            (v) =>
-                (v && v.length <= 50) ||
-                "EL NOMBRE DE LA FABRICA DEBE TENER 100 CARACTERES COMO MAXIMO",
+                (v) => !!v || "NOMBRE DE LA FABRICA ES REQUERIDO",
+                (v) =>
+                    (v && v.length <= 50) ||
+                    "EL NOMBRE DE LA FABRICA DEBE TENER 100 CARACTERES COMO MAXIMO",
             ],
             codigoFabricaRules: [
-            (v) => !!v || "CODIGO DE LA FABRICA ES REQUERIDO",
-            (v) =>
-                (v && v.length <= 50) ||
-                "EL CODIGO DE LA FABRICA DEBE TENER 25 CARACTERES COMO MAXIMO",
+                (v) => !!v || "CODIGO DE LA FABRICA ES REQUERIDO",
+                (v) =>
+                    (v && v.length <= 50) ||
+                    "EL CODIGO DE LA FABRICA DEBE TENER 25 CARACTERES COMO MAXIMO",
             ],
             paisRules: [
-            (v) => !!v || "PAIS ES REQUERIDO",
+                (v) => !!v || "PAIS ES REQUERIDO",
             ],
             nombreCiudadRules: [
-            (v) => !!v || "CODIGO DE LA FABRICA ES REQUERIDO",
+                (v) => !!v || "CODIGO DE LA FABRICA ES REQUERIDO",
             ],
             direccionRules: [
-            (v) => !!v || "DIRECCION DE LA FABRICA ES REQUERIDO",
-            (v) =>
-                (v && v.length <= 50) ||
-                "LA DIRECCION DE LA FABRICA DEBE TENER 250 CARACTERES COMO MAXIMO",
+                (v) => !!v || "DIRECCION DE LA FABRICA ES REQUERIDO",
+                (v) =>
+                    (v && v.length <= 50) ||
+                    "LA DIRECCION DE LA FABRICA DEBE TENER 250 CARACTERES COMO MAXIMO",
             ],
 
             //#endregion
@@ -742,6 +866,7 @@ export default {
             fabricasInhabilitadosModal: 0,
             ciudadesModal: 0,
             paisesModal: 0,
+            unidadesModal: 0,
             //#endregion
             botonact: 0,
             //#region Snackbars
@@ -844,6 +969,25 @@ export default {
 
                     } else {
                         me.datosCiudad = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        listarUnidad() {
+            this.listarUnidades();
+        },
+        async listarUnidades() {
+            let me = this;
+            await axios
+                .get("/unidad/listarunidades")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosUnidad = [];
+
+                    } else {
+                        me.datosUnidad = response.data.resultado;
                     }
                 })
                 .catch(function (error) {
@@ -984,6 +1128,13 @@ export default {
         closePaises() {
             this.paisesModal = false;
         },
+        showUnidades() {
+            this.unidadesModal = true;
+            this.listarUnidades();
+        },
+        closeUnidades() {
+            this.unidadesModal = false;
+        },
         showAgregarFabrica() {
             this.agregarFabricaModal = true;
         },
@@ -1001,6 +1152,8 @@ export default {
             this.pais = item.nompai;
             this.idCiudad = item.idciu;
             this.ciudad = item.nomciu;
+            this.idUnidad = item.iduni;
+            this.unidad = item.nomuni;
         },
         closeEditFabricaModal() {
             this.editarFabricaModal = false;
@@ -1031,7 +1184,7 @@ export default {
         //#region Seleccion Datos
         seleccionarPais(item) {
             this.idPais = item.idpai;
-            console.log("idPais: "+this.idPais+" idpai: "+item.idpai)
+            console.log("idPais: " + this.idPais + " idpai: " + item.idpai)
             this.pais = item.nompais;
             this.paisesModal = false;
         },
@@ -1039,6 +1192,11 @@ export default {
             this.idCiudad = item.idciu;
             this.ciudad = item.nomciu;
             this.ciudadesModal = false;
+        },
+        seleccionarUnidad(item) {
+            this.idUnidad = item.idunid;
+            this.unidad = item.unid;
+            this.unidadesModal = false;
         },
         //#endregion
     },
