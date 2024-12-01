@@ -312,7 +312,7 @@
                                 <v-tab-item v-if="flag == 1">
                                     <v-card elevation="5" outlined shaped>
                                         <v-card-title>
-                                            <span>AGREGAR PRODUCTO</span>
+                                            <span>AGREGAR TIPO DE PRODUCTO</span>
                                         </v-card-title>
                                         <v-card-text>
                                             <v-form ref="form" v-model="valid" lazy-validation>

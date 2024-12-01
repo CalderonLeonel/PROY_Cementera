@@ -108,15 +108,15 @@
 
 
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
+                                            <v-icon v-if="item.est == 'INACTIVO'" color="green" large class="mr-2"
                                                 @click="activar(item)" title="ACTIVAR PRODUCCION">
                                                 mdi-check-circle-outline
                                             </v-icon>
-                                            <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
+                                            <v-icon v-if="item.est == 'ACTIVO'" color="red" large class="mr-2"
                                                 @click="desactivar(item)" title="DESACTIVAR PRODUCCION">
                                                 mdi-cancel
                                             </v-icon>
-                                            <v-icon small class="mr-2" color="#001781" @click="showInfoProduccion(item)"
+                                            <v-icon large class="mr-2" color="#001781" @click="showInfoProduccion(item)"
                                                 title="VER INFORMACION">
                                                 mdi-eye
                                             </v-icon>
@@ -166,7 +166,7 @@
                                     </template>
 
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" color="#001781" @click="seleccionarProducto(item)">
+                                        <v-icon large class="mr-2" color="#001781" @click="seleccionarProducto(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -220,7 +220,7 @@
                                     </v-icon>
                                     LIST
                                     PROD
-                                    INAC.
+                                    TER.
                                 </v-tab>
 
                                 <v-tab-item v-if="flag == 1">
@@ -391,15 +391,15 @@
 
 
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
+                                            <v-icon v-if="item.est == 'INACTIVO'" color="green" large class="mr-2"
                                                 @click="activar(item)" title="ACTIVAR PRODUCCION">
                                                 mdi-check-circle-outline
                                             </v-icon>
-                                            <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
+                                            <v-icon v-if="item.est == 'ACTIVO'" color="red" large class="mr-2"
                                                 @click="desactivar(item)" title="DESACTIVAR PRODUCCION">
                                                 mdi-cancel
                                             </v-icon>
-                                            <v-icon small class="mr-2" color="#001781" @click="showInfoProduccion(item)"
+                                            <v-icon large class="mr-2" color="#001781" @click="showInfoProduccion(item)"
                                                 title="VER INFORMACION">
                                                 mdi-eye
                                             </v-icon>
