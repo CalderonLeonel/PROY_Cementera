@@ -419,7 +419,59 @@ export default {
         },
       
         
-        
+        async takePhoto() {
+            const video = this.$refs.camera;
+            const canvas = this.$refs.canvas;
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const dataURL = canvas.toDataURL('image/jpeg');
+            this.urlFoto = dataURL;
+
+            const archivo = this.dataURLToFile(dataURL, ''+this.nombres+'.jpg');
+            await this.almacenarArchivo(archivo);
+
+            this.urlFoto = "imagenes/"+this.nombres+".jpg";
+
+            this.isPhotoTaken = true;
+            this.showUrl = true;
+            this.isShotPhoto = true;
+            setTimeout(() => {
+                this.isShotPhoto = false;
+            }, 150);
+        },
+
+        async almacenarArchivo(documentoArchivo) {
+            const formData = new FormData();
+            formData.append('image', documentoArchivo);
+
+            let me = this;
+            await axios
+                .post("/uploadFile/", formData)
+                .then(function (response) {
+                    console.log(response);
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.limpiar();
+                    me.listarDocumentos();
+                    me.listarArchivos();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                });
+        },
+
+
+        dataURLToFile(dataURL, fileName) {
+                const arr = dataURL.split(',');
+                const mime = arr[0].match(/:(.*?);/)[1];
+                const bstr = atob(arr[1]);
+                let n = bstr.length;
+                const u8arr = new Uint8Array(n);
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                return new File([u8arr], fileName, { type: mime });
+        },
 
 
 
