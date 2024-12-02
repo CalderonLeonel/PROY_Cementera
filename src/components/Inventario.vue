@@ -64,7 +64,7 @@
                          <v-col cols="12">
                              <v-list-item>
                                  <v-list-item-title class="text-center">
-                                     <h5>INVENTARIOS</h5>
+                                     <h5>TRANSACCIÓN DE INVENTARIO</h5>
                                  </v-list-item-title>
                              </v-list-item>
                             <v-card-title>
@@ -188,7 +188,7 @@
                          <v-col cols="12">
                              <v-list-item>
                                  <v-list-item-title class="text-center">
-                                     <h5>SALDO DE ITEMS</h5>
+                                     <h5>SALDO GENERAL DE ITEMS POR ALMACEN</h5>
                                  </v-list-item-title>
                              </v-list-item>
  
