@@ -235,6 +235,7 @@ export default {
             idCargo: "",
             idDepartamento: "",
             valid: true,
+            archivo: "",
 
             isShotPhoto: false,
             showUrl: false,
@@ -365,34 +366,47 @@ export default {
             //this.fechaNacimiento = item.nacdte;
             this.ci = item.ci;
             this.telefono = item.tel;
+            this.urlFoto = item.url;
             this.idCargo = item.idcarg;
             this.idDepartamento = item.iddep;
             this.idEmpleado = item.idempl;
+            this.getPhoto();
             this.empleadosModal = false;
         },
         actualizarEMPLEADOImg() {
-                this.actualizarempleadoIMG();
+                this.almacenarArchivo(this.archivo);
+
+                const date = new Date();
+                this.urlFoto = this.idEmpleado+'_'+date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear()+'.jpg';
+                alert(this.idEmpleado);
+                alert(this.urlFoto);
+                this.editarImagenDeEmpleado(this.idEmpleado,this.urlFoto);
+               
         },
-        async actualizarempleadoIMG() {
+
+        async editarImagenDeEmpleado() {
             let me = this;
+            alert(this.idEmpleado);
+            alert(this.urlFoto)
             await axios
                 .post(
-                    "/empleado/subirfoto", +
-                   this.idEmpleado+
+                    "/empleado/subirfoto/" +
+                    this.idEmpleado +
                     "," +
-                    this.urlFoto 
+                    this.urlFoto
                 )
                 .then(function (response) {
+
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarEmpleados(me.idEmpleado);
-                    me.limpiar();
-                    me.closeEmpleado();
+
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
+
                 });
         },
+
         //#endregion
         async startCamera() {
             try {
@@ -427,10 +441,9 @@ export default {
             const dataURL = canvas.toDataURL('image/jpeg');
             this.urlFoto = dataURL;
 
-            const archivo = this.dataURLToFile(dataURL, ''+this.nombres+'.jpg');
-            await this.almacenarArchivo(archivo);
+            this.archivo = this.dataURLToFile(dataURL, this.idEmpleado+'.jpg');
+     
 
-            this.urlFoto = "imagenes/"+this.nombres+".jpg";
 
             this.isPhotoTaken = true;
             this.showUrl = true;
@@ -442,18 +455,18 @@ export default {
 
         async almacenarArchivo(documentoArchivo) {
             const formData = new FormData();
-            formData.append('image', documentoArchivo);
+            formData.append('image', documentoArchivo); 
 
             let me = this;
+        
+
+
             await axios
-                .post("/uploadFile/", formData)
+                .post("/uploadimage/", formData)
                 .then(function (response) {
                     console.log(response);
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.limpiar();
-                    me.listarDocumentos();
-                    me.listarArchivos();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -473,6 +486,45 @@ export default {
                 return new File([u8arr], fileName, { type: mime });
         },
 
+        getPhoto() {
+            let me = this;
+            var path = this.urlFoto; 
+            axios
+                .get("/documento/descargarImagen/" + path, { responseType: 'blob' })  
+                .then(function (response) {
+                    
+                    const url = URL.createObjectURL(response.data);  
+                    me.urlFoto = url;  
+
+                    me.mensajeSnackbar = 'Imagen cargada con éxito';
+                    me.snackbarOK = true;
+                    me.showUrl = true;
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    console.error('Error al cargar la foto:', error);
+                });
+        },
+
+
+        async descargarArchivo(nombre) {
+            let me = this;
+            await axios
+                .get(
+                    "/documento/descargarImagen/" +
+                    nombre
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+        },
 
 
         resetPhoto() {
