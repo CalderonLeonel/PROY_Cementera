@@ -229,6 +229,11 @@
               <h6>DEPARTAMENTOS</h6>
             </v-list-item-title>
           </v-list-item>
+          <v-list-item :to="{ name: 'Carnet' }">
+            <v-list-item-title>
+              <h6>CARNET</h6>
+            </v-list-item-title>
+          </v-list-item>
           <v-list-item :to="{ name: 'Solicitudes' }">
             <v-list-item-title>
               <h6>SOLICITUDES DE PERSONAL</h6>

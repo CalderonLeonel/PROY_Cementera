@@ -291,12 +291,12 @@
                                 <v-col cols="8" md="12">
                                     <v-btn iconv class="mx-4" dark color="#0A62BF"
                                         @click="actualizarAsistencia()" style="float: left"
-                                        title="Encender Cámara">
+                                        title="ENCENDER CAMARA">
                                         <v-icon dark> mdi-pencil </v-icon>
                                         ACTUALIZAR
                                     </v-btn>
                                     <v-btn iconv class="mx-4" dark color="#0ABF55"
-                                        @click="toggleCamera(true)" style="float: left" title="REGISTRAR ITEM">
+                                        @click="toggleCamera(true)" style="float: left" title="GUARDAR FOTO EMPLEADO">
                                         <v-icon dark> mdi-content-save </v-icon>
                                         GUARDAR
                                     </v-btn>
@@ -435,7 +435,7 @@ export default {
             this.empleadoModal = false;
         },
         closeQR() {
-            this.empleadoModal = false;
+            this.lectorQRModal = false;
         },
         showEmpleado(item) {
             this.listarEmpleadosActivos();
