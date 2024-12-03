@@ -286,7 +286,7 @@ export default {
             if (this.$refs.form.validate()) {
                 this.guardarAlerta(this.AlertaArchivo, this.tituloAlerta, this.codigoArchivo, "ACTIVO", this.descripcionAlerta)
                 this.agregarAlerta = false;
-                this.listarAlertas();
+                
             }
         },
 
