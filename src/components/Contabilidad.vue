@@ -16,14 +16,14 @@
 
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-toolbar dense shaped color="#001781">
-                                        <v-toolbar-title style="color: #ffffff;">
+                                    <v-toolbar dense shaped color="#ffffff">
+                                        <v-toolbar-title style="color: #000000;">
                                             <h6>
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
 
-                                        <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="registrarCuenta()"
+                                        <v-btn class="mx-2" fab dark x-small color="primary" @click="registrarCuenta()"
                                             style="float: left" title="REGISTRAR CUENTA CONTABLE">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
@@ -40,7 +40,7 @@
 
         <v-card class="white--text" color="grey lighten-4" max-width="100%">
             <v-card-actions>
-                <v-tabs horizontal color="#002245" center-active grow>
+                <v-tabs horizontal color="#ffffff" center-active grow>
                     <v-tab>
                         <v-icon left>mdi-account-cash</v-icon>
                         CUENTAS CONT
@@ -79,16 +79,16 @@
 
                                 <v-col cols="12" md="8"></v-col>
                                 <v-col cols="12" md="4">
-                                    <v-toolbar dense shaped color="#002245">
-                                        <v-toolbar-title style="color:#ffffff">
+                                    <v-toolbar dense shaped color="#ffffff">
+                                        <v-toolbar-title style="color:#000000">
                                             <h6>OPCIONES</h6>
                                         </v-toolbar-title>
                                         <v-btn v-if="botonact == 1" @click="registrarSaldo()" class="mx-2" fab dark x-small
-                                            color="#EE680B" title="REGISTRAR CUENTA CONTABLE" style="float: left">
+                                            color="success" title="REGISTRAR CUENTA CONTABLE" style="float: left">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
                                         <v-btn v-if="botonact == 0" @click="editarCuenta()" class="mx-2" fab dark x-small
-                                            color="#EE680B" title="ACTUALIZAR CUENTA CONTABLE" style="float: left">
+                                            color="primary" title="ACTUALIZAR CUENTA CONTABLE" style="float: left">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
                                     </v-toolbar>
@@ -149,21 +149,21 @@
 
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-toolbar dense shaped color="#002245">
-                                        <v-toolbar-title style="color:#ffffff">
+                                    <v-toolbar dense shaped color="#ffffff">
+                                        <v-toolbar-title style="color:#000000">
                                             <h6>OPCIONES</h6>
                                         </v-toolbar-title>
-                                        <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                        <v-btn class="mx-2" fab dark x-small color="info"
                                             @click="listarAsientosxFechas()" style="float: left"
                                             title="LISTAR ASIENTOS POR FECHAS">
                                             <v-icon dark> mdi-calendar-search </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                        <v-btn class="mx-2" fab dark x-small color="info"
                                             @click="listarAsientosxCuentas()" style="float: left"
                                             title="LISTAR ASIENTOS POR CUENTAS">
                                             <v-icon dark> mdi-account </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="generarReportePDF()"
+                                        <v-btn class="mx-2" fab dark x-small color="secondary" @click="generarReportePDF()"
                                             title="GENERAR PDF">
                                             <v-icon dark>mdi-printer</v-icon>
                                         </v-btn>
@@ -201,7 +201,7 @@
 
             </v-card-actions>
             <div class="text-center">
-                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                     <strong>{{ mensajeSnackbar }}</strong>
 
 
@@ -215,7 +215,7 @@
 
             <div class="text-center">
 
-                <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="warning" outlined>
                     <strong>{{ mensajeSnackbarError }}</strong>
 
                     <template v-slot:action="{ attrs }">
