@@ -98,7 +98,7 @@
                         </td>
                         <td style="border: inset 0pt"></td>
                     </tr>
-                    <tr style="background-color: #ffffff">
+                   <!-- <tr style="background-color: #ffffff">
                         <td style="border: inset 0pt">
                             <h5>TIPO DE EMPLEADO:</h5>
                         </td>
@@ -111,7 +111,7 @@
                         </td>
                         <td style="border: inset 0pt">{{ gestionActual }}</td>
                         <td style="border: inset 0pt"></td>
-                    </tr>
+                    </tr>-->
                 </tbody>
             </template>
         </v-simple-table>
@@ -127,23 +127,23 @@
 
 
     <div style="display: flex; justify-content: center; align-items: center; position: relative;">
-        <v-card style="width: 150px; height: 150px; position: relative;">
+        <v-card style="width: 100px; height: 100px; position: relative;">
             <div class="camera-shutter" :class="{ 'flash': isShotPhoto }"></div>
 
-            <v-img v-if="showUrl" :src="urlFoto" style="width: 150px; height: 150px;"></v-img>
+            <v-img v-if="showUrl" :src="urlFoto" style="width: 100px; height: 100px;"></v-img>
 
             <div v-else>
                 <video 
                     v-show="!isPhotoTaken" 
                     ref="camera" 
-                    style="width: 150px; height: 150px; object-fit: cover;" 
+                    style="width: 100px; height: 100px; object-fit: cover;" 
                     autoplay>
                 </video>
                 <canvas 
                     v-show="isPhotoTaken" 
                     id="photoTaken" 
                     ref="canvas" 
-                    style="width: 150px; height: 150px;">
+                    style="width: 100px; height: 100px;">
                 </canvas>
             </div>
         </v-card>
@@ -152,15 +152,15 @@
     <v-list-item></v-list-item>
 
         <v-col cols="12" md="4">
-            <v-toolbar dense shaped color="#002245">
-                <v-toolbar-title style="color:#ffffff">
+            <v-toolbar dense shaped color="#ffffff">
+                <v-toolbar-title style="color:#000000FF">
                     <h6>OPCIONES</h6>
                 </v-toolbar-title>
 
-                <v-btn 
+                <v-btn :disabled="!buttonsAreEnabled"
                     class="mx-2" 
                     fab dark x-small 
-                    color="#EE680B" 
+                    color="primary" 
                     style="float: left;" 
                     title="FOTO EMPLEADO" 
                     :class="{ 'is-primary': !isCameraOpen, 'is-danger': isCameraOpen }" 
@@ -168,30 +168,30 @@
                     <v-icon v-if="!isCameraOpen">mdi-camera-plus</v-icon>
                     <v-icon v-else="">mdi-camera-off</v-icon>
                 </v-btn>
-                <v-btn 
+                <v-btn :disabled="!buttonsAreEnabled"
                     v-model="file" 
                     @click="takePhoto()" 
                     class="mx-2" 
                     fab dark x-small 
-                    color="#EE680B" 
+                    color="success" 
                     title="TOMAR FOTO" 
                     style="float: left">
                     <v-icon dark>mdi-camera</v-icon>
                 </v-btn>
-                <v-btn 
+                <v-btn :disabled="!buttonsAreEnabled"
                     v-model="file" 
                     @click="actualizarEMPLEADOImg()" 
                     class="mx-2" 
                     fab dark x-small 
-                    color="#EE680B" 
+                    color="info" 
                     title="GUARDAR FOTO" 
                     style="float: left">
                     <v-icon dark>mdi-cloud-upload</v-icon>
                 </v-btn>
-                <v-btn 
+                <v-btn :disabled="!buttonsAreEnabled"
                     class="mx-2" 
                     fab dark x-small 
-                    color="#EE680B" 
+                    color="warning" 
                     @click="imprimirCarnet()" 
                     style="float: left" 
                     title="IMPRIMIR CARNET">
@@ -200,7 +200,7 @@
                 <v-btn 
                     class="mx-2" 
                     fab dark x-small 
-                    color="#EE680B" 
+                    
                     @click="showEmpleados()" 
                     style="float: right" 
                     title="BUSCAR EMPLEADO">
@@ -245,6 +245,8 @@ export default {
             isLoading: false,
             stream: null,
 
+            buttonsAreEnabled: false,
+
             searchEmpleado: "",
             datosEmpleado: [],
             headersEmpleado: [
@@ -283,40 +285,62 @@ export default {
 
     methods: {
         async generarPDFCarnet(empleadoData) {
-            const doc = new jsPDF();
+    try {
+        const doc = new jsPDF();
 
-            // Agregar la foto del empleado al PDF (reemplaza 'ruta_de_la_imagen_del_empleado.jpg' con la ruta real)
-            const imgData = this.urlFoto;
-            await doc.addImage(imgData, 'JPEG', 15, 15, 60, 60);
+   
+        const primaryColor = [0, 161, 177]; 
+        const secondaryColor = [0, 0, 0];  
 
-            // Agregar los datos del empleado al PDF
-            doc.text(`Documento: ${empleadoData.ci}`, 80, 30);
-            doc.text(`Empleado: ${empleadoData.paterno} ${empleadoData.materno} ${empleadoData.nombres}`, 80, 40);
-            doc.text(`Tipo de Empleado: ${empleadoData.nombreCargo}`, 80, 50);
-            doc.text(`Gestión: ${empleadoData.gestionActual}`, 80, 60);
 
-            // Generar el código QR con los datos del empleado
-            const qrData = JSON.stringify(empleadoData);
-            const qrCanvas = await QRCode.toCanvas(qrData);
-            const qrImage = qrCanvas.toDataURL('image/png');
+        doc.setFillColor(...primaryColor);
+        doc.rect(0, 0, 210, 20, 'F');
 
-            // Agregar el código QR al PDF
-            doc.addImage(qrImage, 'PNG', 15, 80, 40, 40);
 
-            // Guardar el PDF con un nombre específico
-            const nombrePDF = 'carnet_empleado.pdf';
-            doc.save(nombrePDF);
+        doc.setTextColor(...secondaryColor);
+        doc.setFontSize(14);
+        doc.text("CARNET DE EMPLEADO", 105, 10, { align: "center" });
 
-            // Abre el PDF en una nueva ventana para su visualización antes de imprimir
-            const pdfBlob = doc.output('blob');
-            const pdfUrl = URL.createObjectURL(pdfBlob);
-            const printWindow = window.open(pdfUrl, '_blank');
 
-            // Espera un momento antes de imprimir automáticamente
-            setTimeout(() => {
-                printWindow.print();
-            }, 1500); // Ajusta el tiempo según sea necesario
+        const imgData = this.urlFoto;
+        if (!imgData) {
+            throw new Error("La URL de la foto no está disponible.");
+        }
+        await doc.addImage(imgData, 'JPEG', 15, 25, 60, 60);
+
+
+        doc.setTextColor(...secondaryColor);
+        doc.setFontSize(12);
+        doc.text(`Documento: ${empleadoData.ci}`, 80, 40);
+        doc.text(`Empleado: ${empleadoData.paterno} ${empleadoData.materno} ${empleadoData.nombres}`, 80, 50);
+
+
+        const qrData = JSON.stringify(empleadoData);
+        const qrCanvas = await QRCode.toCanvas(qrData);
+        const qrImage = qrCanvas.toDataURL('image/png');
+
+ 
+        doc.addImage(qrImage, 'PNG', 15, 90, 40, 40);
+
+   
+                const nombrePDF = 'carnet_empleado.pdf';
+                const pdfBlob = doc.output('blob');
+                const pdfUrl = URL.createObjectURL(pdfBlob);
+
+                const printWindow = window.open(pdfUrl, '_blank');
+                if (printWindow) {
+                    setTimeout(() => {
+                        printWindow.print();
+                        URL.revokeObjectURL(pdfUrl); 
+                    }, 1500);
+                } else {
+                    console.warn("El navegador bloqueó la ventana emergente. Habilita las ventanas emergentes para continuar.");
+                }
+            } catch (error) {
+                console.error("Error al generar el carnet del empleado:", error);
+            }
         },
+
 
         imprimirCarnet() {
             // Preparar los datos del empleado
@@ -371,6 +395,7 @@ export default {
             this.idDepartamento = item.iddep;
             this.idEmpleado = item.idempl;
             this.getPhoto();
+            this.buttonsAreEnabled = true;
             this.empleadosModal = false;
         },
         actualizarEMPLEADOImg() {
