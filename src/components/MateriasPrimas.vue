@@ -154,26 +154,26 @@
                                                         </v-col>
                                                         <v-col cols="12" md="8"></v-col>
                                                         <v-col cols="12" md="4">
-                                                            <v-toolbar dense shaped color="#002245">
-                                                                <v-toolbar-title style="color:#ffffff">
+                                                            <v-toolbar dense shaped color="#ffffff">
+                                                                <v-toolbar-title style="color:#000000">
                                                                     <h6>OPCIONES</h6>
                                                                 </v-toolbar-title>
 
                                                                 <v-btn v-if="botonAct == 1" class="mx-2" fab dark
-                                                                    x-small color="#EE680B"
+                                                                    x-small color="#0A62BF"
                                                                     @click="actualizarMateriaPrima()"
                                                                     style="float: left"
                                                                     title="ACTUALIZAR INFORMACIÓN Materia Prima">
                                                                     <v-icon dark> mdi-pencil </v-icon>
                                                                 </v-btn>
                                                                 <v-btn v-if="botonAct == 0" class="mx-2" fab dark
-                                                                    x-small color="#EE680B"
+                                                                    x-small color="#0ABF55"
                                                                     @click="registrarMateriaPrima()" style="float: left"
                                                                     title="REGISTRAR PRODUCTO Materia Prima">
                                                                     <v-icon dark> mdi-content-save-plus-outline
                                                                     </v-icon>
                                                                 </v-btn>
-                                                                <v-btn color="#EE680B" class="mx-2" fab dark x-small
+                                                                <v-btn color="#BF120A" class="mx-2" fab dark x-small
                                                                     @click="limpiar()" style="float: left"
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>

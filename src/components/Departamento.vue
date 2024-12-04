@@ -92,7 +92,7 @@
                                 <div class="text-center">
 
                                     <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense
-                                        color="#EE680B" outlined>
+                                        color="danger" outlined>
                                         <strong>{{ mensajeSnackbarError }}</strong>
 
                                         <template v-slot:action="{ attrs }">

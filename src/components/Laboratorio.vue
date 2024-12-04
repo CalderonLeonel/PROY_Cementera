@@ -200,27 +200,27 @@
 
                         <v-col cols="12" md="8"> </v-col>
                         <v-col cols="12" md="4">
-                            <v-toolbar dense shaped color="#001781">
-                                <v-toolbar-title style="color: #ffffff;">
+                            <v-toolbar dense shaped color="#ffffff">
+                                <v-toolbar-title style="color: #000000;">
                                     <h6>
                                         OPCIONES
                                     </h6>
                                 </v-toolbar-title>
-                                <v-btn color="#EE680B" class="mx-2" fab dark x-small @click="limpiar()"
+                                <v-btn class="mx-2" color="#00A1B1" fab dark x-small @click="limpiar()"
                                     style="float: left" title="BUSCAR PRODUCTO DEL LABORATORIO">
                                     <v-icon dark> mdi-magnify-plus </v-icon>
                                 </v-btn>
-                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="#EE680B"
+                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="#0A62BF"
                                     @click="actualizarProductos()" style="float: left"
                                     title="ACTUALIZAR INFORMACIÓN LABORATORIO">
                                     <v-icon dark> mdi-pencil </v-icon>
                                 </v-btn>
-                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="#EE680B"
+                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="#0ABF55"
                                     @click="registrarProductoLabo()" style="float: left"
                                     title="REGISTRAR PRODUCTO LABORATORIO">
                                     <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                 </v-btn>
-                                <v-btn color="#EE680B" class="mx-2" fab dark x-small @click="limpiar()"
+                                <v-btn color="#BF120A" class="mx-2" fab dark x-small @click="limpiar()"
                                     style="float: left" title="LIMPIAR FORMULARIO">
                                     <v-icon dark> mdi-eraser </v-icon>
                                 </v-btn>
@@ -317,19 +317,19 @@
 
                                         <v-col cols="12" md="8"> </v-col>
                                         <v-col cols="12" md="4">
-                                            <v-toolbar dense shaped color="#001781">
-                                                <v-toolbar-title style="color: #ffffff;">
+                                            <v-toolbar dense shaped color="#ffffff">
+                                                <v-toolbar-title style="color: #000000;">
                                                     <h6>
                                                         OPCIONES
                                                     </h6>
                                                 </v-toolbar-title>
 
-                                                <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                                <v-btn class="mx-2" fab dark x-small color="#0ABF55"
                                                     @click="registrarObservacionLabo()" style="float: left"
                                                     title="REGISTRAR PRODUCTO LABORATORIO">
                                                     <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                                 </v-btn>
-                                                <v-btn color="#EE680B" class="mx-2" fab dark x-small @click="limpiar()"
+                                                <v-btn color="#BF120A" class="mx-2" fab dark x-small @click="limpiar()"
                                                     style="float: left" title="LIMPIAR FORMULARIO">
                                                     <v-icon dark> mdi-eraser </v-icon>
                                                 </v-btn>
