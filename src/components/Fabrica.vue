@@ -117,7 +117,7 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="#b794f6" @click="closeAgregarFabrica()"
+                                    <v-btn class="mx-2" fab dark x-small color="#b794f6" @click="closeEditFabricaModal()"
                                         style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
@@ -202,7 +202,7 @@
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
                                     <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                        @click="closeAgregarFabrica()" style="float: right" title="SALIR">
+                                        @click="closeInfoFabricaModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -1018,7 +1018,9 @@ export default {
                     "," +
                     this.idPais +
                     "," +
-                    this.idCiudad
+                    this.idCiudad +
+                    "," +
+                    this.idUnidad
                 )
                 .then(function (response) {
 
@@ -1060,14 +1062,16 @@ export default {
                     "," +
                     this.idPais +
                     "," +
-                    this.idCiudad
+                    this.idCiudad +
+                    "," +
+                    this.idUnidad
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.listarFabricas();
-                    me.editFabricaModal = false;
+                    me.closeEditFabricaModal();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;

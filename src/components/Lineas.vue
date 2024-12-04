@@ -312,16 +312,16 @@
 
                                                                 <template #[`item.actions`]="{ item }">
                                                                     <v-icon v-if="item.est == 'INACTIVO'" color="green"
-                                                                        small class="mr-2" @click="activar(item)"
+                                                                        large class="mr-2" @click="activar(item)"
                                                                         title="ACTIVAR LINEAS">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
                                                                     <v-icon v-if="item.est == 'ACTIVO'" color="red"
-                                                                        small class="mr-2" @click="desactivar(item)"
+                                                                        large class="mr-2" @click="desactivar(item)"
                                                                         title="DESACTIVAR LINEAS">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                    <v-icon large class="mr-2" color="#001781"
                                                                         @click="showInfoLinea(item)"
                                                                         title="VER INFORMACION">
                                                                         mdi-eye

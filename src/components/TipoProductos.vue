@@ -249,7 +249,7 @@
 
 
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon small class="mr-2" color="#001781" @click="seleccionarLinea(item)"
+                                            <v-icon large class="mr-2" color="#001781" @click="seleccionarLinea(item)"
                                                 title="SELECCIONAR LINEA">
                                                 mdi-check-circle
                                             </v-icon>
@@ -499,16 +499,16 @@
 
                                                                 <template #[`item.actions`]="{ item }">
                                                                     <v-icon v-if="item.est == 'INACTIVO'" color="green"
-                                                                        small class="mr-2" @click="activar(item)"
+                                                                        large class="mr-2" @click="activar(item)"
                                                                         title="ACTIVAR TipoS">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
                                                                     <v-icon v-if="item.est == 'ACTIVO'" color="red"
-                                                                        small class="mr-2" @click="desactivar(item)"
+                                                                        large class="mr-2" @click="desactivar(item)"
                                                                         title="DESACTIVAR TipoS">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                    <v-icon large class="mr-2" color="#001781"
                                                                         @click="showInfoTipo(item)"
                                                                         title="VER INtipoCION">
                                                                         mdi-eye
