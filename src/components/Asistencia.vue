@@ -191,7 +191,7 @@
                                         </v-toolbar-title>
                                         <v-col cols="2">
                                             <v-btn icon v-if="botonAct == 1" color="#0A62BF"
-                                                @click="actualizarAsistencia()" style="float: left"
+                                                @click="registrarAsistencia()" style="float: left"
                                                 title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
