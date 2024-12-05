@@ -154,8 +154,8 @@
         </v-dialog>
 
         <div>
-            <v-alert dense style="color: #ffffff;" color="grey">
-                <h5>Laboratorio</h5>
+            <v-alert dense color="cyan" style="color: #ffffff">
+                <h5>LABORATORIO</h5>
             </v-alert>
         </div>
         <div>

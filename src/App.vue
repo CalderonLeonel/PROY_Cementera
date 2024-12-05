@@ -155,7 +155,7 @@
 
           <v-list-item :to="{ name: 'Clientes' }">
             <v-list-item-title>
-              <h6>Clientes</h6>
+              <h6>CLIENTES</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
