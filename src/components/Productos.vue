@@ -270,7 +270,7 @@
                                             @click="registrarProducto()" style="float: left" title="REGISTRAR PRODUCTO">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
-                                        <v-btn color="danger" class="mx-2" fab dark x-small @click="limpiar()"
+                                        <v-btn color="error" class="mx-2" fab dark x-small @click="limpiar()"
                                             style="float: left" title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -421,7 +421,7 @@
                                                                     <v-icon dark> mdi-content-save-plus-outline
                                                                     </v-icon>
                                                                 </v-btn>
-                                                                <v-btn icon color="#EE680B" class="mx-2" fab dark
+                                                                <v-btn icon color="error" class="mx-2" fab dark
                                                                     @click="limpiar()" style="float: left"
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>

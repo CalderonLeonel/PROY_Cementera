@@ -284,7 +284,7 @@
                                                                     style="float: left" title="REGISTRAR PRODUCCION">
                                                                     <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                                                 </v-btn>
-                                                                <v-btn icon color="#EE680B" class="mx-2" fab dark
+                                                                <v-btn icon color="error" class="mx-2" fab dark
                                                                     @click="limpiar()" style="float: left"
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>

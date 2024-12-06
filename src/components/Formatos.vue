@@ -39,16 +39,16 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarFormato()"
+                                        <v-btn icon v-if="botonact == 1" color="primary" @click="actualizarFormato()"
                                             style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px"
                                             height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarFormato()"
+                                        <v-btn icon v-if="botonact == 0" color="success" @click="registrarFormato()"
                                             style="float: left" title="REGISTRAR Formato" width="28px" height="28px">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
-                                        <v-btn icon color="#EE680B" @click="limpiar()" style="float: left"
+                                        <v-btn icon color="error" @click="limpiar()" style="float: left"
                                             title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -137,16 +137,16 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 1" color="#EE680B"
+                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 1" color="primary"
                                             @click="editarFormatos()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 0" color="#EE680B"
-                                            @click="registrarFormato()" style="float: left" title="REGISTRAR Formato">
+                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 0" color="success"
+                                            @click="registrarFormato()" style="float: left" title="REGISTRAR FORMATO">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark small icon color="#EE680B" @click="limpiar()"
+                                        <v-btn class="mx-2" fab dark small icon color="error" @click="limpiar()"
                                             style="float: left" title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>

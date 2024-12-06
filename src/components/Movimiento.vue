@@ -326,7 +326,7 @@
                                                                             </v-icon>
                                                                         </v-btn>
                                                                         <v-btn icon class="mx-2" fab dark
-                                                                            color="#EE680B" @click="limpiar()"
+                                                                            color="error" @click="limpiar()"
                                                                             style="float: left"
                                                                             title="LIMPIAR FORMULARIO">
                                                                             <v-icon dark> mdi-eraser </v-icon>

@@ -80,11 +80,11 @@
                                             @click="editarLineas()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 0" color="#EE680B"
+                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 0" color="success"
                                             @click="registrarLinea()" style="float: left" title="REGISTRAR LINEA">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark small icon color="#EE680B" @click="limpiar()"
+                                        <v-btn class="mx-2" fab dark small icon color="error" @click="limpiar()"
                                             style="float: left" title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -187,7 +187,7 @@
                                                                     <v-icon dark> mdi-content-save-plus-outline
                                                                     </v-icon>
                                                                 </v-btn>
-                                                                <v-btn icon class="mx-2" fab dark color="#EE680B"
+                                                                <v-btn icon class="mx-2" fab dark color="error"
                                                                     @click="limpiar()" style="float: left"
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>

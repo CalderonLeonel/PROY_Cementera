@@ -69,7 +69,7 @@
                                             style="float: left" title="REGISTRAR CLIENTE" width="28px" height="28px">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
-                                        <v-btn icon color="#EE680B" @click="limpiar()" style="float: left"
+                                        <v-btn icon color="error" @click="limpiar()" style="float: left"
                                             title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
