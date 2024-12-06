@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="5" outlined shaped>
 
-        <v-dialog v-model="infoLineaModal" max-width="800px">
+        <v-dialog v-model="infoLineaModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>INFORMACION DE LA LINEA:</span><br>
@@ -43,7 +43,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="editLineaModal" max-width="700px" persistent>
+        <v-dialog v-model="editLineaModal"  max-width="700px" persistent>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>EDITAR LINEA</span>

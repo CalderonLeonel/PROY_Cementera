@@ -1,6 +1,6 @@
 <template>
     <v-card elevation="5" outlined shaped>
-        <v-dialog v-model="formatoModal" max-width="900px">
+        <v-dialog v-model="formatoModal" persistent max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE FORMATOS</span>
@@ -35,9 +35,10 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeFormato()" style="float: right" title="SALIR">
+                                <v-btn iconv dark color="#00A1B1" @click="closeFormato()"
+                                        style="float: right" title="SALIR">
                                     <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -46,7 +47,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="tipoProductoModal" max-width="900px">
+        <v-dialog v-model="tipoProductoModal" persistent max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE TIPOS</span>
@@ -78,9 +79,10 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeTipos()" style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                <v-btn iconv dark color="#00A1B1" @click="closeTipos()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -89,7 +91,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="fabricasModal" max-width="900px">
+        <v-dialog v-model="fabricasModal" persistent max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE FABRICAS</span>
@@ -100,7 +102,7 @@
                             <v-col cols="12">
                                 <v-list-item>
                                     <v-list-item-title class="text-center">
-                                        <h5>Fabricas</h5>
+                                        <h5>FABRICAS</h5>
                                     </v-list-item-title>
                                 </v-list-item>
 
@@ -128,13 +130,21 @@
 
                                 </v-data-table>
                             </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn iconv dark color="#00A1B1" @click="closeFabricas()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                </v-btn>
+                            </v-col>
                         </v-row>
                     </v-container>
                 </v-card-text>
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="infoProductoModal" max-width="800px">
+        <v-dialog v-model="infoProductoModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>INFORMACION DEL PRODUCTO:</span><br>
@@ -189,7 +199,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="editarProductoModal" max-width="1000px" persistent>
+        <v-dialog v-model="editarProductoModal" persistent max-width="1000px" >
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>EDITAR PRODUCTO</span>
@@ -925,6 +935,10 @@ export default {
         showFabricas() {
             this.fabricasModal = true;
             this.listarFabricas();
+        },
+
+        closeFabricas() {
+            this.fabricasModal = false;
         },
         showProductosInhabilitados() {
             this.productosInhabilitadosModal = true;

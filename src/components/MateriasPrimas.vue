@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="5" outline shaped>
 
-        <v-dialog v-model="proveedoresModal" max-width="1000px">
+        <v-dialog v-model="proveedoresModal" persistent max-width="1000px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>PROVEEDORES</span><br>
@@ -45,7 +45,7 @@
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeClienteModal()" style="float: right" title="SALIR">
+                                        @click="closeProveedor()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -637,6 +637,9 @@ export default {
         showProveedor() {
             this.proveedoresModal = true;
             this.listarProveedores()
+        },
+        closeProveedor(){
+            this.proveedoresModal = false;
         },
         //#endregion
         //#region Cambios Estado

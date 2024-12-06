@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="5" outlined shaped>
 
-        <v-dialog v-model="productosModal" max-width="800px">
+        <v-dialog v-model="productosModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE PRODUCTOS:</span><br>
@@ -40,6 +40,13 @@
 
                                     </v-data-table>
                                 </v-col>
+                                <v-col cols="12" sm="4" md="12">
+                                    <v-btn iconv dark color="#00A1B1" @click="closeProductos()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
                             </v-row>
                         </v-container>
                     </v-form>
@@ -47,7 +54,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="fabricasModal" max-width="800px">
+        <v-dialog v-model="fabricasModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE FABRICAS:</span><br>
@@ -93,7 +100,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="infoMovimientoModal" max-width="800px">
+        <v-dialog v-model="infoMovimientoModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>INFORMACION DEL MOVIMIENTO:</span><br>

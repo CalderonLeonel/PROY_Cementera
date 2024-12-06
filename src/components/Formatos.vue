@@ -1,6 +1,6 @@
 <template>
     <v-card elevation="5" outlined shaped>
-        <v-dialog v-model="agregarFormatoModal" max-width="800px">
+        <v-dialog v-model="agregarFormatoModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>AGREGAR FORMATO</span>
@@ -62,7 +62,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="infoFormatoModal" max-width="800px">
+        <v-dialog v-model="infoFormatoModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>INFORMACION DEL FORMATO:</span><br>
@@ -168,7 +168,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="formatosInhabilitadosModal" max-width="800px">
+        <v-dialog v-model="formatosInhabilitadosModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>FORMATOS INACTIVOS</span><br>
