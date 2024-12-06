@@ -40,6 +40,13 @@
 
                                     </v-data-table>
                                 </v-col>
+                                <v-col cols="12" sm="4" md="12">
+                                    <v-btn iconv dark color="#00A1B1" @click="closeProductos()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
                             </v-row>
                         </v-container>
                     </v-form>
