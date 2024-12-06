@@ -27,7 +27,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="editarFabricaModal" max-width="900px" lazy-validation>
+        <v-dialog v-model="editarFabricaModal" persistent max-width="900px" lazy-validation>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>EDITAR FABRICA</span>
@@ -130,7 +130,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="infoFabricaModal" max-width="900px" lazy-validation>
+        <v-dialog v-model="infoFabricaModal" persistent max-width="900px" lazy-validation>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>INFORMACION DE LA FABRICA</span>
