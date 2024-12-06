@@ -821,9 +821,9 @@ export default {
                 //let finalY = doc.previousAutoTable.finalY;
                 startY += 20;
                 doc.setFont("helvetica", "bold");
-                doc.text("Total: " + total.toFixed(2) + " Bs.", 110, 10 + startY)
-                doc.text("Son: " + this.transformToBolivianos(total.toFixed(2)), 120, 20 + startY)
 
+                doc.text("Total: " + total.toFixed(2) + " Bs.", 20, 10 + startY)
+                doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 20, 20 + startY )
 
                 startY += 40;
                 doc.setFontSize(8);
@@ -887,8 +887,8 @@ export default {
                 //let finalY = doc.previousAutoTable.finalY;
                 startY += 20;
                 doc.setFont("helvetica", "bold");
-                doc.text("Total: " + total.toFixed(2) + " Bs.", 105, 10 + startY)
-                doc.text("Son: " + this.transformToBolivianos(total.toFixed(2)), 105, 20 + startY)
+                doc.text("Total: "+total.toFixed(2)+" Bs.", 20, 10 + startY)
+                doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 20, 20 + startY )
 
 
                 doc.save("recibo_" + this.getFormattedDateTime(fechaVenta) + ".pdf");
