@@ -1,6 +1,6 @@
 <template>
     <v-card elevation="5" outlined shaped>
-        <v-dialog v-model="agregarProduccionModal" max-width="800px">
+        <v-dialog v-model="agregarProduccionModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>AGREGAR PRODUCCION</span>
@@ -26,7 +26,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="infoProduccionModal" max-width="800px">
+        <v-dialog v-model="infoProduccionModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>INFORMACION DE PRODUCCION:</span><br>
@@ -77,7 +77,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="produccionTerminadaModal" max-width="800px">
+        <v-dialog v-model="produccionTerminadaModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>PRODUCCIONES TERMINADAS</span><br>
@@ -140,7 +140,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="productosModal" max-width="900px">
+        <v-dialog v-model="productosModal" persistent max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE PRODUCTOS</span>
@@ -176,7 +176,7 @@
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
                                 <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeproductos()" style="float: right" title="SALIR">
+                                    @click="closeProductosModal()" style="float: right" title="SALIR">
                                     <v-icon dark> mdi-close-circle-outline </v-icon>
                                 </v-btn>
                             </v-col>
