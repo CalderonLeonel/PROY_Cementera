@@ -177,7 +177,7 @@
                                 class="elevation-1" id="tableId">
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon small class="mr-2" color="#001781" @click="seleccionarProducto()">
+                                    <v-icon small class="mr-2" color="#001781" @click="seleccionarProducto(item)">
                                         mdi-check-circle
                                     </v-icon>
                                 </template>
@@ -443,6 +443,11 @@ export default {
             try {
                 const response = await axios.get("/venta/ultimaventa");
                 this.datosUltimaVenta = response.data.resultado || [];
+                this.datosUltimaVenta.forEach((venta) => {
+                            this.idUltimaVenta = venta.idven;
+                            this.fechaVenta = venta.creadate;
+                        });
+                console.log(this.idUltimaVenta);
             } catch (error) {
                 console.error("Error al recuperar última venta:", error);
             }
@@ -494,7 +499,7 @@ export default {
                 if (miles === 1) {
                     texto += "mil ";
                 } else {
-                    texto += numeroALetras(miles) + " mil ";
+                    texto += this.numberToLetters(miles) + " mil ";
                 }
             }
 
@@ -569,46 +574,24 @@ export default {
                     this.idCliente + "," +
                     this.venta.idEmpleado
                 );
-                if (response.status == 200 ||  response.data.success) {
-                        this.recuperarUltimaVenta().then(() => {
-                            this.datosUltimaVenta.forEach((venta, index) => {
-                                this.idUltimaVenta = venta.idven;
-                                this.fechaVenta = venta.creadate;
-                            });
-                        this.imprimirFactura(this.nit, this.razonSocial, this.idUltimaVenta, this.fechaVenta);
 
-                        this.imprimirRecibo(this.razonSocial, this.idUltimaVenta, this.fechaVenta);
-                    })
-                }
-                
 
-                if (response.data && response.data.success) {
                     this.mensajeSnackbar = response.data.message || "Venta registrada exitosamente";
                     console.log('snackbar positivo');
                     this.snackbarOK = true;
                     this.snackbarError = false;
-                    // Recuperar la última venta
-                    console.log("recuperar ultima venta")
                     this.recuperarUltimaVenta();
-                    
-
-                    this.recuperarUltimaVenta();
-                     this.registrarVentasCarrito();
-                     this.registrarAsientosContables();
-
+                    console.log('se registra el carrito')
+                    await this.registrarVentasCarrito()
+                    console.log('se imprime la factura') 
+                    await this.imprimirDocumentos();
+                    console.log(this.idUltimaVenta)
+                   
+                    console.log('se registran los asientos contables')
+                    this.registrarAsientosContables();
                     this.resetVenta();
-
-
-                } else {
-                    console.log('snackbar error');
-                    console.log(response.data.Error);
-                    this.mensajeSnackbarError = response.data.message;
-                    throw new Error(response.data.message || "Error desconocido al registrar la venta");
-                }
             } catch (error) {
                 console.error("Error al registrar la venta:", error);
-                console.log(response.data.message);
-                console.log(error.response?.data?.message );
                 this.mensajeSnackbarError = error.response?.data?.message || error.message || "Error al registrar la venta";
                 this.snackbarError = true;
                 this.snackbarOK = false;
@@ -775,6 +758,11 @@ export default {
                 console.error("No se encontró una cuenta de ventas.");
                 return null;
             }
+        },
+
+        async imprimirDocumentos(){
+            this.imprimirRecibo(this.razonSocial, this.idUltimaVenta, this.fechaVenta);
+            this.imprimirFactura(this.nit, this.razonSocial, this.idUltimaVenta, this.fechaVenta);
         },
 
         async imprimirFactura(nit, razonSocial, idventa, fechaVenta) {
