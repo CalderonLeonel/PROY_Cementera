@@ -54,16 +54,16 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarTipo()"
+                                        <v-btn icon v-if="botonact == 1" color="primary" @click="actualizarTipo()"
                                             style="float: left" title="ACTUALIZAR INtipoCIÓN" width="28px"
                                             height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarTipo()"
+                                        <v-btn icon v-if="botonact == 0" color="success" @click="registrarTipo()"
                                             style="float: left" title="REGISTRAR TIPO" width="28px" height="28px">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
-                                        <v-btn icon color="#EE680B" @click="limpiar()" style="float: left"
+                                        <v-btn icon color="error" @click="limpiar()" style="float: left"
                                             title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -166,11 +166,11 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 1" color="#EE680B"
+                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 1" color="primary"
                                             @click="editarTipos()" style="float: left" title="ACTUALIZAR INFORMACION">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark small icon color="#EE680B" @click="limpiar()"
+                                        <v-btn class="mx-2" fab dark small icon color="error" @click="limpiar()"
                                             style="float: left" title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -180,7 +180,7 @@
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeAgregarTipo()" style="float: right" title="SALIR">
+                                        @click="closeEditTipoModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -371,7 +371,7 @@
                                                                     <v-icon dark> mdi-content-save-plus-outline
                                                                     </v-icon>
                                                                 </v-btn>
-                                                                <v-btn icon class="mx-2" fab dark color="#EE680B"
+                                                                <v-btn icon class="mx-2" fab dark color="error"
                                                                     @click="limpiar()" style="float: left"
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>
@@ -816,6 +816,11 @@ export default {
             this.idLinea = item.idlin;
             this.nombreLinea = item.nomlin
         },
+
+        closeEditTipoModal(item) {
+            this.editTipoModal = false;
+        },
+
         showTiposInhabilitados() {
             this.tiposInhabilitadosModal = true
             this.listarTiposInh();
