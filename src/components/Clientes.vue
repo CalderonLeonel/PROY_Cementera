@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="5" outlined shaped>
 
-        <v-dialog v-model="agregarClienteModal" max-width="800px">
+        <v-dialog v-model="agregarClienteModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>AGREGAR CLIENTE</span>
@@ -52,13 +52,7 @@
                                 <v-col cols="12" md="4"></v-col>
 
                                 <v-col cols="12" md="4"></v-col>
-                                <v-col cols="10"></v-col>
-                                <v-col cols="2">
-                                    <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                        @click="closeAgregarCliente()" style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                    </v-btn>
-                                </v-col>
+                               
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="12" md="4">
                                     <v-toolbar dense shaped>
@@ -81,6 +75,17 @@
                                         </v-btn>
                                     </v-toolbar>
                                 </v-col>
+                                <v-col cols="10"></v-col>
+                                <v-col cols="10"></v-col>
+        
+                                <v-col cols="12" sm="4" md="2">
+                                    <v-btn iconv dark color="#00A1B1" @click="closeAgregarCliente()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>  
+                               
                             </v-row>
                         </v-container>
                     </v-form>
@@ -89,7 +94,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="infoClienteModal" max-width="800px">
+        <v-dialog v-model="infoClienteModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>INFORMACION DEL CLIENTE:</span><br>
@@ -141,13 +146,7 @@
                                 <v-col cols="12" md="4"></v-col>
 
                                 <v-col cols="12" md="4"></v-col>
-                                <v-col cols="10"></v-col>
-                                <v-col cols="2">
-                                    <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                        @click="closeInfoClienteModal()" style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                    </v-btn>
-                                </v-col>
+                              
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="12" md="4">
                                     <v-toolbar dense shaped>
@@ -170,6 +169,15 @@
                                         </v-btn>
                                     </v-toolbar>
                                 </v-col>
+                                <v-col cols="10"></v-col>
+                                <v-col cols="12" sm="4" md="2">
+                                    <v-btn iconv dark color="#00A1B1" @click="closeInfoClienteModal()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                              
                             </v-row>
                         </v-container>
                     </v-form>
@@ -178,7 +186,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="editClienteModal" max-width="700px">
+        <v-dialog v-model="editClienteModal" persistent max-width="700px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>ACTUALIZAR CLIENTE</span>
@@ -229,13 +237,7 @@
                                 <v-col cols="12" md="4"></v-col>
 
                                 <v-col cols="12" md="4"></v-col>
-                                <v-col cols="10"></v-col>
-                                <v-col cols="2">
-                                    <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                        @click="closeEditClienteModal()" style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                    </v-btn>
-                                </v-col>
+                                                           
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="12" md="4">
                                     <v-toolbar dense shaped>
@@ -258,6 +260,15 @@
                                         </v-btn>
                                     </v-toolbar>
                                 </v-col>
+                                <v-col cols="10"></v-col>
+        
+                                    <v-col cols="12" sm="4" md="2">
+                                    <v-btn iconv dark color="#00A1B1" @click="closeEditClienteModal()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>  
                             </v-row>
                         </v-container>
                     </v-form>
@@ -266,7 +277,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="clientesInhabilitadasModal" max-width="800px">
+        <v-dialog v-model="clientesInhabilitadasModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>CLIENTES INACTIVOS</span><br>
@@ -314,12 +325,14 @@
                                     </v-data-table>
                                 </v-col>
                                 <v-col cols="10"></v-col>
-                                <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeClientesInhabilitadas()" style="float: right" title="SALIR">
+                                <v-col cols="10"></v-col>
+                                <v-col cols="12" sm="4" md="2">
+                                    <v-btn iconv dark color="#00A1B1" @click="closeClientesInhabilitadas()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
-                                </v-col>
+                                </v-col>                   
 
                             </v-row>
                         </v-container>
