@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="5" outlined shaped>
 
-        <v-dialog v-model="clientesModal" max-width="1000px">
+        <v-dialog v-model="clientesModal" persistent max-width="1000px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>CLIENTES</span><br>
@@ -57,7 +57,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="cantidadModal" max-width="500px">
+        <v-dialog v-model="cantidadModal" persistent max-width="500px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>CANTIDAD</span><br>
@@ -71,18 +71,25 @@
                                 </v-col>
                                 <v-col cols="12" md="6"> </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-toolbar dense shaped color="#001781">
-                                        <v-toolbar-title style="color: #ffffff;">
+                                    <v-toolbar dense shaped color="#FFFFFF">
+                                        <v-toolbar-title style="color: #000000;">
                                             <h6>
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                        <v-btn class="mx-2" fab dark x-small color="success"
                                             @click="agregarProductoAlCarrito()" style="float: left"
                                             title="AGREGAR PRODUCTO">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
                                     </v-toolbar>
+                                </v-col>
+                                <v-col cols="12" sm="4" md="12">
+                                    <v-btn iconv dark color="#00A1B1" @click="closeCantidad()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -754,6 +761,10 @@ export default {
                 this.cantidad = 0;
                 this.productoSeleccionado = null;
             }
+        },
+
+        closeCantidad(){
+            this.cantidadModal = false;
         },
 
         seleccionarCuentaContableVentas() {
