@@ -144,7 +144,7 @@
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
                                     <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                        @click="closeAgregarCliente()" style="float: right" title="SALIR">
+                                        @click="closeInfoClienteModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -232,7 +232,7 @@
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
                                     <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                        @click="closeAgregarCliente()" style="float: right" title="SALIR">
+                                        @click="closeEditClienteModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -297,15 +297,15 @@
 
 
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
+                                            <v-icon v-if="item.est == 'INACTIVO'" color="green" large class="mr-2"
                                                 @click="activar(item)" title="ACTIVAR ClienteS">
                                                 mdi-check-circle-outline
                                             </v-icon>
-                                            <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
+                                            <v-icon v-if="item.est == 'ACTIVO'" color="red" large class="mr-2"
                                                 @click="desactivar(item)" title="DESACTIVAR ClienteS">
                                                 mdi-cancel
                                             </v-icon>
-                                            <v-icon small class="mr-2" color="#001781" @click="showInfoCliente(item)"
+                                            <v-icon large class="mr-2" color="#001781" @click="showInfoCliente(item)"
                                                 title="VER INFORMACION">
                                                 mdi-eye
                                             </v-icon>
@@ -316,7 +316,7 @@
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
                                     <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeInfoClienteModal()" style="float: right" title="SALIR">
+                                        @click="closeClientesInhabilitadas()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -330,7 +330,7 @@
         </v-dialog>
 
         <div>
-            <v-alert dense color="grey" style="color: #ffffff">
+            <v-alert dense color="cyan" style="color: #ffffff">
                 <h5>CLIENTES</h5>
             </v-alert>
         </div>
@@ -362,19 +362,19 @@
 
                                 <template #[`item.actions`]="{ item }">
 
-                                    <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
+                                    <v-icon v-if="item.est == 'INACTIVO'" color="green" large class="mr-2"
                                         @click="activar(item)" title="ACTIVAR CLIENTES">
                                         mdi-check-circle-outline
                                     </v-icon>
-                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
+                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" large class="mr-2"
                                         @click="desactivar(item)" title="DESACTIVAR CLIENTES">
                                         mdi-cancel
                                     </v-icon>
-                                    <v-icon small class="mr-2" @click="showEditClienteModal(item)"
+                                    <v-icon large class="mr-2" @click="showEditClienteModal(item)"
                                         title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
                                     </v-icon>
-                                    <v-icon small class="mr-2" color="#001781" @click="showInfoCliente(item)"
+                                    <v-icon large class="mr-2" color="#001781" @click="showInfoCliente(item)"
                                         title="VER INFORMACION">
                                         mdi-eye
                                     </v-icon>
