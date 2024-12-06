@@ -98,16 +98,16 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn v-if="botonact == 1" color="#EE680B" @click="editarFabricas()"
+                                        <v-btn v-if="botonact == 1" color="primary" @click="editarFabricas()"
                                             class="mx-2" fab dark x-small style="float: left"
                                             title="ACTUALIZAR FABRICA">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn v-if="botonact == 0" color="#EE680B" @click="registroFabrica()"
+                                        <v-btn v-if="botonact == 0" color="success" @click="registroFabrica()"
                                             class="mx-2" fab dark x-small style="float: left" title="REGISTRAR FABRICA">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
-                                        <v-btn @click="limpiar()" color="#EE680B" style="float: left" class="mx-2" fab
+                                        <v-btn @click="limpiar()" color="error" style="float: left" class="mx-2" fab
                                             dark x-small title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -214,16 +214,16 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="editarFabricas()"
-                                            style="float: left" title="ACTUALIZAR INFabricaCIÓN" width="28px"
+                                        <v-btn icon v-if="botonact == 1" color="primary" @click="editarFabricas()"
+                                            style="float: left" title="ACTUALIZAR FABRICA" width="28px"
                                             height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarFabrica()"
-                                            style="float: left" title="REGISTRAR Fabrica" width="28px" height="28px">
+                                        <v-btn icon v-if="botonact == 0" color="success" @click="registrarFabrica()"
+                                            style="float: left" title="REGISTRAR FABRICA" width="28px" height="28px">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
-                                        <v-btn icon color="#EE680B" @click="limpiar()" style="float: left"
+                                        <v-btn icon color="error" @click="limpiar()" style="float: left"
                                             title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -593,7 +593,7 @@
                                                                     <v-icon dark> mdi-content-save-plus-outline
                                                                     </v-icon>
                                                                 </v-btn>
-                                                                <v-btn icon @click="limpiar()" color="#EE680B"
+                                                                <v-btn icon @click="limpiar()" color="error"
                                                                     style="float: left" class="mx-2" fab dark x-small
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>
