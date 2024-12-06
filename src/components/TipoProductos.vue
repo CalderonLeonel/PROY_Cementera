@@ -1,6 +1,6 @@
 <template>
     <v-card elevation="5" outlined shaped>
-        <v-dialog v-model="agregarTipoModal" max-width="800px">
+        <v-dialog v-model="agregarTipoModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>AGREGAR TIPO PRODUCTO</span>
@@ -77,7 +77,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="infoTipoModal" max-width="800px">
+        <v-dialog v-model="infoTipoModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>INFORMACION DEL TIPO:</span><br>
@@ -192,7 +192,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="tiposInhabilitadosModal" max-width="800px">
+        <v-dialog v-model="tiposInhabilitadosModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>TIPOS DE PRODUCTOS INACTIVOS</span><br>
@@ -218,7 +218,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="lineasModal" max-width="800px">
+        <v-dialog v-model="lineasModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LINEAS</span><br>
@@ -832,6 +832,10 @@ export default {
         showLineas() {
             this.listarLineas();
             this.lineasModal = true;
+        },
+
+        closeLineaModal(){
+            this.lineasModal = false;
         },
         //#endregion
 
