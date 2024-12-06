@@ -301,7 +301,7 @@
 
                                         <v-col cols="12" md="2"></v-col>
                                         <v-col cols="12" md="1">
-                                            <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="showPais()"
+                                            <v-btn class="mx-2" fab dark x-small color="info" @click="showPais()"
                                                 style="float: right" title="BUSCAR PAIS">
                                                 <v-icon dark> mdi-gesture-double-tap </v-icon>
                                             </v-btn>
@@ -312,7 +312,7 @@
                                             </v-text-field>
                                         </v-col>
                                         <v-col cols="12" md="1">
-                                            <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="showCiudad()"
+                                            <v-btn class="mx-2" fab dark x-small color="info" @click="showCiudad()"
                                                 style="float: right" title="BUSCAR CIUDAD">
                                                 <v-icon dark> mdi-gesture-double-tap </v-icon>
                                             </v-btn>
@@ -330,16 +330,16 @@
                                                 <v-toolbar-title style="color:#ffffff">
                                                     <h6>OPCIONES</h6>
                                                 </v-toolbar-title>
-                                                <v-btn v-if="act == 1" class="mx-2" fab dark x-small color="#EE680B"
+                                                <v-btn v-if="act == 1" class="mx-2" fab dark x-small color="primary"
                                                     @click="actualizarChofer()" style="float: left"
                                                     title="ACTUALIZAR CHOFER">
                                                     <v-icon dark> mdi-account-edit-outline </v-icon>
                                                 </v-btn>
-                                                <v-btn v-if="act == 0" class="mx-2" fab dark x-small color="#EE680B"
+                                                <v-btn v-if="act == 0" class="mx-2" fab dark x-small color="success"
                                                     @click="registrarChofer()" style="float: left" title="REGISTRAR CHOFER">
                                                     <v-icon dark> mdi-account-check </v-icon>
                                                 </v-btn>
-                                                <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="limpiar()"
+                                                <v-btn class="mx-2" fab dark x-small color="error" @click="limpiar()"
                                                     style="float: left" title="LIMPIAR FORMULARIO">
                                                     <v-icon dark> mdi-eraser </v-icon>
                                                 </v-btn>
@@ -367,7 +367,7 @@
                                         <v-col cols="12" md="6"></v-col>
 
                                         <v-col cols="12" md="2">
-                                            <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="showChoferes()"
+                                            <v-btn class="mx-2" fab dark x-small color="info" @click="showChoferes()"
                                                 style="float: right" title="BUSCAR CHOFER">
                                                 <v-icon dark> mdi-gesture-double-tap </v-icon>
                                             </v-btn>
@@ -409,20 +409,20 @@
 
                                         <v-col cols="12" md="8"> </v-col>
                                         <v-col cols="12" md="4">
-                                            <v-toolbar dense shaped color="#002245">
-                                                <v-toolbar-title style="color:#ffffff">
+                                            <v-toolbar dense shaped color="#ffffff">
+                                                <v-toolbar-title style="color:#000000">
                                                     <h6>OPCIONES</h6>
                                                 </v-toolbar-title>
-                                                <v-btn v-if="act == 1" class="mx-2" fab dark x-small color="#EE680B"
+                                                <v-btn v-if="act == 1" class="mx-2" fab dark x-small color="primary"
                                                     @click="actualizarChofer()" style="float: left"
                                                     title="ACTUALIZAR CHOFER">
                                                     <v-icon dark> mdi-account-edit-outline </v-icon>
                                                 </v-btn>
-                                                <v-btn v-if="act == 0" class="mx-2" fab dark x-small color="#EE680B"
+                                                <v-btn v-if="act == 0" class="mx-2" fab dark x-small color="success"
                                                     @click="registrarChofer()" style="float: left" title="REGISTRAR CHOFER">
                                                     <v-icon dark> mdi-account-check </v-icon>
                                                 </v-btn>
-                                                <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="limpiar()"
+                                                <v-btn class="mx-2" fab dark x-small color="error" @click="limpiar()"
                                                     style="float: left" title="LIMPIAR FORMULARIO">
                                                     <v-icon dark> mdi-eraser </v-icon>
                                                 </v-btn>
@@ -471,11 +471,11 @@
 
                                         <v-col cols="12" md="8"></v-col>
                                         <v-col cols="12" md="4">
-                                            <v-toolbar dense shaped color="#002245">
-                                                <v-toolbar-title style="color:#ffffff">
+                                            <v-toolbar dense shaped color="#ffffff">
+                                                <v-toolbar-title style="color:#000000">
                                                     <h6>OPCIONES</h6>
                                                 </v-toolbar-title>
-                                                <v-btn class="mx-2" fab dark x-small color="#EE680B" style="float: left;"
+                                                <v-btn class="mx-2" fab dark x-small color="success" style="float: left;"
                                                     title="FOTO CHOFER"
                                                     :class="{ 'is-primary': !isCameraOpen, 'is-danger': isCameraOpen }"
                                                     @click="toggleCamera">
@@ -483,11 +483,11 @@
                                                     <v-icon v-else="">mdi-camera-off</v-icon>
                                                 </v-btn>
                                                 <v-btn v-model="file" @click="takePhoto()" class="mx-2" fab dark x-small
-                                                    color="#EE680B" title="TOMAR FOTO" style="float: left">
+                                                    color="#secondary" title="TOMAR FOTO" style="float: left">
                                                     <v-icon dark> mdi-camera </v-icon>
                                                 </v-btn>
                                                 <v-btn v-model="file" @click="actualizarChoferImg()" class="mx-2" fab dark
-                                                    x-small color="#EE680B" title="GUARDAR FOTO" style="float: left">
+                                                    x-small color="#primary" title="GUARDAR FOTO" style="float: left">
                                                     <v-icon dark> mdi-cloud-upload </v-icon>
                                                 </v-btn>
                                             </v-toolbar>
@@ -545,26 +545,26 @@
 
                                         <v-col cols="12" md="8"> </v-col>
                                         <v-col cols="12" md="4">
-                                            <v-toolbar dense shaped color="#002245">
-                                                <v-toolbar-title style="color:#ffffff">
+                                            <v-toolbar dense shaped color="#ffffff">
+                                                <v-toolbar-title style="color:#000000">
                                                     <h6>OPCIONES</h6>
                                                 </v-toolbar-title>
-                                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="#EE680B"
+                                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="primary"
                                                     @click="actualizarChoferAsignado()" style="float: left"
                                                     title="ACTUALIZAR INFORMACIÓN">
                                                     <v-icon dark> mdi-account-edit-outline </v-icon>
                                                 </v-btn>
-                                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="#EE680B"
+                                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="success"
                                                     @click="asignarChoferTransporte()" style="float: left"
                                                     title="REGISTRAR FORMACIÓN ACADEMICA">
                                                     <v-icon dark> mdi-account-check </v-icon>
                                                 </v-btn>
-                                                <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                                <v-btn class="mx-2" fab dark x-small color="error"
                                                     @click="limpiarFormAcad()" style="float: left"
                                                     title="LIMPIAR FORMULARIO">
                                                     <v-icon dark> mdi-eraser </v-icon>
                                                 </v-btn>
-                                                <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                                <v-btn class="mx-2" fab dark x-small color="info"
                                                     @click="showCompromiso()" style="float: left" title="VER CURRICULUM">
                                                     <v-icon dark> mdi-file-document-edit-outline </v-icon>
                                                 </v-btn>
@@ -668,7 +668,7 @@
                                                     title="LIMPIAR FORMULARIO">
                                                     <v-icon dark> mdi-eraser </v-icon>
                                                 </v-btn>
-                                                <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                                <v-btn class="mx-2" fab dark x-small color="info"
                                                     @click="showCompromiso()" style="float: left" title="VER CURRICULUM">
                                                     <v-icon dark> mdi-file-document-edit-outline </v-icon>
                                                 </v-btn>
@@ -702,7 +702,7 @@
 
             <v-list-item> </v-list-item>
             <div class="text-center">
-                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                     <strong>{{ mensajeSnackbar }}</strong>
 
 
