@@ -24,12 +24,12 @@
                                             OPCIONES
                                         </h6>
                                     </v-toolbar-title>
-                                    <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                    <v-btn class="mx-2" fab dark x-small color="success"
                                         @click="registrarFinanciamiento()" style="float: left"
                                         title="REGISTRAR FINANCIAMIENTO">
                                         <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                     </v-btn>
-                                    <v-btn color="#EE680B" class="mx-2" fab dark x-small @click="limpiar()"
+                                    <v-btn color="error" class="mx-2" fab dark x-small @click="limpiar()"
                                         style="float: left" title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                     </v-btn>
@@ -191,7 +191,7 @@
 
             </v-card-actions>
             <div class="text-center">
-                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                     <strong>{{ mensajeSnackbar }}</strong>
 
 
