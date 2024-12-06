@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="5" outlined shaped>
 
-        <v-dialog v-model="productosModal" max-width="800px">
+        <v-dialog v-model="productosModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE PRODUCTOS:</span><br>
@@ -47,7 +47,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="fabricasModal" max-width="800px">
+        <v-dialog v-model="fabricasModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE FABRICAS:</span><br>
@@ -93,7 +93,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="infoMovimientoModal" max-width="800px">
+        <v-dialog v-model="infoMovimientoModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>INFORMACION DEL MOVIMIENTO:</span><br>
