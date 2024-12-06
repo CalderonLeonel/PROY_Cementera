@@ -118,21 +118,21 @@
                                 <v-spacer></v-spacer>
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-toolbar dense shaped color="#001781">
-                                        <v-toolbar-title style="color: #ffffff;">
+                                    <v-toolbar dense shaped color="#ffffff">
+                                        <v-toolbar-title style="color: #000000;">
                                             <h6>
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="avanzarFase()"
+                                        <v-btn class="mx-2" fab dark x-small color="info" @click="avanzarFase()"
                                             tyle="float: left" title="AVANZAR FASE">
                                             <v-icon dark> mdi-page-next-outline </v-icon>
                                         </v-btn>
-                                        <v-btn v-if="est === 'FINALIZADO'" class="mx-2" fab dark x-small color="#EE680B"
+                                        <v-btn v-if="est === 'FINALIZADO'" class="mx-2" fab dark x-small color="primary"
                                             @click="moverAProduccion()" style="float: left" title="MOVER A PRODUCCION">
                                             <v-icon dark> mdi-page-next-outline </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                        <v-btn class="mx-2" fab dark x-small color="success"
                                             @click="registrarObservacionLabo()" style="float: left"
                                             title="REGISTRAR OBSERVACION PRODUCTO LABORATORIO">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
