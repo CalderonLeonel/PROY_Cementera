@@ -25,7 +25,7 @@
 
                                         <v-btn class="mx-2" fab dark x-small color="primary" @click="registrarCuenta()"
                                             style="float: left" title="REGISTRAR CUENTA CONTABLE">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
 
                                     </v-toolbar>
@@ -84,12 +84,12 @@
                                             <h6>OPCIONES</h6>
                                         </v-toolbar-title>
                                         <v-btn v-if="botonact == 1" @click="registrarSaldo()" class="mx-2" fab dark x-small
-                                            color="success" title="REGISTRAR CUENTA CONTABLE" style="float: left">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            color="#0ABF55" title="REGISTRAR CUENTA CONTABLE" style="float: left">
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
                                         <v-btn v-if="botonact == 0" @click="editarCuenta()" class="mx-2" fab dark x-small
-                                            color="primary" title="ACTUALIZAR CUENTA CONTABLE" style="float: left">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            color="#0A62BF" title="ACTUALIZAR CUENTA CONTABLE" style="float: left">
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
                                     </v-toolbar>
                                 </v-col>

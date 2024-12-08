@@ -192,7 +192,7 @@
                                 -->
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon large class="mr-2" color="#001781" @click="goToEmpleadoPerfil(item)"
+                                    <v-icon large class="mr-2" color="#0A62BF" @click="goToEmpleadoPerfil(item)"
                                         title="VER EMPLEADO">
                                         mdi-eye
                                     </v-icon>

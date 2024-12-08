@@ -26,10 +26,13 @@
                                 <v-col cols="12" md="4"></v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                        @click="closeAgregarFormato()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeAgregarFormato()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
+                                  
                                 </v-col>
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="12" md="4">
@@ -46,9 +49,9 @@
                                         </v-btn>
                                         <v-btn icon v-if="botonact == 0" color="success" @click="registrarFormato()"
                                             style="float: left" title="REGISTRAR Formato" width="28px" height="28px">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
-                                        <v-btn icon color="error" @click="limpiar()" style="float: left"
+                                        <v-btn icon color="#BF120A" @click="limpiar()" style="float: left"
                                             title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -90,10 +93,13 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeInfoFormatoModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeInfoFormatoModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
+                                  
                                 </v-col>
 
                             </v-row>
@@ -137,16 +143,16 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 1" color="primary"
+                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 1" color="#0A62BF"
                                             @click="editarFormatos()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 0" color="success"
+                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 0" color="#0ABF55"
                                             @click="registrarFormato()" style="float: left" title="REGISTRAR FORMATO">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark small icon color="error" @click="limpiar()"
+                                        <v-btn class="mx-2" fab dark small icon color="#BF120A" @click="limpiar()"
                                             style="float: left" title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -155,9 +161,11 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeEditFormatoModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeEditFormatoModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
                                 </v-col>
                             </v-row>
@@ -207,7 +215,7 @@
                                                 @click="desactivar(item)" title="DESACTIVAR FormatoS">
                                                 mdi-cancel
                                             </v-icon>
-                                            <v-icon large class="mr-2" color="#001781" @click="showInfoFormato(item)"
+                                            <v-icon large class="mr-2" color="#0A62BF" @click="showInfoFormato(item)"
                                                 title="VER INFORMACION">
                                                 mdi-eye
                                             </v-icon>
@@ -217,9 +225,11 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeInfoFormatoModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeInfoFormatoModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
                                 </v-col>
 
@@ -310,10 +320,10 @@
                                                                 <v-btn icon v-if="botonact == 0" class="mx-2" fab dark
                                                                     color="#0ABF55" @click="registrarFormato()"
                                                                     style="float: left" title="REGISTRAR FORMATO">
-                                                                    <v-icon dark> mdi-content-save-plus-outline
+                                                                    <v-icon dark> mdi-content-save
                                                                     </v-icon>
                                                                 </v-btn>
-                                                                <v-btn icon class="mx-2" fab dark x-small color="#EE680B"
+                                                                <v-btn icon class="mx-2" fab dark x-small color="#BF120A"
                                                                     @click="limpiar()" style="float: left"
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>
@@ -383,12 +393,12 @@
                                                                         title="DESACTIVAR FormatoS">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon class="mx-2" large color="#001781"
+                                                                    <v-icon class="mx-2" large color="#0A62BF"
                                                                         @click="showEditFormatoModal(item)"
                                                                         title="ACTUALIZAR INFORMACION">
                                                                         mdi-pencil
                                                                     </v-icon>
-                                                                    <v-icon class="mx-2" large color="#001781"
+                                                                    <v-icon class="mx-2" large color="#0A62BF"
                                                                         @click="showInfoFormato(item)"
                                                                         title="VER INFORMACION">
                                                                         mdi-eye
@@ -447,7 +457,7 @@
                                                                         title="DESACTIVAR FormatoS">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon large class="mr-2" color="#001781"
+                                                                    <v-icon large class="mr-2" color="#0A62BF"
                                                                         @click="showInfoFormato(item)"
                                                                         title="VER INFORMACION">
                                                                         mdi-eye

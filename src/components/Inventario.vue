@@ -396,10 +396,13 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeItemModal()" style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
-                                </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeItemModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                               
                             </v-col>
                         </v-row>
                     </v-container>
@@ -435,10 +438,13 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeItemDispModal()" style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
-                                </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeItemDispModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                             
                             </v-col>
                         </v-row>
                     </v-container>
@@ -474,10 +480,13 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeItemPrecioModal()" style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
-                                </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeItemPrecioModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                             
                             </v-col>
                         </v-row>
                     </v-container>
@@ -513,10 +522,13 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeItemAlmacenModal()" style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
-                                </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeItemAlmacenModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                              
                             </v-col>
                         </v-row>
                     </v-container>
@@ -679,10 +691,13 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeAlmacenModal()" style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
-                                </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeAlmacenModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                               
                             </v-col>
                         </v-row>
                     </v-container>
@@ -718,10 +733,13 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeAlmacenConStockModal()" style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
-                                </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeAlmacenConStockModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                              
                             </v-col>
                         </v-row>
                     </v-container>
@@ -760,10 +778,13 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeTipoModal()" style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
-                                </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeTipoModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                               
                             </v-col>
                         </v-row>
                     </v-container>
@@ -1099,9 +1120,13 @@
             <v-card>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="red" dark x-big  @click="closeDetalleStock()">
-                        <v-icon dark> mdi-close-circle-outline </v-icon> SALIR
-                    </v-btn>
+                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeDetalleStock()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+               
                     <v-spacer></v-spacer>
                 </v-card-actions>
             </v-card>
@@ -1127,9 +1152,13 @@
             <v-card>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="red" dark x-big  @click="closeDetalleAlmacenamientoProducto()">
-                        <v-icon dark> mdi-close-circle-outline </v-icon> SALIR
-                    </v-btn>
+                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeDetalleAlmacenamientoProducto()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+               
                     <v-spacer></v-spacer>
                 </v-card-actions>
             </v-card>
@@ -1155,9 +1184,13 @@
             <v-card>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="red" dark x-big  @click="closeSaldoAlmacenItemModal()">
-                        <v-icon dark> mdi-close-circle-outline </v-icon> SALIR
-                    </v-btn>
+                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeSaldoAlmacenItemModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                 
                     <v-spacer></v-spacer>
                 </v-card-actions>
             </v-card>

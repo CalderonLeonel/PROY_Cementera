@@ -61,15 +61,15 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarCliente()"
+                                        <v-btn icon v-if="botonact == 1" color="#0A62BF" @click="actualizarCliente()"
                                             style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px" height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarCliente()"
+                                        <v-btn icon v-if="botonact == 0" color="##0ABF55" @click="registrarCliente()"
                                             style="float: left" title="REGISTRAR CLIENTE" width="28px" height="28px">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
-                                        <v-btn icon color="error" @click="limpiar()" style="float: left"
+                                        <v-btn icon color="#BF120A" @click="limpiar()" style="float: left"
                                             title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -155,15 +155,15 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarCliente()"
+                                        <v-btn icon v-if="botonact == 1" color="#0A62BF" @click="actualizarCliente()"
                                             style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px" height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarCliente()"
+                                        <v-btn icon v-if="botonact == 0" color="#0ABF55" @click="registrarCliente()"
                                             style="float: left" title="REGISTRAR CLIENTE" width="28px" height="28px">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
-                                        <v-btn icon color="#EE680B" @click="limpiar()" style="float: left"
+                                        <v-btn icon color="#BF120A" @click="limpiar()" style="float: left"
                                             title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -246,15 +246,15 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarCliente()"
+                                        <v-btn icon v-if="botonact == 1" color="#0A62BF" @click="actualizarCliente()"
                                             style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px" height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarCliente()"
+                                        <v-btn icon v-if="botonact == 0" color="#0ABF55" @click="registrarCliente()"
                                             style="float: left" title="REGISTRAR CLIENTE" width="28px" height="28px">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
-                                        <v-btn icon color="#EE680B" @click="limpiar()" style="float: left"
+                                        <v-btn icon color="#BF120A" @click="limpiar()" style="float: left"
                                             title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -316,7 +316,7 @@
                                                 @click="desactivar(item)" title="DESACTIVAR ClienteS">
                                                 mdi-cancel
                                             </v-icon>
-                                            <v-icon large class="mr-2" color="#001781" @click="showInfoCliente(item)"
+                                            <v-icon large class="mr-2" color="#0A62BF" @click="showInfoCliente(item)"
                                                 title="VER INFORMACION">
                                                 mdi-eye
                                             </v-icon>
@@ -353,13 +353,13 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showAgregarCliente()">Nuevo Cliente</v-btn>
+                            <v-btn color="#0ABF55" @click="showAgregarCliente()">Nuevo Cliente</v-btn>
                         </v-col>
                         <v-col cols="12" md="4"></v-col>
                         <v-col cols="12" md="4"></v-col>
 
                         <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showClientesInhabilitados()">Clientes Inactivos</v-btn>
+                            <v-btn color="#0A62BF" @click="showClientesInhabilitados()">Clientes Inactivos</v-btn>
                         </v-col>
                         <v-col cols="12" md="4"></v-col>
                         <v-col cols="12" md="4"></v-col>
@@ -383,11 +383,11 @@
                                         @click="desactivar(item)" title="DESACTIVAR CLIENTES">
                                         mdi-cancel
                                     </v-icon>
-                                    <v-icon large class="mr-2" @click="showEditClienteModal(item)"
+                                    <v-icon large class="mr-2" color="#0A62BF" @click="showEditClienteModal(item)"
                                         title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
                                     </v-icon>
-                                    <v-icon large class="mr-2" color="#001781" @click="showInfoCliente(item)"
+                                    <v-icon large class="mr-2" color="#0A62BF" @click="showInfoCliente(item)"
                                         title="VER INFORMACION">
                                         mdi-eye
                                     </v-icon>

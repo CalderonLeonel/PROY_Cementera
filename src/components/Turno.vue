@@ -64,7 +64,7 @@
                                     </v-chip>
                                 </template>
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon large class="mr-2" color="#001781" @click="showListarHorario(item)" title="VER HORARIOS">
+                                    <v-icon large class="mr-2" color="#0A62BF" @click="showListarHorario(item)" title="VER HORARIOS">
                                         mdi-clock
                                     </v-icon>
                                     <v-icon large class="mr-2" color="#0A628F" @click="showEditTurno(item)" title="ACTUALIZAR INFORMACION">

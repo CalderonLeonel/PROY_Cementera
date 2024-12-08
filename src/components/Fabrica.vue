@@ -14,10 +14,13 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="#b794f6" @click="closeAgregarFabrica()"
-                                        style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeAgregarFabrica()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
+                                  
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -98,16 +101,16 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn v-if="botonact == 1" color="primary" @click="editarFabricas()"
+                                        <v-btn v-if="botonact == 1" color="#0A62BF" @click="editarFabricas()"
                                             class="mx-2" fab dark x-small style="float: left"
                                             title="ACTUALIZAR FABRICA">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn v-if="botonact == 0" color="success" @click="registroFabrica()"
+                                        <v-btn v-if="botonact == 0" color="#0ABF55" @click="registroFabrica()"
                                             class="mx-2" fab dark x-small style="float: left" title="REGISTRAR FABRICA">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
-                                        <v-btn @click="limpiar()" color="error" style="float: left" class="mx-2" fab
+                                        <v-btn @click="limpiar()" color="#BF120A" style="float: left" class="mx-2" fab
                                             dark x-small title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -117,9 +120,11 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="#b794f6" @click="closeEditFabricaModal()"
-                                        style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeEditFabricaModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
                                 </v-col>
                             </v-row>
@@ -201,9 +206,11 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                        @click="closeInfoFabricaModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeInfoFabricaModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="8"> </v-col>
@@ -214,16 +221,16 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="primary" @click="editarFabricas()"
+                                        <v-btn icon v-if="botonact == 1" color="#0A62BF" @click="editarFabricas()"
                                             style="float: left" title="ACTUALIZAR FABRICA" width="28px"
                                             height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="success" @click="registrarFabrica()"
+                                        <v-btn icon v-if="botonact == 0" color="#0ABF55" @click="registrarFabrica()"
                                             style="float: left" title="REGISTRAR FABRICA" width="28px" height="28px">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
-                                        <v-btn icon color="error" @click="limpiar()" style="float: left"
+                                        <v-btn icon color="#BF120A" @click="limpiar()" style="float: left"
                                             title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -448,9 +455,11 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeInfoLineaModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeInfoLineaModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
                                 </v-col>
 
@@ -593,7 +602,7 @@
                                                                     <v-icon dark> mdi-content-save-plus-outline
                                                                     </v-icon>
                                                                 </v-btn>
-                                                                <v-btn icon @click="limpiar()" color="error"
+                                                                <v-btn icon @click="limpiar()" color="#BF120A"
                                                                     style="float: left" class="mx-2" fab dark x-small
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>
@@ -652,7 +661,7 @@
                                                                         title="DESACTIVAR Fabrica">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon class="mx-2" large color="#001781"
+                                                                    <v-icon class="mx-2" large color="#0A62BF"
                                                                         @click="showEditFabricaModal(item)"
                                                                         title="ACTUALIZAR INFORMACION">
                                                                         mdi-pencil
@@ -718,7 +727,7 @@
                                                                         title="DESACTIVAR FABRICA">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon large class="mr-2" color="#001781"
+                                                                    <v-icon large class="mr-2" color="#0A62BF"
                                                                         @click="showInfoFabrica(item)"
                                                                         title="VER INFORMACION">
                                                                         mdi-eye
