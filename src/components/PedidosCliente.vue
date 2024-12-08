@@ -21,7 +21,7 @@
                                         <v-btn class="mx-2" fab dark x-small color="success"
                                             @click="agregarProductoAlCarrito()" style="float: left"
                                             title="AGREGAR PRODUCTO">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
                                     </v-toolbar>
                                 </v-col>
@@ -57,7 +57,7 @@
                     id="tableId">
 
                     <template #[`item.actions`]="{ item }">
-                        <v-icon small class="mr-2" color="#001781" @click="seleccionarProducto()">
+                        <v-icon small class="mr-2" color="#0A62BF" @click="seleccionarProducto()">
                             mdi-check-circle
                         </v-icon>
                     </template>

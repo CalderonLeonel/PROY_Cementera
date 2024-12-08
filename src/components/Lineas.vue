@@ -29,10 +29,13 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeInfoLineaModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeInfoLineaModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
+                                 
                                 </v-col>
 
                             </v-row>
@@ -80,11 +83,11 @@
                                             @click="editarLineas()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 0" color="success"
+                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 0" color="#0ABF55"
                                             @click="registrarLinea()" style="float: left" title="REGISTRAR LINEA">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark small icon color="error" @click="limpiar()"
+                                        <v-btn class="mx-2" fab dark small icon color="#BF120A" @click="limpiar()"
                                             style="float: left" title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -93,9 +96,11 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeEditLineaModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeEditLineaModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
                                 </v-col>
                             </v-row>
@@ -184,10 +189,10 @@
                                                                 <v-btn icon v-if="botonact == 0" class="mx-2" fab dark
                                                                     color="#0ABF55" @click="registrarLinea()"
                                                                     style="float: left" title="REGISTRAR LINEA">
-                                                                    <v-icon dark> mdi-content-save-plus-outline
+                                                                    <v-icon dark> mdi-content-save
                                                                     </v-icon>
                                                                 </v-btn>
-                                                                <v-btn icon class="mx-2" fab dark color="error"
+                                                                <v-btn icon class="mx-2" fab dark color="#BF120A"
                                                                     @click="limpiar()" style="float: left"
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>
@@ -257,12 +262,12 @@
                                                                         title="DESACTIVAR LINEAS">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon sclass="mx-2" large color="#001781"
+                                                                    <v-icon sclass="mx-2" large color="#0A62BF"
                                                                         @click="showEditLineaModal(item)"
                                                                         title="ACTUALIZAR INFORMACION">
                                                                         mdi-pencil
                                                                     </v-icon>
-                                                                    <v-icon class="mx-2" large color="#001781"
+                                                                    <v-icon class="mx-2" large color="#0A62BF"
                                                                         @click="showInfoLinea(item)"
                                                                         title="VER INFORMACION">
                                                                         mdi-eye
@@ -321,7 +326,7 @@
                                                                         title="DESACTIVAR LINEAS">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon large class="mr-2" color="#001781"
+                                                                    <v-icon large class="mr-2" color="#0A62BF"
                                                                         @click="showInfoLinea(item)"
                                                                         title="VER INFORMACION">
                                                                         mdi-eye

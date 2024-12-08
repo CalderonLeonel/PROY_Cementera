@@ -120,10 +120,12 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeEmpleadoModal()" style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
-                                </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeEmpleadoModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
                             </v-col>
                         </v-row>
                     </v-container>

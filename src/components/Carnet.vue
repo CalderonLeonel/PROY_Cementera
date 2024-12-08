@@ -62,10 +62,12 @@
 
                             <v-col cols="10"> </v-col>
                             <v-col cols="2">
-                                <v-btn class="mx-2" fab dark small color="red darken-1" @click="close"
-                                    style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
-                                </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="close" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -173,7 +175,7 @@
                     @click="takePhoto()" 
                     class="mx-2" 
                     fab dark x-small 
-                    color="success" 
+                    color="#0ABF55" 
                     title="TOMAR FOTO" 
                     style="float: left">
                     <v-icon dark>mdi-camera</v-icon>
@@ -183,7 +185,7 @@
                     @click="actualizarEMPLEADOImg()" 
                     class="mx-2" 
                     fab dark x-small 
-                    color="info" 
+                    color="#0A62BF" 
                     title="GUARDAR FOTO" 
                     style="float: left">
                     <v-icon dark>mdi-cloud-upload</v-icon>

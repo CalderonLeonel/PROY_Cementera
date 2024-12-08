@@ -34,7 +34,7 @@
 
 
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon small class="mr-2" color="#001781"
+                                            <v-icon small class="mr-2" color="#0A62BF"
                                                 @click="seleccionarProveedor(item)" title="SELECCIONAR PROVEEDOR">
                                                 mdi-check-circle
                                             </v-icon>
@@ -44,10 +44,13 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeProveedor()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeProveedor()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
+                                    
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -170,7 +173,7 @@
                                                                     x-small color="#0ABF55"
                                                                     @click="registrarMateriaPrima()" style="float: left"
                                                                     title="REGISTRAR PRODUCTO Materia Prima">
-                                                                    <v-icon dark> mdi-content-save-plus-outline
+                                                                    <v-icon dark> mdi-content-save
                                                                     </v-icon>
                                                                 </v-btn>
                                                                 <v-btn color="#BF120A" class="mx-2" fab dark x-small
@@ -222,7 +225,7 @@
                                                                 </template>
 
                                                                 <template #[`item.actions`]="{ item }">
-                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                    <v-icon small class="mr-2" color="#0A62BF"
                                                                         @click="seleccionarObservacion(item)"
                                                                         title="SELECCIONAR MATERIA PRIMA">
                                                                         mdi-check-circle
@@ -284,7 +287,7 @@
                                                                 </template>
 
                                                                 <template #[`item.actions`]="{ item }">
-                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                    <v-icon small class="mr-2" color="#0A62BF"
                                                                         @click="seleccionarObservacion(item)"
                                                                         title="SELECCIONAR MATERIA PRIMA">
                                                                         mdi-check-circle

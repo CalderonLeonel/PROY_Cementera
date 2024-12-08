@@ -33,7 +33,7 @@
 
 
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon small class="mr-2" color="#001781" @click="seleccionarPais(item)"
+                                            <v-icon small class="mr-2" color="#0A62BF" @click="seleccionarPais(item)"
                                                 title="SELECCIONAR PAIS">
                                                 mdi-check-circle
                                             </v-icon>
@@ -43,10 +43,13 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closePaisModal()"
-                                        style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closePaisModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
+                                  
                                 </v-col>
 
                             </v-row>
@@ -89,7 +92,7 @@
 
 
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon small class="mr-2" color="#001781" @click="seleccionarCiudad(item)"
+                                            <v-icon small class="mr-2" color="#0A62BF" @click="seleccionarCiudad(item)"
                                                 title="SELECCIONAR CIUDAD">
                                                 mdi-check-circle
                                             </v-icon>
@@ -99,10 +102,13 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closeCiudadModal()"
-                                        style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeCiudadModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
+                                   
                                 </v-col>
 
                             </v-row>
@@ -147,11 +153,11 @@
 
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon small class="mr-2" color="#001781" @click="showInfoFormato(item)"
+                                    <v-icon small class="mr-2" color="#0A62BF" @click="showInfoFormato(item)"
                                         title="VER INFORMACION">
                                         mdi-eye
                                     </v-icon>
-                                    <v-icon small class="mr-2" color="#001781" @click="seleccionarMovimiento(item)"
+                                    <v-icon small class="mr-2" color="#0A62BF" @click="seleccionarMovimiento(item)"
                                         title="SELECCIONAR MOVIMIENTO">
                                         mdi-check-circle
                                     </v-icon>

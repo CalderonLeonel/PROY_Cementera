@@ -33,7 +33,7 @@
 
 
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon small class="mr-2" color="#001781" @click="seleccionarCliente(item)"
+                                            <v-icon small class="mr-2" color="#0A62BF" @click="seleccionarCliente(item)"
                                                 title="SELECCIONAR CLIENTE">
                                                 mdi-check-circle
                                             </v-icon>
@@ -43,10 +43,13 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeClienteModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeClienteModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
+                                   
                                 </v-col>
 
                             </v-row>
@@ -80,7 +83,7 @@
                                         <v-btn class="mx-2" fab dark x-small color="success"
                                             @click="agregarProductoAlCarrito()" style="float: left"
                                             title="AGREGAR PRODUCTO">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
                                     </v-toolbar>
                                 </v-col>
@@ -156,7 +159,7 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon small class="mr-2" color="#001781" @click="seleccionarProducto(item)">
+                                    <v-icon small class="mr-2" color="#0A62BF" @click="seleccionarProducto(item)">
                                         mdi-check-circle
                                     </v-icon>
                                 </template>
@@ -177,7 +180,7 @@
                                 class="elevation-1" id="tableId">
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon small class="mr-2" color="#001781" @click="seleccionarProducto(item)">
+                                    <v-icon small class="mr-2" color="#0A62BF" @click="seleccionarProducto(item)">
                                         mdi-check-circle
                                     </v-icon>
                                 </template>
@@ -195,7 +198,7 @@
                                 </v-toolbar-title>
                                 <v-btn class="mx-2" fab dark x-small color="success" @click="registrarVenta()"
                                     style="float: left" title="REGISTRAR VENTA">
-                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                    <v-icon dark> mdi-content-save </v-icon>
                                 </v-btn>
                             </v-toolbar>
                         </v-col>

@@ -27,7 +27,7 @@
                                     </template>
 
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" color="#001781" @click="seleccionarFormato(item)">
+                                        <v-icon small class="mr-2" color="#0A62BF" @click="seleccionarFormato(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -36,10 +36,13 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeFormato()" style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
-                                </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeFormato()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                               
                             </v-col>
                         </v-row>
                     </v-container>
@@ -71,7 +74,7 @@
                                         </v-chip>
                                     </template>
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" color="#001781" @click="seleccionarTipo(item)">
+                                        <v-icon small class="mr-2" color="#0A62BF" @click="seleccionarTipo(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -79,10 +82,13 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeTipos()" style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
-                                </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeTipos()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                              
                             </v-col>
                         </v-row>
                     </v-container>
@@ -124,15 +130,15 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn class="mx-2" fab dark x-small color="info" @click="avanzarFase()"
+                                        <v-btn class="mx-2" fab dark x-small color="#0A62BF" @click="avanzarFase()"
                                             tyle="float: left" title="AVANZAR FASE">
                                             <v-icon dark> mdi-page-next-outline </v-icon>
                                         </v-btn>
-                                        <v-btn v-if="est === 'FINALIZADO'" class="mx-2" fab dark x-small color="primary"
+                                        <v-btn v-if="est === 'FINALIZADO'" class="mx-2" fab dark x-small color="#0A62BF"
                                             @click="moverAProduccion()" style="float: left" title="MOVER A PRODUCCION">
                                             <v-icon dark> mdi-page-next-outline </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark x-small color="success"
+                                        <v-btn class="mx-2" fab dark x-small color="#0ABF55"
                                             @click="registrarObservacionLabo()" style="float: left"
                                             title="REGISTRAR OBSERVACION PRODUCTO LABORATORIO">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
@@ -141,9 +147,11 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeRevisionModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeRevisionModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
                                 </v-col>
                             </v-row>
@@ -288,12 +296,12 @@
                                                 </template>
 
                                                 <template #[`item.actions`]="{ item }">
-                                                    <v-icon small class="mr-2" color="#001781"
+                                                    <v-icon small class="mr-2" color="#0A62BF"
                                                         @click="seleccionarProdLabo(item)"
                                                         title="SELECCIONAR PRODUCTO LABORATORIO">
                                                         mdi-check-circle
                                                     </v-icon>
-                                                    <v-icon small class="mr-2" color="#001781" @click="generarPDF(item)"
+                                                    <v-icon small class="mr-2" color="#0A62BF" @click="generarPDF(item)"
                                                         title="VER PDF">
                                                         mdi-printer-outline
                                                     </v-icon>
@@ -361,12 +369,12 @@
                                                 </template>
 
                                                 <template #[`item.actions`]="{ item }">
-                                                    <v-icon small class="mr-2" color="#001781"
+                                                    <v-icon small class="mr-2" color="#0A62BF"
                                                         @click="seleccionarObservacion(item)"
                                                         title="SELECCIONAR OBSERVACION LABORATORIO">
                                                         mdi-check-circle
                                                     </v-icon>
-                                                    <v-icon small class="mr-2" color="#001781" @click="generarPDF(item)"
+                                                    <v-icon small class="mr-2" color="#0A62BF" @click="generarPDF(item)"
                                                         title="VER PDF">
                                                         mdi-printer-outline
                                                     </v-icon>

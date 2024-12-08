@@ -32,7 +32,7 @@
                                         </template>
 
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon small class="mr-2" color="#001781"
+                                            <v-icon small class="mr-2" color="#0A62BF"
                                                 @click="seleccionarProducto(item)">
                                                 mdi-check-circle
                                             </v-icon>
@@ -85,7 +85,7 @@
                                         </template>
 
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon small class="mr-2" color="#001781"
+                                            <v-icon small class="mr-2" color="#0A62BF"
                                                 @click="seleecionarFabrica(item)">
                                                 mdi-check-circle
                                             </v-icon>
@@ -130,9 +130,11 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeInfoMovimientoModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeInfoMovimientoModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
                                 </v-col>
 
@@ -218,12 +220,12 @@
                                                                     title="DESACTIVAR MOVIMIENTO">
                                                                     mdi-cancel
                                                                 </v-icon>
-                                                                <v-icon class="mx-2" large color="#001781"
+                                                                <v-icon class="mx-2" large color="#0A62BF"
                                                                     @click="showEditMovimientoModal(item)"
                                                                     title="ACTUALIZAR INFORMACION">
                                                                     mdi-pencil
                                                                 </v-icon>
-                                                                <v-icon class="mx-2" large color="#001781"
+                                                                <v-icon class="mx-2" large color="#0A62BF"
                                                                     @click="showInfoMovimiento(item)"
                                                                     title="VER INFORMACION">
                                                                     mdi-eye
@@ -322,11 +324,11 @@
                                                                             @click="registrarMovimiento()"
                                                                             style="float: left"
                                                                             title="REGISTRAR MOVIMIENTO">
-                                                                            <v-icon dark> mdi-content-save-plus-outline
+                                                                            <v-icon dark> mdi-content-save
                                                                             </v-icon>
                                                                         </v-btn>
                                                                         <v-btn icon class="mx-2" fab dark
-                                                                            color="error" @click="limpiar()"
+                                                                            color="#BF120A" @click="limpiar()"
                                                                             style="float: left"
                                                                             title="LIMPIAR FORMULARIO">
                                                                             <v-icon dark> mdi-eraser </v-icon>
