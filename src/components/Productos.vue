@@ -264,16 +264,16 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="primary"
+                                        <v-btn icon large v-if="botonAct == 1" class="mx-2" fab dark x-small color="#0A62BF"
                                             @click="editarProductos()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="success"
+                                        <v-btn icon large v-if="botonAct == 0" class="mx-2" fab dark x-small color="#0ABF55"
                                             @click="registrarProducto()" style="float: left" title="REGISTRAR PRODUCTO">
                                             <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
-                                        <v-btn color="error" class="mx-2" fab dark x-small @click="limpiar()"
+                                        <v-btn icon large color="#BF120A" class="mx-2" fab dark x-small @click="limpiar()"
                                             style="float: left" title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -598,7 +598,7 @@
 
                     <div class="text-center">
 
-                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error"
                             outlined>
                             <strong>{{ mensajeSnackbarError }}</strong>
 

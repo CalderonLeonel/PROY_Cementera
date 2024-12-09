@@ -12,7 +12,12 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red" text @click="loginModal = false">Cancelar</v-btn>
+          <v-btn class="mx-2" iconv dark color="#BF120A"
+          @click="loginModal = false" style="float: right"
+                                        title="CANCELAR">                                      
+                                        CANCELAR
+          </v-btn>
+          
         </v-card-actions>
       </v-card>
     </v-dialog>

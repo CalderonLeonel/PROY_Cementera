@@ -101,16 +101,16 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn v-if="botonact == 1" color="#0A62BF" @click="editarFabricas()"
+                                        <v-btn icon large v-if="botonact == 1" color="#0A62BF" @click="editarFabricas()"
                                             class="mx-2" fab dark x-small style="float: left"
                                             title="ACTUALIZAR FABRICA">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn v-if="botonact == 0" color="#0ABF55" @click="registroFabrica()"
+                                        <v-btn icon large v-if="botonact == 0" color="#0ABF55" @click="registroFabrica()"
                                             class="mx-2" fab dark x-small style="float: left" title="REGISTRAR FABRICA">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
-                                        <v-btn @click="limpiar()" color="#BF120A" style="float: left" class="mx-2" fab
+                                        <v-btn icon large @click="limpiar()" color="#BF120A" style="float: left" class="mx-2" fab
                                             dark x-small title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -765,7 +765,7 @@
 
         <div class="text-center">
 
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
                 <strong>{{ mensajeSnackbarError }}</strong>
 
                 <template v-slot:action="{ attrs }">
