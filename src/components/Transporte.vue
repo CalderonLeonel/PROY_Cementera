@@ -574,7 +574,7 @@
                                                     @click="showCompromiso()" style="float: left" title="VER CURRICULUM">
                                                     <v-icon dark> mdi-file-document-edit-outline </v-icon>
                                                 </v-btn>
-                                                <!--v-btn class="mx-2" fab dark x-small color="#EE680B" @click="eliminarItem()" style="float: left"
+                                                <!--v-btn class="mx-2" fab dark x-small color="error" @click="eliminarItem()" style="float: left"
                           title="BUSCAR Chofer">
                           <v-icon dark> mdi-account-search </v-icon>
                         </v-btn-->
@@ -655,21 +655,21 @@
 
                                         <v-col cols="12" md="8"> </v-col>
                                         <v-col cols="12" md="4">
-                                            <v-toolbar dense shaped color="#002245">
-                                                <v-toolbar-title style="color:#ffffff">
+                                            <v-toolbar dense shaped color="#ffffff">
+                                                <v-toolbar-title style="color:#000000">
                                                     <h6>OPCIONES</h6>
                                                 </v-toolbar-title>
-                                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="#EE680B"
+                                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="#0A62BF"
                                                     @click="actualizarExpFormativa()" style="float: left"
                                                     title="ACTUALIZAR INFORMACIÓN">
                                                     <v-icon dark> mdi-account-edit-outline </v-icon>
                                                 </v-btn>
-                                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="#EE680B"
+                                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="#0ABF55"
                                                     @click="registrarExpFormativa()" style="float: left"
                                                     title="REGISTRAR EXPERIENCIA FORMATIVA">
                                                     <v-icon dark> mdi-account-check </v-icon>
                                                 </v-btn>
-                                                <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                                <v-btn class="mx-2" fab dark x-small color="#BF120A"
                                                     @click="limpiarExpFormativa()" style="float: left"
                                                     title="LIMPIAR FORMULARIO">
                                                     <v-icon dark> mdi-eraser </v-icon>
@@ -678,7 +678,7 @@
                                                     @click="showCompromiso()" style="float: left" title="VER CURRICULUM">
                                                     <v-icon dark> mdi-file-document-edit-outline </v-icon>
                                                 </v-btn>
-                                                <!--v-btn class="mx-2" fab dark x-small color="#EE680B" @click="eliminarItem()" style="float: left"
+                                                <!--v-btn class="mx-2" fab dark x-small color="error" @click="eliminarItem()" style="float: left"
                           title="BUSCAR Chofer">
                           <v-icon dark> mdi-account-search </v-icon>
                         </v-btn-->
@@ -721,7 +721,7 @@
             </div>
             <div class="text-center">
 
-                <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
                     <strong>{{ mensajeSnackbarError }}</strong>
 
                     <template v-slot:action="{ attrs }">
