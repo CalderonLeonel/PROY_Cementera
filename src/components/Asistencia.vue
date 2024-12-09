@@ -12,7 +12,7 @@
             </v-snackbar>
         </div>
         <div class="text-center">
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
                 <strong>{{ mensajeSnackbarError }}</strong>
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarError = false">

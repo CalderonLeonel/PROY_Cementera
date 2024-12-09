@@ -24,12 +24,12 @@
                                             OPCIONES
                                         </h6>
                                     </v-toolbar-title>
-                                    <v-btn class="mx-2" fab dark x-small color="0ABF55"
+                                    <v-btn class="mx-2" fab dark x-small color="#0ABF55"
                                         @click="registrarFinanciamiento()" style="float: left"
                                         title="REGISTRAR FINANCIAMIENTO">
-                                        <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                        <v-icon dark> mdi-content-save </v-icon>
                                     </v-btn>
-                                    <v-btn color="error" class="mx-2" fab dark x-small @click="limpiar()"
+                                    <v-btn color="#BF120A" class="mx-2" fab dark x-small @click="limpiar()"
                                         style="float: left" title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                     </v-btn>
@@ -92,11 +92,11 @@
                                         </v-toolbar-title>
                                         <v-btn v-if="botonact == 1" @click="registrarSaldo()" class="mx-2" fab dark
                                             x-small color="#0ABF55" title="REGISTRAR DEPARTAMENTO" style="float: left">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
                                         <v-btn v-if="botonact == 0" @click="editarCuenta()" class="mx-2" fab dark
                                             x-small color="#0A62BF" title="ACTUALIZAR DEPARTAMENTO" style="float: left">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
                                     </v-toolbar>
                                 </v-col>

@@ -130,24 +130,24 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn class="mx-2" fab dark x-small color="#0A62BF" @click="avanzarFase()"
+                                        <v-btn icon large class="mx-2" fab dark x-small color="#0A62BF" @click="avanzarFase()"
                                             tyle="float: left" title="AVANZAR FASE">
                                             <v-icon dark> mdi-page-next-outline </v-icon>
                                         </v-btn>
-                                        <v-btn v-if="est === 'FINALIZADO'" class="mx-2" fab dark x-small color="#0A62BF"
+                                        <v-btn icon large v-if="est === 'FINALIZADO'" class="mx-2" fab dark x-small color="#0A62BF"
                                             @click="moverAProduccion()" style="float: left" title="MOVER A PRODUCCION">
                                             <v-icon dark> mdi-page-next-outline </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark x-small color="#0ABF55"
+                                        <v-btn icon large class="mx-2" fab dark x-small color="#0ABF55"
                                             @click="registrarObservacionLabo()" style="float: left"
                                             title="REGISTRAR OBSERVACION PRODUCTO LABORATORIO">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
                                     </v-toolbar>
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                    <v-btn icon large class="mx-2" iconv dark color="#00A1B1"
                                         @click="closeRevisionModal()" style="float: right"
                                         title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -214,21 +214,21 @@
                                         OPCIONES
                                     </h6>
                                 </v-toolbar-title>
-                                <v-btn class="mx-2" color="#00A1B1" fab dark x-small @click="limpiar()"
+                                <v-btn icon large class="mx-2" color="#00A1B1" fab dark x-small @click="limpiar()"
                                     style="float: left" title="BUSCAR PRODUCTO DEL LABORATORIO">
                                     <v-icon dark> mdi-magnify-plus </v-icon>
                                 </v-btn>
-                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="#0A62BF"
+                                <v-btn icon large v-if="botonAct == 1" class="mx-2" fab dark x-small color="#0A62BF"
                                     @click="actualizarProductos()" style="float: left"
                                     title="ACTUALIZAR INFORMACIÓN LABORATORIO">
                                     <v-icon dark> mdi-pencil </v-icon>
                                 </v-btn>
-                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="#0ABF55"
+                                <v-btn icon large v-if="botonAct == 0" class="mx-2" fab dark x-small color="#0ABF55"
                                     @click="registrarProductoLabo()" style="float: left"
                                     title="REGISTRAR PRODUCTO LABORATORIO">
-                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                    <v-icon dark> mdi-content-save </v-icon>
                                 </v-btn>
-                                <v-btn color="#BF120A" class="mx-2" fab dark x-small @click="limpiar()"
+                                <v-btn icon large color="#BF120A" class="mx-2" fab dark x-small @click="limpiar()"
                                     style="float: left" title="LIMPIAR FORMULARIO">
                                     <v-icon dark> mdi-eraser </v-icon>
                                 </v-btn>
@@ -332,12 +332,12 @@
                                                     </h6>
                                                 </v-toolbar-title>
 
-                                                <v-btn class="mx-2" fab dark x-small color="#0ABF55"
+                                                <v-btn icon large class="mx-2" fab dark x-small color="#0ABF55"
                                                     @click="registrarObservacionLabo()" style="float: left"
                                                     title="REGISTRAR PRODUCTO LABORATORIO">
-                                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                                    <v-icon dark> mdi-content-save </v-icon>
                                                 </v-btn>
-                                                <v-btn color="#BF120A" class="mx-2" fab dark x-small @click="limpiar()"
+                                                <v-btn icon large color="#BF120A" class="mx-2" fab dark x-small @click="limpiar()"
                                                     style="float: left" title="LIMPIAR FORMULARIO">
                                                     <v-icon dark> mdi-eraser </v-icon>
                                                 </v-btn>
@@ -406,7 +406,7 @@
 
         <div class="text-center">
 
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
                 <strong>{{ mensajeSnackbarError }}</strong>
 
                 <template v-slot:action="{ attrs }">

@@ -65,7 +65,7 @@
                                             style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px" height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="##0ABF55" @click="registrarCliente()"
+                                        <v-btn icon v-if="botonact == 0" color="#0ABF55" @click="registrarCliente()"
                                             style="float: left" title="REGISTRAR CLIENTE" width="28px" height="28px">
                                             <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
@@ -353,13 +353,13 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="4">
-                            <v-btn color="#0ABF55" @click="showAgregarCliente()">Nuevo Cliente</v-btn>
+                            <v-btn  color="success" @click="showAgregarCliente()">Nuevo Cliente</v-btn>
                         </v-col>
                         <v-col cols="12" md="4"></v-col>
                         <v-col cols="12" md="4"></v-col>
 
                         <v-col cols="12" md="4">
-                            <v-btn color="#0A62BF" @click="showClientesInhabilitados()">Clientes Inactivos</v-btn>
+                            <v-btn color="primary" @click="showClientesInhabilitados()">Clientes Inactivos</v-btn>
                         </v-col>
                         <v-col cols="12" md="4"></v-col>
                         <v-col cols="12" md="4"></v-col>

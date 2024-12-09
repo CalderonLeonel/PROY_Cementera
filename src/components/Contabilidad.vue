@@ -23,7 +23,7 @@
                                             </h6>
                                         </v-toolbar-title>
 
-                                        <v-btn class="mx-2" fab dark x-small color="primary" @click="registrarCuenta()"
+                                        <v-btn icon large class="mx-2" fab dark x-small color="#0ABF55" @click="registrarCuenta()"
                                             style="float: left" title="REGISTRAR CUENTA CONTABLE">
                                             <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
@@ -83,13 +83,13 @@
                                         <v-toolbar-title style="color:#000000">
                                             <h6>OPCIONES</h6>
                                         </v-toolbar-title>
-                                        <v-btn v-if="botonact == 1" @click="registrarSaldo()" class="mx-2" fab dark x-small
+                                        <v-btn icon large v-if="botonact == 1" @click="registrarSaldo()" class="mx-2" fab dark x-small
                                             color="#0ABF55" title="REGISTRAR CUENTA CONTABLE" style="float: left">
                                             <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
-                                        <v-btn v-if="botonact == 0" @click="editarCuenta()" class="mx-2" fab dark x-small
+                                        <v-btn icon large v-if="botonact == 0" @click="editarCuenta()" class="mx-2" fab dark x-small
                                             color="#0A62BF" title="ACTUALIZAR CUENTA CONTABLE" style="float: left">
-                                            <v-icon dark> mdi-content-save </v-icon>
+                                            <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
                                     </v-toolbar>
                                 </v-col>
@@ -153,17 +153,17 @@
                                         <v-toolbar-title style="color:#000000">
                                             <h6>OPCIONES</h6>
                                         </v-toolbar-title>
-                                        <v-btn class="mx-2" fab dark x-small color="info"
+                                        <v-btn icon large class="mx-2" fab dark x-small color="info"
                                             @click="listarAsientosxFechas()" style="float: left"
                                             title="LISTAR ASIENTOS POR FECHAS">
                                             <v-icon dark> mdi-calendar-search </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark x-small color="info"
+                                        <v-btn icon large class="mx-2" fab dark x-small color="info"
                                             @click="listarAsientosxCuentas()" style="float: left"
                                             title="LISTAR ASIENTOS POR CUENTAS">
                                             <v-icon dark> mdi-account </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark x-small color="secondary" @click="generarReportePDF()"
+                                        <v-btn icon large class="mx-2" fab dark x-small color="secondary" @click="generarReportePDF()"
                                             title="GENERAR PDF">
                                             <v-icon dark>mdi-printer</v-icon>
                                         </v-btn>
