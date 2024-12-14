@@ -222,7 +222,7 @@
                                         @input="codigoProducto = codigoProducto.toUpperCase()" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2"  fab dark x-small color="cyan" :rules="ProductoRules"
+                                    <v-btn class="mx-2" :disabled="botonAct == 1" fab dark x-small color="cyan" :rules="ProductoRules"
                                         @click="showFormato()" style="float: right" title="BUSCAR FORMATO">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -233,7 +233,7 @@
                                         disabled required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="tipoRules"
+                                    <v-btn class="mx-2" :disabled="botonAct == 1" fab dark x-small color="cyan" :rules="tipoRules"
                                         @click="showTipos()" style="float: right" title="BUSCAR TIPO PRODUCTO">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -245,7 +245,7 @@
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="fabricaRules"
+                                    <v-btn class="mx-2" :disabled="botonAct == 1" fab dark x-small color="cyan" :rules="fabricaRules"
                                         @click="showFabricas()" style="float: right" title="BUSCAR FABRICAS">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
