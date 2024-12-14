@@ -222,7 +222,7 @@
                                         @input="codigoProducto = codigoProducto.toUpperCase()" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="ProductoRules"
+                                    <v-btn class="mx-2"  fab dark x-small color="cyan" :rules="ProductoRules"
                                         @click="showFormato()" style="float: right" title="BUSCAR FORMATO">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -562,7 +562,7 @@
                                                                         mdi-cancel
                                                                     </v-icon>
                                                                     <v-icon large class="mr-2" color="#0A62BF"
-                                                                        @click="showInfoproducto(item)"
+                                                                        @click="showInfoProducto(item)"
                                                                         title="VER INFORMACION">
                                                                         mdi-eye
                                                                     </v-icon>
