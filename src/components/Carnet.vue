@@ -273,7 +273,7 @@ export default {
     },
     created: function () {
         this.user = JSON.parse(sessionStorage.getItem("session"));
-        console.log(this.user.usuario);
+
         this.usuario = this.user.personal;
         this.id_sede = this.user.id_sede;
         this.nomus = this.user.nombres + ' ' + this.user.paterno + ' ' + this.user.materno;
@@ -405,16 +405,14 @@ export default {
 
                 const date = new Date();
                 this.urlFoto = this.idEmpleado+'_'+date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear()+'.jpg';
-                alert(this.idEmpleado);
-                alert(this.urlFoto);
+              
                 this.editarImagenDeEmpleado(this.idEmpleado,this.urlFoto);
                
         },
 
         async editarImagenDeEmpleado() {
             let me = this;
-            alert(this.idEmpleado);
-            alert(this.urlFoto)
+           
             await axios
                 .post(
                     "/empleado/subirfoto/" +
@@ -491,7 +489,7 @@ export default {
             await axios
                 .post("/uploadimage/", formData)
                 .then(function (response) {
-                    console.log(response);
+          
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                 })
