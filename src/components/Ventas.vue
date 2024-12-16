@@ -639,17 +639,18 @@ export default {
         },
 
         async registrarAsientosContables() {
+            await this.listarCuentas();
             this.numeroReferencia = this.generarNumeroReferencia();
             this.idCuentaContable = this.seleccionarCuentaContableVentas();
             const totalVenta = this.calcularTotalVenta();
-            const { montoDebito, montoCredito } = await this.listarCuentas();
-            const nuevoMontoCredito = montoCredito + totalVenta;
+           
+            const nuevoMontoCredito = this.montoCredito + totalVenta;
 
             await this.registrarAsientoContable(
                 this.numeroReferencia,
                 this.descripcionAsiento,
                 this.idCuentaContable,
-                montoDebito,
+                this.montoDebito,
                 nuevoMontoCredito
             );
 
