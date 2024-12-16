@@ -640,7 +640,6 @@ export default {
 
         async registrarAsientosContables() {
             await this.listarCuentas();
-            alert(this.montoCredito + " " + this.montoDebito);
             this.numeroReferencia = this.generarNumeroReferencia();
             this.idCuentaContable = this.seleccionarCuentaContableVentas();
             const totalVenta = this.calcularTotalVenta();
