@@ -180,6 +180,14 @@ export default {
                (v) => !!v || "SE REQUIERE EL NOMBRE DEL EMPLEADO.",
              ],
 
+             headerDocumento: [
+                { text: "DOCUMENTO", value: "nombreempleado", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: true },
+            ],
+
+            searchDocumento: '',
+            datosDocumento: [],
+
 
             snackbarOK: false,
             snackbarError : false,
@@ -196,6 +204,7 @@ export default {
     created: function () {
         if (this.user != null) {
              this.user = JSON.parse(sessionStorage.getItem('session'));
+             this.listarDocumento()
         }
         if (this.user == null) {
             if (this.$route.path != '/login') {
@@ -265,6 +274,24 @@ export default {
         limpiar() {
             this.$refs.form.reset()
 
+        },
+
+        async listarDocumentos() {
+            let me = this;
+            await axios
+                .get("/documento/listardocumentoscontrato/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosDocumento = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosDocumento = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
 
         checkAccess(accesoCorrecto, tipoCorrecto) {
