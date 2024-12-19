@@ -86,13 +86,79 @@
 
                                         <template #[`item.actions`]="{ item }">
                                             <v-icon small class="mr-2" color="#0A62BF"
-                                                @click="seleecionarFabrica(item)">
+                                                @click="seleccionarFabrica(item)">
                                                 mdi-check-circle
                                             </v-icon>
                                         </template>
 
                                     </v-data-table>
                                 </v-col>
+                                <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeFabricas()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                               
+                            </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="almacenesModal" persistent max-width="800px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA DE ALMACENES:</span><br>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-list-item>
+                                        <v-list-item-title class="text-center">
+                                            <h5>ALMACENES</h5>
+                                        </v-list-item-title>
+                                    </v-list-item>
+
+                                    <v-card-title>
+                                        <v-text-field v-model="searchAlmacenes" append-icon="mdi-magnify"
+                                            label="BUSCAR ALMACENES" single-line hide-details></v-text-field>
+                                    </v-card-title>
+
+                                    <v-data-table :headers="headersAlmacenes" :items="datosAlmacenes"
+                                        :search="searchAlmacenes" :items-per-page="5" class="elevation-1" id="tableId">
+
+                                        <template #[`item.est`]="{ item }">
+                                            <v-chip :color="colorEstado(item.est)" dark>
+                                                {{ item.est }}
+                                            </v-chip>
+                                        </template>
+
+                                        <template #[`item.actions`]="{ item }">
+                                            <v-icon small class="mr-2" color="#0A62BF"
+                                                @click="seleccionarAlmacen(item)">
+                                                mdi-check-circle
+                                            </v-icon>
+                                        </template>
+
+                                    </v-data-table>
+                                </v-col>
+                                <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeAlmacenes()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                               
+                            </v-col>
                             </v-row>
                         </v-container>
                     </v-form>
@@ -274,7 +340,13 @@
                                                                         @input="nombreProducto = nombreProducto.toUpperCase()"
                                                                         required disabled></v-text-field>
                                                                 </v-col>
-
+                                                                <v-col cols="12" md="1">
+                                                                    <v-btn class="mx-2" fab dark x-small color="cyan"
+                                                                         @click="showFabricas()"
+                                                                        style="float: right" title="BUSCAR FABRICAS">
+                                                                        <v-icon dark> mdi-magnify </v-icon>
+                                                                    </v-btn>
+                                                                </v-col>
                                                                 <v-col cols="12" md="4">
                                                                     <v-text-field v-model="nombreFabrica"
                                                                         label="FABRICA" :counter="100"
@@ -284,7 +356,7 @@
                                                                 </v-col>
                                                                 <v-col cols="12" md="1">
                                                                     <v-btn class="mx-2" fab dark x-small color="cyan"
-                                                                        :rules="productoRules" @click="showAlmacenes()"
+                                                                         @click="showAlmacenes()"
                                                                         style="float: right" title="BUSCAR ALMACENES">
                                                                         <v-icon dark> mdi-magnify </v-icon>
                                                                     </v-btn>
@@ -446,6 +518,19 @@ export default {
             ],
             //#endregion
 
+            //#region Almacen
+            idAlmacen: 1,
+            nombreAlmacen: "",
+            datosAlmacenes: [],
+            headersAlmacenes: [
+                { text: "NOMBRE DE ALMACÉN", value: "nombrealmacen", sortable: true },
+                { text: "DESCRIPCIÓN DE ALMACÉN", value: "descripcion", sortable: true },
+                { text: "CÓDIGO ALMACÉN", value: "codigo", sortable: true },
+                { text: "ESTADO", value: "estado", sortable: true },
+                { text: "ACCIONES", value: "actions", sortable: false }
+            ],
+            //#endregion
+
             //#region Modals
             agregarMovimientoModal: 0,
             editMovimientoModal: 0,
@@ -453,9 +538,9 @@ export default {
             movimientosInhabilitadosModal: 0,
             productosModal: 0,
             fabricasModal: 0,
+            almacenesModal: 0,
             //#endregion
             botonact: 0,
-            idAlmacen: 1,
 
             //#region Snackbars
             snackbarOK: false,
@@ -563,6 +648,25 @@ export default {
                     console.log(error);
                 });
         },
+
+        async listarAlmacenes() {
+          let me = this;
+          await axios
+            .get("/almacen/listaralmacenesactivos/")
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosAlmacenes = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosAlmacenes = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
         //#endregion
         //#region Agregar
         registrarMovimiento() {
@@ -593,8 +697,8 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.limpiar();
                     me.listarMovimientos();
+                    me.limpiar();
                     me.agregarMovimientoModal = false;
                 })
                 .catch(function (error) {
@@ -712,6 +816,14 @@ export default {
         closeFabricas() {
             this.fabricasModal = false;
         },
+
+        showAlmacenes() {
+            this.almacenesModal = true;
+            this.listarAlmacenes();
+        },
+        closeAlmacenes() {
+            this.almacenesModal = false;
+        },
         //#endregion
 
         limpiar() {
@@ -729,6 +841,12 @@ export default {
             this.idFabrica = item.idfab;
             this.nombreFabrica = item.nomfab;
             this.fabricasModal = false;
+        },
+
+        seleccionarAlmacen(item) {
+            this.idAlmacen = item.idalmacen;
+            this.nombreAlmacen = item.nombrealmacen;
+            this.almacenesModal = false;
         },
         //#endregion
     },
