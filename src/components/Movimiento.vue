@@ -166,6 +166,117 @@
             </v-card>
         </v-dialog>
 
+        <v-dialog v-model="editMovimientoModal" persistent max-width="800px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>EDITAR MOVIMIENTO:</span><br>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                                    <v-form ref="form" v-model="valid" lazy-validation>
+                                                        <v-container>
+                                                            <v-row>
+                                                                <v-col cols="12"></v-col>
+
+                                                                <v-col cols="12" md="4">
+                                                                    <v-text-field v-model="codigoMovimiento"
+                                                                        label="CODIGO MOVIMIENTO" :counter="100"
+                                                                        :rules="codigoMovimientoRules"
+                                                                        @input="codigoMovimiento = codigoMovimiento.toUpperCase()"
+                                                                        required></v-text-field>
+                                                                </v-col>
+                                                                <v-col cols="12" md="4">
+                                                                    <v-text-field v-model="motivoMovimiento"
+                                                                        label="MOTIVO MOVIMIENTO" :counter="100"
+                                                                        :rules="motivoMovimientoRules"
+                                                                        @input="motivoMovimiento = motivoMovimiento.toUpperCase()"
+                                                                        required></v-text-field>
+                                                                </v-col>
+                                                               
+                                                                <v-col cols="12" md="3">
+                                                                    <v-text-field v-model="nombreProducto"
+                                                                        label="PRODUCTO" :counter="100"
+                                                                        :rules="nombreProductoRules"
+                                                                        @input="nombreProducto = nombreProducto.toUpperCase()"
+                                                                        required disabled></v-text-field>
+                                                                </v-col>
+                                                            
+                                                                <v-col cols="12" md="4">
+                                                                    <v-text-field v-model="nombreFabrica"
+                                                                        label="FABRICA" :counter="100"
+                                                                        :rules="nombreFabricaRules"
+                                                                        @input="nombreFabrica = nombreFabrica.toUpperCase()"
+                                                                        required disabled></v-text-field>
+                                                                </v-col>
+                                                               
+                                                                <v-col cols="12" md="3">
+                                                                    <v-text-field v-model="nombreAlmacen"
+                                                                        label="ALMACEN" :counter="100"
+                                                                        :rules="nombreAlmacenRules"
+                                                                        @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
+                                                                        required disabled></v-text-field>
+                                                                </v-col>
+                                                                <v-col cols="12" md="4">
+                                                                    <v-text-field v-model="cantidadMovimiento"
+                                                                        label="CANTIDAD" :counter="100"
+                                                                        :rules="cantidadMovimientoRules"
+                                                                        @input="cantidadMovimiento = cantidadMovimiento.toUpperCase()"
+                                                                        required></v-text-field>
+                                                                </v-col>
+
+                                                                <v-col cols="12" md="8"> </v-col>
+                                                                <v-col cols="12" md="4">
+                                                                    <v-toolbar dense shaped>
+                                                                        <v-toolbar-title>
+                                                                            <h6>
+                                                                                OPCIONES
+                                                                            </h6>
+                                                                        </v-toolbar-title>
+                                                                        <v-btn icon v-if="botonact == 1" class="mx-2"
+                                                                            fab dark color="#0A62BF"
+                                                                            @click="editarMovimiento()"
+                                                                            style="float: left"
+                                                                            title="ACTUALIZAR INFORMACIÓN">
+                                                                            <v-icon dark> mdi-pencil </v-icon>
+                                                                        </v-btn>
+                                                                        <v-btn icon v-if="botonact == 0" class="mx-2"
+                                                                            fab dark color="#0ABF55"
+                                                                            @click="registrarMovimiento()"
+                                                                            style="float: left"
+                                                                            title="REGISTRAR MOVIMIENTO">
+                                                                            <v-icon dark> mdi-content-save
+                                                                            </v-icon>
+                                                                        </v-btn>
+                                                                        <v-btn icon class="mx-2" fab dark
+                                                                            color="#BF120A" @click="limpiar()"
+                                                                            style="float: left"
+                                                                            title="LIMPIAR FORMULARIO">
+                                                                            <v-icon dark> mdi-eraser </v-icon>
+                                                                        </v-btn>
+                                                                    </v-toolbar>
+                                                                </v-col>
+                                                                <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeEditMovimientoModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                               
+                            </v-col>
+                                                            </v-row>
+                                                        </v-container>
+                                                    </v-form>
+                                                </v-row>
+                        </v-container>
+                    </v-form>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
         <v-dialog v-model="infoMovimientoModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
@@ -386,7 +497,7 @@
                                                                         </v-toolbar-title>
                                                                         <v-btn icon v-if="botonact == 1" class="mx-2"
                                                                             fab dark color="#0A62BF"
-                                                                            @click="actualizarMovimiento()"
+                                                                            @click="editarMovimiento()"
                                                                             style="float: left"
                                                                             title="ACTUALIZAR INFORMACIÓN">
                                                                             <v-icon dark> mdi-pencil </v-icon>
@@ -467,6 +578,7 @@ export default {
             datosMovimientos: [],
             headersMovimientos: [
                 { text: "CODIGO MOVIMIENTO", value: "codmov", sortable: false },
+                { text: "MOVIMIENTO", value: "nommov", sortable: false },
                 { text: "ORIGEN", value: "nomfab", sortable: false },
                 { text: "DESTINO", value: "nomalm", sortable: false },
                 { text: "CANTIDAD", value: "cant", sortable: false },
@@ -784,10 +896,20 @@ export default {
         showEditMovimientoModal(item) {
             this.editMovimientoModal = true;
             this.botonact = 1;
-            this.idMovimiento = item.idforma;
+            this.idMovimiento = item.idmov;
             this.nombreMovimiento = item.nomforma;
-            this.codigoMovimiento = item.codigoMovimiento;
+            this.codigoMovimiento = item.codmov;
+            this.cantidadMovimiento = item.cant;
+            this.nombreFabrica = item.nomfab;
+            this.nombreAlmacen = item.nomalm;
+            this.nombreProducto = item.nomprod;
         },
+
+        closeEditMovimientoModal(){
+            this.limpiar();
+            this.editMovimientoModal = false;
+        },
+
         showMovimientosInhabilitados() {
             this.MovimientosInhabilitadosModal = true
             this.listarMovimientosInh();
