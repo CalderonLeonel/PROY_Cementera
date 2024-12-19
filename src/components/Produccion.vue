@@ -44,12 +44,7 @@
                                         @input="codigoProduccion = codigoProduccion.toUpperCase()" required
                                         disabled></v-text-field>
                                 </v-col>
-                                <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="productoRules"
-                                        @click="showProductos()" style="float: right" title="BUSCAR PRODUCTOS">
-                                        <v-icon dark> mdi-magnify </v-icon>
-                                    </v-btn>
-                                </v-col>
+                              
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="nombreProducto" label="PRODUCTO" :counter="100"
                                         :rules="nombreProductoRules" @input="nombreProducto = nombreProducto.toUpperCase()"
