@@ -146,22 +146,19 @@
                             <v-row>
                                 <v-col cols="12" md="1"></v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="nombreFabrica" label="NOMBRE FABRICA" :counter="100"
+                                    <v-text-field v-model="nombreFabrica" disabled label="NOMBRE FABRICA" :counter="100"
                                         :rules="nombreFabricaRules" @input="nombreFabrica = nombreFabrica.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1"></v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="codigoFabrica" label="CODIGO FABRICA" :counter="100"
+                                    <v-text-field v-model="codigoFabrica" disabled label="CODIGO FABRICA" :counter="100"
                                         :rules="codigoFabricaRules" @input="codigoFabrica = codigoFabrica.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" @click="showCiudades()"
-                                        style="float: right" title="BUSCAR CIUDAD">
-                                        <v-icon dark> mdi-magnify </v-icon>
-                                    </v-btn>
+                                   
                                 </v-col>
                                 <v-col cols="12" md="5">
                                     <v-text-field v-model="ciudad" label="NOMBRE CIUDAD" :counter="50"
@@ -169,20 +166,14 @@
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" @click="showPaises()"
-                                        style="float: right" title="BUSCAR PAISES">
-                                        <v-icon dark> mdi-magnify </v-icon>
-                                    </v-btn>
+                                    
                                 </v-col>
                                 <v-col cols="12" md="5">
                                     <v-text-field v-model="pais" label="NOMBRE PAIS" :counter="50"
                                         @input="pais = pais.toUpperCase()" disabled required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" @click="showUnidades()"
-                                        style="float: right" title="BUSCAR UNIDAD">
-                                        <v-icon dark> mdi-magnify </v-icon>
-                                    </v-btn>
+                                   
                                 </v-col>
                                 <v-col cols="12" md="5">
                                     <v-text-field v-model="unidad" label="NOMBRE UNIDAD" :counter="50"
@@ -192,13 +183,10 @@
                                 <v-col cols="12" md="5"></v-col>
 
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" @click="showMapa()"
-                                        style="float: right" title="ABRIR MAPA">
-                                        <v-icon dark> mdi-magnify </v-icon>
-                                    </v-btn>
+                                    
                                 </v-col>
                                 <v-col cols="12" md="11">
-                                    <v-text-field v-model="direccionFabrica" label="DIRECCION FABRICA" :counter="100"
+                                    <v-text-field v-model="direccionFabrica" disabled label="DIRECCION FABRICA" :counter="100"
                                         :rules="direccionRules"
                                         @input="direccionFabrica = direccionFabrica.toUpperCase()"
                                         required></v-text-field>
@@ -213,29 +201,7 @@
                                         SALIR
                                     </v-btn>
                                 </v-col>
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="12" md="4">
-                                    <v-toolbar dense shaped>
-                                        <v-toolbar-title>
-                                            <h6>
-                                                OPCIONES
-                                            </h6>
-                                        </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#0A62BF" @click="editarFabricas()"
-                                            style="float: left" title="ACTUALIZAR FABRICA" width="28px"
-                                            height="28px">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                        </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="#0ABF55" @click="registrarFabrica()"
-                                            style="float: left" title="REGISTRAR FABRICA" width="28px" height="28px">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
-                                        </v-btn>
-                                        <v-btn icon color="#BF120A" @click="limpiar()" style="float: left"
-                                            title="LIMPIAR FORMULARIO">
-                                            <v-icon dark> mdi-eraser </v-icon>
-                                        </v-btn>
-                                    </v-toolbar>
-                                </v-col>
+                              
                             </v-row>
                         </v-container>
                     </v-form>
@@ -1180,6 +1146,10 @@ export default {
             this.idFabrica = item.idfab;
             this.nombreFabrica = item.nomfab;
             this.codigoFabrica = item.codfab;
+            this.ciudad = item.nomciu;
+            this.pais = item.nompai;
+            this.unidad = item.nomuni;
+            this.direccionFabrica = item.dirfab;
         },
         closeInfoFabricaModal() {
             this.infoFabricaModal = false;
