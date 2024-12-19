@@ -372,17 +372,7 @@ export default {
             datosDocumentoAlerta: [],
         }
     },
-    created: function () {
-        if (this.user != null) {
-             this.user = JSON.parse(sessionStorage.getItem('session'));
-        }
-        if (this.user == null) {
-            if (this.$route.path != '/login') {
-                this.$router.push("/login");
-            }
-        }
-        console.log("UserData: " + JSON.stringify(this.user));
-    },
+   
     computed: {
         logueado() {
             if (this.user != null) {
@@ -390,8 +380,17 @@ export default {
             }
             return this.user;
             }
-        }, created: function () {
-
+        }, 
+        created: function () {
+        this.listarArchivo();
+        this.listarArchivosAdq();
+        this.listarArchivosAlerta();
+        this.listarArchivosCotizacion();
+        this.listarArchivosContrato();
+        this.listarArchivosInv();
+        this.listarArchivosProveedor();
+        this.listarDocumento();
+        
             if (this.user != null) {
             this.user = JSON.parse(sessionStorage.getItem('session'));
             }
