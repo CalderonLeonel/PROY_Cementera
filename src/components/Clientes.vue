@@ -105,41 +105,41 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="nombresCliente" label="NOMBRE CLIENTE" :counter="100"
+                                    <v-text-field disabled v-model="nombresCliente" label="NOMBRE CLIENTE" :counter="100"
                                         :rules="nombresClienteRules" @input="nombresCliente = nombresCliente.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="paterno" label="PATERNO CLIENTE" :counter="100"
+                                    <v-text-field disabled v-model="paterno" label="PATERNO CLIENTE" :counter="100"
                                         :rules="paternoRules" @input="paterno = paterno.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="materno" label="MATERNO CLIENTE" :counter="100"
+                                    <v-text-field  disabled v-model="materno" label="MATERNO CLIENTE" :counter="100"
                                         :rules="maternoRules" @input="materno = materno.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="nit" label="NIT CLIENTE" :counter="100" :rules="nitRules"
+                                    <v-text-field disabled v-model="nit" label="NIT CLIENTE" :counter="100" :rules="nitRules"
                                         @input="nit = nit.toUpperCase()" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="3">
-                                    <v-text-field v-model="fechaNacimiento" label="FECHA NACIMIENTO"
+                                    <v-text-field disabled v-model="fechaNacimiento" label="FECHA NACIMIENTO"
                                         type="date"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="correo" label="CORREO CLIENTE" :rules="correoRules" type="email"
+                                    <v-text-field disabled v-model="correo" label="CORREO CLIENTE" :rules="correoRules" type="email"
                                         required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="celular" label="CELULAR CLIENTE" :counter="100"
+                                    <v-text-field disabled v-model="celular" label="CELULAR CLIENTE" :counter="100"
                                         :rules="celularRules" @input="celular = celular.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="telefono" label="TELEFONO CLIENTE" :counter="100"
+                                    <v-text-field disabled v-model="telefono" label="TELEFONO CLIENTE" :counter="100"
                                         :rules="telefonoRules" @input="telefono = telefono.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -147,28 +147,7 @@
 
                                 <v-col cols="12" md="4"></v-col>
                               
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="12" md="4">
-                                    <v-toolbar dense shaped>
-                                        <v-toolbar-title>
-                                            <h6>
-                                                OPCIONES
-                                            </h6>
-                                        </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#0A62BF" @click="actualizarCliente()"
-                                            style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px" height="28px">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                        </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="#0ABF55" @click="registrarCliente()"
-                                            style="float: left" title="REGISTRAR CLIENTE" width="28px" height="28px">
-                                            <v-icon dark> mdi-content-save </v-icon>
-                                        </v-btn>
-                                        <v-btn icon color="#BF120A" @click="limpiar()" style="float: left"
-                                            title="LIMPIAR FORMULARIO">
-                                            <v-icon dark> mdi-eraser </v-icon>
-                                        </v-btn>
-                                    </v-toolbar>
-                                </v-col>
+                              
                                 <v-col cols="10"></v-col>
                                 <v-col cols="12" sm="4" md="2">
                                     <v-btn iconv dark color="#00A1B1" @click="closeInfoClienteModal()"
