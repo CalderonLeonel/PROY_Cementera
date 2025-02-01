@@ -34,6 +34,10 @@
                             </v-chip>
                         </template>
 
+                        <template #[`item.fecha`]="{ item }">
+                                    {{ getFormattedDate(item.fecha) }}
+                        </template>
+
 
 
 
@@ -308,6 +312,7 @@ export default {
 
                 { text: "DOCUMENTO", value: "namedoc", sortable: true },
                 { text: "ARCHIVO", value: "doc", sortable: true },
+                { text: "FECHA", value: "fecha", sortable: true },
                 { text: "DESCRIPCIÓN", value: "descrip", sortable: true },
                 { text: "CÓDIGO", value: "codigo", sortable: true },
             ],
@@ -407,6 +412,25 @@ export default {
             
         },
     methods: {
+
+        getDate() {
+            var fecha = new Date().toISOString();
+            return fecha;
+        },
+
+
+        getFormattedDate(oldDate) {
+            let fecha = new Date(oldDate);
+            let dia = fecha.getDate();
+            let mes = fecha.getMonth() + 1;
+            let anio = fecha.getFullYear();
+            if (dia < 10) dia = '0' + dia;
+            if (mes < 10) mes = '0' + mes;
+
+            let fechaFormateada = dia + '-' + mes + '-' + anio;
+
+            return fechaFormateada;
+        },
 
         showAgregarDocumento() {
             this.agregarDocumento = true;
