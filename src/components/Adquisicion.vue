@@ -160,7 +160,7 @@
 
                             </v-data-table>
                         </v-col>
-                    </v-row>-->
+                    </v-row>
                     <v-row>
                         <v-col cols="12">
                             <v-list-item>
@@ -221,7 +221,7 @@
 
                             </v-data-table>
                         </v-col>
-                    </v-row>
+                    </v-row>-->
 
                 </v-container>
             </v-form>
