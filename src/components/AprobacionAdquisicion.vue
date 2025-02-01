@@ -37,130 +37,12 @@
         </v-alert>
         <div>
             <v-alert dense style="color: #ffffff;" color="purple">
-                <h3>COTIZACIONES</h3>
+                <h3>APROBACIÓN DE COTIZACIONES</h3>
             </v-alert>
         </div>
         <div v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-container>
-
-                    <v-row>
-                        <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showModalAgregarCotizacionAdquisicion()">NUEVA COTIZACIÓN DE
-                                ADQUISICIONES</v-btn>
-                        </v-col>
-                        <v-col cols="12">
-                            <v-list-item>
-                                <v-list-item-title class="text-center">
-                                    <h3>COTIZACIONES DE ADQUISICIONES</h3>
-                                </v-list-item-title>
-                            </v-list-item>
-
-                            <v-card-title>
-                                <v-text-field v-model="searchCotizacionAdquisicion" append-icon="mdi-magnify"
-                                    label="BUSCAR COTIZACIONES" single-line hide-details></v-text-field>
-                            </v-card-title>
-
-                            <v-data-table :headers="headerCotizacionAdquisicion" :items="datosCotizacionAdquisicion"
-                                :search="searchCotizacionAdquisicion" :items-per-page="5" class="elevation-1"
-                                id="tableId">
-
-
-                                <template #[`item.fechaVencimiento`]="{ item }">
-                                    {{ getFormattedDate(item.fechaVencimiento) }}
-                                </template>
-
-
-                                <template #[`item.estado`]="{ item }">
-                                    <v-chip :color="getColor(item.estado)" dark>
-                                        {{ getState(item.estado) }}
-                                    </v-chip>
-                                </template>
-
-                                <template #[`item.archivo`]="{ item }">
-                                    <v-text v-if="item.archivo == null || item.arch == 'null'">
-                                        NO TIENE UN ARCHIVO
-                                    </v-text>
-                                    <v-btn v-else-if="item.archivo !=null" color="primary" icon
-                                        :href="`${axios.defaults.baseURL}${'documento/descargar/' + item.archivo}`" target="">
-                                        <v-icon>mdi-file</v-icon> ABRIR
-                                    </v-btn>
-                                </template>
-
-                                <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.estado == 'PENDIENTE'" x-large color="primary" class="mr-2" @click="agregarItem(item)"
-                                        title="AGREGAR ITEMS">
-                                        mdi-playlist-plus
-                                    </v-icon>
-                                    <v-icon v-if="item.estado == 'PENDIENTE'" class="mr-2" color="primary" x-large
-                                        @click="llenarCamposCotizacionAdquisicion(item)" title="ACTUALIZAR INFORMACION">
-                                        mdi-pencil
-                                    </v-icon>
-                                   
-                                    <v-icon x-large color="primary" class="mr-2" @click="mostrarItems(item)"
-                                        title="VER ITEMS">
-                                        mdi-eye
-                                    </v-icon>
-                                    <v-icon v-if="item.estado != 'PENDIENTE'" class="mr-2" color="primary" x-large @click="exportToPDFDetailed(item)"
-                                        title="VER PDF">
-                                        mdi-file-pdf-box
-                                    </v-icon>
-                                </template>
-
-
-
-
-                            </v-data-table>
-                        </v-col>
-                    </v-row>
-                     <!--<v-row>
-                        <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showModalAgregarCotizacionItem()">NUEVA COTIZACION DE
-                                ITEM</v-btn>
-                        </v-col>
-                        <v-col cols="12">
-                            <v-list-item>
-                                <v-list-item-title class="text-center">
-                                    <h3>COTIZACION DE ITEMS</h3>
-                                </v-list-item-title>
-                            </v-list-item>
-
-                            <v-card-title>
-                                <v-text-field v-model="searchCotizacionItem" append-icon="mdi-magnify"
-                                    label="BUSCAR UNA COTIZACION DE UN ITEM" single-line hide-details></v-text-field>
-                            </v-card-title>
-
-                            <v-data-table :headers="headerCotizacionItem" :items="datosCotizacionItem"
-                                :search="searchCotizacionItem" :items-per-page="5" class="elevation-1" id="tableId">
-
-                                <template #[`item.estado`]="{ item }">
-                                    <v-chip :color="getColor(item.estado)" dark>
-                                        {{ getState(item.estado) }}
-                                    </v-chip>
-                                </template>
-
-                                <template #[`item.actions`]="{ item }">
-                                    <v-icon class="mr-2" color="primary" x-large
-                                        @click="llenarCamposCotizacionItem(item)" title="ACTUALIZAR INFORMACION">
-                                        mdi-pencil
-                                    </v-icon>
-                                    <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2"
-                                        @click="activar(item)" title="ACTIVAR COTIZACION">
-                                        mdi-check-circle-outline
-                                    </v-icon>
-                                    <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2"
-                                        @click="confirmacionAnulacionCotizacionItem(item)"
-                                        title="DESACTIVAR COTIZACION">
-                                        mdi-close-circle
-                                    </v-icon>
-                                </template>
-
-
-
-
-                            </v-data-table>
-                        </v-col>
-                    </v-row>
                     <v-row>
                         <v-col cols="12">
                             <v-list-item>
@@ -221,7 +103,7 @@
 
                             </v-data-table>
                         </v-col>
-                    </v-row>-->
+                    </v-row>
 
                 </v-container>
             </v-form>
@@ -410,47 +292,7 @@
         </v-dialog>
 
 
-        <v-dialog v-model="proveedorModal" persistent :overlay="false" max-width="900px">
-            <v-card elevation="5" outlined shaped>
-                <v-card-title>
-                    <span>LISTA DE TIPO DE PROVEEDORES ACTIVOS</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12">
-                                <v-card-title>
-                                    <v-text-field v-model="searchProveedor" append-icon="mdi-magnify"
-                                        label="BUSCAR PROVEEDOR ACTIVO" single-line hide-details></v-text-field>
-                                </v-card-title>
-                            </v-col>
-
-                            <v-col cols="12">
-                                <v-data-table :headers="headerProveedor" :items="datosProveedor"
-                                    :search="searchProveedor" :items-per-page="5" class="elevation-1" id="tableId">
-                                    <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarProveedor(item)">
-                                            mdi-check-circle
-                                        </v-icon>
-                                    </template>
-                                </v-data-table>
-                            </v-col>
-                            <v-col cols="10"></v-col>
-                            <v-col cols="2">
-                                <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeProveedorModal()" style="float: right"
-                                        title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
-
-
+       
 
         <v-dialog v-model="agregarCotizacionItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>

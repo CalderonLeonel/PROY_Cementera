@@ -315,6 +315,11 @@
               <h6>ADQUISICIONES</h6>
             </v-list-item-title>
           </v-list-item>
+          <v-list-item :to="{ name: 'AprobarAdquisicion' }">
+            <v-list-item-title>
+              <h6>REVISAR ADQUISICIONES</h6>
+            </v-list-item-title>
+          </v-list-item>
         </v-list-group>
         
         <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(10, '0') || checkAccess(10, 'GERENTE')">
@@ -332,6 +337,16 @@
           <v-list-item :to="{ name: 'Inventario' }">
             <v-list-item-title>
               <h6>INVENTARIO</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Stock' }">
+            <v-list-item-title>
+              <h6>STOCK</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Item' }">
+            <v-list-item-title>
+              <h6>ITEMS</h6>
             </v-list-item-title>
           </v-list-item>
           <v-list-item :to="{ name: 'Almacen' }" v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
