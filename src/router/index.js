@@ -162,6 +162,16 @@ const routes = [
     component: () => import("@/components/Inventario.vue"),
   },
   {
+    path: "stock",
+    name: "Stock",
+    component: () => import("@/components/Stock.vue"),
+  },
+  {
+    path: "item",
+    name: "Item",
+    component: () => import("@/components/Item.vue"),
+  },
+  {
     path: "almacenamiento",
     name: "Almacenamiento",
     component: () => import("@/components/Almacenamiento.vue"),
@@ -170,6 +180,11 @@ const routes = [
     path: "adquisicion",
     name: "Adquisicion",
     component: () => import("@/components/Adquisicion.vue"),
+  },
+  {
+    path: "aprobaradquisicion",
+    name: "AprobarAdquisicion",
+    component: () => import("@/components/AprobacionAdquisicion.vue"),
   },
   {
     path: "archivos",
