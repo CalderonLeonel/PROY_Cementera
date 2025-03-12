@@ -57,7 +57,7 @@
                          <v-col cols="12">
                              <v-list-item>
                                  <v-list-item-title class="text-center">
-                                     <h5>STOCK DE ALMACENES</h5>
+                                     <h5>STOCK DE ALMACENES POR ITEMS DE INVENTARIO</h5>
                                  </v-list-item-title>
                              </v-list-item>
  
@@ -95,7 +95,7 @@
                          <v-col cols="12">
                              <v-list-item>
                                  <v-list-item-title class="text-center">
-                                     <h5>ALMACENES CON PRODUCTOS</h5>
+                                     <h5>STOCK DE ALMACENES CON PRODUCTOS</h5>
                                  </v-list-item-title>
                              </v-list-item>
  
