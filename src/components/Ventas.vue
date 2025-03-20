@@ -562,18 +562,23 @@ export default {
                     this.idCliente + "," +
                     this.venta.idEmpleado
                 );
-                if (response.status == 200 ||  response.data.success) {
-                        this.recuperarUltimaVenta().then(() => {
-                            this.datosUltimaVenta.forEach((venta, index) => {
-                                this.idUltimaVenta = venta.idven;
-                                this.fechaVenta = venta.creadate;
-                            });
+                if (response.status == 200 || response.data.success) {
+                    this.recuperarUltimaVenta().then(() => {
+                        this.datosUltimaVenta.forEach((venta, index) => {
+                            this.idUltimaVenta = venta.idven;
+                            this.fechaVenta = venta.creadate;
+                        });
                         this.imprimirFactura(this.nit, this.razonSocial, this.idUltimaVenta, this.fechaVenta);
 
                         this.imprimirRecibo(this.razonSocial, this.idUltimaVenta, this.fechaVenta);
+                        this.recuperarUltimaVenta();
+                        this.registrarVentasCarrito();
+                        this.registrarAsientosContables();
+
+                        this.resetVenta();
                     })
                 }
-                
+
 
                 if (response.data && response.data.success) {
                     this.mensajeSnackbar = response.data.message || "Venta registrada exitosamente";
@@ -583,13 +588,9 @@ export default {
                     // Recuperar la última venta
                     console.log("recuperar ultima venta")
                     this.recuperarUltimaVenta();
-                    
 
-                    this.recuperarUltimaVenta();
-                     this.registrarVentasCarrito();
-                     this.registrarAsientosContables();
 
-                    this.resetVenta();
+
 
 
                 } else {
@@ -601,7 +602,7 @@ export default {
             } catch (error) {
                 console.error("Error al registrar la venta:", error);
                 console.log(response.data.message);
-                console.log(error.response?.data?.message );
+                console.log(error.response?.data?.message);
                 this.mensajeSnackbarError = error.response?.data?.message || error.message || "Error al registrar la venta";
                 this.snackbarError = true;
                 this.snackbarOK = false;

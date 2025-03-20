@@ -52,7 +52,7 @@
                     </v-icon>
                 </template>
             </v-snackbar>
-        </div>
+            </div>
     </div>
 </template>
 

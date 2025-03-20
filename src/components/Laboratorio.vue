@@ -1,5 +1,30 @@
 <template>
+
     <v-card elevation="5" outlined shaped>
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="light-green darken-2 ">
+                {{ mensajeSnackbar }}
+
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+
+        <div class="text-center">
+
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarWarning = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
 
         <v-dialog v-model="formatoModal" max-width="900px">
             <v-card elevation="5" outlined shaped>
@@ -384,30 +409,7 @@
                 </v-row>
             </v-card-actions>
         </v-card>
-        <div class="text-center">
-            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="light-green darken-2 ">
-                {{ mensajeSnackbar }}
 
-                <template v-slot:action="{ attrs }">
-                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                        mdi-close
-                    </v-icon>
-                </template>
-            </v-snackbar>
-        </div>
-
-        <div class="text-center">
-
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
-                <strong>{{ mensajeSnackbarError }}</strong>
-
-                <template v-slot:action="{ attrs }">
-                    <v-icon right v-bind="attrs" @click="snackbarWarning = false">
-                        mdi-close
-                    </v-icon>
-                </template>
-            </v-snackbar>
-        </div>
     </v-card>
 
 </template>
@@ -422,7 +424,7 @@ export default {
         return {
             flag: 1,
             //#region Producto Laboratorio
-            fases: ["FASE INICIAL", "PRUEBAS", "FINALIZADO"],
+            fases: ["FASE INICIAL", "FASE PRUEBAS", "FASE FINAL"],
             faseSeleccionada: "FASE INICIAL",
             idProducto: "",
             nombreProducto: "",
