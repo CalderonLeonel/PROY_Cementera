@@ -104,7 +104,7 @@
                              <v-btn color="success" @click="showModalAgregarTipoItem()">NUEVO TIPO DE ITEM</v-btn>  
                          </v-col>
                          <v-col cols="12" md="12">
-                            <v-btn v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')" color="primary" @click="showModalActivarTipo()">LISTA DE ITEMS DESACTIVADOS</v-btn>
+                            <v-btn color="primary" @click="showModalActivarTipo()">LISTA DE ITEMS DESACTIVADOS</v-btn>
                          </v-col>
                          <v-col cols="12">
                              <v-list-item>
