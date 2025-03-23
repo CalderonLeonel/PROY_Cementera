@@ -35,45 +35,45 @@
                 </v-card-title>
                 <v-card-text>
 
-                    <v-form ref="form" v-model="valid"> <!-- Nuevo Empleado / Editar Empleado -->
+                    <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo Empleado / Editar Empleado -->
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="nombres" :counter="50" :rules="nombresRules"
-                                        @input="nombres = nombres.toUpperCase()" label="Nombre del Empleado"
+                                        @input="nombres = nombres.toUpperCase()" label="NOMBRE DEL EMPLEADO"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-text-field v-model="paterno" :counter="50" :rules="paternoRules"
-                                        @input="paterno = paterno.toUpperCase()" label="Apellido Paterno"
+                                        @input="paterno = paterno.toUpperCase()" label="APELLIDO PATERNO"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-text-field v-model="materno" :counter="50" :rules="maternoRules"
                                         @input="materno = materno.toUpperCase()"
-                                        label="Apellido Materno (Opcional)"></v-text-field>
+                                        label="APELLIDO MATERNO (OPCIONAL)"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-select v-model="isMale" :items="datosSexo" item-text="text" item-value="isHombre"
-                                        label="Selecciona un Género..." prepend-icon="mdi-gender-male-female"
+                                        label="SELECCIONA UN GÉNERO..." prepend-icon="mdi-gender-male-female"
                                         :rules="sexoRules" required>
                                     </v-select>
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-select v-model="estadoCivil" :items="datosEstadoCivil"
-                                        label="Selecciona un Estado Civil..." prepend-icon="mdi-human-male-female"
+                                        label="SELECCIONA UN ESTADO CIVIL..." prepend-icon="mdi-human-male-female"
                                         :rules="estadoCivilRules" required>
                                     </v-select>
                                 </v-col>
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="email" :counter="50" :rules="emailRules"
-                                        @input="email = email.toUpperCase()" label="Correo Electrónico"></v-text-field>
+                                        @input="email = email.toUpperCase()" label="CORREO ELECTRÓNICO"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
                                     <v-menu v-model="datePicker" :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="fechaNacimiento" label="Fecha de Nacimiento"
+                                            <v-text-field v-model="fechaNacimiento" label="FECHA DE NACIMIENTO"
                                                 :rules="fechaNacimientoRules" prepend-icon="mdi-cake-variant-outline"
                                                 readonly v-bind="attrs" v-on="on">
 
@@ -85,28 +85,28 @@
                                 </v-col>
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="ci" :counter="50" :rules="ciRules"
-                                        @input="ci = ci.toUpperCase()" label="Número de Carnet"></v-text-field>
+                                        @input="ci = ci.toUpperCase()" label="NÚMERO DE CARNET"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
                                     <v-text-field type="number" v-model="telefono" :rules="telefonoRules"
-                                        @input="telefono = telefono.toUpperCase()" label="Teléfono"></v-text-field>
+                                        @input="telefono = telefono.toUpperCase()" label="TELÉFONO"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
                                     <v-select v-model="idCargo" :items="datosCargo" item-text="carg" item-value="idcarg"
-                                        label="Selecciona una Cargo" prepend-icon="mdi-account-tie-hat"
+                                        label="SELECCIONA UNA CARGO" prepend-icon="mdi-account-tie-hat"
                                         :rules="cargoRules" required>
                                     </v-select>
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-select v-model="idDepartamento" :items="datosDepartamento" item-text="nom"
-                                        item-value="iddep" label="Selecciona un Departamento" prepend-icon="mdi-sitemap"
+                                        item-value="iddep" label="SELECCIONA UN DEPARTAMENTO" prepend-icon="mdi-sitemap"
                                         :rules="departamentoRules" required
                                         v-on:change="listarSectoresDeDepartamento(idDepartamento);">
                                     </v-select>
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-select v-model="idSector" :items="datosSector" item-text="sect"
-                                        item-value="idsect" label="Selecciona un Sector" prepend-icon="mdi-sitemap"
+                                        item-value="idsect" label="SELECCIONA UN SECTOR" prepend-icon="mdi-sitemap"
                                         :rules="sectorRules" required :disabled="idDepartamento == ''">
                                     </v-select>
                                 </v-col>
@@ -427,6 +427,7 @@ export default {
         },
         async actualizarempleado() {
             let me = this;
+            log("console:"+this.idEmpleado);
             await axios
                 .post(
                     "/empleado/editarempleado", {
@@ -442,7 +443,7 @@ export default {
                     p10: this.telefono,
                     p11: this.idCargo,
                     p12: this.idDepartamento,
-                    p12: this.idSector,
+                    p13: this.idSector,
                 }
                 )
                 .then(function (response) {

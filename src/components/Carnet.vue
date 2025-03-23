@@ -8,7 +8,7 @@
         <!-- Snackbar -->
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00">
-                {{ mensajeSnackBar }}
+                {{ mensajeSnackbar }}
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarOK = false">
                         mdi-close
@@ -238,6 +238,14 @@ export default {
             idDepartamento: "",
             valid: true,
             archivo: "",
+            file: "",
+            close:"",
+
+            snackbarOK: false,
+            mensajeSnackbar: "",
+            snackbarError: false,
+            mensajeError: "",
+            timeout: 2000,
 
             isShotPhoto: false,
             showUrl: false,
