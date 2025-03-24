@@ -145,7 +145,9 @@ export default {
             idArchivo: '',
 
             snackbarOK: false,
+            mensajeSnackbar: "",
             snackbarError: false,
+            timeout: 2000,
 
             datosAlerta: [],
             searchAlerta: '',

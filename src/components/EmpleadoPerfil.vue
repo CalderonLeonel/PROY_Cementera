@@ -219,7 +219,7 @@
                                                             </v-alert>
                                                         </div>
                                                         <v-col cols="12" md="4">
-                                                            <v-btn color="#0ABF55" @click="showAddObservacion()">Nueva
+                                                            <v-btn color="success" @click="showAddObservacion()">Nueva
                                                                 Observacion</v-btn>
                                                         </v-col>
 
@@ -288,7 +288,7 @@
                                                             </v-alert>
                                                         </div>
                                                         <v-col cols="12" md="4">
-                                                            <v-btn color="#0ABF55" @click="showAddVacacion()">Registrar Vacacion</v-btn>
+                                                            <v-btn color="success" @click="showAddVacacion()">Registrar Vacacion</v-btn>
                                                         </v-col>
                                                         <v-card-title>
                                                             <v-text-field v-model="searchVacacion"
@@ -385,16 +385,16 @@
                             <v-row>
                                 <v-col cols="12" md="12">
                                     <v-file-input v-model="documentoArchivo" accept=".docx, .xlsx, .pptx, .pdf, .xml"
-                                        label="Contrato archivo">
+                                        label="CONTRATO ARCHIVO">
                                     </v-file-input>
                                     <v-select v-model="tipo" :items="datosTipo"
-                                        label="Selecciona el tipo de contrato a registrar" prepend-icon="mdi-pick"
+                                        label="SELECCIONA EL TIPO DE CONTRATO A REGISTRAR" prepend-icon="mdi-pick"
                                         required v-on:change="isDisabled = !isDisabled; fechaFinal = null">
                                     </v-select>
                                     <v-menu v-model="datePicker1" :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="fechaInicio" label="Fecha de inicio del contrato"
+                                            <v-text-field v-model="fechaInicio" label="FECHA DE INICIO DEL CONTRATO"
                                                 prepend-icon="mdi-calendar" readonly v-bind="attrs"
                                                 v-on="on"></v-text-field>
                                         </template>
@@ -405,7 +405,7 @@
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-text-field v-model="fechaFinal"
-                                                label="Fecha de finalización del Contrato" :disabled="isDisabled"
+                                                label="FECHA DE FINALIZACIÓN DEL CONTRATO" :disabled="isDisabled"
                                                 prepend-icon="mdi-calendar" readonly v-bind="attrs"
                                                 v-on="on"></v-text-field>
                                         </template>
@@ -464,16 +464,16 @@
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="observacion" :counter="50" :rules="observacionRules"
                                         @input="observacion = observacion.toUpperCase()"
-                                        label="Titulo de la Observacion" required>
+                                        label="TÍTULO DE LA OBSERVACION" required>
                                     </v-text-field>
                                     <v-textarea v-model="comentario" :counter="250" :rules="comentarioRules" outlined
-                                        @input="comentario = comentario.toUpperCase()" label="Descripción o comentario"
+                                        @input="comentario = comentario.toUpperCase()" label="DESCRIPCIÓN O COMENTARIO"
                                         required>
                                     </v-textarea>
                                     <v-menu v-model="datePicker3" :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="fecha" label="Fecha del evento ocurrido"
+                                            <v-text-field v-model="fecha" label="FECHA DEL EVENTO OCURRIDO"
                                                 :rules="fechaRules" prepend-icon="mdi-calendar" readonly v-bind="attrs"
                                                 v-on="on"></v-text-field>
                                         </template>
@@ -560,7 +560,7 @@
                                     <v-menu v-model="datePicker4" :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="diaInicio" label="Fecha Inicio" :rules="fechaRules"
+                                            <v-text-field v-model="diaInicio" label="FECHA INICIO" :rules="fechaRules"
                                                 prepend-icon="mdi-calendar" readonly v-bind="attrs"
                                                 v-on="on"></v-text-field>
                                         </template>
@@ -569,7 +569,7 @@
                                     <v-menu v-model="datePicker5" :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="diaFinal" label="Fecha Final" :rules="fechaRules"
+                                            <v-text-field v-model="diaFinal" label="FECHA FINAL" :rules="fechaRules"
                                                 prepend-icon="mdi-calendar" readonly v-bind="attrs"
                                                 v-on="on"></v-text-field>
                                         </template>

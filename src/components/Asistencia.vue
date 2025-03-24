@@ -166,7 +166,7 @@
                                 <v-col cols="12" md="1" v-if="botonAct == 1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" @click="showQR()"
                                         style="float: right" title="ABRIR CAMARA">
-                                        <v-icon dark> mdi-cam </v-icon>
+                                        <v-icon dark> mdi-camera </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="11">
@@ -341,9 +341,9 @@ export default {
         datePicker: false,
         valid: false,
 
-        nombreEmpleadoLabel: "Seleccionar empleado...",
-        sexoLabel: "Género...",
-        edadLabel: "Edad...",
+        nombreEmpleadoLabel: "SELECCIONAR EMPLEADO...",
+        sexoLabel: "GÉNERO...",
+        edadLabel: "EDAD...",
         empleadoModal: false,
         lectorQRModal: false,
         asistenciaModal: "",
@@ -373,7 +373,7 @@ export default {
             { text: "ID", value: "idempl" },
             { text: "NOMBRES", value: "nom" },
             //{ text: "ESTADO", value: "act" },
-            { text: "OPCIONES", value: "actions", sortable: false },
+            //{ text: "OPCIONES", value: "actions", sortable: false },
         ],
         headersAsistenciaDelDia: [
             { text: "HORA", value: "hor" },
