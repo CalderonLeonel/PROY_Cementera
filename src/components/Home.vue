@@ -1,5 +1,7 @@
 <template>
+  <h1><p>¡Bienvenido a Dryxmix!</p></h1>
 
+<!--
         <v-carousel>
           <v-carousel-item>
             <Empresa />
@@ -11,10 +13,11 @@
             <Pedido />
           </v-carousel-item>
         </v-carousel>
+        -->
 </template>
 
 <script>
-
+/*
 import Empresa from './Empresa.vue';
 import Productos from './ProductosIni.vue';
 import Pedido from './PedidosCliente.vue';
@@ -33,4 +36,5 @@ export default {
 
   }
 }
+  */
 </script>
