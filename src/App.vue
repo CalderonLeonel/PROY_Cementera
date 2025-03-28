@@ -29,7 +29,7 @@
             <v-img src="./assets/logo192.png"></v-img>
           </v-col>
           <v-col cols="8">
-            <v-toolbar-title><b>ERP Drymix</b></v-toolbar-title>
+            <v-toolbar-title><b>Drymix</b></v-toolbar-title>
           </v-col>
 
         </v-toolbar>
@@ -40,7 +40,7 @@
           <v-list-item-content>
             <center>
               <v-list-item-title class="text-h6">
-                ERP
+                
               </v-list-item-title>
               <v-list-item-subtitle></v-list-item-subtitle>
             </center>
@@ -419,7 +419,7 @@
       <v-row justify="center" no-gutters>
 
         <v-col class="py-4 text-center white--text" cols="12">
-          {{ new Date().getFullYear() }} — <strong>ERP DRYMIX</strong>
+          {{ new Date().getFullYear() }} — <strong> DRYMIX</strong>
         </v-col>
       </v-row>
     </v-footer>
