@@ -17,7 +17,7 @@
             </v-snackbar>
         </div>
         <div class="text-center">
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B">
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error">
                 {{ mensajeError }}
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarError = false">
@@ -62,10 +62,12 @@
 
                             <v-col cols="10"> </v-col>
                             <v-col cols="2">
-                                <v-btn class="mx-2" fab dark small color="red darken-1" @click="close"
-                                    style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
-                                </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="close" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -75,7 +77,7 @@
 
         <v-simple-table style="border: hidden">
             <template>
-                <thead bgcolor="#EE680B">
+                <thead bgcolor="error">
 
                     <th class="text-left"></th>
                     <th class="text-left"></th>
@@ -98,7 +100,7 @@
                         </td>
                         <td style="border: inset 0pt"></td>
                     </tr>
-                    <tr style="background-color: #ffffff">
+                   <!-- <tr style="background-color: #ffffff">
                         <td style="border: inset 0pt">
                             <h5>TIPO DE EMPLEADO:</h5>
                         </td>
@@ -111,7 +113,7 @@
                         </td>
                         <td style="border: inset 0pt">{{ gestionActual }}</td>
                         <td style="border: inset 0pt"></td>
-                    </tr>
+                    </tr>-->
                 </tbody>
             </template>
         </v-simple-table>
@@ -119,72 +121,97 @@
         <v-divider></v-divider>
 
         <v-card class="white--text" color="grey lighten-4" max-width="150%">
+    <v-list-item>
+        <v-list-item-title>
+            <h5>FOTOGRAFIA</h5>
+        </v-list-item-title>
+    </v-list-item>
 
-            <v-list-item>
-                <v-list-item-title>
-                    <h5>FOTOGRAFIA</h5>
-                </v-list-item-title>
-            </v-list-item>
 
-            <v-card style="position: absolute; top: 0px; left: 400px; width: 150px; height: 150px; ">
+    <div style="display: flex; justify-content: center; align-items: center; position: relative;">
+        <v-card style="width: 100px; height: 100px; position: relative;">
+            <div class="camera-shutter" :class="{ 'flash': isShotPhoto }"></div>
 
-                <div class="camera-shutter" :class="{ 'flash': isShotPhoto }"></div>
+            <v-img v-if="showUrl" :src="urlFoto" style="width: 100px; height: 100px;"></v-img>
 
-                <v-img v-if="showUrl" :src=urlFoto style="width: 150px; height: 150px; "></v-img>
-                <div v-else>
-                    <canvas id="photoTaken2" ref="canvas2" style="width: 150px; height: 150px; "></canvas>
-                </div>
-
-                <v-col cols="12" md="3" class="camera-box" :class="{ 'flash': isShotPhoto }" v-if="isCameraOpen"
-                    v-show="!isLoading">
-                    <div class="camera-shutter" :class="{ 'flash': isShotPhoto }"></div>
-                    <v-col>
-                        <video v-show="!isPhotoTaken" ref="camera" style="width: 150px; height: 150px; " autoplay
-                            align-center></video>
-                        <canvas v-show="isPhotoTaken" id="photoTaken" ref="canvas"
-                            style="width: 150px; height: 150px; "></canvas>
-                    </v-col>
-                    <v-col v-if="isPhotoTaken" class="camera-shoot">
-                    </v-col>
-                </v-col>
-                <v-col cols="12" md="4"></v-col>
-            </v-card>
-
-            <v-list-item> </v-list-item>
-
-            <v-col cols="12" md="8"></v-col>
-            <v-col cols="12" md="4">
-                <v-toolbar dense shaped color="#002245">
-                    <v-toolbar-title style="color:#ffffff">
-                        <h6>OPCIONES</h6>
-                    </v-toolbar-title>
-
-                    <v-btn class="mx-2" fab dark x-small color="#EE680B" style="float: left;" title="FOTO EMPLEADO"
-                        :class="{ 'is-primary': !isCameraOpen, 'is-danger': isCameraOpen }" @click="toggleCamera">
-                        <v-icon v-if="!isCameraOpen"> mdi-camera-plus</v-icon>
-                        <v-icon v-else="">mdi-camera-off</v-icon>
-                    </v-btn>
-                    <v-btn v-model="file" @click="takePhoto()" class="mx-2" fab dark x-small color="#EE680B"
-                        title="TOMAR FOTO" style="float: left">
-                        <v-icon dark> mdi-camera </v-icon>
-                    </v-btn>
-                    <v-btn v-model="file" @click="actualizarEMPLEADOImg()" class="mx-2" fab dark x-small color="#EE680B"
-                        title="GUARDAR FOTO" style="float: left">
-                        <v-icon dark> mdi-cloud-upload </v-icon>
-                    </v-btn>
-
-                    <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="imprimirCarnet()" style="float: left"
-                        title="IMPRIMIR CARNET">
-                        <v-icon dark> mdi-printer-outline </v-icon>
-                    </v-btn>
-
-                    <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="showEmpleados()" style="float: right"
-                        title="BUSCAR EMPLEADO">
-                        <v-icon dark> mdi-account-search </v-icon>
-                    </v-btn>
-                </v-toolbar>
-            </v-col>
+            <div v-else>
+                <video 
+                    v-show="!isPhotoTaken" 
+                    ref="camera" 
+                    style="width: 100px; height: 100px; object-fit: cover;" 
+                    autoplay>
+                </video>
+                <canvas 
+                    v-show="isPhotoTaken" 
+                    id="photoTaken" 
+                    ref="canvas" 
+                    style="width: 100px; height: 100px;">
+                </canvas>
+            </div>
         </v-card>
+    </div>
+
+    <v-list-item></v-list-item>
+
+        <v-col cols="12" md="4">
+            <v-toolbar dense shaped color="#ffffff">
+                <v-toolbar-title style="color:#000000FF">
+                    <h6>OPCIONES</h6>
+                </v-toolbar-title>
+
+                <v-btn :disabled="!buttonsAreEnabled"
+                    class="mx-2" 
+                    fab dark x-small 
+                    color="primary" 
+                    style="float: left;" 
+                    title="FOTO EMPLEADO" 
+                    :class="{ 'is-primary': !isCameraOpen, 'is-danger': isCameraOpen }" 
+                    @click="toggleCamera">
+                    <v-icon v-if="!isCameraOpen">mdi-camera-plus</v-icon>
+                    <v-icon v-else="">mdi-camera-off</v-icon>
+                </v-btn>
+                <v-btn :disabled="!buttonsAreEnabled"
+                    v-model="file" 
+                    @click="takePhoto()" 
+                    class="mx-2" 
+                    fab dark x-small 
+                    color="#0ABF55" 
+                    title="TOMAR FOTO" 
+                    style="float: left">
+                    <v-icon dark>mdi-camera</v-icon>
+                </v-btn>
+                <v-btn :disabled="!buttonsAreEnabled"
+                    v-model="file" 
+                    @click="actualizarEMPLEADOImg()" 
+                    class="mx-2" 
+                    fab dark x-small 
+                    color="#0A62BF" 
+                    title="GUARDAR FOTO" 
+                    style="float: left">
+                    <v-icon dark>mdi-cloud-upload</v-icon>
+                </v-btn>
+                <v-btn :disabled="!buttonsAreEnabled"
+                    class="mx-2" 
+                    fab dark x-small 
+                    color="warning" 
+                    @click="imprimirCarnet()" 
+                    style="float: left" 
+                    title="IMPRIMIR CARNET">
+                    <v-icon dark>mdi-printer-outline</v-icon>
+                </v-btn>
+                <v-btn 
+                    class="mx-2" 
+                    fab dark x-small 
+                    
+                    @click="showEmpleados()" 
+                    style="float: right" 
+                    title="BUSCAR EMPLEADO">
+                    <v-icon dark>mdi-account-search</v-icon>
+                </v-btn>
+            </v-toolbar>
+        </v-col>
+    </v-card>
+
 
     </v-card>
 </template>
@@ -210,6 +237,7 @@ export default {
             idCargo: "",
             idDepartamento: "",
             valid: true,
+            archivo: "",
 
             isShotPhoto: false,
             showUrl: false,
@@ -218,6 +246,8 @@ export default {
             isPhotoTaken: false,
             isLoading: false,
             stream: null,
+
+            buttonsAreEnabled: false,
 
             searchEmpleado: "",
             datosEmpleado: [],
@@ -243,7 +273,7 @@ export default {
     },
     created: function () {
         this.user = JSON.parse(sessionStorage.getItem("session"));
-        console.log(this.user.usuario);
+
         this.usuario = this.user.personal;
         this.id_sede = this.user.id_sede;
         this.nomus = this.user.nombres + ' ' + this.user.paterno + ' ' + this.user.materno;
@@ -257,40 +287,62 @@ export default {
 
     methods: {
         async generarPDFCarnet(empleadoData) {
-            const doc = new jsPDF();
+    try {
+        const doc = new jsPDF();
 
-            // Agregar la foto del empleado al PDF (reemplaza 'ruta_de_la_imagen_del_empleado.jpg' con la ruta real)
-            const imgData = this.urlFoto;
-            await doc.addImage(imgData, 'JPEG', 15, 15, 60, 60);
+   
+        const primaryColor = [0, 161, 177]; 
+        const secondaryColor = [0, 0, 0];  
 
-            // Agregar los datos del empleado al PDF
-            doc.text(`Documento: ${empleadoData.ci}`, 80, 30);
-            doc.text(`Empleado: ${empleadoData.paterno} ${empleadoData.materno} ${empleadoData.nombres}`, 80, 40);
-            doc.text(`Tipo de Empleado: ${empleadoData.nombreCargo}`, 80, 50);
-            doc.text(`Gestión: ${empleadoData.gestionActual}`, 80, 60);
 
-            // Generar el código QR con los datos del empleado
-            const qrData = JSON.stringify(empleadoData);
-            const qrCanvas = await QRCode.toCanvas(qrData);
-            const qrImage = qrCanvas.toDataURL('image/png');
+        doc.setFillColor(...primaryColor);
+        doc.rect(0, 0, 210, 20, 'F');
 
-            // Agregar el código QR al PDF
-            doc.addImage(qrImage, 'PNG', 15, 80, 40, 40);
 
-            // Guardar el PDF con un nombre específico
-            const nombrePDF = 'carnet_empleado.pdf';
-            doc.save(nombrePDF);
+        doc.setTextColor(...secondaryColor);
+        doc.setFontSize(14);
+        doc.text("CARNET DE EMPLEADO", 105, 10, { align: "center" });
 
-            // Abre el PDF en una nueva ventana para su visualización antes de imprimir
-            const pdfBlob = doc.output('blob');
-            const pdfUrl = URL.createObjectURL(pdfBlob);
-            const printWindow = window.open(pdfUrl, '_blank');
 
-            // Espera un momento antes de imprimir automáticamente
-            setTimeout(() => {
-                printWindow.print();
-            }, 1500); // Ajusta el tiempo según sea necesario
+        const imgData = this.urlFoto;
+        if (!imgData) {
+            throw new Error("La URL de la foto no está disponible.");
+        }
+        await doc.addImage(imgData, 'JPEG', 15, 25, 60, 60);
+
+
+        doc.setTextColor(...secondaryColor);
+        doc.setFontSize(12);
+        doc.text(`Documento: ${empleadoData.ci}`, 80, 40);
+        doc.text(`Empleado: ${empleadoData.paterno} ${empleadoData.materno} ${empleadoData.nombres}`, 80, 50);
+
+
+        const qrData = JSON.stringify(empleadoData);
+        const qrCanvas = await QRCode.toCanvas(qrData);
+        const qrImage = qrCanvas.toDataURL('image/png');
+
+ 
+        doc.addImage(qrImage, 'PNG', 15, 90, 40, 40);
+
+   
+                const nombrePDF = 'carnet_empleado.pdf';
+                const pdfBlob = doc.output('blob');
+                const pdfUrl = URL.createObjectURL(pdfBlob);
+
+                const printWindow = window.open(pdfUrl, '_blank');
+                if (printWindow) {
+                    setTimeout(() => {
+                        printWindow.print();
+                        URL.revokeObjectURL(pdfUrl); 
+                    }, 1500);
+                } else {
+                    console.warn("El navegador bloqueó la ventana emergente. Habilita las ventanas emergentes para continuar.");
+                }
+            } catch (error) {
+                console.error("Error al generar el carnet del empleado:", error);
+            }
         },
+
 
         imprimirCarnet() {
             // Preparar los datos del empleado
@@ -340,34 +392,46 @@ export default {
             //this.fechaNacimiento = item.nacdte;
             this.ci = item.ci;
             this.telefono = item.tel;
+            this.urlFoto = item.url;
             this.idCargo = item.idcarg;
             this.idDepartamento = item.iddep;
             this.idEmpleado = item.idempl;
+            this.getPhoto();
+            this.buttonsAreEnabled = true;
             this.empleadosModal = false;
         },
         actualizarEMPLEADOImg() {
-                this.actualizarempleadoIMG();
+                this.almacenarArchivo(this.archivo);
+
+                const date = new Date();
+                this.urlFoto = this.idEmpleado+'_'+date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear()+'.jpg';
+              
+                this.editarImagenDeEmpleado(this.idEmpleado,this.urlFoto);
+               
         },
-        async actualizarempleadoIMG() {
+
+        async editarImagenDeEmpleado() {
             let me = this;
+           
             await axios
                 .post(
-                    "/empleado/subirfoto", {
-                    p1: this.idEmpleado,
-                    p2: this.urlFoto,
-                }
+                    "/empleado/subirfoto/" +
+                    this.idEmpleado +
+                    "," +
+                    this.urlFoto
                 )
                 .then(function (response) {
+
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarEmpleados(me.idEmpleado);
-                    me.limpiar();
-                    me.closeEmpleado();
+
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
+
                 });
         },
+
         //#endregion
         async startCamera() {
             try {
@@ -392,12 +456,20 @@ export default {
                 this.isCameraOpen = true;
             }
         },
-        takePhoto() {
+      
+        
+        async takePhoto() {
             const video = this.$refs.camera;
             const canvas = this.$refs.canvas;
             const context = canvas.getContext('2d');
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            this.urlFoto = canvas.toDataURL('image/jpeg');
+            const dataURL = canvas.toDataURL('image/jpeg');
+            this.urlFoto = dataURL;
+
+            this.archivo = this.dataURLToFile(dataURL, this.idEmpleado+'.jpg');
+     
+
+
             this.isPhotoTaken = true;
             this.showUrl = true;
             this.isShotPhoto = true;
@@ -405,6 +477,81 @@ export default {
                 this.isShotPhoto = false;
             }, 150);
         },
+
+        async almacenarArchivo(documentoArchivo) {
+            const formData = new FormData();
+            formData.append('image', documentoArchivo); 
+
+            let me = this;
+        
+
+
+            await axios
+                .post("/uploadimage/", formData)
+                .then(function (response) {
+          
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                });
+        },
+
+
+        dataURLToFile(dataURL, fileName) {
+                const arr = dataURL.split(',');
+                const mime = arr[0].match(/:(.*?);/)[1];
+                const bstr = atob(arr[1]);
+                let n = bstr.length;
+                const u8arr = new Uint8Array(n);
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                return new File([u8arr], fileName, { type: mime });
+        },
+
+        getPhoto() {
+            let me = this;
+            var path = this.urlFoto; 
+            axios
+                .get("/documento/descargarImagen/" + path, { responseType: 'blob' })  
+                .then(function (response) {
+                    
+                    const url = URL.createObjectURL(response.data);  
+                    me.urlFoto = url;  
+
+                    me.mensajeSnackbar = 'Imagen cargada con éxito';
+                    me.snackbarOK = true;
+                    me.showUrl = true;
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    console.error('Error al cargar la foto:', error);
+                });
+        },
+
+
+        async descargarArchivo(nombre) {
+            let me = this;
+            await axios
+                .get(
+                    "/documento/descargarImagen/" +
+                    nombre
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+        },
+
+
         resetPhoto() {
             this.isPhotoTaken = false;
             this.showUrl = false;

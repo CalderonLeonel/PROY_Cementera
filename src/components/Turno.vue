@@ -17,7 +17,7 @@
             </v-snackbar>
         </div>
         <div class="text-center">
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
                 <strong>{{ mensajeSnackbarError }}</strong>
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarError = false">
@@ -64,7 +64,7 @@
                                     </v-chip>
                                 </template>
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon large class="mr-2" color="#001781" @click="showListarHorario(item)" title="VER HORARIOS">
+                                    <v-icon large class="mr-2" color="#0A62BF" @click="showListarHorario(item)" title="VER HORARIOS">
                                         mdi-clock
                                     </v-icon>
                                     <v-icon large class="mr-2" color="#0A628F" @click="showEditTurno(item)" title="ACTUALIZAR INFORMACION">
@@ -186,7 +186,7 @@
                             <div class="text-center">
 
                                 <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense
-                                    color="#EE680B" outlined>
+                                    color="error" outlined>
                                     <strong>{{ mensajeSnackbarError }}</strong>
 
                                     <template v-slot:action="{ attrs }">
@@ -291,7 +291,7 @@
 
                             <div class="text-center">
                                 <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense
-                                    color="#EE680B" outlined>
+                                    color="error" outlined>
                                     <strong>{{ mensajeSnackbarError }}</strong>
                                     <template v-slot:action="{ attrs }">
                                         <v-icon right v-bind="attrs" @click="snackbarError = false">

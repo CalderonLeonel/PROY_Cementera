@@ -120,10 +120,12 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeEmpleadoModal()" style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
-                                </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeEmpleadoModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -178,6 +180,14 @@ export default {
                (v) => !!v || "SE REQUIERE EL NOMBRE DEL EMPLEADO.",
              ],
 
+             headerDocumento: [
+                { text: "DOCUMENTO", value: "nombreempleado", sortable: true },
+                { text: "ARCHIVO", value: "archivo", sortable: true },
+            ],
+
+            searchDocumento: '',
+            datosDocumento: [],
+
 
             snackbarOK: false,
             snackbarError : false,
@@ -194,6 +204,7 @@ export default {
     created: function () {
         if (this.user != null) {
              this.user = JSON.parse(sessionStorage.getItem('session'));
+             this.listarDocumento()
         }
         if (this.user == null) {
             if (this.$route.path != '/login') {
@@ -263,6 +274,24 @@ export default {
         limpiar() {
             this.$refs.form.reset()
 
+        },
+
+        async listarDocumentos() {
+            let me = this;
+            await axios
+                .get("/documento/listardocumentoscontrato/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosDocumento = [];
+                        console.log(response.data);
+                    } else {
+                        console.log(response.data);
+                        me.datosDocumento = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
 
         checkAccess(accesoCorrecto, tipoCorrecto) {

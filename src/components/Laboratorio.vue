@@ -52,7 +52,7 @@
                                     </template>
 
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" color="#001781" @click="seleccionarFormato(item)">
+                                        <v-icon small class="mr-2" color="#0A62BF" @click="seleccionarFormato(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -61,10 +61,13 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeFormato()" style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
-                                </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeFormato()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                               
                             </v-col>
                         </v-row>
                     </v-container>
@@ -96,7 +99,7 @@
                                         </v-chip>
                                     </template>
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" color="#001781" @click="seleccionarTipo(item)">
+                                        <v-icon small class="mr-2" color="#0A62BF" @click="seleccionarTipo(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -104,10 +107,13 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeTipos()" style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
-                                </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeTipos()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                              
                             </v-col>
                         </v-row>
                     </v-container>
@@ -143,32 +149,34 @@
                                 <v-spacer></v-spacer>
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-toolbar dense shaped color="#001781">
-                                        <v-toolbar-title style="color: #ffffff;">
+                                    <v-toolbar dense shaped color="#ffffff">
+                                        <v-toolbar-title style="color: #000000;">
                                             <h6>
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="avanzarFase()"
+                                        <v-btn icon large class="mx-2" fab dark x-small color="#0A62BF" @click="avanzarFase()"
                                             tyle="float: left" title="AVANZAR FASE">
                                             <v-icon dark> mdi-page-next-outline </v-icon>
                                         </v-btn>
-                                        <v-btn v-if="est === 'FINALIZADO'" class="mx-2" fab dark x-small color="#EE680B"
+                                        <v-btn icon large v-if="est === 'FINALIZADO'" class="mx-2" fab dark x-small color="#0A62BF"
                                             @click="moverAProduccion()" style="float: left" title="MOVER A PRODUCCION">
                                             <v-icon dark> mdi-page-next-outline </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                        <v-btn icon large class="mx-2" fab dark x-small color="#0ABF55"
                                             @click="registrarObservacionLabo()" style="float: left"
                                             title="REGISTRAR OBSERVACION PRODUCTO LABORATORIO">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
                                     </v-toolbar>
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeRevisionModal()" style="float: right" title="SALIR">
+                                    <v-btn icon large class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeRevisionModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
                                 </v-col>
                             </v-row>
@@ -179,8 +187,8 @@
         </v-dialog>
 
         <div>
-            <v-alert dense style="color: #ffffff;" color="grey">
-                <h5>Laboratorio</h5>
+            <v-alert dense color="cyan" style="color: #ffffff">
+                <h5>LABORATORIO</h5>
             </v-alert>
         </div>
         <div>
@@ -225,27 +233,27 @@
 
                         <v-col cols="12" md="8"> </v-col>
                         <v-col cols="12" md="4">
-                            <v-toolbar dense shaped color="#001781">
-                                <v-toolbar-title style="color: #ffffff;">
+                            <v-toolbar dense shaped color="#ffffff">
+                                <v-toolbar-title style="color: #000000;">
                                     <h6>
                                         OPCIONES
                                     </h6>
                                 </v-toolbar-title>
-                                <v-btn color="#EE680B" class="mx-2" fab dark x-small @click="limpiar()"
+                                <v-btn icon large class="mx-2" color="#00A1B1" fab dark x-small @click="limpiar()"
                                     style="float: left" title="BUSCAR PRODUCTO DEL LABORATORIO">
                                     <v-icon dark> mdi-magnify-plus </v-icon>
                                 </v-btn>
-                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark x-small color="#EE680B"
+                                <v-btn icon large v-if="botonAct == 1" class="mx-2" fab dark x-small color="#0A62BF"
                                     @click="actualizarProductos()" style="float: left"
                                     title="ACTUALIZAR INFORMACIÓN LABORATORIO">
                                     <v-icon dark> mdi-pencil </v-icon>
                                 </v-btn>
-                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark x-small color="#EE680B"
+                                <v-btn icon large v-if="botonAct == 0" class="mx-2" fab dark x-small color="#0ABF55"
                                     @click="registrarProductoLabo()" style="float: left"
                                     title="REGISTRAR PRODUCTO LABORATORIO">
-                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                    <v-icon dark> mdi-content-save </v-icon>
                                 </v-btn>
-                                <v-btn color="#EE680B" class="mx-2" fab dark x-small @click="limpiar()"
+                                <v-btn icon large color="#BF120A" class="mx-2" fab dark x-small @click="limpiar()"
                                     style="float: left" title="LIMPIAR FORMULARIO">
                                     <v-icon dark> mdi-eraser </v-icon>
                                 </v-btn>
@@ -313,12 +321,12 @@
                                                 </template>
 
                                                 <template #[`item.actions`]="{ item }">
-                                                    <v-icon small class="mr-2" color="#001781"
+                                                    <v-icon small class="mr-2" color="#0A62BF"
                                                         @click="seleccionarProdLabo(item)"
                                                         title="SELECCIONAR PRODUCTO LABORATORIO">
                                                         mdi-check-circle
                                                     </v-icon>
-                                                    <v-icon small class="mr-2" color="#001781" @click="generarPDF(item)"
+                                                    <v-icon small class="mr-2" color="#0A62BF" @click="generarPDF(item)"
                                                         title="VER PDF">
                                                         mdi-printer-outline
                                                     </v-icon>
@@ -342,19 +350,19 @@
 
                                         <v-col cols="12" md="8"> </v-col>
                                         <v-col cols="12" md="4">
-                                            <v-toolbar dense shaped color="#001781">
-                                                <v-toolbar-title style="color: #ffffff;">
+                                            <v-toolbar dense shaped color="#ffffff">
+                                                <v-toolbar-title style="color: #000000;">
                                                     <h6>
                                                         OPCIONES
                                                     </h6>
                                                 </v-toolbar-title>
 
-                                                <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                                <v-btn icon large class="mx-2" fab dark x-small color="#0ABF55"
                                                     @click="registrarObservacionLabo()" style="float: left"
                                                     title="REGISTRAR PRODUCTO LABORATORIO">
-                                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                                    <v-icon dark> mdi-content-save </v-icon>
                                                 </v-btn>
-                                                <v-btn color="#EE680B" class="mx-2" fab dark x-small @click="limpiar()"
+                                                <v-btn icon large color="#BF120A" class="mx-2" fab dark x-small @click="limpiar()"
                                                     style="float: left" title="LIMPIAR FORMULARIO">
                                                     <v-icon dark> mdi-eraser </v-icon>
                                                 </v-btn>
@@ -386,12 +394,12 @@
                                                 </template>
 
                                                 <template #[`item.actions`]="{ item }">
-                                                    <v-icon small class="mr-2" color="#001781"
+                                                    <v-icon small class="mr-2" color="#0A62BF"
                                                         @click="seleccionarObservacion(item)"
                                                         title="SELECCIONAR OBSERVACION LABORATORIO">
                                                         mdi-check-circle
                                                     </v-icon>
-                                                    <v-icon small class="mr-2" color="#001781" @click="generarPDF(item)"
+                                                    <v-icon small class="mr-2" color="#0A62BF" @click="generarPDF(item)"
                                                         title="VER PDF">
                                                         mdi-printer-outline
                                                     </v-icon>
@@ -409,7 +417,28 @@
                 </v-row>
             </v-card-actions>
         </v-card>
+        <div>
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
 
+        <div class="text-center">
+
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarWarning = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
     </v-card>
 
 </template>

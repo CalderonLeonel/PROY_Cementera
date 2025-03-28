@@ -12,7 +12,7 @@
             </v-snackbar>
         </div>
         <div class="text-center">
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
                 <strong>{{ mensajeSnackbarError }}</strong>
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarError = false">
@@ -191,7 +191,7 @@
                                         </v-toolbar-title>
                                         <v-col cols="2">
                                             <v-btn icon v-if="botonAct == 1" color="#0A62BF"
-                                                @click="actualizarAsistencia()" style="float: left"
+                                                @click="registrarAsistencia()" style="float: left"
                                                 title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
@@ -291,12 +291,12 @@
                                 <v-col cols="8" md="12">
                                     <v-btn iconv class="mx-4" dark color="#0A62BF"
                                         @click="actualizarAsistencia()" style="float: left"
-                                        title="Encender Cámara">
+                                        title="ENCENDER CAMARA">
                                         <v-icon dark> mdi-pencil </v-icon>
                                         ACTUALIZAR
                                     </v-btn>
                                     <v-btn iconv class="mx-4" dark color="#0ABF55"
-                                        @click="toggleCamera(true)" style="float: left" title="REGISTRAR ITEM">
+                                        @click="toggleCamera(true)" style="float: left" title="GUARDAR FOTO EMPLEADO">
                                         <v-icon dark> mdi-content-save </v-icon>
                                         GUARDAR
                                     </v-btn>
@@ -435,7 +435,7 @@ export default {
             this.empleadoModal = false;
         },
         closeQR() {
-            this.empleadoModal = false;
+            this.lectorQRModal = false;
         },
         showEmpleado(item) {
             this.listarEmpleadosActivos();

@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="5" outlined shaped>
 
-        <v-dialog v-model="infoLineaModal" max-width="800px">
+        <v-dialog v-model="infoLineaModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>INFORMACION DE LA LINEA:</span><br>
@@ -29,10 +29,13 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeInfoLineaModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeInfoLineaModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
+                                 
                                 </v-col>
 
                             </v-row>
@@ -43,7 +46,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="editLineaModal" max-width="700px" persistent>
+        <v-dialog v-model="editLineaModal"  max-width="700px" persistent>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>EDITAR LINEA</span>
@@ -80,11 +83,11 @@
                                             @click="editarLineas()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 0" color="#EE680B"
+                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 0" color="#0ABF55"
                                             @click="registrarLinea()" style="float: left" title="REGISTRAR LINEA">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark small icon color="#EE680B" @click="limpiar()"
+                                        <v-btn class="mx-2" fab dark small icon color="#BF120A" @click="limpiar()"
                                             style="float: left" title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -93,9 +96,11 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeEditLineaModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeEditLineaModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
                                 </v-col>
                             </v-row>
@@ -184,10 +189,10 @@
                                                                 <v-btn icon v-if="botonact == 0" class="mx-2" fab dark
                                                                     color="#0ABF55" @click="registrarLinea()"
                                                                     style="float: left" title="REGISTRAR LINEA">
-                                                                    <v-icon dark> mdi-content-save-plus-outline
+                                                                    <v-icon dark> mdi-content-save
                                                                     </v-icon>
                                                                 </v-btn>
-                                                                <v-btn icon class="mx-2" fab dark color="#EE680B"
+                                                                <v-btn icon class="mx-2" fab dark color="#BF120A"
                                                                     @click="limpiar()" style="float: left"
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>
@@ -257,12 +262,12 @@
                                                                         title="DESACTIVAR LINEAS">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon sclass="mx-2" large color="#001781"
+                                                                    <v-icon sclass="mx-2" large color="#0A62BF"
                                                                         @click="showEditLineaModal(item)"
                                                                         title="ACTUALIZAR INFORMACION">
                                                                         mdi-pencil
                                                                     </v-icon>
-                                                                    <v-icon class="mx-2" large color="#001781"
+                                                                    <v-icon class="mx-2" large color="#0A62BF"
                                                                         @click="showInfoLinea(item)"
                                                                         title="VER INFORMACION">
                                                                         mdi-eye
@@ -312,16 +317,16 @@
 
                                                                 <template #[`item.actions`]="{ item }">
                                                                     <v-icon v-if="item.est == 'INACTIVO'" color="green"
-                                                                        small class="mr-2" @click="activar(item)"
+                                                                        large class="mr-2" @click="activar(item)"
                                                                         title="ACTIVAR LINEAS">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
                                                                     <v-icon v-if="item.est == 'ACTIVO'" color="red"
-                                                                        small class="mr-2" @click="desactivar(item)"
+                                                                        large class="mr-2" @click="desactivar(item)"
                                                                         title="DESACTIVAR LINEAS">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                    <v-icon large class="mr-2" color="#0A62BF"
                                                                         @click="showInfoLinea(item)"
                                                                         title="VER INFORMACION">
                                                                         mdi-eye
@@ -358,7 +363,7 @@
 
                     <div class="text-center">
 
-                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error"
                             outlined>
                             <strong>{{ mensajeSnackbarError }}</strong>
 

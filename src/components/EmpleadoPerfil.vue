@@ -219,7 +219,7 @@
                                                             </v-alert>
                                                         </div>
                                                         <v-col cols="12" md="4">
-                                                            <v-btn color="success" @click="showAddObservacion()">Nueva
+                                                            <v-btn color="#0ABF55" @click="showAddObservacion()">Nueva
                                                                 Observacion</v-btn>
                                                         </v-col>
 
@@ -234,9 +234,9 @@
                                                             :items-per-page="5" class="elevation-1" id="tableId">
                                                             <template #[`item.fec`]="{ item }">
                                                                 <td>{{ new Date(item.fec).toLocaleDateString('es-ES', {
-                            day: 'numeric', month:
-                                'long', year: 'numeric'
-                        }) }}</td>
+                                                                        day: 'numeric', month:
+                                                                            'long', year: 'numeric'
+                                                                    }) }}</td>
                                                             </template>
                                                             <template #[`item.act`]="{ item }">
                                                                 <v-chip :color="getColor(item.act)" dark>
@@ -288,7 +288,7 @@
                                                             </v-alert>
                                                         </div>
                                                         <v-col cols="12" md="4">
-                                                            <v-btn color="success" @click="showAddVacacion()">Registrar Vacacion</v-btn>
+                                                            <v-btn color="#0ABF55" @click="showAddVacacion()">Registrar Vacacion</v-btn>
                                                         </v-col>
                                                         <v-card-title>
                                                             <v-text-field v-model="searchVacacion"
@@ -301,17 +301,17 @@
                                                             class="elevation-1" id="tableId">
                                                             <template #[`item.fecini`]="{ item }">
                                                                 <td>{{ new Date(item.fecini).toLocaleDateString('es-ES',
-                            {
-                                day: 'numeric', month:
-                                    'long', year: 'numeric'
-                            }) }}</td>
+                                                                {
+                                                                    day: 'numeric', month:
+                                                                        'long', year: 'numeric'
+                                                                }) }}</td>
                                                             </template>
                                                             <template #[`item.fecfin`]="{ item }">
                                                                 <td>{{ new Date(item.fecfin).toLocaleDateString('es-ES',
-                            {
-                                day: 'numeric', month:
-                                    'long', year: 'numeric'
-                            }) }}</td>
+                                                                {
+                                                                    day: 'numeric', month:
+                                                                        'long', year: 'numeric'
+                                                                }) }}</td>
                                                             </template>
                                                             <template #[`item.act`]="{ item }">
                                                                 <v-chip :color="getColor(item.act)" dark>
@@ -362,7 +362,7 @@
             </v-snackbar>
         </div>
         <div class="text-center">
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
                 <strong>{{ mensajeSnackbarError }}</strong>
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarError = false">
@@ -530,7 +530,7 @@
                             <div class="text-center">
 
                                 <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense
-                                    color="#EE680B" outlined>
+                                    color="error" outlined>
                                     <strong>{{ mensajeSnackbarError }}</strong>
 
                                     <template v-slot:action="{ attrs }">
@@ -622,7 +622,7 @@
 
                             <div class="text-center">
                                 <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense
-                                    color="#EE680B" outlined>
+                                    color="error" outlined>
                                     <strong>{{ mensajeSnackbarError }}</strong>
                                     <template v-slot:action="{ attrs }">
                                         <v-icon right v-bind="attrs" @click="snackbarError = false">

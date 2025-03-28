@@ -18,18 +18,18 @@
 
                             <v-col cols="12" md="8"> </v-col>
                             <v-col cols="12" md="4">
-                                <v-toolbar dense shaped color="#001781">
-                                    <v-toolbar-title style="color: #ffffff;">
+                                <v-toolbar dense shaped color="#ffffff">
+                                    <v-toolbar-title style="color: #000000">
                                         <h6>
                                             OPCIONES
                                         </h6>
                                     </v-toolbar-title>
-                                    <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                    <v-btn class="mx-2" fab dark x-small color="#0ABF55"
                                         @click="registrarFinanciamiento()" style="float: left"
                                         title="REGISTRAR FINANCIAMIENTO">
-                                        <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                        <v-icon dark> mdi-content-save </v-icon>
                                     </v-btn>
-                                    <v-btn color="#EE680B" class="mx-2" fab dark x-small @click="limpiar()"
+                                    <v-btn color="#BF120A" class="mx-2" fab dark x-small @click="limpiar()"
                                         style="float: left" title="LIMPIAR FORMULARIO">
                                         <v-icon dark> mdi-eraser </v-icon>
                                     </v-btn>
@@ -86,17 +86,17 @@
 
                                 <v-col cols="12" md="8"></v-col>
                                 <v-col cols="12" md="4">
-                                    <v-toolbar dense shaped color="#002245">
-                                        <v-toolbar-title style="color:#ffffff">
+                                    <v-toolbar dense shaped color="#ffffff">
+                                        <v-toolbar-title style="color:#000000">
                                             <h6>OPCIONES</h6>
                                         </v-toolbar-title>
                                         <v-btn v-if="botonact == 1" @click="registrarSaldo()" class="mx-2" fab dark
-                                            x-small color="#EE680B" title="REGISTRAR DEPARTAMENTO" style="float: left">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            x-small color="#0ABF55" title="REGISTRAR DEPARTAMENTO" style="float: left">
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
                                         <v-btn v-if="botonact == 0" @click="editarCuenta()" class="mx-2" fab dark
-                                            x-small color="#EE680B" title="ACTUALIZAR DEPARTAMENTO" style="float: left">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            x-small color="#0A62BF" title="ACTUALIZAR DEPARTAMENTO" style="float: left">
+                                            <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
                                     </v-toolbar>
                                 </v-col>
@@ -153,7 +153,7 @@
                                         :items-per-page="12" class="elevation-1" id="tableId">
 
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon small class="mr-2" color="#001781"
+                                            <v-icon small class="mr-2" color="#0A62BF"
                                                 @click="showMontoInicialModal(item)">
                                                 mdi-check-circle
                                             </v-icon>
@@ -172,7 +172,7 @@
                                         :items-per-page="12" class="elevation-1" id="tableId">
 
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon small class="mr-2" color="#001781"
+                                            <v-icon small class="mr-2" color="#0A62BF"
                                                 @click="showMontoInicialModal(item)">
                                                 mdi-check-circle
                                             </v-icon>
@@ -191,7 +191,7 @@
 
             </v-card-actions>
             <div class="text-center">
-                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                     <strong>{{ mensajeSnackbar }}</strong>
 
 

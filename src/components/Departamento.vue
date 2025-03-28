@@ -92,7 +92,7 @@
                                 <div class="text-center">
 
                                     <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense
-                                        color="#EE680B" outlined>
+                                        color="error" outlined>
                                         <strong>{{ mensajeSnackbarError }}</strong>
 
                                         <template v-slot:action="{ attrs }">
@@ -133,17 +133,17 @@
                                     :search="searchDepartamento" :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.credte`]="{ item }">
                                         <td>{{ new Date(item.credte).toLocaleDateString('es-ES', {
-            day: 'numeric',
-            month: 'long', year: 'numeric'
-        }) }}</td>
-                                    </template>
-                                    <template #[`item.upddte`]="{ item }">
-                                        <td v-if="item.upddte == null">-</td>
-                                        <td v-if="item.upddte != null">{{ new
-            Date(item.upddte).toLocaleDateString('es-ES', {
-                day: 'numeric', month:
-                    'long', year: 'numeric'
-            }) }}</td>
+                                            day: 'numeric',
+                                            month: 'long', year: 'numeric'
+                                        }) }}</td>
+                                                                    </template>
+                                                                    <template #[`item.upddte`]="{ item }">
+                                                                        <td v-if="item.upddte == null">-</td>
+                                                                        <td v-if="item.upddte != null">{{ new
+                                            Date(item.upddte).toLocaleDateString('es-ES', {
+                                                day: 'numeric', month:
+                                                    'long', year: 'numeric'
+                                            }) }}</td>
                                     </template>
                                     <template #[`item.act`]="{ item }">
                                         <v-chip :color="getColor(item.act)" dark>
@@ -187,7 +187,7 @@
                     </div>
                     <div class="text-center">
 
-                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error"
                             outlined>
                             <strong>{{ mensajeSnackbarError }}</strong>
 

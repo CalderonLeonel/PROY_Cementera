@@ -76,7 +76,7 @@
 
             <v-list-item> </v-list-item>
             <div class="text-center">
-                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                     <strong>{{ mensajeSnackbar }}</strong>
 
 
@@ -89,7 +89,7 @@
             </div>
             <div class="text-center">
 
-                <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="danger" outlined>
                     <strong>{{ mensajeSnackbarError }}</strong>
 
                     <template v-slot:action="{ attrs }">

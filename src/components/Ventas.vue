@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="5" outlined shaped>
 
-        <v-dialog v-model="clientesModal" max-width="1000px">
+        <v-dialog v-model="clientesModal" persistent max-width="1000px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>CLIENTES</span><br>
@@ -33,7 +33,7 @@
 
 
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon small class="mr-2" color="#001781" @click="seleccionarCliente(item)"
+                                            <v-icon small class="mr-2" color="#0A62BF" @click="seleccionarCliente(item)"
                                                 title="SELECCIONAR CLIENTE">
                                                 mdi-check-circle
                                             </v-icon>
@@ -43,10 +43,13 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeClienteModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeClienteModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
+                                   
                                 </v-col>
 
                             </v-row>
@@ -57,7 +60,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="cantidadModal" max-width="500px">
+        <v-dialog v-model="cantidadModal" persistent max-width="500px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>CANTIDAD</span><br>
@@ -71,18 +74,25 @@
                                 </v-col>
                                 <v-col cols="12" md="6"> </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-toolbar dense shaped color="#001781">
-                                        <v-toolbar-title style="color: #ffffff;">
+                                    <v-toolbar dense shaped color="#FFFFFF">
+                                        <v-toolbar-title style="color: #000000;">
                                             <h6>
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn class="mx-2" fab dark x-small color="#EE680B"
+                                        <v-btn class="mx-2" fab dark x-small color="success"
                                             @click="agregarProductoAlCarrito()" style="float: left"
                                             title="AGREGAR PRODUCTO">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
                                     </v-toolbar>
+                                </v-col>
+                                <v-col cols="12" sm="4" md="12">
+                                    <v-btn iconv dark color="#00A1B1" @click="closeCantidad()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -149,7 +159,7 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon small class="mr-2" color="#001781" @click="seleccionarProducto(item)">
+                                    <v-icon small class="mr-2" color="#0A62BF" @click="seleccionarProducto(item)">
                                         mdi-check-circle
                                     </v-icon>
                                 </template>
@@ -170,7 +180,7 @@
                                 class="elevation-1" id="tableId">
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon small class="mr-2" color="#001781" @click="seleccionarProducto()">
+                                    <v-icon small class="mr-2" color="#0A62BF" @click="seleccionarProducto(item)">
                                         mdi-check-circle
                                     </v-icon>
                                 </template>
@@ -180,15 +190,15 @@
 
                         <v-col cols="12" md="8"> </v-col>
                         <v-col cols="12" md="4">
-                            <v-toolbar dense shaped color="#001781">
-                                <v-toolbar-title style="color: #ffffff;">
+                            <v-toolbar dense shaped color="#ffffff">
+                                <v-toolbar-title style="color: #000000;">
                                     <h6>
                                         OPCIONES
                                     </h6>
                                 </v-toolbar-title>
-                                <v-btn class="mx-2" fab dark x-small color="#EE680B" @click="registrarVenta()"
+                                <v-btn class="mx-2" fab dark x-small color="success" @click="registrarVenta()"
                                     style="float: left" title="REGISTRAR VENTA">
-                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                    <v-icon dark> mdi-content-save </v-icon>
                                 </v-btn>
                             </v-toolbar>
                         </v-col>
@@ -211,7 +221,7 @@
 
                     <div class="text-center">
 
-                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error"
                             outlined>
                             <strong>{{ mensajeSnackbarError }}</strong>
 
@@ -241,7 +251,7 @@
 
         <div class="text-center">
 
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
                 <strong>{{ mensajeSnackbarError }}</strong>
 
                 <template v-slot:action="{ attrs }">
@@ -436,6 +446,11 @@ export default {
             try {
                 const response = await axios.get("/venta/ultimaventa");
                 this.datosUltimaVenta = response.data.resultado || [];
+                this.datosUltimaVenta.forEach((venta) => {
+                            this.idUltimaVenta = venta.idven;
+                            this.fechaVenta = venta.creadate;
+                        });
+                console.log(this.idUltimaVenta);
             } catch (error) {
                 console.error("Error al recuperar última venta:", error);
             }
@@ -487,7 +502,7 @@ export default {
                 if (miles === 1) {
                     texto += "mil ";
                 } else {
-                    texto += numeroALetras(miles) + " mil ";
+                    texto += this.numberToLetters(miles) + " mil ";
                 }
             }
 
@@ -562,47 +577,23 @@ export default {
                     this.idCliente + "," +
                     this.venta.idEmpleado
                 );
-                if (response.status == 200 || response.data.success) {
-                    this.recuperarUltimaVenta().then(() => {
-                        this.datosUltimaVenta.forEach((venta, index) => {
-                            this.idUltimaVenta = venta.idven;
-                            this.fechaVenta = venta.creadate;
-                        });
-                        this.imprimirFactura(this.nit, this.razonSocial, this.idUltimaVenta, this.fechaVenta);
 
-                        this.imprimirRecibo(this.razonSocial, this.idUltimaVenta, this.fechaVenta);
-                        this.recuperarUltimaVenta();
-                        this.registrarVentasCarrito();
-                        this.registrarAsientosContables();
-
-                        this.resetVenta();
-                    })
-                }
-
-
-                if (response.data && response.data.success) {
                     this.mensajeSnackbar = response.data.message || "Venta registrada exitosamente";
                     console.log('snackbar positivo');
                     this.snackbarOK = true;
                     this.snackbarError = false;
-                    // Recuperar la última venta
-                    console.log("recuperar ultima venta")
                     this.recuperarUltimaVenta();
-
-
-
-
-
-                } else {
-                    console.log('snackbar error');
-                    console.log(response.data.Error);
-                    this.mensajeSnackbarError = response.data.message;
-                    throw new Error(response.data.message || "Error desconocido al registrar la venta");
-                }
+                    console.log('se registra el carrito')
+                    await this.registrarVentasCarrito()
+                    console.log('se imprime la factura') 
+                    await this.imprimirDocumentos();
+                    console.log(this.idUltimaVenta)
+                   
+                    console.log('se registran los asientos contables')
+                    this.registrarAsientosContables();
+                    this.resetVenta();
             } catch (error) {
                 console.error("Error al registrar la venta:", error);
-                console.log(response.data.message);
-                console.log(error.response?.data?.message);
                 this.mensajeSnackbarError = error.response?.data?.message || error.message || "Error al registrar la venta";
                 this.snackbarError = true;
                 this.snackbarOK = false;
@@ -647,17 +638,18 @@ export default {
         },
 
         async registrarAsientosContables() {
+            await this.listarCuentas();
             this.numeroReferencia = this.generarNumeroReferencia();
             this.idCuentaContable = this.seleccionarCuentaContableVentas();
             const totalVenta = this.calcularTotalVenta();
-            const { montoDebito, montoCredito } = await this.listarCuentas();
-            const nuevoMontoCredito = montoCredito + totalVenta;
+           
+            const nuevoMontoCredito = this.montoCredito + totalVenta;
 
             await this.registrarAsientoContable(
                 this.numeroReferencia,
                 this.descripcionAsiento,
                 this.idCuentaContable,
-                montoDebito,
+                this.montoDebito,
                 nuevoMontoCredito
             );
 
@@ -757,6 +749,10 @@ export default {
             }
         },
 
+        closeCantidad(){
+            this.cantidadModal = false;
+        },
+
         seleccionarCuentaContableVentas() {
             const cuentaVentas = this.datosCuentas.find(cuenta => cuenta.tipoc === "Ingreso");
             if (cuentaVentas) {
@@ -765,6 +761,11 @@ export default {
                 console.error("No se encontró una cuenta de ventas.");
                 return null;
             }
+        },
+
+        async imprimirDocumentos(){
+            this.imprimirRecibo(this.razonSocial, this.idUltimaVenta, this.fechaVenta);
+            this.imprimirFactura(this.nit, this.razonSocial, this.idUltimaVenta, this.fechaVenta);
         },
 
         async imprimirFactura(nit, razonSocial, idventa, fechaVenta) {
@@ -823,9 +824,9 @@ export default {
                 //let finalY = doc.previousAutoTable.finalY;
                 startY += 20;
                 doc.setFont("helvetica", "bold");
-                doc.text("Total: " + total.toFixed(2) + " Bs.", 110, 10 + startY)
-                doc.text("Son: " + this.transformToBolivianos(total.toFixed(2)), 120, 20 + startY)
 
+                doc.text("Total: " + total.toFixed(2) + " Bs.", 20, 10 + startY)
+                doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 20, 20 + startY )
 
                 startY += 40;
                 doc.setFontSize(8);
@@ -889,8 +890,8 @@ export default {
                 //let finalY = doc.previousAutoTable.finalY;
                 startY += 20;
                 doc.setFont("helvetica", "bold");
-                doc.text("Total: " + total.toFixed(2) + " Bs.", 105, 10 + startY)
-                doc.text("Son: " + this.transformToBolivianos(total.toFixed(2)), 105, 20 + startY)
+                doc.text("Total: "+total.toFixed(2)+" Bs.", 20, 10 + startY)
+                doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 20, 20 + startY )
 
 
                 doc.save("recibo_" + this.getFormattedDateTime(fechaVenta) + ".pdf");

@@ -52,55 +52,37 @@
          </div>
          <div>
              <v-form ref="form" v-model="valid" lazy-validation>
-                 <v-container>
+                 <v-container>    
                      <v-row>
-                         <v-col cols="3" md="2">
-                             <v-btn color="success" @click="showModalAgregarTransaccion()">NUEVO INVENTARIO</v-btn>
-                         </v-col>
-                         <v-col cols="3" md="3" v-if="checkAccess(10, 'SUPERVISOR')">
-                             <v-btn color="success" @click="showRevalorizarInventarioModal()">REVALORIZACIÓN DE INVENTARIO</v-btn>
-                         </v-col>
-                        
                          <v-col cols="12">
                              <v-list-item>
                                  <v-list-item-title class="text-center">
-                                     <h5>TRANSACCIÓN DE INVENTARIO</h5>
+                                     <h5>STOCK DE ALMACENES POR ITEMS DE INVENTARIO</h5>
                                  </v-list-item-title>
                              </v-list-item>
-                            <v-card-title>
-                                <v-text-field v-model="searchInventario" append-icon="mdi-magnify" label="BUSCAR INVENTARIO"
-                                     single-line hide-details></v-text-field>                               
-                            </v-card-title>       
-                            <v-card-title>
-                                <v-btn color="primary" @click="exportToPDF()">PDF</v-btn>
-                                            
-                                <v-btn color="primary" @click="exportToCSV()">CSV</v-btn>
-                                
-                                <v-btn color="primary" @click="exportToExcel()">EXCEL</v-btn>
-                            </v-card-title> 
-                             <v-data-table :headers="headerInventario" :items="datosInventario" :search="searchInventario"
-                                 :items-per-page="5" class="elevation-2" id="tableId">
  
-                                 <template #[`item.estado`]="{ item }">
-                                     <v-chip :color="getColor(item.estado)" dark>
-                                         {{ item.estado }}
-                                     </v-chip>
-                                 </template>
+                             <v-card-title>
+                                <v-text-field v-model="searchStockAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACENES"
+                                     single-line hide-details></v-text-field>
+                             </v-card-title>
+ 
+                             <v-data-table :headers="headerStockAlmacen" :items="datosStockAlmacen" :search="searchStockAlmacen"
+                                 :items-per-page="5" class="elevation-1" id="tableId">
+ 
+                        
  
                                  <template #[`item.actions`]="{ item }">
-                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposInventario(item)"
-                                         title="ACTUALIZAR INFORMACION">
-                                         mdi-pencil
-                                     </v-icon>
-                                     <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="confirmarActivacionInv(item)"
-                                         title="ACTIVAR ALMACÉN">
-                                         mdi-check-circle-outline
-                                     </v-icon>
-                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionInv(item)"
-                                         title="DESACTIVAR ALMACÉN">
-                                         mdi-close-circle
-                                     </v-icon>             
+                                     <v-icon x-large color="primary" class="mr-2" @click="mostrarItems(item)"
+                                         title="VER STOCK DE ALMACEN">
+                                         mdi-eye
+                                     </v-icon>  
+                                     <v-icon v-if="item.total>0" x-large color="primary" class="mr-2" @click="exportToPDFDetailed(item)"
+                                         title="GENERAR PDF DE STOCK">
+                                         mdi-file-pdf-box
+                                     </v-icon>                 
                                  </template>
+
+                                
  
                                
  
@@ -108,8 +90,71 @@
                              </v-data-table>
                          </v-col>
                      </v-row>
+
+                     <v-row>
+                         <v-col cols="12">
+                             <v-list-item>
+                                 <v-list-item-title class="text-center">
+                                     <h5>STOCK DE ALMACENES CON PRODUCTOS</h5>
+                                 </v-list-item-title>
+                             </v-list-item>
+ 
+                             <v-card-title>
+                                <v-text-field v-model="searchProductoAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACENES"
+                                     single-line hide-details></v-text-field>
+                             </v-card-title>
+ 
+                             <v-data-table :headers="headerAlmacen" :items="datosProductoAlmacen" :search="searchProductoAlmacen"
+                                 :items-per-page="5" class="elevation-1" id="tableId">
+ 
+                        
+ 
+                                 <template #[`item.actions`]="{ item }">
+                                     <v-icon x-large color="primary" class="mr-2" @click="mostrarProductos(item)"
+                                         title="VER STOCK DE ALMACÉN">
+                                         mdi-eye
+                                     </v-icon>  
+                                     <v-icon  x-large color="primary" class="mr-2" @click="exportToPDFProductDetailed(item)"
+                                         title="GENERAR PDF DE STOCK">
+                                         mdi-file-pdf-box
+                                     </v-icon>                 
+                                 </template>
+
+                                
+ 
+                               
+ 
+ 
+                             </v-data-table>
+                         </v-col>
+                     </v-row>
+
+                     <v-row>
+                         <v-col cols="12">
+                             <v-list-item>
+                                 <v-list-item-title class="text-center">
+                                     <h5>SALDO GENERAL DE ITEMS POR ALMACEN</h5>
+                                 </v-list-item-title>
+                             </v-list-item>
+ 
+                             <v-card-title>
+                                <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ITEMS"
+                                     single-line hide-details></v-text-field>
+                             </v-card-title>
+ 
+                             <v-data-table :headers="headerSaldoItem" :items="datosSaldoItem" :search="searchItem"
+                                 :items-per-page="5" class="elevation-1" id="tableId">
+                                 <template #[`item.actions`]="{ item }">
+                                     <v-icon class="mr-2" color="primary" x-large  @click="verAlmacenes(item)"
+                                         title="VER ALMACENES">
+                                         mdi-eye
+                                     </v-icon>          
+                                 </template>
+                             </v-data-table>
+                         </v-col>
+                     </v-row>
+
                     
-                     
  
                  </v-container>
              </v-form>

@@ -47,39 +47,30 @@
             </v-alert>
          <div>
              <v-alert dense style="color: #ffffff;" color="indigo">
-                 <h3>INVENTARIO</h3>
+                 <h3>ITEMS</h3>
              </v-alert>
          </div>
          <div>
              <v-form ref="form" v-model="valid" lazy-validation>
                  <v-container>
-                     <v-row>
-                         <v-col cols="3" md="2">
-                             <v-btn color="success" @click="showModalAgregarTransaccion()">NUEVO INVENTARIO</v-btn>
+                     <v-row v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
+                         <v-col cols="12" md="4">
+                             <v-btn color="success" @click="showModalAgregarItem()">NUEVO ITEM</v-btn>
                          </v-col>
-                         <v-col cols="3" md="3" v-if="checkAccess(10, 'SUPERVISOR')">
-                             <v-btn color="success" @click="showRevalorizarInventarioModal()">REVALORIZACIÓN DE INVENTARIO</v-btn>
-                         </v-col>
-                        
                          <v-col cols="12">
                              <v-list-item>
                                  <v-list-item-title class="text-center">
-                                     <h5>TRANSACCIÓN DE INVENTARIO</h5>
+                                     <h5>ITEMS</h5>
                                  </v-list-item-title>
                              </v-list-item>
-                            <v-card-title>
-                                <v-text-field v-model="searchInventario" append-icon="mdi-magnify" label="BUSCAR INVENTARIO"
-                                     single-line hide-details></v-text-field>                               
-                            </v-card-title>       
-                            <v-card-title>
-                                <v-btn color="primary" @click="exportToPDF()">PDF</v-btn>
-                                            
-                                <v-btn color="primary" @click="exportToCSV()">CSV</v-btn>
-                                
-                                <v-btn color="primary" @click="exportToExcel()">EXCEL</v-btn>
-                            </v-card-title> 
-                             <v-data-table :headers="headerInventario" :items="datosInventario" :search="searchInventario"
-                                 :items-per-page="5" class="elevation-2" id="tableId">
+ 
+                             <v-card-title>
+                                <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ITEMS"
+                                     single-line hide-details></v-text-field>
+                             </v-card-title>
+ 
+                             <v-data-table :headers="headerItem" :items="datosItem" :search="searchItem"
+                                 :items-per-page="5" class="elevation-1" id="tableId">
  
                                  <template #[`item.estado`]="{ item }">
                                      <v-chip :color="getColor(item.estado)" dark>
@@ -88,16 +79,16 @@
                                  </template>
  
                                  <template #[`item.actions`]="{ item }">
-                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposInventario(item)"
+                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposItem(item)"
                                          title="ACTUALIZAR INFORMACION">
                                          mdi-pencil
                                      </v-icon>
-                                     <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="confirmarActivacionInv(item)"
-                                         title="ACTIVAR ALMACÉN">
+                                     <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
+                                         title="ACTIVAR SECCION">
                                          mdi-check-circle-outline
                                      </v-icon>
-                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionInv(item)"
-                                         title="DESACTIVAR ALMACÉN">
+                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionIt(item)"
+                                         title="DESACTIVAR SECCION">
                                          mdi-close-circle
                                      </v-icon>             
                                  </template>
@@ -108,8 +99,55 @@
                              </v-data-table>
                          </v-col>
                      </v-row>
-                    
-                     
+                     <v-row v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
+                         <v-col cols="12" md="2">
+                             <v-btn color="success" @click="showModalAgregarTipoItem()">NUEVO TIPO DE ITEM</v-btn>  
+                         </v-col>
+                         <v-col cols="12" md="12">
+                            <v-btn v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')" color="primary" @click="showModalActivarTipo()">LISTA DE ITEMS DESACTIVADOS</v-btn>
+                         </v-col>
+                         <v-col cols="12">
+                             <v-list-item>
+                                 <v-list-item-title class="text-center">
+                                     <h5>TIPOS DE ITEM</h5>
+                                 </v-list-item-title>
+                             </v-list-item>
+ 
+                             <v-card-title>
+                                <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="BUSCAR TIPO DE ITEM"
+                                     single-line hide-details></v-text-field>
+                             </v-card-title>
+ 
+                             <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItem" :search="searchTipoItem"
+                                 :items-per-page="5" class="elevation-1" id="tableId">
+ 
+                                 <template #[`item.estado`]="{ item }">
+                                     <v-chip :color="getColor(item.estado)" dark>
+                                         {{ item.estado }}
+                                     </v-chip>
+                                 </template>
+ 
+                                 <template #[`item.actions`]="{ item }">
+                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposTipoItem(item)"
+                                         title="ACTUALIZAR INFORMACION">
+                                         mdi-pencil
+                                     </v-icon>
+                                     <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
+                                         title="ACTIVAR STAND">
+                                         mdi-check-circle-outline
+                                     </v-icon>
+                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionTip(item)"
+                                         title="DESACTIVAR STAND">
+                                         mdi-close-circle
+                                     </v-icon>             
+                                 </template>
+ 
+                               
+ 
+ 
+                             </v-data-table>
+                         </v-col>
+                     </v-row>
  
                  </v-container>
              </v-form>

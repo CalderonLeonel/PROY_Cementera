@@ -1,6 +1,6 @@
 <template>
     <v-card elevation="5" outlined shaped>
-        <v-dialog v-model="agregarProduccionModal" max-width="800px">
+        <v-dialog v-model="agregarProduccionModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>AGREGAR PRODUCCION</span>
@@ -13,10 +13,12 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                        @click="closeAgregarProduccion()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeAgregarProduccion()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
-                                    </v-btn>
+                                        SALIR
+                                    </v-btn>                      
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -26,7 +28,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="infoProduccionModal" max-width="800px">
+        <v-dialog v-model="infoProduccionModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>INFORMACION DE PRODUCCION:</span><br>
@@ -42,12 +44,7 @@
                                         @input="codigoProduccion = codigoProduccion.toUpperCase()" required
                                         disabled></v-text-field>
                                 </v-col>
-                                <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="productoRules"
-                                        @click="showProductos()" style="float: right" title="BUSCAR PRODUCTOS">
-                                        <v-icon dark> mdi-magnify </v-icon>
-                                    </v-btn>
-                                </v-col>
+                              
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="nombreProducto" label="PRODUCTO" :counter="100"
                                         :rules="nombreProductoRules" @input="nombreProducto = nombreProducto.toUpperCase()"
@@ -63,10 +60,12 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeInfoProduccionModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeInfoProduccionModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
-                                    </v-btn>
+                                        SALIR
+                                    </v-btn>            
                                 </v-col>
 
                             </v-row>
@@ -77,7 +76,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="produccionTerminadaModal" max-width="800px">
+        <v-dialog v-model="produccionTerminadaModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>PRODUCCIONES TERMINADAS</span><br>
@@ -116,7 +115,7 @@
                                                 @click="desactivar(item)" title="DESACTIVAR PRODUCCION">
                                                 mdi-cancel
                                             </v-icon>
-                                            <v-icon large class="mr-2" color="#001781" @click="showInfoProduccion(item)"
+                                            <v-icon large class="mr-2" color="#0A62BF" @click="showInfoProduccion(item)"
                                                 title="VER INFORMACION">
                                                 mdi-eye
                                             </v-icon>
@@ -126,10 +125,13 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeProduccionTerminadaModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeProduccionTerminadaModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
+                                  
                                 </v-col>
 
                             </v-row>
@@ -140,7 +142,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="productosModal" max-width="900px">
+        <v-dialog v-model="productosModal" persistent max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE PRODUCTOS</span>
@@ -166,7 +168,7 @@
                                     </template>
 
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon large class="mr-2" color="#001781" @click="seleccionarProducto(item)">
+                                        <v-icon large class="mr-2" color="#0A62BF" @click="seleccionarProducto(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -175,10 +177,12 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                    @click="closeproductos()" style="float: right" title="SALIR">
-                                    <v-icon dark> mdi-close-circle-outline </v-icon>
-                                </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeProductosModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -282,9 +286,9 @@
                                                                 <v-btn icon v-if="botonact == 0" class="mx-2" fab dark
                                                                     color="#0ABF55" @click="registrarProduccion()"
                                                                     style="float: left" title="REGISTRAR PRODUCCION">
-                                                                    <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                                                    <v-icon dark> mdi-content-save </v-icon>
                                                                 </v-btn>
-                                                                <v-btn icon color="#EE680B" class="mx-2" fab dark
+                                                                <v-btn icon color="#BF120A" class="mx-2" fab dark
                                                                     @click="limpiar()" style="float: left"
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>
@@ -344,7 +348,7 @@
                                                                         title="CANCELAR PRODUCCION">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon class="mx-2" large color="#001781"
+                                                                    <v-icon class="mx-2" large color="#0A62BF"
                                                                         @click="showInfoProduccion(item)"
                                                                         title="VER INFORMACION">
                                                                         mdi-eye
@@ -399,7 +403,7 @@
                                                 @click="desactivar(item)" title="DESACTIVAR PRODUCCION">
                                                 mdi-cancel
                                             </v-icon>
-                                            <v-icon large class="mr-2" color="#001781" @click="showInfoProduccion(item)"
+                                            <v-icon large class="mr-2" color="#0A62BF" @click="showInfoProduccion(item)"
                                                 title="VER INFORMACION">
                                                 mdi-eye
                                             </v-icon>
@@ -433,7 +437,7 @@
 
                     <div class="text-center">
 
-                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B"
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error"
                             outlined>
                             <strong>{{ mensajeSnackbarError }}</strong>
 

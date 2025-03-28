@@ -12,7 +12,12 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red" text @click="loginModal = false">Cancelar</v-btn>
+          <v-btn class="mx-2" iconv dark color="#BF120A"
+          @click="loginModal = false" style="float: right"
+                                        title="CANCELAR">                                      
+                                        CANCELAR
+          </v-btn>
+          
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -155,7 +160,7 @@
 
           <v-list-item :to="{ name: 'Clientes' }">
             <v-list-item-title>
-              <h6>Clientes</h6>
+              <h6>CLIENTES</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
@@ -227,6 +232,11 @@
           <v-list-item :to="{ name: 'Departamentos' }">
             <v-list-item-title>
               <h6>DEPARTAMENTOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Carnet' }">
+            <v-list-item-title>
+              <h6>CARNET</h6>
             </v-list-item-title>
           </v-list-item>
           <v-list-item :to="{ name: 'Solicitudes' }">
@@ -305,6 +315,11 @@
               <h6>ADQUISICIONES</h6>
             </v-list-item-title>
           </v-list-item>
+          <v-list-item :to="{ name: 'AprobarAdquisicion' }">
+            <v-list-item-title>
+              <h6>REVISAR ADQUISICIONES</h6>
+            </v-list-item-title>
+          </v-list-item>
         </v-list-group>
         
         <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(10, '0') || checkAccess(10, 'GERENTE')">
@@ -322,6 +337,16 @@
           <v-list-item :to="{ name: 'Inventario' }">
             <v-list-item-title>
               <h6>INVENTARIO</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Stock' }">
+            <v-list-item-title>
+              <h6>STOCK</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Item' }">
+            <v-list-item-title>
+              <h6>ITEMS</h6>
             </v-list-item-title>
           </v-list-item>
           <v-list-item :to="{ name: 'Almacen' }" v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">

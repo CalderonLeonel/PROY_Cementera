@@ -17,7 +17,7 @@
             </v-snackbar>
         </div>
         <div class="text-center">
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
                 <strong>{{ mensajeSnackbarError }}</strong>
                 <template v-slot:action="{ attrs }">
                     <v-icon right v-bind="attrs" @click="snackbarError = false">
@@ -192,7 +192,7 @@
                                 -->
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon large class="mr-2" color="#001781" @click="goToEmpleadoPerfil(item)"
+                                    <v-icon large class="mr-2" color="#0A62BF" @click="goToEmpleadoPerfil(item)"
                                         title="VER EMPLEADO">
                                         mdi-eye
                                     </v-icon>

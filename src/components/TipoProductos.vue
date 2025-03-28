@@ -1,6 +1,6 @@
 <template>
     <v-card elevation="5" outlined shaped>
-        <v-dialog v-model="agregarTipoModal" max-width="800px">
+        <v-dialog v-model="agregarTipoModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>AGREGAR TIPO PRODUCTO</span>
@@ -41,10 +41,13 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                        @click="closeAgregarTipo()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeAgregarTipo()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
+                                   
                                 </v-col>
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="12" md="4">
@@ -54,16 +57,16 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarTipo()"
+                                        <v-btn icon v-if="botonact == 1" color="primary" @click="actualizarTipo()"
                                             style="float: left" title="ACTUALIZAR INtipoCIÓN" width="28px"
                                             height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarTipo()"
+                                        <v-btn icon v-if="botonact == 0" color="success" @click="registrarTipo()"
                                             style="float: left" title="REGISTRAR TIPO" width="28px" height="28px">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
-                                        <v-btn icon color="#EE680B" @click="limpiar()" style="float: left"
+                                        <v-btn icon color="#BF120A" @click="limpiar()" style="float: left"
                                             title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -77,7 +80,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="infoTipoModal" max-width="800px">
+        <v-dialog v-model="infoTipoModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>INFORMACION DEL TIPO:</span><br>
@@ -105,9 +108,11 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeInfoTipoModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeInfoTipoModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
                                 </v-col>
 
@@ -166,11 +171,11 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 1" color="#EE680B"
+                                        <v-btn class="mx-2" fab dark small icon v-if="botonact == 1" color="primary"
                                             @click="editarTipos()" style="float: left" title="ACTUALIZAR INFORMACION">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn class="mx-2" fab dark small icon color="#EE680B" @click="limpiar()"
+                                        <v-btn class="mx-2" fab dark small icon color="error" @click="limpiar()"
                                             style="float: left" title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -179,10 +184,13 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeAgregarTipo()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeEditTipoModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
+                                 
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -192,7 +200,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="tiposInhabilitadosModal" max-width="800px">
+        <v-dialog v-model="tiposInhabilitadosModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>TIPOS DE PRODUCTOS INACTIVOS</span><br>
@@ -204,10 +212,13 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeInfoTipoModal()" style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeInfoTipoModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
+                                   
                                 </v-col>
 
                             </v-row>
@@ -218,7 +229,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="lineasModal" max-width="800px">
+        <v-dialog v-model="lineasModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LINEAS</span><br>
@@ -249,7 +260,7 @@
 
 
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon small class="mr-2" color="#001781" @click="seleccionarLinea(item)"
+                                            <v-icon large class="mr-2" color="#0A62BF" @click="seleccionarLinea(item)"
                                                 title="SELECCIONAR LINEA">
                                                 mdi-check-circle
                                             </v-icon>
@@ -259,10 +270,12 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1" @click="closeLineaModal()"
-                                        style="float: right" title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeLineaModal()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
-                                    </v-btn>
+                                        SALIR
+                                    </v-btn>                              
                                 </v-col>
 
                             </v-row>
@@ -368,10 +381,10 @@
                                                                 <v-btn icon v-if="botonact == 0" class="mx-2" fab dark
                                                                     color="#0ABF55" @click="registrarTipo()"
                                                                     style="float: left" title="REGISTRAR TIPO">
-                                                                    <v-icon dark> mdi-content-save-plus-outline
+                                                                    <v-icon dark> mdi-content-save
                                                                     </v-icon>
                                                                 </v-btn>
-                                                                <v-btn icon class="mx-2" fab dark color="#EE680B"
+                                                                <v-btn icon class="mx-2" fab dark color="#BF120A"
                                                                     @click="limpiar()" style="float: left"
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>
@@ -443,12 +456,12 @@
                                                                         title="DESACTIVAR TIPO">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon class="mx-2" large color="#001781"
+                                                                    <v-icon class="mx-2" large color="#0A62BF"
                                                                         @click="showEditTipoModal(item)"
                                                                         title="ACTUALIZAR INFORMACION">
                                                                         mdi-pencil
                                                                     </v-icon>
-                                                                    <v-icon class="mx-2" large color="#001781"
+                                                                    <v-icon class="mx-2" large color="#0A62BF"
                                                                         @click="showInfoTipo(item)"
                                                                         title="VER INFORMACION">
                                                                         mdi-eye
@@ -499,16 +512,16 @@
 
                                                                 <template #[`item.actions`]="{ item }">
                                                                     <v-icon v-if="item.est == 'INACTIVO'" color="green"
-                                                                        small class="mr-2" @click="activar(item)"
+                                                                        large class="mr-2" @click="activar(item)"
                                                                         title="ACTIVAR TipoS">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
                                                                     <v-icon v-if="item.est == 'ACTIVO'" color="red"
-                                                                        small class="mr-2" @click="desactivar(item)"
+                                                                        large class="mr-2" @click="desactivar(item)"
                                                                         title="DESACTIVAR TipoS">
                                                                         mdi-cancel
                                                                     </v-icon>
-                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                    <v-icon large class="mr-2" color="#0A62BF"
                                                                         @click="showInfoTipo(item)"
                                                                         title="VER INtipoCION">
                                                                         mdi-eye
@@ -544,7 +557,7 @@
         </div>
         <div class="text-center">
 
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
                 <strong>{{ mensajeSnackbarError }}</strong>
 
                 <template v-slot:action="{ attrs }">
@@ -816,6 +829,11 @@ export default {
             this.idLinea = item.idlin;
             this.nombreLinea = item.nomlin
         },
+
+        closeEditTipoModal(item) {
+            this.editTipoModal = false;
+        },
+
         showTiposInhabilitados() {
             this.tiposInhabilitadosModal = true
             this.listarTiposInh();
@@ -832,6 +850,10 @@ export default {
         showLineas() {
             this.listarLineas();
             this.lineasModal = true;
+        },
+
+        closeLineaModal(){
+            this.lineasModal = false;
         },
         //#endregion
 

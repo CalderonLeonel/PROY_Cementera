@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="5" outlined shaped>
 
-        <v-dialog v-model="agregarClienteModal" max-width="800px">
+        <v-dialog v-model="agregarClienteModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>AGREGAR CLIENTE</span>
@@ -52,13 +52,7 @@
                                 <v-col cols="12" md="4"></v-col>
 
                                 <v-col cols="12" md="4"></v-col>
-                                <v-col cols="10"></v-col>
-                                <v-col cols="2">
-                                    <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                        @click="closeAgregarCliente()" style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                    </v-btn>
-                                </v-col>
+                               
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="12" md="4">
                                     <v-toolbar dense shaped>
@@ -67,20 +61,31 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarCliente()"
+                                        <v-btn icon v-if="botonact == 1" color="#0A62BF" @click="actualizarCliente()"
                                             style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px" height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarCliente()"
+                                        <v-btn icon v-if="botonact == 0" color="#0ABF55" @click="registrarCliente()"
                                             style="float: left" title="REGISTRAR CLIENTE" width="28px" height="28px">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
-                                        <v-btn icon color="#EE680B" @click="limpiar()" style="float: left"
+                                        <v-btn icon color="#BF120A" @click="limpiar()" style="float: left"
                                             title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
                                     </v-toolbar>
                                 </v-col>
+                                <v-col cols="10"></v-col>
+                                <v-col cols="10"></v-col>
+        
+                                <v-col cols="12" sm="4" md="2">
+                                    <v-btn iconv dark color="#00A1B1" @click="closeAgregarCliente()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>  
+                               
                             </v-row>
                         </v-container>
                     </v-form>
@@ -89,7 +94,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="infoClienteModal" max-width="800px">
+        <v-dialog v-model="infoClienteModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>INFORMACION DEL CLIENTE:</span><br>
@@ -100,76 +105,58 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="nombresCliente" label="NOMBRE CLIENTE" :counter="100"
+                                    <v-text-field disabled v-model="nombresCliente" label="NOMBRE CLIENTE" :counter="100"
                                         :rules="nombresClienteRules" @input="nombresCliente = nombresCliente.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="paterno" label="PATERNO CLIENTE" :counter="100"
+                                    <v-text-field disabled v-model="paterno" label="PATERNO CLIENTE" :counter="100"
                                         :rules="paternoRules" @input="paterno = paterno.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="materno" label="MATERNO CLIENTE" :counter="100"
+                                    <v-text-field  disabled v-model="materno" label="MATERNO CLIENTE" :counter="100"
                                         :rules="maternoRules" @input="materno = materno.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="nit" label="NIT CLIENTE" :counter="100" :rules="nitRules"
+                                    <v-text-field disabled v-model="nit" label="NIT CLIENTE" :counter="100" :rules="nitRules"
                                         @input="nit = nit.toUpperCase()" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="3">
-                                    <v-text-field v-model="fechaNacimiento" label="FECHA NACIMIENTO"
+                                    <v-text-field disabled v-model="fechaNacimiento" label="FECHA NACIMIENTO"
                                         type="date"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="correo" label="CORREO CLIENTE" :rules="correoRules" type="email"
+                                    <v-text-field disabled v-model="correo" label="CORREO CLIENTE" :rules="correoRules" type="email"
                                         required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="celular" label="CELULAR CLIENTE" :counter="100"
+                                    <v-text-field disabled v-model="celular" label="CELULAR CLIENTE" :counter="100"
                                         :rules="celularRules" @input="celular = celular.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="telefono" label="TELEFONO CLIENTE" :counter="100"
+                                    <v-text-field disabled v-model="telefono" label="TELEFONO CLIENTE" :counter="100"
                                         :rules="telefonoRules" @input="telefono = telefono.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4"></v-col>
 
                                 <v-col cols="12" md="4"></v-col>
+                              
+                              
                                 <v-col cols="10"></v-col>
-                                <v-col cols="2">
-                                    <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                        @click="closeAgregarCliente()" style="float: right" title="SALIR">
+                                <v-col cols="12" sm="4" md="2">
+                                    <v-btn iconv dark color="#00A1B1" @click="closeInfoClienteModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
                                 </v-col>
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="12" md="4">
-                                    <v-toolbar dense shaped>
-                                        <v-toolbar-title>
-                                            <h6>
-                                                OPCIONES
-                                            </h6>
-                                        </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarCliente()"
-                                            style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px" height="28px">
-                                            <v-icon dark> mdi-pencil </v-icon>
-                                        </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarCliente()"
-                                            style="float: left" title="REGISTRAR CLIENTE" width="28px" height="28px">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
-                                        </v-btn>
-                                        <v-btn icon color="#EE680B" @click="limpiar()" style="float: left"
-                                            title="LIMPIAR FORMULARIO">
-                                            <v-icon dark> mdi-eraser </v-icon>
-                                        </v-btn>
-                                    </v-toolbar>
-                                </v-col>
+                              
                             </v-row>
                         </v-container>
                     </v-form>
@@ -178,7 +165,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="editClienteModal" max-width="700px">
+        <v-dialog v-model="editClienteModal" persistent max-width="700px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>ACTUALIZAR CLIENTE</span>
@@ -229,13 +216,7 @@
                                 <v-col cols="12" md="4"></v-col>
 
                                 <v-col cols="12" md="4"></v-col>
-                                <v-col cols="10"></v-col>
-                                <v-col cols="2">
-                                    <v-btn class="v-btn--icon" width="30px" height="30px" color="#b794f6"
-                                        @click="closeAgregarCliente()" style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                    </v-btn>
-                                </v-col>
+                                                           
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="12" md="4">
                                     <v-toolbar dense shaped>
@@ -244,20 +225,29 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon v-if="botonact == 1" color="#EE680B" @click="actualizarCliente()"
+                                        <v-btn icon v-if="botonact == 1" color="#0A62BF" @click="actualizarCliente()"
                                             style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px" height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn icon v-if="botonact == 0" color="#EE680B" @click="registrarCliente()"
+                                        <v-btn icon v-if="botonact == 0" color="#0ABF55" @click="registrarCliente()"
                                             style="float: left" title="REGISTRAR CLIENTE" width="28px" height="28px">
-                                            <v-icon dark> mdi-content-save-plus-outline </v-icon>
+                                            <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
-                                        <v-btn icon color="#EE680B" @click="limpiar()" style="float: left"
+                                        <v-btn icon color="#BF120A" @click="limpiar()" style="float: left"
                                             title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
                                     </v-toolbar>
                                 </v-col>
+                                <v-col cols="10"></v-col>
+        
+                                    <v-col cols="12" sm="4" md="2">
+                                    <v-btn iconv dark color="#00A1B1" @click="closeEditClienteModal()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>  
                             </v-row>
                         </v-container>
                     </v-form>
@@ -266,7 +256,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="clientesInhabilitadasModal" max-width="800px">
+        <v-dialog v-model="clientesInhabilitadasModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>CLIENTES INACTIVOS</span><br>
@@ -297,15 +287,15 @@
 
 
                                         <template #[`item.actions`]="{ item }">
-                                            <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
+                                            <v-icon v-if="item.est == 'INACTIVO'" color="green" large class="mr-2"
                                                 @click="activar(item)" title="ACTIVAR ClienteS">
                                                 mdi-check-circle-outline
                                             </v-icon>
-                                            <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
+                                            <v-icon v-if="item.est == 'ACTIVO'" color="red" large class="mr-2"
                                                 @click="desactivar(item)" title="DESACTIVAR ClienteS">
                                                 mdi-cancel
                                             </v-icon>
-                                            <v-icon small class="mr-2" color="#001781" @click="showInfoCliente(item)"
+                                            <v-icon large class="mr-2" color="#0A62BF" @click="showInfoCliente(item)"
                                                 title="VER INFORMACION">
                                                 mdi-eye
                                             </v-icon>
@@ -314,12 +304,14 @@
                                     </v-data-table>
                                 </v-col>
                                 <v-col cols="10"></v-col>
-                                <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeInfoClienteModal()" style="float: right" title="SALIR">
+                                <v-col cols="10"></v-col>
+                                <v-col cols="12" sm="4" md="2">
+                                    <v-btn iconv dark color="#00A1B1" @click="closeClientesInhabilitadas()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
-                                </v-col>
+                                </v-col>                   
 
                             </v-row>
                         </v-container>
@@ -330,7 +322,7 @@
         </v-dialog>
 
         <div>
-            <v-alert dense color="grey" style="color: #ffffff">
+            <v-alert dense color="cyan" style="color: #ffffff">
                 <h5>CLIENTES</h5>
             </v-alert>
         </div>
@@ -340,13 +332,13 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showAgregarCliente()">Nuevo Cliente</v-btn>
+                            <v-btn  color="success" @click="showAgregarCliente()">Nuevo Cliente</v-btn>
                         </v-col>
                         <v-col cols="12" md="4"></v-col>
                         <v-col cols="12" md="4"></v-col>
 
                         <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showClientesInhabilitados()">Clientes Inactivos</v-btn>
+                            <v-btn color="primary" @click="showClientesInhabilitados()">Clientes Inactivos</v-btn>
                         </v-col>
                         <v-col cols="12" md="4"></v-col>
                         <v-col cols="12" md="4"></v-col>
@@ -362,19 +354,19 @@
 
                                 <template #[`item.actions`]="{ item }">
 
-                                    <v-icon v-if="item.est == 'INACTIVO'" color="green" small class="mr-2"
+                                    <v-icon v-if="item.est == 'INACTIVO'" color="green" large class="mr-2"
                                         @click="activar(item)" title="ACTIVAR CLIENTES">
                                         mdi-check-circle-outline
                                     </v-icon>
-                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" small class="mr-2"
+                                    <v-icon v-if="item.est == 'ACTIVO'" color="red" large class="mr-2"
                                         @click="desactivar(item)" title="DESACTIVAR CLIENTES">
                                         mdi-cancel
                                     </v-icon>
-                                    <v-icon small class="mr-2" @click="showEditClienteModal(item)"
+                                    <v-icon large class="mr-2" color="#0A62BF" @click="showEditClienteModal(item)"
                                         title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
                                     </v-icon>
-                                    <v-icon small class="mr-2" color="#001781" @click="showInfoCliente(item)"
+                                    <v-icon large class="mr-2" color="#0A62BF" @click="showInfoCliente(item)"
                                         title="VER INFORMACION">
                                         mdi-eye
                                     </v-icon>
