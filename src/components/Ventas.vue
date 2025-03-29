@@ -578,7 +578,6 @@ export default {
                     this.venta.idEmpleado
                 );
 
-
                     this.mensajeSnackbar = response.data.message || "Venta registrada exitosamente";
                     console.log('snackbar positivo');
                     this.snackbarOK = true;

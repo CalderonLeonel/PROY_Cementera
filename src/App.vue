@@ -419,7 +419,11 @@
       <v-row justify="center" no-gutters>
 
         <v-col class="py-4 text-center white--text" cols="12">
+<<<<<<< HEAD
           {{ new Date().getFullYear() }} — <strong>DRYMIX</strong>
+=======
+          {{ new Date().getFullYear() }} — <strong> DRYMIX</strong>
+>>>>>>> 8f43428b8d6a054e618e505941fb2e461e2e4ecf
         </v-col>
       </v-row>
     </v-footer>
