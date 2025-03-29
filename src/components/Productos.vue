@@ -308,7 +308,6 @@
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-container>
                     <v-row>
-
                         <v-col cols="12">
                             <v-tabs horizontal color="#000000" center-active grow>
                                 <v-tab>
@@ -567,7 +566,6 @@
                                                                         mdi-eye
                                                                     </v-icon>
                                                                 </template>
-
                                                             </v-data-table>
                                                         </v-col>
                                                     </v-row>
@@ -576,10 +574,8 @@
                                         </v-card-text>
                                     </v-card>
                                 </v-tab-item>
-
                             </v-tabs>
                         </v-col>
-
                     </v-row>
 
                     <div class="text-center">
@@ -612,7 +608,6 @@
 
                 </v-container>
             </v-form>
-
         </div>
     </v-card>
 </template>
