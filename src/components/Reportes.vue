@@ -24,9 +24,9 @@
                                 <v-icon left>
                                     mdi-format-list-checkbox
                                 </v-icon>
-                                CONTA
+                                VENTAS
                             </v-tab>
-
+<!--
                             <v-tab>
                                 <v-icon left>
                                     mdi-bank-transfer-in
@@ -40,29 +40,29 @@
                                 </v-icon>
                                 INVENTARIO
                             </v-tab>
-
+                        -->
                             
 
                             <v-tab-item v-if="flag == 1">
                                 <v-card elevation="5" outlined shaped>
-                                    <v-row>
-
+                                    <v-row class="pa-4">
+                                        <iframe title="reporte_empleados" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=91b26683-3915-4c3b-b15b-eb8b693a91c9&autoAuth=true&ctid=77cab36c-76b2-48c3-9c54-cb9e4ee09b72" frameborder="0" allowFullScreen="true"></iframe>
                                     </v-row>
                                 </v-card>
                             </v-tab-item>
 
                             <v-tab-item v-if="flag == 1">
                                 <v-card elevation="5" outlined shaped>
-                                    <v-row>
-
+                                    <v-row class="pa-4">
+                                        <iframe title="powerbi_produccion" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=df27ecca-7787-43fb-94da-2741a2b32d2f&autoAuth=true&ctid=77cab36c-76b2-48c3-9c54-cb9e4ee09b72" frameborder="0" allowFullScreen="true"></iframe>
                                     </v-row>
                                 </v-card>
                             </v-tab-item>
 
                             <v-tab-item v-if="flag == 1">
                                 <v-card elevation="5" outlined shaped>
-                                    <v-row>
-
+                                    <v-row class="pa-4">
+                                        <iframe title="powerbi_ventas" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=b8c93c6b-4a31-478e-ab93-016356a06fe7&autoAuth=true&ctid=77cab36c-76b2-48c3-9c54-cb9e4ee09b72" frameborder="0" allowFullScreen="true"></iframe>
                                     </v-row>
                                 </v-card>
                             </v-tab-item>
@@ -103,5 +103,9 @@
     </v-card>
 </template>
 <script>
-
+export default {
+    data: () => ({
+        flag: 1,
+    })
+}
 </script>
