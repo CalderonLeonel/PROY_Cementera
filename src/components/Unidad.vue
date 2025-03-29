@@ -210,10 +210,10 @@ export default {
 
 
         headersUnidad: [
-            { text: "UNIDAD", value: "unid", sortable: false },
-            { text: "FECHA CREACION", value: "credte", sortable: false },
-            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
-            { text: "ESTADO", value: "act", sortable: false },
+            { text: "UNIDAD", value: "unid" },
+            { text: "FECHA CREACION", value: "credte" },
+            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte" },
+            { text: "ESTADO", value: "act" },
             { text: "OPCIONES", value: "actions", sortable: false },
         ],
     }),

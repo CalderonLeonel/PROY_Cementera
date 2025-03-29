@@ -405,7 +405,7 @@ export default {
         headersUsuario: [
             { text: "EMPLEADO", value: "empl" },
             { text: "USUARIO", value: "nom" },
-            { text: "ESTADO", value: "act", sortable: false },
+            { text: "ESTADO", value: "act" },
             { text: "FECHA CREACION", value: "credte", sortable: false },
             { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
             { text: "OPTIONS", value: "actions", sortable: false },
