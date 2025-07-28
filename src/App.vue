@@ -219,17 +219,17 @@
               <h6>TURNOS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Unidades' }">
+          <v-list-item :to="{ name: 'Unidades' }" v-if="checkAccess(0, 'GERENTE')">
             <v-list-item-title>
               <h6>UNIDADES</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Areas' }">
+          <v-list-item :to="{ name: 'Areas' }" v-if="checkAccess(0, 'GERENTE')">
             <v-list-item-title>
               <h6>AREAS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Departamentos' }">
+          <v-list-item :to="{ name: 'Departamentos' }" v-if="checkAccess(0, 'GERENTE')">
             <v-list-item-title>
               <h6>DEPARTAMENTOS</h6>
             </v-list-item-title>

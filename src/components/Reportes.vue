@@ -7,20 +7,20 @@
                 <v-row>
                     <v-col cols="12">
                         <v-tabs horizontal color="#002245" center-active grow>
-                            <v-tab>
+                            <v-tab v-if="checkAccess(6, '0') || checkAccess(0, 'GERENTE')">
                                 <v-icon left>
                                     mdi-account-alert-outline
                                 </v-icon>
                                 R.R.H.H
                                 PERS
                             </v-tab>
-                            <v-tab>
+                            <v-tab v-if="checkAccess(1, '0') || checkAccess(0, 'GERENTE')">
                                 <v-icon left>
                                     mdi-truck
                                 </v-icon>
                                 PRODUCCION
                             </v-tab>
-                            <v-tab>
+                            <v-tab v-if="checkAccess(3, '0') || checkAccess(0, 'GERENTE')">
                                 <v-icon left>
                                     mdi-format-list-checkbox
                                 </v-icon>
@@ -106,6 +106,52 @@
 export default {
     data: () => ({
         flag: 1,
-    })
+        timeout: 2000,
+        snackbarOK: false,
+        mensajeSnackbar: "",
+        snackbarError: false,
+        mensajeSnackbarError: "REGISTRO FALLIDO",
+        user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+    }),
+    created: function () {
+        if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+        }
+        if (this.user == null) {
+            if (this.$route.path != '/login') {
+                this.$router.push("/login");
+            }
+        }
+        console.log("UserData: " + JSON.stringify(this.user));
+    },
+    methods: {
+        checkAccess(accesoCorrecto, tipoCorrecto) {
+        //this.user = JSON.parse(sessionStorage.getItem('session'));
+        if (this.user == null) {
+            return false;
+        }
+        else {
+            let checkedAccess = false;
+            let checkedType = false;
+            //Si accesoCorrecto es 0, no se requiere ningun acceso para acceder
+            if (accesoCorrecto != 0) {
+            this.user['accesos'].forEach(access => {
+                if (access == accesoCorrecto)
+                checkedAccess = true;
+            });
+            } else checkedAccess = true;
+
+            //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
+            if (tipoCorrecto != '0') {
+            if (this.user['tipo'] == tipoCorrecto) {
+                checkedType = true;
+            }
+            } else checkedType = true;
+            if (checkedAccess && checkedType) { return true }
+            else return false;
+        }
+
+        },
+    }
 }
 </script>
