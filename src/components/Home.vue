@@ -11,9 +11,8 @@
   </p>
 </div>
 
+       <!-- <v-carousel>
 
-<!--
-        <v-carousel>
           <v-carousel-item>
             <Empresa />
           </v-carousel-item>
@@ -23,8 +22,9 @@
           <v-carousel-item>
             <Pedido />
           </v-carousel-item>
-        </v-carousel>
-        -->
+
+        </v-carousel>-->
+
 </template>
 
 <script>

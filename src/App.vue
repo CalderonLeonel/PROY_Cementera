@@ -29,7 +29,9 @@
             <v-img src="./assets/logo192.png"></v-img>
           </v-col>
           <v-col cols="8">
-            <v-toolbar-title><b>Drymix SRL</b></v-toolbar-title>
+
+            <v-toolbar-title><b>Drymix</b></v-toolbar-title>
+
           </v-col>
 
         </v-toolbar>
@@ -40,7 +42,9 @@
           <v-list-item-content>
             <center>
               <v-list-item-title class="text-h6">
+
                 PANEL
+
               </v-list-item-title>
               <v-list-item-subtitle></v-list-item-subtitle>
             </center>
@@ -419,11 +423,9 @@
       <v-row justify="center" no-gutters>
 
         <v-col class="py-4 text-center white--text" cols="12">
-<<<<<<< HEAD
+
           {{ new Date().getFullYear() }} — <strong>DRYMIX</strong>
-=======
-          {{ new Date().getFullYear() }} — <strong> DRYMIX</strong>
->>>>>>> 8f43428b8d6a054e618e505941fb2e461e2e4ecf
+
         </v-col>
       </v-row>
     </v-footer>

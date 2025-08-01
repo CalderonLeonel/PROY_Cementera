@@ -49,11 +49,9 @@ export default {
         alert: { show: false, message: '', type: '' },
         namerules: [
             value => !!value || 'EL USUARIO ES REQUERIDO',
-            // value =>(value && value.lemgth>=4 || 'EL USUARIO ES MUY CORTO') 
         ],
         passwordrules: [
-            value => !!value || 'LA CONTRASEÑA ES REQUERIDA',
-            // value =>(value && value.lemgth>4 || 'LA CONTRASEÑA ES MUY CORTA')          
+            value => !!value || 'LA CONTRASEÑA ES REQUERIDA',          
         ],
         user: { user: "", password: ""}
     }),
@@ -61,32 +59,32 @@ export default {
         async signin() {
 
             let valid = this.$refs.signinForm.validate();
-
+            try {
             if (valid) {
-                try {
-                    const res = await this.axios.post('/signin', this.user);
-                    if (res.data.NotFount) {
+
+                const res = await this.axios.post('/signin', this.user);
+                if (res.data.NotFount) {
                         this.alert = {
                             show: true,
                             type: 'error',
                             message: res.data.message
                         };
-                    }
-                    else {
-                        console.log("session: "+ JSON.stringify(res.data));
-                        sessionStorage.setItem('session', JSON.stringify(res.data));
+                }
+                else {
+                    console.log("session: "+ JSON.stringify(res.data));
+                    sessionStorage.setItem('session', JSON.stringify(res.data));
+                    this.$router.go(0);
 
-                        this.$router.push('/');
-                        this.$router.go(0);
-
-                    }
-                } catch (error) {
+                }
+                    
+               
+            }
+             } catch (error) {
                     this.alert = {
                         show: true,
                         type: "error",
                         message: error.response.data.message
                     };
-                }
             }
 
 
