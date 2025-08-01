@@ -327,7 +327,7 @@ export default {
             { text: "SEXO", value: "ism" },
             { text: "ESTADO CIVIL", value: "est" },
             { text: "CONTACTOS", value: "tel", sortable: false },
-            { text: "ESTADO", value: "act" },
+            { text: "ESTADO", value: "act", sortable: false },
             //{ text: "FECHA CREACION", value: "credte", sortable: false },
             //{ text: "ULTIMA ACTUALIZACIÓN", value: "upddate", sortable: false },
             { text: "OPCIONES", value: "actions", sortable: false },

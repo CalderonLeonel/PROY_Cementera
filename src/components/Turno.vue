@@ -422,7 +422,7 @@ export default {
             { text: "TURNO", value: "turn" },
             { text: "FECHA CREACION", value: "credte" },
             { text: "ULTIMA ACTUALIZACION", value: "upddte" },
-            { text: "ESTADO", value: "act", sortable: false },
+            { text: "ESTADO", value: "act" },
             { text: "OPCIONES", value: "actions", sortable: false, align: 'end' },
         ],
         /* //De otro v-dable comentado para probar el group-by

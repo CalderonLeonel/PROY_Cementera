@@ -250,12 +250,12 @@ export default {
         ],
 
         headersDepartamento: [
-            { text: "DEPARTAMENTO", value: "nom", sortable: false },
-            { text: "UNIDAD", value: "unid", sortable: false },
-            { text: "AREA", value: "area", sortable: false },
-            { text: "ESTADO", value: "act", sortable: false },
-            { text: "FECHA CREACION", value: "credte", sortable: false },
-            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
+            { text: "DEPARTAMENTO", value: "nom" },
+            { text: "UNIDAD", value: "unid" },
+            { text: "AREA", value: "area" },
+            { text: "ESTADO", value: "act" },
+            { text: "FECHA CREACION", value: "credte" },
+            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte" },
             { text: "OPCIONES", value: "actions", sortable: false },
         ],
 

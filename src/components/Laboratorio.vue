@@ -1,5 +1,30 @@
 <template>
+
     <v-card elevation="5" outlined shaped>
+        <div class="text-center">
+            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="light-green darken-2 ">
+                {{ mensajeSnackbar }}
+
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
+
+        <div class="text-center">
+
+            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
+                <strong>{{ mensajeSnackbarError }}</strong>
+
+                <template v-slot:action="{ attrs }">
+                    <v-icon right v-bind="attrs" @click="snackbarWarning = false">
+                        mdi-close
+                    </v-icon>
+                </template>
+            </v-snackbar>
+        </div>
 
         <v-dialog v-model="formatoModal" max-width="900px">
             <v-card elevation="5" outlined shaped>
@@ -36,13 +61,12 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeFormato()" style="float: right"
-                                        title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
-                               
+                                <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeFormato()"
+                                    style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    SALIR
+                                </v-btn>
+
                             </v-col>
                         </v-row>
                     </v-container>
@@ -82,13 +106,12 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeTipos()" style="float: right"
-                                        title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
-                              
+                                <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeTipos()"
+                                    style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    SALIR
+                                </v-btn>
+
                             </v-col>
                         </v-row>
                     </v-container>
@@ -130,12 +153,13 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon large class="mx-2" fab dark x-small color="#0A62BF" @click="avanzarFase()"
-                                            tyle="float: left" title="AVANZAR FASE">
+                                        <v-btn icon large class="mx-2" fab dark x-small color="#0A62BF"
+                                            @click="avanzarFase()" tyle="float: left" title="AVANZAR FASE">
                                             <v-icon dark> mdi-page-next-outline </v-icon>
                                         </v-btn>
-                                        <v-btn icon large v-if="est === 'FINALIZADO'" class="mx-2" fab dark x-small color="#0A62BF"
-                                            @click="moverAProduccion()" style="float: left" title="MOVER A PRODUCCION">
+                                        <v-btn icon large v-if="est === 'FINALIZADO'" class="mx-2" fab dark x-small
+                                            color="#0A62BF" @click="moverAProduccion()" style="float: left"
+                                            title="MOVER A PRODUCCION">
                                             <v-icon dark> mdi-page-next-outline </v-icon>
                                         </v-btn>
                                         <v-btn icon large class="mx-2" fab dark x-small color="#0ABF55"
@@ -148,8 +172,7 @@
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
                                     <v-btn icon large class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeRevisionModal()" style="float: right"
-                                        title="SALIR">
+                                        @click="closeRevisionModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -170,259 +193,311 @@
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-container>
                     <v-row>
-                        <v-col cols="12" md="4">
-                            <v-text-field v-model="nombreProducto" label="NOMBRE PRODUCTO" :counter="100"
-                                :rules="nombreProductoRules" @input="nombreProducto = nombreProducto.toUpperCase()"
-                                required></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="4">
-                            <v-text-field v-model="codigoProducto" label="CODIGO PRODUCTO" :counter="100"
-                                :rules="codigoProductoRules" @input="codigoProducto = codigoProducto.toUpperCase()"
-                                required></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="1">
-                            <v-btn class="mx-2" fab dark x-small color="cyan" :rules="ProductoRules"
-                                @click="showFormato()" style="float: right" title="BUSCAR FORMATO">
-                                <v-icon dark> mdi-magnify </v-icon>
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                            <v-text-field v-model="nombreFormato" label="NOMBRE FORMATO" :counter="50"
-                                :rules="nombreFormatoRules" @input="nombreFormato = nombreFormato.toUpperCase()"
-                                disabled required></v-text-field>
-                        </v-col>
+                        <v-col cols="12">
+                            <v-tabs horizontal color="#002245" center-active grow>
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-list-box
+                                    </v-icon>
+                                    ADD
+                                    PROD. LABO.
+                                </v-tab>
 
-                        <v-col cols="12" md="1">
-                            <v-btn class="mx-2" fab dark x-small color="cyan" :rules="tipoRules" @click="showTipos()"
-                                style="float: right" title="BUSCAR TIPO PRODUCTO">
-                                <v-icon dark> mdi-magnify </v-icon>
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                            <v-text-field v-model="nombreTipoProducto" label="NOMBRE TIPO PRODUCTO" :counter="50"
-                                :rules="nombreTipoProductoRules"
-                                @input="nombreTipoProducto = nombreTipoProducto.toUpperCase()" disabled
-                                required></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="4"></v-col>
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-view-list
+                                    </v-icon>
+                                    PROD.
+                                    REGISTRADOS
+                                </v-tab>
+                                <v-tab>
+                                    <v-icon left>
+                                        mdi-text-box
+                                    </v-icon>
+                                    OBSERV
+                                    LABO
+                                </v-tab>
 
-                        <v-col cols="12" md="8"> </v-col>
-                        <v-col cols="12" md="4">
-                            <v-toolbar dense shaped color="#ffffff">
-                                <v-toolbar-title style="color: #000000;">
-                                    <h6>
-                                        OPCIONES
-                                    </h6>
-                                </v-toolbar-title>
-                                <v-btn icon large class="mx-2" color="#00A1B1" fab dark x-small @click="limpiar()"
-                                    style="float: left" title="BUSCAR PRODUCTO DEL LABORATORIO">
-                                    <v-icon dark> mdi-magnify-plus </v-icon>
-                                </v-btn>
-                                <v-btn icon large v-if="botonAct == 1" class="mx-2" fab dark x-small color="#0A62BF"
-                                    @click="actualizarProductos()" style="float: left"
-                                    title="ACTUALIZAR INFORMACIÓN LABORATORIO">
-                                    <v-icon dark> mdi-pencil </v-icon>
-                                </v-btn>
-                                <v-btn icon large v-if="botonAct == 0" class="mx-2" fab dark x-small color="#0ABF55"
-                                    @click="registrarProductoLabo()" style="float: left"
-                                    title="REGISTRAR PRODUCTO LABORATORIO">
-                                    <v-icon dark> mdi-content-save </v-icon>
-                                </v-btn>
-                                <v-btn icon large color="#BF120A" class="mx-2" fab dark x-small @click="limpiar()"
-                                    style="float: left" title="LIMPIAR FORMULARIO">
-                                    <v-icon dark> mdi-eraser </v-icon>
-                                </v-btn>
-                            </v-toolbar>
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outlined shaped>
+                                        <v-card-title>
+                                            <span>AGREGAR PRODUCTO LABORATORIO</span>
+                                        </v-card-title>
+                                        <v-card-text></v-card-text>
+                                        <v-form ref="form" v-model="valid" lazy-validation>
+                                            <v-container>
+                                                <v-row>
+
+                                                    <v-row>
+                                                        <v-col cols="12" md="4">
+                                                            <v-text-field v-model="nombreProducto"
+                                                                label="NOMBRE PRODUCTO" :counter="100"
+                                                                :rules="nombreProductoRules"
+                                                                @input="nombreProducto = nombreProducto.toUpperCase()"
+                                                                required></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="4">
+                                                            <v-text-field v-model="codigoProducto"
+                                                                label="CODIGO PRODUCTO" :counter="100"
+                                                                :rules="codigoProductoRules"
+                                                                @input="codigoProducto = codigoProducto.toUpperCase()"
+                                                                required></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="1">
+                                                            <v-btn class="mx-2" fab dark x-small color="cyan"
+                                                                :rules="ProductoRules" @click="showFormato()"
+                                                                style="float: right" title="BUSCAR FORMATO">
+                                                                <v-icon dark> mdi-magnify </v-icon>
+                                                            </v-btn>
+                                                        </v-col>
+                                                        <v-col cols="12" md="3">
+                                                            <v-text-field v-model="nombreFormato" label="NOMBRE FORMATO"
+                                                                :counter="50" :rules="nombreFormatoRules"
+                                                                @input="nombreFormato = nombreFormato.toUpperCase()"
+                                                                disabled required></v-text-field>
+                                                        </v-col>
+
+                                                        <v-col cols="12" md="1">
+                                                            <v-btn class="mx-2" fab dark x-small color="cyan"
+                                                                :rules="tipoRules" @click="showTipos()"
+                                                                style="float: right" title="BUSCAR TIPO PRODUCTO">
+                                                                <v-icon dark> mdi-magnify </v-icon>
+                                                            </v-btn>
+                                                        </v-col>
+                                                        <v-col cols="12" md="3">
+                                                            <v-text-field v-model="nombreTipoProducto"
+                                                                label="NOMBRE TIPO PRODUCTO" :counter="50"
+                                                                :rules="nombreTipoProductoRules"
+                                                                @input="nombreTipoProducto = nombreTipoProducto.toUpperCase()"
+                                                                disabled required></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="4"></v-col>
+
+                                                        <v-col cols="12" md="8"> </v-col>
+                                                        <v-col cols="12" md="4">
+                                                            <v-toolbar dense shaped color="#ffffff">
+                                                                <v-toolbar-title style="color: #000000;">
+                                                                    <h6>
+                                                                        OPCIONES
+                                                                    </h6>
+                                                                </v-toolbar-title>
+                                                                <v-btn icon large class="mx-2" color="#00A1B1" fab dark
+                                                                    x-small @click="limpiar()" style="float: left"
+                                                                    title="BUSCAR PRODUCTO DEL LABORATORIO">
+                                                                    <v-icon dark> mdi-magnify-plus </v-icon>
+                                                                </v-btn>
+                                                                <v-btn icon large v-if="botonAct == 1" class="mx-2" fab
+                                                                    dark x-small color="#0A62BF"
+                                                                    @click="actualizarProductos()" style="float: left"
+                                                                    title="ACTUALIZAR INFORMACIÓN LABORATORIO">
+                                                                    <v-icon dark> mdi-pencil </v-icon>
+                                                                </v-btn>
+                                                                <v-btn icon large v-if="botonAct == 0" class="mx-2" fab
+                                                                    dark x-small color="#0ABF55"
+                                                                    @click="registrarProductoLabo()" style="float: left"
+                                                                    title="REGISTRAR PRODUCTO LABORATORIO">
+                                                                    <v-icon dark> mdi-content-save </v-icon>
+                                                                </v-btn>
+                                                                <v-btn icon large color="#BF120A" class="mx-2" fab dark
+                                                                    x-small @click="limpiar()" style="float: left"
+                                                                    title="LIMPIAR FORMULARIO">
+                                                                    <v-icon dark> mdi-eraser </v-icon>
+                                                                </v-btn>
+                                                            </v-toolbar>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-row>
+                                            </v-container>
+                                        </v-form>
+                                    </v-card>
+                                </v-tab-item>
+
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outlined shaped>
+                                        <v-card-title>
+                                            <span>LISTA DE PRODUCTOS</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-form ref="form" v-model="valid" lazy-validation>
+                                                <v-container>
+                                                    <v-row>
+                                                        <v-col cols="12">
+
+                                                            <!-- Combobox para seleccionar la fase -->
+                                                            <v-combobox v-model="faseSeleccionada" :items="fases"
+                                                                label="Seleccionar Fase"
+                                                                @change="listarProductosLaboxFase()" single-line>
+                                                            </v-combobox>
+
+                                                            <v-list-item>
+                                                                <v-list-item-title class="text-center">
+                                                                    <h5>Prod. Laboratorio</h5>
+                                                                </v-list-item-title>
+                                                            </v-list-item>
+
+                                                            <v-card-title>
+                                                                <v-text-field v-model="buscarProdLabo"
+                                                                    append-icon="mdi-magnify"
+                                                                    label="BUSCAR PRODUCTOS DEL LABORATORIO" single-line
+                                                                    hide-details></v-text-field>
+                                                            </v-card-title>
+
+
+                                                            <v-data-table :headers="headersProdLabo"
+                                                                :items="datosProdLabo" :search="buscarProdLabo"
+                                                                :items-per-page="5" class="elevation-1" id="tableId">
+
+                                                                <template #[`item.est`]="{ item }">
+                                                                    <v-chip :color="colorEstado(item.est)" dark>
+                                                                        {{ item.est }}
+                                                                    </v-chip>
+                                                                </template>
+
+                                                                <template #[`item.actions`]="{ item }">
+                                                                    <v-icon small class="mr-2" color="#0A62BF"
+                                                                        @click="seleccionarProdLabo(item)"
+                                                                        title="SELECCIONAR PRODUCTO LABORATORIO">
+                                                                        mdi-check-circle
+                                                                    </v-icon>
+                                                                    <v-icon small class="mr-2" color="#0A62BF"
+                                                                        @click="generarPDF(item)" title="VER PDF">
+                                                                        mdi-printer-outline
+                                                                    </v-icon>
+                                                                </template>
+
+                                                            </v-data-table>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-container>
+                                            </v-form>
+                                        </v-card-text>
+                                    </v-card>
+
+                                </v-tab-item>
+
+                                <v-tab-item v-if="flag == 1">
+                                    <v-card elevation="5" outline shaped>
+                                        <v-row>
+                                            <v-col cols="12" md="12"></v-col>
+                                            <v-col cols="12" md="12">
+                                                <v-textarea v-model="observaciones" filled
+                                                    label="OBSERVACIONES DEL PRODUCTO DE LABORATORIO" auto-grow
+                                                    value=""></v-textarea>
+                                            </v-col>
+
+                                            <v-col cols="12" md="8"> </v-col>
+                                            <v-col cols="12" md="4">
+                                                <v-toolbar dense shaped color="#ffffff">
+                                                    <v-toolbar-title style="color: #000000;">
+                                                        <h6>
+                                                            OPCIONES
+                                                        </h6>
+                                                    </v-toolbar-title>
+
+                                                    <v-btn icon large class="mx-2" fab dark x-small color="#0ABF55"
+                                                        @click="registrarObservacionLabo()" style="float: left"
+                                                        title="REGISTRAR PRODUCTO LABORATORIO">
+                                                        <v-icon dark> mdi-content-save </v-icon>
+                                                    </v-btn>
+                                                    <v-btn icon large color="#BF120A" class="mx-2" fab dark x-small
+                                                        @click="limpiar()" style="float: left"
+                                                        title="LIMPIAR FORMULARIO">
+                                                        <v-icon dark> mdi-eraser </v-icon>
+                                                    </v-btn>
+                                                </v-toolbar>
+                                            </v-col>
+
+                                            <v-col cols="12">
+                                                <v-list-item>
+                                                    <v-list-item-title class="text-center">
+                                                        <h5>Observaciones Laboratorio</h5>
+                                                    </v-list-item-title>
+                                                </v-list-item>
+
+                                                <v-card-title>
+                                                    <v-text-field v-model="buscarObservaciones"
+                                                        append-icon="mdi-magnify"
+                                                        label="BUSCAR OBSERVACIONES DEL LABORATORIO" single-line
+                                                        hide-details></v-text-field>
+                                                </v-card-title>
+
+
+                                                <v-data-table :headers="headersObservaciones"
+                                                    :items="datosObservaciones" :search="buscarObservaciones"
+                                                    :items-per-page="5" class="elevation-1" id="tableId">
+
+                                                    <template #[`item.est`]="{ item }">
+                                                        <v-chip :color="colorEstado(item.est)" dark>
+                                                            {{ item.est }}
+                                                        </v-chip>
+                                                    </template>
+
+                                                    <template #[`item.actions`]="{ item }">
+                                                        <v-icon small class="mr-2" color="#0A62BF"
+                                                            @click="seleccionarObservacion(item)"
+                                                            title="SELECCIONAR OBSERVACION LABORATORIO">
+                                                            mdi-check-circle
+                                                        </v-icon>
+                                                        <v-icon small class="mr-2" color="#0A62BF"
+                                                            @click="generarPDF(item)" title="VER PDF">
+                                                            mdi-printer-outline
+                                                        </v-icon>
+                                                    </template>
+
+                                                </v-data-table>
+                                            </v-col>
+
+                                        </v-row>
+                                    </v-card>
+                                </v-tab-item>
+                            </v-tabs>
                         </v-col>
                     </v-row>
+
+                    <div class="text-center">
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
+                            outlined>
+                            <strong>{{ mensajeSnackbar }}</strong>
+
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+
+                    <div class="text-center">
+
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error"
+                            outlined>
+                            <strong>{{ mensajeSnackbarError }}</strong>
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarWarning = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
                 </v-container>
             </v-form>
-        </div>
-
-        <v-divider></v-divider>
-
-        <v-card class="white--text" color="grey lighten-4" max-width="100%">
-            <v-card-actions>
-                <v-row>
-                    <v-col cols="12">
-                        <v-tabs horizontal color="#002245" center-active grow>
-                            <v-tab>
-                                <v-icon left>
-                                    mdi-view-list
-                                </v-icon>
-                                PROD.
-                                REGISTRADOS
-                            </v-tab>
-                            <v-tab>
-                                <v-icon left>
-                                    mdi-text-box
-                                </v-icon>
-                                OBSERV
-                                LABO
-                            </v-tab>
-
-                            <v-tab-item v-if="flag == 1">
-                                <v-card elevation="5" outlined shaped>
-                                    <v-row>
-                                        <v-col cols="12">
-
-                                            <!-- Combobox para seleccionar la fase -->
-                                            <v-combobox v-model="faseSeleccionada" :items="fases"
-                                                label="Seleccionar Fase" @change="listarProductosLaboxFase()"
-                                                single-line>
-                                            </v-combobox>
-
-                                            <v-list-item>
-                                                <v-list-item-title class="text-center">
-                                                    <h5>Prod. Laboratorio</h5>
-                                                </v-list-item-title>
-                                            </v-list-item>
-
-                                            <v-card-title>
-                                                <v-text-field v-model="buscarProdLabo" append-icon="mdi-magnify"
-                                                    label="BUSCAR PRODUCTOS DEL LABORATORIO" single-line
-                                                    hide-details></v-text-field>
-                                            </v-card-title>
-
-
-                                            <v-data-table :headers="headersProdLabo" :items="datosProdLabo"
-                                                :search="buscarProdLabo" :items-per-page="5" class="elevation-1"
-                                                id="tableId">
-
-                                                <template #[`item.est`]="{ item }">
-                                                    <v-chip :color="colorEstado(item.est)" dark>
-                                                        {{ item.est }}
-                                                    </v-chip>
-                                                </template>
-
-                                                <template #[`item.actions`]="{ item }">
-                                                    <v-icon small class="mr-2" color="#0A62BF"
-                                                        @click="seleccionarProdLabo(item)"
-                                                        title="SELECCIONAR PRODUCTO LABORATORIO">
-                                                        mdi-check-circle
-                                                    </v-icon>
-                                                    <v-icon small class="mr-2" color="#0A62BF" @click="generarPDF(item)"
-                                                        title="VER PDF">
-                                                        mdi-printer-outline
-                                                    </v-icon>
-                                                </template>
-
-                                            </v-data-table>
-                                        </v-col>
-                                    </v-row>
-                                </v-card>
-                            </v-tab-item>
-
-                            <v-tab-item v-if="flag == 1">
-                                <v-card elevation="5" outline shaped>
-                                    <v-row>
-                                        <v-col cols="12" md="12"></v-col>
-                                        <v-col cols="12" md="12">
-                                            <v-textarea v-model="observaciones" filled
-                                                label="OBSERVACIONES DEL PRODUCTO DE LABORATORIO" auto-grow
-                                                value=""></v-textarea>
-                                        </v-col>
-
-                                        <v-col cols="12" md="8"> </v-col>
-                                        <v-col cols="12" md="4">
-                                            <v-toolbar dense shaped color="#ffffff">
-                                                <v-toolbar-title style="color: #000000;">
-                                                    <h6>
-                                                        OPCIONES
-                                                    </h6>
-                                                </v-toolbar-title>
-
-                                                <v-btn icon large class="mx-2" fab dark x-small color="#0ABF55"
-                                                    @click="registrarObservacionLabo()" style="float: left"
-                                                    title="REGISTRAR PRODUCTO LABORATORIO">
-                                                    <v-icon dark> mdi-content-save </v-icon>
-                                                </v-btn>
-                                                <v-btn icon large color="#BF120A" class="mx-2" fab dark x-small @click="limpiar()"
-                                                    style="float: left" title="LIMPIAR FORMULARIO">
-                                                    <v-icon dark> mdi-eraser </v-icon>
-                                                </v-btn>
-                                            </v-toolbar>
-                                        </v-col>
-
-                                        <v-col cols="12">
-                                            <v-list-item>
-                                                <v-list-item-title class="text-center">
-                                                    <h5>Observaciones Laboratorio</h5>
-                                                </v-list-item-title>
-                                            </v-list-item>
-
-                                            <v-card-title>
-                                                <v-text-field v-model="buscarObservaciones" append-icon="mdi-magnify"
-                                                    label="BUSCAR OBSERVACIONES DEL LABORATORIO" single-line
-                                                    hide-details></v-text-field>
-                                            </v-card-title>
-
-
-                                            <v-data-table :headers="headersObservaciones" :items="datosObservaciones"
-                                                :search="buscarObservaciones" :items-per-page="5" class="elevation-1"
-                                                id="tableId">
-
-                                                <template #[`item.est`]="{ item }">
-                                                    <v-chip :color="colorEstado(item.est)" dark>
-                                                        {{ item.est }}
-                                                    </v-chip>
-                                                </template>
-
-                                                <template #[`item.actions`]="{ item }">
-                                                    <v-icon small class="mr-2" color="#0A62BF"
-                                                        @click="seleccionarObservacion(item)"
-                                                        title="SELECCIONAR OBSERVACION LABORATORIO">
-                                                        mdi-check-circle
-                                                    </v-icon>
-                                                    <v-icon small class="mr-2" color="#0A62BF" @click="generarPDF(item)"
-                                                        title="VER PDF">
-                                                        mdi-printer-outline
-                                                    </v-icon>
-                                                </template>
-
-                                            </v-data-table>
-                                        </v-col>
-
-                                    </v-row>
-                                </v-card>
-                            </v-tab-item>
-
-                        </v-tabs>
-                    </v-col>
-                </v-row>
-            </v-card-actions>
-        </v-card>
-        <div class="text-center">
-            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="light-green darken-2 ">
-                {{ mensajeSnackbar }}
-
-                <template v-slot:action="{ attrs }">
-                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                        mdi-close
-                    </v-icon>
-                </template>
-            </v-snackbar>
-        </div>
-
-        <div class="text-center">
-
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error" outlined>
-                <strong>{{ mensajeSnackbarError }}</strong>
-
-                <template v-slot:action="{ attrs }">
-                    <v-icon right v-bind="attrs" @click="snackbarWarning = false">
-                        mdi-close
-                    </v-icon>
-                </template>
-            </v-snackbar>
         </div>
     </v-card>
 
 </template>
 
 <script>
-import jsPDF from 'jspdf';
 import axios from "axios";
+import { async } from "regenerator-runtime";
+import * as XLSX from 'xlsx';
+
+
+import Papa from "papaparse";
+
+import jsPDF from "jspdf";
+import 'jspdf-autotable';
 
 export default {
 
@@ -430,7 +505,7 @@ export default {
         return {
             flag: 1,
             //#region Producto Laboratorio
-            fases: ["FASE INICIAL", "PRUEBAS", "FINALIZADO"],
+            fases: ["FASE INICIAL", "FASE PRUEBAS", "FASE FINAL"],
             faseSeleccionada: "FASE INICIAL",
             idProducto: "",
             nombreProducto: "",
@@ -489,13 +564,15 @@ export default {
             idFabrica: 1,
             idUsuario: 1,
             selectedProduct: null,
+            
 
-            //#region SnackBars
+            //#region Snackbars
             snackbarOK: false,
             mensajeSnackbar: "",
             snackbarError: false,
             mensajeSnackbarError: "REGISTRO FALLIDO",
             timeout: 2000,
+            //#endregion
 
 
         }

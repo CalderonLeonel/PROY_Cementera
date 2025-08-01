@@ -29,7 +29,9 @@
             <v-img src="./assets/logo192.png"></v-img>
           </v-col>
           <v-col cols="8">
+
             <v-toolbar-title><b>Drymix</b></v-toolbar-title>
+
           </v-col>
 
         </v-toolbar>
@@ -40,7 +42,9 @@
           <v-list-item-content>
             <center>
               <v-list-item-title class="text-h6">
-                
+
+                PANEL
+
               </v-list-item-title>
               <v-list-item-subtitle></v-list-item-subtitle>
             </center>
@@ -219,17 +223,17 @@
               <h6>TURNOS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Unidades' }">
+          <v-list-item :to="{ name: 'Unidades' }" v-if="checkAccess(0, 'GERENTE')">
             <v-list-item-title>
               <h6>UNIDADES</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Areas' }">
+          <v-list-item :to="{ name: 'Areas' }" v-if="checkAccess(0, 'GERENTE')">
             <v-list-item-title>
               <h6>AREAS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Departamentos' }">
+          <v-list-item :to="{ name: 'Departamentos' }" v-if="checkAccess(0, 'GERENTE')">
             <v-list-item-title>
               <h6>DEPARTAMENTOS</h6>
             </v-list-item-title>
@@ -419,7 +423,9 @@
       <v-row justify="center" no-gutters>
 
         <v-col class="py-4 text-center white--text" cols="12">
+
           {{ new Date().getFullYear() }} — <strong>DRYMIX</strong>
+
         </v-col>
       </v-row>
     </v-footer>

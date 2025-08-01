@@ -195,10 +195,10 @@ export default {
         ],
 
         headersCargo: [
-            { text: "CARGO", value: "carg", sortable: false },
+            { text: "CARGO", value: "carg"},
             { text: "DESCRIPCION", value: "descrip", sortable: false },
             { text: "SALARIO", value: "salar", sortable: false },
-            { text: "ESTADO", value: "act", sortable: false },
+            { text: "ESTADO", value: "act"},
             //{ text: "FECHA CREACION", value: "credte", sortable: false },
             //{ text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
             { text: "OPCIONES", value: "actions", sortable: false },
