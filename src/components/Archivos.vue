@@ -15,7 +15,7 @@
             <v-row v-if="checkAccess(11, 'COMUN') || checkAccess(11, 'SUPERVISOR') || checkAccess(11, 'GERENTE')">
 
                 <v-col cols="12" md="12">
-                    <v-text-field v-if="user == 'admin'" v-model="searchDocumento" append-icon="mdi-magnify"
+                    <v-text-field  v-model="searchDocumento" append-icon="mdi-magnify"
                         label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
                     <v-data-table :headers="headerDocumento" :items="datosDocumento" :search="searchDocumento"
                         :custom-filter="customFilter" class="elevation-1">
