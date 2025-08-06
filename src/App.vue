@@ -6,7 +6,7 @@
         <v-btn color="primary" v-bind="attrs" v-on="on">Login</v-btn>
       </template>
       <v-card>
-        <v-card-title class="headline">Iniciar Sesión</v-card-title>
+        <v-card-title class="headline">INICIAR SESIÓN</v-card-title>
         <v-card-text>
           <Login @close-modal="loginModal = false" />
         </v-card-text>
@@ -22,13 +22,20 @@
       </v-card>
     </v-dialog>
 
-    <v-navigation-drawer v-model="drawer" app>
+    <v-navigation-drawer v-if="logueado" v-model="drawer" app>
       <center>
         <v-toolbar color="#00A1B1" dark>
           <v-col cols="4">
-            <v-img src="./assets/logo192.png"></v-img>
+               <v-avatar size="56" class="ml-4">
+                <v-img
+                  style="background-color: white;"
+                  src="./assets/logo192.png"
+                  alt="Logo Drymix"
+                  cover
+                />
+              </v-avatar>
           </v-col>
-          <v-col cols="8">
+          <v-col cols="6">
 
             <v-toolbar-title><b>Drymix</b></v-toolbar-title>
 
