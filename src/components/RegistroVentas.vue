@@ -319,16 +319,16 @@ export default {
                 doc.autoTable({
                     startY: startY,
                     styles: {
-                        fillColor: [255, 255, 255], // Fondo blanco
-                        textColor: [0, 0, 0],      // Texto negro
-                        lineColor: [0, 0, 0],      // Bordes negros
-                        lineWidth: 0.1             // Grosor del borde
+                        fillColor: [255, 255, 255], 
+                        textColor: [0, 0, 0],      
+                        lineColor: [0, 0, 0],      
+                        lineWidth: 0.1             
                     },
                     headStyles: {
-                        fillColor: [255, 255, 255], // Fondo blanco para encabezado
-                        textColor: [0, 0, 0],       // Texto negro
-                        lineColor: [0, 0, 0],       // Bordes negros
-                        lineWidth: 0.1              // Grosor del borde
+                        fillColor: [255, 255, 255], 
+                        textColor: [0, 0, 0],       
+                        lineColor: [0, 0, 0],       
+                        lineWidth: 0.1             
                     },
                     head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO"]],
                     body: bodyData
@@ -351,7 +351,10 @@ export default {
                 var qrX = (pageWidth - 40) / 2;          
                 startY += 20;  
                 
-                doc.addImage(qrUrl,'PNG',qrX,startY );
+                doc.addImage(qrUrl,
+                'PNG',
+                qrX,
+                startY );
 
                 doc.save("factura_" + this.getFormattedDateTime(item.creadate) + ".pdf");
             } catch (error) {
