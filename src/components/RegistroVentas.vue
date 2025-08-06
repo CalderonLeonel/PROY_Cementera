@@ -74,6 +74,7 @@
 <script>
 import axios from "axios";
 import jsPDF from 'jspdf';
+import QRCode from 'qrcode'
 import 'jspdf-autotable';
 
 export default {
@@ -282,6 +283,9 @@ export default {
                 const response = await axios.get(`/venta/listardetalle/` + item.idven);
                 const jsonData = response.data.resultado || [];
 
+                const qrUrl = await QRCode.toDataURL(
+                `https://siat.impuestos.gob.bo/consulta/QR`,{ margin: 1, width: 40 * 4 } )
+
                 var total = 0
                 jsonData.forEach(detalle => {
                     total += detalle.cant * detalle.precuni;
@@ -342,6 +346,12 @@ export default {
                 doc.setFont("helvetica", "normal");
                 doc.text("ESTA FACTURA CONTRIBUYE AL DESARROLLO DE NUESTRO PAÍS, EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LEY", 105, startY, { align: "center" });
                 doc.text("Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los servicios que utilices.", 105, startY + 10, { align: "center" });
+                
+                var pageWidth = doc.internal.pageSize.getWidth();                     
+                var qrX = (pageWidth - 40) / 2;          
+                startY += 20;  
+                
+                doc.addImage(qrUrl,'PNG',qrX,startY );
 
                 doc.save("factura_" + this.getFormattedDateTime(item.creadate) + ".pdf");
             } catch (error) {
