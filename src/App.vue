@@ -22,7 +22,7 @@
       </v-card>
     </v-dialog>
 
-    <v-navigation-drawer v-model="drawer" app>
+    <v-navigation-drawer v-if="logueado" v-model="drawer" app>
       <center>
         <v-toolbar color="#00A1B1" dark>
           <v-col cols="4">
