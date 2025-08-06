@@ -6,7 +6,7 @@
         <v-btn color="primary" v-bind="attrs" v-on="on">Login</v-btn>
       </template>
       <v-card>
-        <v-card-title class="headline">Iniciar Sesión</v-card-title>
+        <v-card-title class="headline">INICIAR SESIÓN</v-card-title>
         <v-card-text>
           <Login @close-modal="loginModal = false" />
         </v-card-text>
