@@ -29,7 +29,9 @@
             <v-img src="./assets/logo192.png"></v-img>
           </v-col>
           <v-col cols="8">
-            <v-toolbar-title><b>Drymix SRL</b></v-toolbar-title>
+
+            <v-toolbar-title><b>Drymix</b></v-toolbar-title>
+
           </v-col>
 
         </v-toolbar>
@@ -40,7 +42,9 @@
           <v-list-item-content>
             <center>
               <v-list-item-title class="text-h6">
+
                 PANEL
+
               </v-list-item-title>
               <v-list-item-subtitle></v-list-item-subtitle>
             </center>
@@ -385,13 +389,16 @@
     </v-navigation-drawer>
 
     <v-app-bar color="#00A1B1" app>
-      <v-app-bar-nav-icon color="white" @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-btn class="mx-2" fab dark x-small color="#00A1B1" @click="salir()" style="float:right;" title="CERRAR SESIÓN">
+      <v-app-bar-nav-icon  v-if="logueado" color="white" @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-btn v-if="logueado" class="mx-6"  dark x-medium color="#007B88" @click="salir()" style="float:right;" variant="text"
+       title="CERRAR SESIÓN">
         <v-icon dark>mdi-door-closed-lock</v-icon>
+        CERRAR SESIÓN
       </v-btn>
-      <v-btn v-if="!logueado" class="mx-2" fab dark x-small color="#00A1B1" @click="openLoginModal()" style="float:right;"
-        title="INICIAR SESIÓN">
-        <v-icon dark>mdi-login</v-icon>
+      <v-btn v-if="!logueado" class="mx-6"  dark x-medium color="#007B88" @click="openLoginModal()" style="float:right;" variant="text"
+        title="INICIAR SESIÓN"> 
+        <v-icon dark>mdi-account</v-icon>
+        INICIAR SESIÓN
       </v-btn>
     </v-app-bar>
 
@@ -419,7 +426,7 @@
       <v-row justify="center" no-gutters>
 
         <v-col class="py-4 text-center white--text" cols="12">
-          {{ new Date().getFullYear() }} — <strong> DRYMIX</strong>
+          {{ new Date().getFullYear() }} — <strong>DRYMIX</strong>
         </v-col>
       </v-row>
     </v-footer>
@@ -431,6 +438,7 @@
 import Login from './components/Login.vue';
 
 export default {
+  name: 'App',
   data: () => ({
     loginModal: false,
     drawer: false,
