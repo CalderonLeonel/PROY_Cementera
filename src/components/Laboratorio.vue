@@ -1,30 +1,6 @@
 <template>
 
     <v-card elevation="5" outlined shaped>
-        <div class="text-center">
-            <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="light-green darken-2 ">
-                {{ mensajeSnackbar }}
-
-                <template v-slot:action="{ attrs }">
-                    <v-icon right v-bind="attrs" @click="snackbarOK = false">
-                        mdi-close
-                    </v-icon>
-                </template>
-            </v-snackbar>
-        </div>
-
-        <div class="text-center">
-
-            <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="#EE680B" outlined>
-                <strong>{{ mensajeSnackbarError }}</strong>
-
-                <template v-slot:action="{ attrs }">
-                    <v-icon right v-bind="attrs" @click="snackbarWarning = false">
-                        mdi-close
-                    </v-icon>
-                </template>
-            </v-snackbar>
-        </div>
 
         <v-dialog v-model="formatoModal" max-width="900px">
             <v-card elevation="5" outlined shaped>
@@ -475,7 +451,7 @@
                             <strong>{{ mensajeSnackbarError }}</strong>
 
                             <template v-slot:action="{ attrs }">
-                                <v-icon right v-bind="attrs" @click="snackbarWarning = false">
+                                <v-icon right v-bind="attrs" @click="snackbarError = false">
                                     mdi-close
                                 </v-icon>
                             </template>
@@ -564,7 +540,7 @@ export default {
             idFabrica: 1,
             idUsuario: 1,
             selectedProduct: null,
-            
+
 
             //#region Snackbars
             snackbarOK: false,
@@ -724,11 +700,12 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.limpiar();
                     me.listarProductosLabo();
+                    me.limpiar();
                 })
                 .catch(function (error) {
-                    me.snackbarError = true;
+                    me.mensajeSnackbar = error.response.data.message;
+                    nackbarError = true;
                 });
 
         },
@@ -784,11 +761,12 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.limpiar();
                     me.listarProductosLabo();
+                    me.limpiar();
                 })
                 .catch(function (error) {
-                    me.snackbarError = true;
+                    me.mensajeSnackbar = error.response.data.message;
+                    nackbarError = true;
                 });
         },
         //#endregion

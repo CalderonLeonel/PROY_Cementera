@@ -56,122 +56,36 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="cantidadMateriaPrima" persistent max-width="1000px">
-            <v-card elevation="5" outlined shaped>
+        <!-- Dialog para cantidad y medida -->
+        <v-dialog v-model="cantidadMedida" persistent max-width="500px">
+            <v-card>
                 <v-card-title>
-                    <span>REGISTRAR USO MATERIA PRIMA</span>
+                    <span>Ingrese Cantidad y Medida</span>
                 </v-card-title>
                 <v-card-text>
-                    <v-form ref="form" v-model="valid" lazy-validation>
+                    <v-form ref="formCantidad" v-model="validCantidad" lazy-validation>
                         <v-container>
                             <v-row>
                                 <v-col cols="12">
-                                    <h2>Registrar Uso de Materias Primas por Producto</h2>
+                                    <v-text-field label="Cantidad" v-model="cantidadSeleccionada" type="number"
+                                        required></v-text-field>
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-list-item>
-                                        <v-list-item-title class="text-center">
-                                            <h5>Lista de Productos</h5>
-                                        </v-list-item-title>
-                                    </v-list-item>
-
-                                    <v-card-title>
-                                        <v-text-field v-model="buscarproducto" append-icon="mdi-magnify"
-                                            label="BUSCAR MATERIA PRIMA" single-line hide-details></v-text-field>
-                                    </v-card-title>
-                                </v-col>
-
-                                <v-col cols="12">
-                                    <v-data-table :headers="headersMateriaP" :items="datosMateriaP"
-                                        :search="buscarMateriasP" :items-per-page="5" class="elevation-1" id="tableId">
-
-                                        <template #[`item.est`]="{ item }">
-                                            <v-chip :color="colorEstado(item.est)" dark>
-                                                {{ item.est }}
-                                            </v-chip>
-                                        </template>
-
-                                        <template #[`item.actions`]="{ item }">
-                                            <v-icon small class="mr-2" color="#001781"
-                                                @click="showCantidadMedida(item)">
-                                                mdi-check-circle
-                                            </v-icon>
-                                        </template>
-
-                                    </v-data-table>
-                                </v-col>
-
-                                <v-col cols="12">
-                                    <v-data-table :headers="headersUsoMateriaP" :items="datosUsoMateriaP"
-                                        :search="buscarUsoMateriaP" :items-per-page="5" class="elevation-1"
-                                        id="tableId">
-
-                                        <template #[`item.est`]="{ item }">
-                                            <v-chip :color="colorEstado(item.est)" dark>
-                                                {{ item.est }}
-                                            </v-chip>
-                                        </template>
-
-                                        <template #[`item.actions`]="{ item }">
-                                            <v-icon small class="mr-2" color="red" @click="eliminarMateriaPrima(item)">
-                                                mdi-close-circle
-                                            </v-icon>
-                                        </template>
-
-                                    </v-data-table>
-                                </v-col>
-
-                                <v-col cols="12">
-                                    <v-btn @click="registrarUsoMateriaPrima()" color="primary">Registrar
-                                        Uso de
-                                        Materias
-                                        Primas</v-btn>
-                                </v-col>
-
-                                <v-col cols="10"></v-col>
-                                <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeCantidadMateriaPrima()" style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                    </v-btn>
+                                    <v-text-field label="Medida" v-model="medidaSeleccionada" required></v-text-field>
                                 </v-col>
                             </v-row>
                         </v-container>
                     </v-form>
                 </v-card-text>
+                <v-card-actions>
+                    <v-btn text color="primary" @click="agregarMateriaPrimaSeleccionada">
+                        Guardar
+                    </v-btn>
+                    <v-btn text color="red" @click="dialogCantidadMedida = false">
+                        Cancelar
+                    </v-btn>
+                </v-card-actions>
             </v-card>
-            <!-- Dialog para cantidad y medida -->
-            <v-dialog v-model="cantidadMedida" persistent max-width="500px">
-                <v-card>
-                    <v-card-title>
-                        <span>Ingrese Cantidad y Medida</span>
-                    </v-card-title>
-                    <v-card-text>
-                        <v-form ref="formCantidad" v-model="validCantidad" lazy-validation>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12">
-                                        <v-text-field label="Cantidad" v-model="cantidadSeleccionada" type="number"
-                                            required></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12">
-                                        <v-text-field label="Medida" v-model="medidaSeleccionada"
-                                            required></v-text-field>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </v-form>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-btn text color="primary" @click="agregarMateriaPrimaSeleccionada">
-                            Guardar
-                        </v-btn>
-                        <v-btn text color="red" @click="dialogCantidadMedida = false">
-                            Cancelar
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
         </v-dialog>
 
         <div>
@@ -272,26 +186,26 @@
                                                         </v-col>
                                                         <v-col cols="12" md="8"></v-col>
                                                         <v-col cols="12" md="4">
-                                                            <v-toolbar dense shaped color="#002245">
-                                                                <v-toolbar-title style="color:#ffffff">
+                                                            <v-toolbar dense shaped>
+                                                                <v-toolbar-title>
                                                                     <h6>OPCIONES</h6>
                                                                 </v-toolbar-title>
 
-                                                                <v-btn v-if="botonAct == 1" class="mx-2" fab dark
-                                                                    x-small color="#EE680B"
+                                                                <v-btn icon v-if="botonAct == 1" class="mx-2" fab dark
+                                                                    small color="#0A62BF"
                                                                     @click="actualizarMateriaPrima()"
                                                                     style="float: left"
-                                                                    title="ACTUALIZAR INFORMACIÓN Materia Prima">
+                                                                    title="ACTUALIZAR INFORMACIÓN MATERIA PRIMA">
                                                                     <v-icon dark> mdi-pencil </v-icon>
                                                                 </v-btn>
-                                                                <v-btn v-if="botonAct == 0" class="mx-2" fab dark
-                                                                    x-small color="#EE680B"
+                                                                <v-btn icon v-if="botonAct == 0" class="mx-2" fab dark
+                                                                    small color="#0ABF55"
                                                                     @click="registrarMateriaPrima()" style="float: left"
-                                                                    title="REGISTRAR PRODUCTO Materia Prima">
-                                                                    <v-icon dark> mdi-content-save-plus-outline
+                                                                    title="REGISTRAR PRODUCTO MATERIA PRIMA">
+                                                                    <v-icon dark> mdi-content-save
                                                                     </v-icon>
                                                                 </v-btn>
-                                                                <v-btn color="#EE680B" class="mx-2" fab dark x-small
+                                                                <v-btn icon color="#EE680B" class="mx-2" fab dark small
                                                                     @click="limpiar()" style="float: left"
                                                                     title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>
@@ -490,12 +404,89 @@
                                 <v-tab-item v-if="flag == 1">
                                     <v-card elevation="5" outlined shaped>
                                         <v-card-title>
-                                            <span>LISTAR MATERIA PRIMA INACTIVA</span>
+                                            <span>REGISTRAR USO MATERIA PRIMA</span>
                                         </v-card-title>
                                         <v-card-text>
                                             <v-form ref="form" v-model="valid" lazy-validation>
                                                 <v-container>
                                                     <v-row>
+                                                        <v-col cols="12">
+                                                            <h2>Registrar Uso de Materias Primas por Producto</h2>
+                                                        </v-col>
+                                                        <v-col cols="12">
+                                                            <v-list-item>
+                                                                <v-list-item-title class="text-center">
+                                                                    <h5>LISTA DE MATERIAS PRIMAS</h5>
+                                                                    <h3>PARA EL PRODUCTO: {{ this.nombreProducto }}</h3>
+                                                                </v-list-item-title>
+                                                            </v-list-item>
+
+                                                            <v-card-title>
+                                                                <v-text-field v-model="buscarproducto"
+                                                                    append-icon="mdi-magnify"
+                                                                    label="BUSCAR MATERIA PRIMA" single-line
+                                                                    hide-details></v-text-field>
+                                                            </v-card-title>
+                                                        </v-col>
+
+                                                        <v-col cols="12">
+                                                            <v-data-table :headers="headersMateriaP"
+                                                                :items="datosMateriaP" :search="buscarMateriasP"
+                                                                :items-per-page="5" class="elevation-1" id="tableId">
+
+                                                                <template #[`item.est`]="{ item }">
+                                                                    <v-chip :color="colorEstado(item.est)" dark>
+                                                                        {{ item.est }}
+                                                                    </v-chip>
+                                                                </template>
+
+                                                                <template #[`item.actions`]="{ item }">
+                                                                    <v-icon small class="mr-2" color="#001781"
+                                                                        @click="showCantidadMedida(item)">
+                                                                        mdi-check-circle
+                                                                    </v-icon>
+                                                                </template>
+
+                                                            </v-data-table>
+                                                        </v-col>
+
+                                                        <v-col cols="12">
+                                                            <v-data-table :headers="headersUsoMateriaP"
+                                                                :items="datosUsoMateriaP" :search="buscarUsoMateriaP"
+                                                                :items-per-page="5" class="elevation-1" id="tableId">
+
+                                                                <template #[`item.est`]="{ item }">
+                                                                    <v-chip :color="colorEstado(item.est)" dark>
+                                                                        {{ item.est }}
+                                                                    </v-chip>
+                                                                </template>
+
+                                                                <template #[`item.actions`]="{ item }">
+                                                                    <v-icon small class="mr-2" color="red"
+                                                                        @click="eliminarMateriaPrima(item)">
+                                                                        mdi-close-circle
+                                                                    </v-icon>
+                                                                </template>
+
+                                                            </v-data-table>
+                                                        </v-col>
+
+                                                        <v-col cols="12">
+                                                            <v-btn @click="registrarUsoMateriaPrima()"
+                                                                color="primary">Registrar
+                                                                Uso de
+                                                                Materias
+                                                                Primas</v-btn>
+                                                        </v-col>
+
+                                                        <v-col cols="10"></v-col>
+                                                        <v-col cols="2">
+                                                            <v-btn class="mx-2" fab dark x-small color="red darken-1"
+                                                                @click="closeCantidadMateriaPrima()"
+                                                                style="float: right" title="SALIR">
+                                                                <v-icon dark> mdi-close-circle-outline </v-icon>
+                                                            </v-btn>
+                                                        </v-col>
                                                     </v-row>
                                                 </v-container>
                                             </v-form>
@@ -578,6 +569,11 @@ export default {
             ],
             datosUsoMateriaP: [],
 
+            idProducto: "",
+            nombreProducto: "",
+            codigoProducto: "",
+            precioUnitario: "",
+            searchProductos: "",
             datosProductos: [],
             headersProductos: [
                 { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
@@ -867,13 +863,11 @@ export default {
             this.listarProveedores()
         },
         showCantidadMateriaPrima(item) {
-            if (!item.idprod) {
-                console.error("Error: El producto seleccionado no tiene id_producto.");
-                return;
-            }
-            this.productoSeleccionado = item; // Solo asigna si es un producto válido
-            this.cantidadMateriaPrima = true;
-            this.listarMateriaP();
+            this.selectedProducto = item;
+            this.nombreProducto = item.nomprod; // o cualquier propiedad que tenga el nombre
+            this.mensajeSnackbar = 'PRODUCTO SELECCIONADO';
+            this.snackbarOK = true;
+            this.flag = 1; // ir al segundo tab, si así lo controlas
 
         },
         closeCantidadMateriaPrima() {
