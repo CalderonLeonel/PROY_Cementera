@@ -6,7 +6,7 @@
         <v-btn color="primary" v-bind="attrs" v-on="on">Login</v-btn>
       </template>
       <v-card>
-        <v-card-title class="headline">Iniciar Sesión</v-card-title>
+        <v-card-title class="headline">INICIAR SESIÓN</v-card-title>
         <v-card-text>
           <Login @close-modal="loginModal = false" />
         </v-card-text>
@@ -22,14 +22,23 @@
       </v-card>
     </v-dialog>
 
-    <v-navigation-drawer v-model="drawer" app>
+    <v-navigation-drawer v-if="logueado" v-model="drawer" app>
       <center>
         <v-toolbar color="#00A1B1" dark>
           <v-col cols="4">
-            <v-img src="./assets/logo192.png"></v-img>
+               <v-avatar size="56" class="ml-4">
+                <v-img
+                  style="background-color: white;"
+                  src="./assets/logo192.png"
+                  alt="Logo Drymix"
+                  cover
+                />
+              </v-avatar>
           </v-col>
-          <v-col cols="8">
-            <v-toolbar-title><b>Drymix SRL</b></v-toolbar-title>
+          <v-col cols="6">
+
+            <v-toolbar-title><b>Drymix</b></v-toolbar-title>
+
           </v-col>
 
         </v-toolbar>
@@ -40,7 +49,9 @@
           <v-list-item-content>
             <center>
               <v-list-item-title class="text-h6">
+
                 PANEL
+
               </v-list-item-title>
               <v-list-item-subtitle></v-list-item-subtitle>
             </center>
@@ -219,17 +230,17 @@
               <h6>TURNOS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Unidades' }">
+          <v-list-item :to="{ name: 'Unidades' }" v-if="checkAccess(0, 'GERENTE')">
             <v-list-item-title>
               <h6>UNIDADES</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Areas' }">
+          <v-list-item :to="{ name: 'Areas' }" v-if="checkAccess(0, 'GERENTE')">
             <v-list-item-title>
               <h6>AREAS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Departamentos' }">
+          <v-list-item :to="{ name: 'Departamentos' }" v-if="checkAccess(0, 'GERENTE')">
             <v-list-item-title>
               <h6>DEPARTAMENTOS</h6>
             </v-list-item-title>
@@ -385,13 +396,16 @@
     </v-navigation-drawer>
 
     <v-app-bar color="#00A1B1" app>
-      <v-app-bar-nav-icon color="white" @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-btn class="mx-2" fab dark x-small color="#00A1B1" @click="salir()" style="float:right;" title="CERRAR SESIÓN">
+      <v-app-bar-nav-icon  v-if="logueado" color="white" @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-btn v-if="logueado" class="mx-6"  dark x-medium color="#007B88" @click="salir()" style="float:right;" variant="text"
+       title="CERRAR SESIÓN">
         <v-icon dark>mdi-door-closed-lock</v-icon>
+        CERRAR SESIÓN
       </v-btn>
-      <v-btn v-if="!logueado" class="mx-2" fab dark x-small color="#00A1B1" @click="openLoginModal()" style="float:right;"
-        title="INICIAR SESIÓN">
-        <v-icon dark>mdi-login</v-icon>
+      <v-btn v-if="!logueado" class="mx-6"  dark x-medium color="#007B88" @click="openLoginModal()" style="float:right;" variant="text"
+        title="INICIAR SESIÓN"> 
+        <v-icon dark>mdi-account</v-icon>
+        INICIAR SESIÓN
       </v-btn>
     </v-app-bar>
 
@@ -431,6 +445,7 @@
 import Login from './components/Login.vue';
 
 export default {
+  name: 'App',
   data: () => ({
     loginModal: false,
     drawer: false,

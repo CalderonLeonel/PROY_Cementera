@@ -625,7 +625,7 @@ export default {
                 //{ text: "UNIDAD", value: "unidad", sortable: false },
                 { text: "PRECIO UNITARIO", value: "precioUnitario", sortable: true },
                 { text: "CANTIDAD", value: "cantidad", sortable: false },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
