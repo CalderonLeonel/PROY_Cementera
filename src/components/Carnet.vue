@@ -161,43 +161,47 @@
 
                 <v-btn :disabled="!buttonsAreEnabled"
                     class="mx-2" 
-                    fab dark x-small 
+                     dark x-small
                     color="primary" 
                     style="float: left;" 
-                    title="FOTO EMPLEADO" 
+                    title="HABILITAR CÁMARA" 
                     :class="{ 'is-primary': !this.isCameraOpen, 'is-danger': this.isCameraOpen }" 
                     @click="toggleCamera">
                     <v-icon v-if="!this.isCameraOpen">mdi-camera-plus</v-icon>
                     <v-icon v-else="">mdi-camera-off</v-icon>
+                     HABILITAR CÁMARA
                 </v-btn>
-                <v-btn :disabled="!buttonsAreEnabled"
+                <v-btn :disabled="!buttonsAreEnabled || !isCameraOpen"
                     v-model="file" 
                     @click="takePhoto()" 
                     class="mx-2" 
-                    fab dark x-small 
+                    dark x-small
                     color="#0ABF55" 
                     title="TOMAR FOTO" 
                     style="float: left">
                     <v-icon dark>mdi-camera</v-icon>
+                    TOMAR FOTOGRAFÍA
                 </v-btn>
-                <v-btn :disabled="!buttonsAreEnabled"
+                <v-btn :disabled="!buttonsAreEnabled || !isCameraOpen"
                     v-model="file" 
                     @click="actualizarEMPLEADOImg()" 
                     class="mx-2" 
-                    fab dark x-small 
+                    dark x-small
                     color="#0A62BF" 
                     title="GUARDAR FOTO" 
                     style="float: left">
                     <v-icon dark>mdi-cloud-upload</v-icon>
+                    GUARDAR FOTOGRAFÍA
                 </v-btn>
-                <v-btn :disabled="!buttonsAreEnabled"
+                <v-btn :disabled="!buttonsAreEnabled || !isCameraOpen"
                     class="mx-2" 
-                    fab dark x-small 
+                    dark x-small
                     color="warning" 
                     @click="imprimirCarnet()" 
                     style="float: left" 
                     title="IMPRIMIR CARNET">
                     <v-icon dark>mdi-printer-outline</v-icon>
+                    IMPRIMIR CARNET
                 </v-btn>
                 <v-btn 
                     class="mx-2" 
@@ -388,7 +392,7 @@ export default {
         //#region Modals
         showEmpleados() {
             this.empleadosModal = true
-            this.listarEmpleados()
+            this.listarEmpleados();
         },
         //#endregion
         //#region Seleccion de Datos
