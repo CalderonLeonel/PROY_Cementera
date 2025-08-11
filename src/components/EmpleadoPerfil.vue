@@ -384,28 +384,27 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="12">
-                                    <v-file-input v-model="documentoArchivo" accept=".docx, .xlsx, .pptx, .pdf, .xml"
+                                    <v-file-input v-model="documentoArchivo" required :rules="fileRules" accept=".docx, .xlsx, .pptx, .pdf, .xml"
                                         label="CONTRATO ARCHIVO">
                                     </v-file-input>
                                     <v-select v-model="tipo" :items="datosTipo"
                                         label="SELECCIONA EL TIPO DE CONTRATO A REGISTRAR" prepend-icon="mdi-pick"
-                                        required v-on:change="isDisabled = !isDisabled; fechaFinal = null">
+                                        @change="isDisabled = tipo === 'PERMANENTE'; if(isDisabled) fechaFinal = null">
                                     </v-select>
-                                    <v-menu v-model="datePicker1" :close-on-content-click="false" :nudge-right="40"
+                                    <v-menu v-model="datePicker1" required :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="fechaInicio" label="FECHA DE INICIO DEL CONTRATO"
+                                            <v-text-field v-model="fechaInicio" :rules="fechaInicioRules" label="FECHA DE INICIO DEL CONTRATO"
                                                 prepend-icon="mdi-calendar" readonly v-bind="attrs"
                                                 v-on="on"></v-text-field>
                                         </template>
                                         <v-date-picker v-model="fechaInicio"
                                             @input="datePicker1 = false"></v-date-picker>
                                     </v-menu>
-                                    <v-menu v-model="datePicker2" :close-on-content-click="false" :nudge-right="40"
+                                    <v-menu v-model="datePicker2" required :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="fechaFinal"
-                                                label="FECHA DE FINALIZACIÓN DEL CONTRATO" :disabled="isDisabled"
+                                            <v-text-field v-model="fechaFinal" :rules="fechaFinalRules" label="FECHA DE FINALIZACIÓN DEL CONTRATO" :disabled="isDisabled"
                                                 prepend-icon="mdi-calendar" readonly v-bind="attrs"
                                                 v-on="on"></v-text-field>
                                         </template>
@@ -413,30 +412,34 @@
                                             @input="datePicker2 = false"></v-date-picker>
                                     </v-menu>
                                 </v-col>
-
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="actualizarContrato()" style="float: left"
-                                        title="ACTUALIZAR INFORMACIÓN">
-                                        <v-icon dark> mdi-pencil </v-icon>
-                                        ACTUALIZAR
-                                    </v-btn>
-                                    <v-btn iconv v-if="botonAct == 0" class="mx-4" dark color="#0ABF55"
-                                        @click="registrarContrato()" style="float: left" title="REGISTRAR ITEM">
-                                        <v-icon dark> mdi-content-save </v-icon>
-                                        GUARDAR
-                                    </v-btn>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonAct == 1" color="#0A62BF"
+                                                @click="actualizarContrato()" style="float: left"
+                                                title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonAct == 0" color="#0ABF55"
+                                                @click="registrarContrato()" style="float: left"
+                                                title="REGISTRAR EMPLEADO" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiarContrato()" style="float: left" large
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiarContrato()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="2">
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeAddContrato()"
                                         style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -481,30 +484,34 @@
                                     </v-menu>
 
                                 </v-col>
-
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="actualizarObservacion()" style="float: left"
-                                        title="ACTUALIZAR INFORMACIÓN">
-                                        <v-icon dark> mdi-pencil </v-icon>
-                                        ACTUALIZAR
-                                    </v-btn>
-                                    <v-btn iconv v-if="botonAct == 0" class="mx-4" dark color="#0ABF55"
-                                        @click="registrarObservacion()" style="float: left" title="REGISTRAR ITEM">
-                                        <v-icon dark> mdi-content-save </v-icon>
-                                        GUARDAR
-                                    </v-btn>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonAct == 1" color="#0A62BF"
+                                                @click="actualizarObservacion()" style="float: left"
+                                                title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonAct == 0" color="#0ABF55"
+                                                @click="registrarObservacion()" style="float: left"
+                                                title="REGISTRAR OBSERVACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiarObservacion()" style="float: left" large
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiarObservacion()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="2">
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeAddObservacion()"
                                         style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -576,30 +583,34 @@
                                         <v-date-picker v-model="diaFinal" @input="datePicker5 = false"></v-date-picker>
                                     </v-menu>
                                 </v-col>
-
-                                <v-col cols="12" md="8"> </v-col>
-                                <v-col cols="6"></v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv v-if="botonAct == 1" class="mx-4" dark color="#0A62BF"
-                                        @click="actualizarVacacion()" style="float: left"
-                                        title="ACTUALIZAR INFORMACIÓN">
-                                        <v-icon dark> mdi-pencil </v-icon>
-                                        ACTUALIZAR
-                                    </v-btn>
-                                    <v-btn iconv v-if="botonAct == 0" class="mx-4" dark color="#0ABF55"
-                                        @click="registrarVacacion()" style="float: left" title="REGISTRAR ITEM">
-                                        <v-icon dark> mdi-content-save </v-icon>
-                                        GUARDAR
-                                    </v-btn>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped>
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonAct == 1" color="#0A62BF"
+                                                @click="actualizarVacacion()" style="float: left"
+                                                title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonAct == 0" color="#0ABF55"
+                                                @click="registrarVacacion()" style="float: left"
+                                                title="REGISTRAR VACACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiarVacacion()" style="float: left" large
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
                                 </v-col>
-                                <v-col cols="2">
-                                    <v-btn iconv color="#BF120A" class="mx-4" dark @click="limpiarVacacion()"
-                                        style="float: left" title="LIMPIAR FORMULARIO">
-                                        <v-icon dark> mdi-eraser </v-icon>
-                                        LIMPIAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="2">
+                                <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeAddVacacion()"
                                         style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
@@ -651,10 +662,10 @@ export default {
         flag: 1,
 
         idContrato: '',
-        documentoArchivo: 'documentoArchivo',
+        documentoArchivo: null,
         tipo: 'PERMANENTE',
         datosTipo: ["PERMANENTE", "TEMPORAL"],
-        fechaInicio: "",//(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+        fechaInicio: null,//(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         fechaFinal: null,//(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         isDisabled: true,
         datePicker1: false,
@@ -690,6 +701,13 @@ export default {
         datosObservacion: [],
         datosVacacion: [],
 
+        fileRules: [
+            (v) => !!v || "UNA COPIA DIGITAL ES REQUERIDA", 
+        ],
+        fechaInicioRules: [
+            (v) => !!v || "FECHA INICIO ES REQUERIDA", 
+        ],
+        fechaFinalRules: [], //Movido a created
         headersContrato: [
             { text: "CONTRATO", value: "idcontr" },
             { text: "TIPO", value: "tip" },
@@ -701,21 +719,6 @@ export default {
             { text: "OPCIONES", value: "actions", sortable: false },
         ],
 
-        headersObservacion: [
-            { text: "OBSERVACION", value: "obs" },
-            { text: "COMENTARIO", value: "com" },
-            { text: "FECHA", value: "fec" },
-            { text: "ESTADO", value: "act" },
-            { text: "OPCIONES", value: "actions", sortable: false },
-        ],
-        headersVacacion: [
-            { text: "AÑO", value: "anio" },
-            { text: "DIA INICIO", value: "fecini" },
-            { text: "DIA FINAL", value: "fecfin" },
-            { text: "DIAS TOTALES", value: "cont" },
-            { text: "ESTADO", value: "act" },
-            { text: "OPCIONES", value: "actions", sortable: false },
-        ],
         observacionRules: [
             (v) => !!v || "TITULO ES REQUERIDO",
             (v) =>
@@ -730,6 +733,30 @@ export default {
         fechaRules: [
             (v) => !!v || "FECHA ES REQUERIDA",
         ],
+        headersObservacion: [
+            { text: "OBSERVACION", value: "obs" },
+            { text: "COMENTARIO", value: "com" },
+            { text: "FECHA", value: "fec" },
+            { text: "ESTADO", value: "act" },
+            { text: "OPCIONES", value: "actions", sortable: false },
+        ],
+
+        diaInicioRules: [
+            (v) => !!v || "DIA INICIO ES REQUERIDO",
+        ],
+        diaFinalRules: [
+            (v) => !!v || "DIA INICIO ES REQUERIDO",
+        ],
+        headersVacacion: [
+            { text: "AÑO", value: "anio" },
+            { text: "DIA INICIO", value: "fecini" },
+            { text: "DIA FINAL", value: "fecfin" },
+            { text: "DIAS TOTALES", value: "cont" },
+            { text: "ESTADO", value: "act" },
+            { text: "OPCIONES", value: "actions", sortable: false },
+        ],
+
+
     }),
 
     created: function () {
@@ -738,6 +765,13 @@ export default {
         this.listarContratos();
         this.listarObservaciones();
         this.listarVacaciones();
+
+        this.fechaFinalRules = [
+        (v) => {
+                if (this.tipo === 'PERMANENTE') return true
+                return !!v || "FECHA FINAL ES REQUERIDA"
+            }
+        ]
     },
 
     methods: {
@@ -749,7 +783,7 @@ export default {
             this.botonAct = 0;
             this.contratoModal = true;
             
-            if (this.documentoArchivo != '') {
+            if (this.documentoArchivo != null) {
                 this.inputState = false;
             }
             else {
@@ -789,10 +823,10 @@ export default {
                 });
         },
         registrarContrato() {
-            //alert(this.documentoArchivo.name);
-            this.almacenarArchivo(this.documentoArchivo);
-            this.registrarContratos(this.documentoArchivo);
-            this.contratoModal = true;
+            if (this.$refs.form.validate()) {
+                this.registrarContratos(this.documentoArchivo);
+                this.almacenarArchivo(this.documentoArchivo);
+            }
         },
         async almacenarArchivo(documentoArchivo) {
             const formData = new FormData();
@@ -821,7 +855,7 @@ export default {
             const date = new Date();
             const fechaHoraActual = date.getDate().toString().padStart(2, '0') + '_' + (date.getMonth() + 1).toString().padStart(2, '0') + '_' + date.getFullYear();
             const nombreArchivo = ext[0] + '_' + fechaHoraActual + '.' + ext[1];
-            if(this.fechaFinal == '' || this.fechaFinal == null) {this.fechaFinal = 'null';}
+            //if(this.fechaFinal == '' || this.fechaFinal == null) {this.fechaFinal = 'null';}
             await axios
                 .post(
                     "/contrato/addcontrato/" +
@@ -834,6 +868,7 @@ export default {
                     this.idEmpleado
                 )
                 .then(function (response) {
+                    console.log(response);
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                     me.listarContratos(me.idEmpleado);
@@ -846,7 +881,12 @@ export default {
 
                 });
         },
-        async actualizarContrato() {
+        actualizarContrato() {
+            if (this.$refs.form.validate()) {
+                this.actualizarContratos();
+            }
+        },
+        async actualizarContratos() {
             let me = this;
             await axios
                 .post(
@@ -919,8 +959,9 @@ export default {
                 });
         },
         registrarObservacion() {
-            //this.observacionModal = false;
-            this.registrarObservaciones()
+            if (this.$refs.form.validate()) {
+                this.registrarObservaciones();
+            }
         },
         async registrarObservaciones() {
             let me = this;
@@ -949,7 +990,9 @@ export default {
                 });
         },
         actualizarObservacion() {
-            this.actualizarObservaciones()
+            if (this.$refs.form.validate()) {
+                this.actualizarObservaciones();
+            }
         },
         async actualizarObservaciones() {
             let me = this;
@@ -1021,8 +1064,9 @@ export default {
                 });
         },
         registrarVacacion() {
-            //this.observacionModal = false;
-            this.registrarVacaciones()
+            if (this.$refs.form.validate()) {
+                this.registrarVacaciones();
+            }
         },
         async registrarVacaciones() {
             let me = this;
@@ -1048,7 +1092,9 @@ export default {
                 });
         },
         actualizarVacacion() {
-            this.actualizarVacaciones()
+            if (this.$refs.form.validate()) {
+                this.actualizarVacaciones();
+            }
         },
         async actualizarVacaciones() {
             let me = this;
@@ -1124,16 +1170,22 @@ export default {
         },
         llenarCamposContrato(item) {
             this.idContrato = item.idcontr;
-            this.documentoArchivo = 'documentoArchivo';
+            
+            //this.documentoArchivo = item.arc; // Falta que cargue el doc desde la api
+            
             if (item.fecini) {// && !isNaN(new Date(item.fecini))) {
                 this.fechaInicio = new Date(item.fecini).toISOString().split('T')[0];
             }
-            if (item.fecfin) {
+            
+            if (item.fecfin != null) {
                 this.fechaFinal = new Date(item.fecfin).toISOString().split('T')[0];
             } else { this.fechaFinal = null; }
 
-            if (item.fecfin == null) { this.tipo == 'TEMPORAL'; console.log("CAMBIADO A TEMPORAL"); } else { this.tipo == 'PERMANENTE'; console.log("CAMBIADO A PERMANENTE"); }
-            console.log("fecfin: " + item.fecfin);
+            if (item.fecfin == null) {
+                this.tipo = 'PERMANENTE'; this.isDisabled = true;
+            } else {
+                this.tipo = 'TEMPORAL'; this.isDisabled = false;
+            }
         },
         llenarCamposObservacion(item) {
             this.idObservacion = item.idobs;
