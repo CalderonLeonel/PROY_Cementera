@@ -63,7 +63,7 @@
                             <v-col cols="10"> </v-col>
                             <v-col cols="2">
                                 <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeEmployeesModal()" style="float: right"
+                                        @click="closeEmployeeModal()" style="float: right"
                                         title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
@@ -566,7 +566,7 @@ export default {
             this.urlFoto = '';
         },
 
-        closeEmployeesModal() {
+        closeEmployeeModal() {
             this.empleadosModal = false;
             this.resetPhoto();
             this.buttonsAreEnabled = false;
