@@ -27,7 +27,7 @@
             </v-snackbar>
         </div>
 
-        <v-dialog v-model="empleadosModal" max-width="800" class="text-center">
+        <v-dialog v-model="empleadosModal" max-width="1200" class="text-center">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>
@@ -129,23 +129,23 @@
 
 
     <div style="display: flex; justify-content: center; align-items: center; position: relative;">
-        <v-card style="width: 100px; height: 100px; position: relative;">
+        <v-card style="width: 300px; height: 300px; position: relative;">
             <div class="camera-shutter" :class="{ 'flash': isShotPhoto }"></div>
 
-            <v-img v-if="showUrl" :src="urlFoto" style="width: 100px; height: 100px;"></v-img>
+            <v-img v-if="showUrl" :src="urlFoto" style="width: 300px; height: 300px;"></v-img>
 
             <div v-else>
                 <video 
                     v-show="!isPhotoTaken" 
                     ref="camera" 
-                    style="width: 100px; height: 100px; object-fit: cover;" 
+                    style="width: 300px; height: 300px; object-fit: cover;" 
                     autoplay>
                 </video>
                 <canvas 
                     v-show="isPhotoTaken" 
                     id="photoTaken" 
                     ref="canvas" 
-                    style="width: 100px; height: 100px;">
+                    style="width: 300px; height: 300px;">
                 </canvas>
             </div>
         </v-card>
@@ -153,7 +153,7 @@
 
     <v-list-item></v-list-item>
 
-        <v-col cols="12" md="4">
+
             <v-toolbar dense shaped color="#ffffff">
                 <v-toolbar-title style="color:#000000FF">
                     <h6>OPCIONES</h6>
@@ -166,7 +166,7 @@
                     style="float: left;" 
                     title="HABILITAR CÁMARA" 
                     :class="{ 'is-primary': !this.isCameraOpen, 'is-danger': this.isCameraOpen }" 
-                    @click="toggleCamera">
+                    @click="toggleCamera()">
                     <v-icon v-if="!this.isCameraOpen">mdi-camera-plus</v-icon>
                     <v-icon v-else="">mdi-camera-off</v-icon>
                      HABILITAR CÁMARA
@@ -205,15 +205,16 @@
                 </v-btn>
                 <v-btn 
                     class="mx-2" 
-                    fab dark x-small 
+                     dark x-small 
                     
                     @click="showEmpleados()" 
                     style="float: right" 
                     title="BUSCAR EMPLEADO">
                     <v-icon dark>mdi-account-search</v-icon>
+                    BUSCAR EMPLEADO
                 </v-btn>
             </v-toolbar>
-        </v-col>
+    
     </v-card>
 
 
@@ -258,6 +259,8 @@ export default {
             isPhotoTaken: false,
             isLoading: false,
             stream: null,
+            originalPhotoPath: '',
+            objectUrl: null,
 
             buttonsAreEnabled: false,
 
@@ -357,7 +360,6 @@ export default {
 
 
         imprimirCarnet() {
-            // Preparar los datos del empleado
             const empleadoData = {
                 ci: this.ci,
                 paterno: this.paterno,
@@ -365,10 +367,8 @@ export default {
                 nombres: this.nombres,
                 nombreCargo: this.nombreCargo,
                 gestionActual: this.gestionActual,
-                // Añade otros datos si es necesario
             };
 
-            // Generar el PDF del carné e imprimirlo
             this.generarPDFCarnet(empleadoData);
         },
 
@@ -408,7 +408,8 @@ export default {
             this.idCargo = item.idcarg;
             this.idDepartamento = item.iddep;
             this.idEmpleado = item.idempl;
-            this.getPhoto();
+            this.originalPhotoPath = item.url;
+            this.getPhoto( this.originalPhotoPath);
             this.buttonsAreEnabled = true;
             this.empleadosModal = false;
         },
@@ -416,31 +417,32 @@ export default {
                 this.almacenarArchivo(this.archivo);
 
                 const date = new Date();
-                this.urlFoto = this.idEmpleado+'_'+date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear()+'.jpg';
-              
-                this.editarImagenDeEmpleado(this.idEmpleado,this.urlFoto);
-               
-        },
+                const newName = this.idEmpleado+'_'+date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear()+'.jpg';
+                this.urlFoto = newName;
+                this.editarImagenDeEmpleado(this.idEmpleado, newName).then(() => this.getPhoto(newName));
+        },   
 
-        async editarImagenDeEmpleado() {
+        async editarImagenDeEmpleado(idEmpleado, nombreFoto) {
             let me = this;
            
             await axios
                 .post(
                     "/empleado/subirfoto/" +
-                    this.idEmpleado +
+                    idEmpleado +
                     "," +
-                    this.urlFoto
+                    nombreFoto
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
 
+                    me.originalPhotoPath = nombreFoto;
+
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
-
+                    throw error;
                 });
         },
 
@@ -465,7 +467,10 @@ export default {
             if (this.isCameraOpen) {
                 this.stopCamera();
                 this.isCameraOpen = false;
+                this.recoverPhoto();
             } else {
+                this.showUrl = false;
+                this.isPhotoTaken = false;
                 this.startCamera();
                 this.isCameraOpen = true;
             }
@@ -525,24 +530,42 @@ export default {
                 return new File([u8arr], fileName, { type: mime });
         },
 
-        getPhoto() {
+        getPhoto(path) {
             let me = this;
-            var path = this.urlFoto; 
+
+            if (!path || typeof path !== 'string' || !path.trim()) return;
+
             axios
                 .get("/documento/descargarImagen/" + path, { responseType: 'blob' })  
                 .then(function (response) {
                     
-                    const url = URL.createObjectURL(response.data);  
+                    if (me.objectUrl) URL.revokeObjectURL(me.objectUrl);
+                    const url = URL.createObjectURL(response.data);
+                    me.objectUrl = url; 
+
                     me.urlFoto = url;  
+                    me.showUrl = true;
+                    me.isPhotoTaken = false;
 
                     me.mensajeSnackbar = 'Imagen cargada con éxito';
                     me.snackbarOK = true;
-                    me.showUrl = true;
+
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
                     console.error('Error al cargar la foto:', error);
                 });
+        },
+
+
+         recoverPhoto() {
+            if (this.originalPhotoPath) {
+                this.getPhoto(this.originalPhotoPath);
+            } 
+            else{
+                this.showUrl = false;
+            }
+           
         },
 
 
