@@ -63,7 +63,7 @@
                             <v-col cols="10"> </v-col>
                             <v-col cols="2">
                                 <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="close" style="float: right"
+                                        @click="closeEmployeesModal()" style="float: right"
                                         title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
@@ -165,9 +165,9 @@
                     color="primary" 
                     style="float: left;" 
                     title="FOTO EMPLEADO" 
-                    :class="{ 'is-primary': !isCameraOpen, 'is-danger': isCameraOpen }" 
+                    :class="{ 'is-primary': !this.isCameraOpen, 'is-danger': this.isCameraOpen }" 
                     @click="toggleCamera">
-                    <v-icon v-if="!isCameraOpen">mdi-camera-plus</v-icon>
+                    <v-icon v-if="!this.isCameraOpen">mdi-camera-plus</v-icon>
                     <v-icon v-else="">mdi-camera-off</v-icon>
                 </v-btn>
                 <v-btn :disabled="!buttonsAreEnabled"
@@ -564,6 +564,12 @@ export default {
             this.isPhotoTaken = false;
             this.showUrl = false;
             this.urlFoto = '';
+        },
+
+        closeEmployeesModal() {
+            this.empleadosModal = false;
+            this.resetPhoto();
+            this.buttonsAreEnabled = false;
         },
     },
 
