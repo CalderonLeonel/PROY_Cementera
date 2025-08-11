@@ -443,6 +443,8 @@ export default {
         //#endregion
         async startCamera() {
             try {
+                this.showUrl = false;
+                this.isPhotoTaken = false;
                 this.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
                 this.$refs.camera.srcObject = this.stream;
             } catch (error) {
