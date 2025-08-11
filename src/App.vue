@@ -25,7 +25,7 @@
     <v-navigation-drawer v-if="logueado" v-model="drawer" app>
       <center>
         <v-toolbar color="#00A1B1" dark>
-          <v-col cols="4">
+          <v-col cols="3">
                <v-avatar size="56" class="ml-4">
                 <v-img
                   style="background-color: white;"
@@ -35,6 +35,7 @@
                 />
               </v-avatar>
           </v-col>
+          <v-col cols="1"></v-col>
           <v-col cols="6">
 
             <v-toolbar-title><b>Drymix</b></v-toolbar-title>
@@ -50,7 +51,7 @@
             <center>
               <v-list-item-title class="text-h6">
 
-                PANEL
+                {{ logueado.nombres + ' ' + logueado.paterno + ' ' + logueado.materno }}
 
               </v-list-item-title>
               <v-list-item-subtitle></v-list-item-subtitle>
@@ -397,12 +398,12 @@
 
     <v-app-bar color="#00A1B1" app>
       <v-app-bar-nav-icon  v-if="logueado" color="white" @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-btn v-if="logueado" class="mx-6"  dark x-medium color="#007B88" @click="salir()" style="float:right;" variant="text"
+      <v-btn v-if="logueado" class="mx-6"  dark x-medium color="#007B88" @click="salir()" style="float:left;" variant="text"
        title="CERRAR SESIÓN">
         <v-icon dark>mdi-door-closed-lock</v-icon>
         CERRAR SESIÓN
       </v-btn>
-      <v-btn v-if="!logueado" class="mx-6"  dark x-medium color="#007B88" @click="openLoginModal()" style="float:right;" variant="text"
+      <v-btn v-if="!logueado" class="mx-6"  dark x-medium color="#007B88" @click="openLoginModal()" style="float:left;" variant="text"
         title="INICIAR SESIÓN"> 
         <v-icon dark>mdi-account</v-icon>
         INICIAR SESIÓN
