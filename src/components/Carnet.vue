@@ -193,7 +193,7 @@
                     <v-icon dark>mdi-cloud-upload</v-icon>
                     GUARDAR FOTOGRAFÍA
                 </v-btn>
-                <v-btn :disabled="!buttonsAreEnabled || !isCameraOpen"
+                <v-btn :disabled="!buttonsAreEnabled"
                     class="mx-2" 
                     dark x-small
                     color="warning" 
