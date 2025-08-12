@@ -203,7 +203,7 @@ const routes = [
   },
   {
     path: "/archivosalertas",
-    name: "ArchivosAlerta",
+    name: "ArchivoAlerta",
     component: () => import("@/components/ArchivosAlertas.vue"),
   },
   {
