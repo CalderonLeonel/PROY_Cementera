@@ -392,7 +392,7 @@
           </v-list-item>
            <v-list-item :to="{ name: 'ArchivoProoveedor' }">
             <v-list-item-title>
-              <h6>PROVEEDORES</h6>
+              <h6>CONTRATOS CON PROVEEDORES</h6>
             </v-list-item-title>
           </v-list-item>
           <v-list-item :to="{ name: 'ArchivoAlmacenamiento' }">
@@ -402,17 +402,17 @@
           </v-list-item>
            <v-list-item :to="{ name: 'ArchivoContrato' }">
             <v-list-item-title>
-              <h6>CONTRATOS</h6>
+              <h6>LISTA DE CONTRATOS</h6>
             </v-list-item-title>
           </v-list-item>
            <v-list-item :to="{ name: 'ArchivoCotizacion' }">
             <v-list-item-title>
-              <h6>COTIZACIONES</h6>
+              <h6>ARCHIVOS DE COTIZACIONES</h6>
             </v-list-item-title>
           </v-list-item>
            <v-list-item :to="{ name: 'ArchivoAlerta' }">
             <v-list-item-title>
-              <h6>ALERTAS</h6>
+              <h6>ARCHIVOS DE ALERTAS</h6>
             </v-list-item-title>
           </v-list-item>
         </v-list-group>
