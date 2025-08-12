@@ -192,6 +192,31 @@ const routes = [
     component: () => import("@/components/Archivos.vue"),
   },
   {
+    path: "/archivosprooveedor",
+    name: "ArchivoProoveedor",
+    component: () => import("@/components/ArchivosProveedores.vue"),
+  },
+  {
+    path: "/archivosalmacenamientos",
+    name: "ArchivoAlmacenamiento",
+    component: () => import("@/components/ArchivosAlmacenamiento.vue"),
+  },
+  {
+    path: "/archivosalertas",
+    name: "ArchivoAlerta",
+    component: () => import("@/components/ArchivosAlertas.vue"),
+  },
+  {
+    path: "/archivoscontratos",
+    name: "ArchivoContrato",
+    component: () => import("@/components/ArchivosContratos.vue"),
+  },
+    {
+    path: "/archivoscotizaciones",
+    name: "ArchivoCotizacion",
+    component: () => import("@/components/ArchivosCotizaciones.vue"),
+  },
+  {
     path: "/carnet",
     name: "Carnet",
     component: () => import("@/components/Carnet.vue"),

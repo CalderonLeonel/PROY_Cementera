@@ -2,48 +2,33 @@
     <v-card elevation="5" outlined>
         <div>
             <v-alert dense style="color: #ffffff;" color="blue">
-                <h3>GESTIÓN DE ARCHIVOS</h3>
+                <h3>ARCHIVOS DE COTIZACIONES</h3>
             </v-alert>
         </div>
         <v-container>
-            <v-row v-if="checkAccess(11, 'COMUN') || checkAccess(11, 'SUPERVISOR') || checkAccess(11, 'GERENTE')">
-                <v-col cols="12" md="4">
-                    <v-btn color="success" @click="showAgregarDocumento()">GUARDAR DOCUMENTO</v-btn>
-                </v-col>
-
-            </v-row>
-            <v-row v-if="checkAccess(11, 'COMUN') || checkAccess(11, 'SUPERVISOR') || checkAccess(11, 'GERENTE')">
-
-                <v-col cols="12" md="12">
-                    <v-text-field  v-model="searchDocumento" append-icon="mdi-magnify"
+            <v-row>
+                <v-col cols="12" md="12" v-if="checkAccess(11, 'SUPERVISOR') || checkAccess(11, 'GERENTE')">
+                    <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>ARCHIVOS COTIZACIONES</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                    <v-text-field v-model="searchArchivoCotizacion" append-icon="mdi-magnify"
                         label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
-                    <v-data-table :headers="headerDocumento" :items="datosDocumento" :search="searchDocumento"
+                    <v-data-table :headers="headerDocumentoAdquisicion" :items="datosDocumentoCotizacion" :search="searchDsearchArchivoCotizacionocumento"
                         :custom-filter="customFilter" class="elevation-1">
-
-                        <template #[`item.doc`]="{ item }">
-                            <v-btn color="primary" icon
-                                :href="`${axios.defaults.baseURL}${'documento/descargar/' + item.doc}`" target="">
-                                <v-icon>mdi-file</v-icon> ABRIR
-                            </v-btn>
-                        </template>
-
-
-                        <template #[`item.estado`]="{ item }">
-                            <v-chip :color="getColor(item.est)" dark>
-                                {{ item.est }}
-                            </v-chip>
-                        </template>
-
-                        <template #[`item.fecha`]="{ item }">
-                                    {{ getFormattedDate(item.fecha) }}
-                        </template>
-
-
-
-
+                        <template #[`item.archivo`]="{ item }">
+                                    <v-text v-if="item.archivo == null || item.arch == 'null'">
+                                        NO TIENE UN ARCHIVO
+                                    </v-text>
+                                    <v-btn v-else-if="item.archivo !=null" color="primary" icon
+                                        :href="`${axios.defaults.baseURL}${'documento/adquisicion/' + item.archivo}`" target="">
+                                        <v-icon>mdi-file</v-icon> ABRIR
+                                    </v-btn>
+                                </template>
                     </v-data-table>
                 </v-col>
-            </v-row>
+            </v-row>    
         </v-container>
         <v-dialog v-model="agregarDocumento" persistent :overlay="false" max-width="1000px" v-if="checkAccess(11, 'COMUN') || checkAccess(11, 'SUPERVISOR') || checkAccess(11, 'GERENTE')">
             <v-card elevation="5" outlined>

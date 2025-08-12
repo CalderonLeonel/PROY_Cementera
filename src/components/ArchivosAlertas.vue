@@ -2,45 +2,29 @@
     <v-card elevation="5" outlined>
         <div>
             <v-alert dense style="color: #ffffff;" color="blue">
-                <h3>GESTIÓN DE ARCHIVOS</h3>
+                <h3>ARCHIVOS DE ALERTAS</h3>
             </v-alert>
         </div>
         <v-container>
-            <v-row v-if="checkAccess(11, 'COMUN') || checkAccess(11, 'SUPERVISOR') || checkAccess(11, 'GERENTE')">
-                <v-col cols="12" md="4">
-                    <v-btn color="success" @click="showAgregarDocumento()">GUARDAR DOCUMENTO</v-btn>
-                </v-col>
-
-            </v-row>
-            <v-row v-if="checkAccess(11, 'COMUN') || checkAccess(11, 'SUPERVISOR') || checkAccess(11, 'GERENTE')">
-
-                <v-col cols="12" md="12">
-                    <v-text-field  v-model="searchDocumento" append-icon="mdi-magnify"
+            <v-row>
+                <v-col cols="12" md="12" v-if="checkAccess(11, 'SUPERVISOR') || checkAccess(11, 'GERENTE')">
+                    <v-list-item>
+                                <v-list-item-title class="text-center">
+                                    <h5>ALERTAS</h5>
+                                </v-list-item-title>
+                            </v-list-item>
+                    <v-text-field v-if="user == 'admin'" v-model="searchArchivoAlertas" append-icon="mdi-magnify"
                         label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
-                    <v-data-table :headers="headerDocumento" :items="datosDocumento" :search="searchDocumento"
+                    <v-data-table :headers="headerDocumentoAlerta" :items="datosDocumentoAlerta" :search="searchArchivoAlertas"
                         :custom-filter="customFilter" class="elevation-1">
 
-                        <template #[`item.doc`]="{ item }">
+                        <template #[`item.archivo`]="{ item }">
                             <v-btn color="primary" icon
-                                :href="`${axios.defaults.baseURL}${'documento/descargar/' + item.doc}`" target="">
-                                <v-icon>mdi-file</v-icon> ABRIR
+                                :href="`${axios.defaults.baseURL}${'documento/descargarImagen/' + item.archivo}`"
+                                target="">
+                                <v-icon>mdi-file</v-icon> DESCARGAR
                             </v-btn>
                         </template>
-
-
-                        <template #[`item.estado`]="{ item }">
-                            <v-chip :color="getColor(item.est)" dark>
-                                {{ item.est }}
-                            </v-chip>
-                        </template>
-
-                        <template #[`item.fecha`]="{ item }">
-                                    {{ getFormattedDate(item.fecha) }}
-                        </template>
-
-
-
-
                     </v-data-table>
                 </v-col>
             </v-row>

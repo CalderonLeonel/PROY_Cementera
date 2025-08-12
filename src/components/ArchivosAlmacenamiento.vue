@@ -2,114 +2,25 @@
     <v-card elevation="5" outlined>
         <div>
             <v-alert dense style="color: #ffffff;" color="blue">
-                <h3>GESTIÓN DE ARCHIVOS</h3>
+                <h3>ARCHIVOS ALMACENADOS</h3>
             </v-alert>
         </div>
         <v-container>
             <v-row v-if="checkAccess(11, 'COMUN') || checkAccess(11, 'SUPERVISOR') || checkAccess(11, 'GERENTE')">
-                <v-col cols="12" md="4">
-                    <v-btn color="success" @click="showAgregarDocumento()">GUARDAR DOCUMENTO</v-btn>
-                </v-col>
-
-            </v-row>
-            <v-row v-if="checkAccess(11, 'COMUN') || checkAccess(11, 'SUPERVISOR') || checkAccess(11, 'GERENTE')">
-
                 <v-col cols="12" md="12">
-                    <v-text-field  v-model="searchDocumento" append-icon="mdi-magnify"
-                        label="BUSCAR DOCUMENTO" single-line hide-details></v-text-field>
-                    <v-data-table :headers="headerDocumento" :items="datosDocumento" :search="searchDocumento"
-                        :custom-filter="customFilter" class="elevation-1">
-
-                        <template #[`item.doc`]="{ item }">
-                            <v-btn color="primary" icon
-                                :href="`${axios.defaults.baseURL}${'documento/descargar/' + item.doc}`" target="">
-                                <v-icon>mdi-file</v-icon> ABRIR
+                    <v-text-field v-model="searchArchivo" append-icon="mdi-magnify" label="BUSCAR ARCHIVO" single-line
+                        hide-details></v-text-field>
+                    <v-data-table :headers="headerArchivo" :items="datosArchivo" :search="searchArchivo"
+                        class="elevation-1">
+                        <template #[`item.url`]="{ item }">
+                            <v-btn color="primary" icon :href="`${axios.defaults.baseURL}${item.url}`" target="">
+                                <v-icon>mdi-file</v-icon> Abrir
                             </v-btn>
                         </template>
-
-
-                        <template #[`item.estado`]="{ item }">
-                            <v-chip :color="getColor(item.est)" dark>
-                                {{ item.est }}
-                            </v-chip>
-                        </template>
-
-                        <template #[`item.fecha`]="{ item }">
-                                    {{ getFormattedDate(item.fecha) }}
-                        </template>
-
-
-
-
                     </v-data-table>
                 </v-col>
             </v-row>
         </v-container>
-        <v-dialog v-model="agregarDocumento" persistent :overlay="false" max-width="1000px" v-if="checkAccess(11, 'COMUN') || checkAccess(11, 'SUPERVISOR') || checkAccess(11, 'GERENTE')">
-            <v-card elevation="5" outlined>
-                <v-card-title>
-                    <span>AÑADIR DOCUMENTO</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-form ref="form" lazy-validation>
-                        <v-container>
-                            <v-row>
-                                <v-col cols="12" md="7">
-                                    <v-file-input v-model="documentoArchivo" required :rules="fileRules"
-                                        accept=".jpg, .jpeg, .webp, .png, .gif, .bmp, .docx, .xlsx, .pptx, .pdf, .csv, .xml"
-                                        label="ARCHIVO"></v-file-input>
-
-                                </v-col>
-                                <v-col cols="12" md="6">
-                                    <v-text-field v-model="codigoArchivo" type="text" label="CÓDIGO" :counter="25" :rules="codigoRules"
-                                        @input="codigoArchivo = codigoArchivo.toUpperCase()" required></v-text-field>
-                                </v-col>
-                                <v-col cols="12" md="12">
-                                    <v-text-field v-model="descripcionArchivo" type="text" label="DESCRIPCIÓN" :rules="descripcionRules"
-                                        :counter="150" @input="descripcionArchivo = descripcionArchivo.toUpperCase()"
-                                        required></v-text-field>
-                                </v-col>
-
-                                <v-col cols="12" sm="4" md="4">
-                                    <v-toolbar dense shaped>
-                                        <v-toolbar-title>
-                                            <h6>
-                                                OPCIONES:
-                                            </h6>
-                                        </v-toolbar-title>
-                                        <v-col cols="2">
-                                            <v-btn icon v-if="botonAct == 1" color="#0A62BF" @click="editarDocumento()"
-                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
-                                                <v-icon dark> mdi-pencil </v-icon>
-                                            </v-btn>
-                                            <v-btn icon v-if="botonAct == 0" color="#0ABF55" @click="registrarDocumento()"
-                                                style="float: left" title="REGISTRAR DOCUMENTO" class="mx-2" large>
-                                                <v-icon dark> mdi-content-save </v-icon>
-                                            </v-btn>
-                                        </v-col>
-                                        <v-col cols="2">
-                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
-                                                class="mx-2" title="LIMPIAR FORMULARIO">
-                                                <v-icon dark> mdi-eraser </v-icon>
-                                            </v-btn>
-                                        </v-col>
-                                    </v-toolbar>
-                                </v-col>
-
-                                <v-col cols="8">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeAgregarDocumento()"
-                                        style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                    </v-form>
-
-                </v-card-text>
-            </v-card>
-        </v-dialog>
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
