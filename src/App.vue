@@ -409,11 +409,11 @@
             <v-list-item-title>
               <h6>COTIZACIONES</h6>
             </v-list-item-title>
-             <v-list-item :to="{ name: 'ArchivoAlerta' }">
+          </v-list-item>
+           <v-list-item :to="{ name: 'ArchivoAlerta' }">
             <v-list-item-title>
               <h6>ALERTAS</h6>
             </v-list-item-title>
-          </v-list-item>
           </v-list-item>
         </v-list-group>
 
