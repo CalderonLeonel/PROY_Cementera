@@ -327,7 +327,7 @@
               <h6>ADQUISICIONES</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'AprobarAdquisicion' }">
+          <v-list-item :to="{ name: 'AprobarAdquisicion' }"v-if="checkAccess(9, 'GERENTE')">
             <v-list-item-title>
               <h6>REVISAR ADQUISICIONES</h6>
             </v-list-item-title>
@@ -356,12 +356,12 @@
               <h6>STOCK</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Item' }">
+          <v-list-item :to="{ name: 'Item' }" v-if="checkAccess(10, 'GERENTE')">
             <v-list-item-title>
               <h6>ITEMS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Almacen' }" v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
+          <v-list-item :to="{ name: 'Almacen' }" v-if="checkAccess(10, 'GERENTE')">
             <v-list-item-title>
               <h6>ALMACEN</h6>
             </v-list-item-title>
@@ -385,32 +385,32 @@
               <h6>GESTIÓN DE DOCUMENTOS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'ArchivosEmpleado' }" v-if="checkAccess(11, 'SUPERVISOR') || checkAccess(11, 'GERENTE')">
+          <v-list-item :to="{ name: 'ArchivosEmpleado' }" v-if="checkAccess(6, 'SUPERVISOR') || checkAccess(6, 'GERENTE')">
             <v-list-item-title>
               <h6>DOCUMENTOS DE PERSONAL</h6>
             </v-list-item-title>
           </v-list-item>
-           <v-list-item :to="{ name: 'ArchivoProoveedor' }">
+           <v-list-item :to="{ name: 'ArchivoProoveedor' }" v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
             <v-list-item-title>
               <h6>CONTRATOS CON PROVEEDORES</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'ArchivoAlmacenamiento' }">
+          <v-list-item :to="{ name: 'ArchivoAlmacenamiento' }" v-if="checkAccess(11, 'SUPERVISOR') || checkAccess(11, 'GERENTE')">
             <v-list-item-title>
               <h6>ARCHIVOS</h6>
             </v-list-item-title>
           </v-list-item>
-           <v-list-item :to="{ name: 'ArchivoContrato' }">
+           <v-list-item :to="{ name: 'ArchivoContrato' }" v-if="checkAccess(6, 'SUPERVISOR') || checkAccess(6, 'GERENTE')">
             <v-list-item-title>
               <h6>LISTA DE CONTRATOS</h6>
             </v-list-item-title>
           </v-list-item>
-           <v-list-item :to="{ name: 'ArchivoCotizacion' }">
+           <v-list-item :to="{ name: 'ArchivoCotizacion' }" v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
             <v-list-item-title>
               <h6>ARCHIVOS DE COTIZACIONES</h6>
             </v-list-item-title>
           </v-list-item>
-           <v-list-item :to="{ name: 'ArchivoAlerta' }">
+           <v-list-item :to="{ name: 'ArchivoAlerta' }" v-if="checkAccess(6, 'SUPERVISOR') || checkAccess(6, 'GERENTE')">
             <v-list-item-title>
               <h6>ARCHIVOS DE ALERTAS</h6>
             </v-list-item-title>
