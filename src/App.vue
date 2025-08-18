@@ -435,7 +435,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-main v-if="logueado">
+    <v-main>
       <v-container fluid>
         <v-slide-y-transition mode="out-in">
           <router-view />
@@ -443,15 +443,7 @@
       </v-container>
     </v-main>
 
-    <!-- Vista principal para cuando el usuario no está logueado -->
-    <v-main v-else>
-      <v-container fluid>
-        <v-slide-y-transition mode="out-in">
-          <router-view />
-        </v-slide-y-transition>
-
-      </v-container>
-    </v-main>
+   
     
     
 
