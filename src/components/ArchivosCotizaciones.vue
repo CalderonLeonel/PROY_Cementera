@@ -22,7 +22,7 @@
                                         NO TIENE UN ARCHIVO
                                     </v-text>
                                     <v-btn v-else-if="item.archivo !=null" color="primary" icon
-                                        :href="`${axios.defaults.baseURL}${'documento/adquisicion/' + item.archivo}`" target="">
+                                        :href="`${axios.defaults.baseURL}${'documento/descargar/' + item.archivo}`" target="">
                                         <v-icon>mdi-file</v-icon> ABRIR
                                     </v-btn>
                                 </template>
