@@ -57,9 +57,9 @@
                          <v-col cols="3" md="2">
                              <v-btn color="success" @click="showModalAgregarTransaccion()">NUEVO INVENTARIO</v-btn>
                          </v-col>
-                         <v-col cols="3" md="3" v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE') ">
+                         <!--<v-col cols="3" md="3" v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE') ">
                              <v-btn color="success" @click="showRevalorizarInventarioModal()">REVALORIZACIÓN DE INVENTARIO</v-btn>
-                         </v-col>
+                         </v-col>-->
                         
                          <v-col cols="12">
                              <v-list-item>
