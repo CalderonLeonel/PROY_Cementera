@@ -50,8 +50,8 @@
           <v-list-item-content>
             <center>
               <v-list-item-title class="text-h6">
-
-                {{ logueado.nombres + ' ' + logueado.paterno + ' ' + logueado.materno }}
+                
+                {{ logueado.nombres + ' ' + logueado.paterno + (logueado.materno ? ' ' + logueado.materno : '') }}
 
               </v-list-item-title>
               <v-list-item-subtitle></v-list-item-subtitle>
