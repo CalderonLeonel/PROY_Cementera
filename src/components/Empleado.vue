@@ -84,11 +84,11 @@
                                     </v-menu>
                                 </v-col>
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="ci" :counter="50" :rules="ciRules"
+                                    <v-text-field v-model="ci" :counter="9" :rules="ciRules"
                                         @input="ci = ci.toUpperCase()" label="NÚMERO DE CARNET"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
-                                    <v-text-field type="number" v-model="telefono" :rules="telefonoRules"
+                                    <v-text-field type="number" v-model="telefono" :counter="8"  :rules="telefonoRules"
                                         @input="telefono = telefono.toUpperCase()" label="TELÉFONO"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
@@ -295,18 +295,34 @@ export default {
         ],
         fechaNacimientoRules: [
             (v) => !!v || "FECHA DE NACIMIENTO ES REQUERIDO",
+            (v) => {
+                    const selectedDate = Date.parse(v);
+                    
+
+                    if (!isNaN(selectedDate)) {
+                        const minDate = new Date();
+                        minDate.setFullYear(minDate.getFullYear() - 18);
+                        if (selectedDate <= minDate) {
+                            return true;
+                        } else {
+                            return "LA PERSONA DEBE TENER AL MENOS 18 AÑOS.";
+                        }
+                    } else {
+                        return "FECHA DE NACIMINETO DEBE SER VALIDA";
+                    }
+                },
         ],
         ciRules: [
             (v) => !!v || "NUMERO DE CARNET ES REQUERIDO",
             (v) =>
-                (v && v.length <= 16) ||
-                "EL NOMBRE DEL EMPLEADO DEBE TENER 50 CARACTERES COMO MAXIMO",
+                (v && v.length <= 9) ||
+                "EL NÚMERO DE CARNET DEBE TENER 9 CARACTERES COMO MAXIMO",
         ],
         telefonoRules: [
             (v) => !!v || "NUMERO DE TELEFONO O CELULAR ES REQUERIDO",
             (v) =>
-                (v && v.length <= 24) ||
-                "EL NOMBRE DEL EMPLEADO DEBE TENER 50 CARACTERES COMO MAXIMO",
+                (v && v.length <= 8) ||
+                "EL NÚMERO DE TELEFONO DEBE TENER 8 CARACTERES COMO MAXIMO",
         ],
         cargoRules: [
             (v) => !!v || "ASIGNAR UN CARGO ES REQUERIDO",
