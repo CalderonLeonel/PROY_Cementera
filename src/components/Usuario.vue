@@ -201,7 +201,7 @@
         <v-dialog v-model="accesoModal" max-width="1080px" persistent> <!-- Accesos Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>Selecciona los accesos que tendrá la cuenta</span>
+                    <span>SELECIONA LOS ACCESOS QUE TENDRÁ LA CUENTA</span>
                 </v-card-title>
 
                 <v-card-text>
