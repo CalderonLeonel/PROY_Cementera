@@ -647,6 +647,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarUsuarios(me.idUsuario);
                     me.limpiar();
+                    me.closeUsuario();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
