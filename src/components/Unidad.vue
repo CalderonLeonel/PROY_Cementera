@@ -32,8 +32,8 @@
         <v-dialog v-model="unidadModal" max-width="1080px" persistent> <!-- Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nueva Unidad</span>
-                    <span v-if="botonAct == 1">Editar Unidad</span>
+                    <span v-if="botonAct == 0">NUEVA UNIDAD</span>
+                    <span v-if="botonAct == 1">EDITAR UNIDAD</span>
                 </v-card-title>
                 <v-card-text>
 
@@ -42,7 +42,7 @@
                             <v-row>
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="unidad" :counter="50" :rules="nombreRules"
-                                        @input="unidad = unidad.toUpperCase()" label="Nombre de la Unidad" required>
+                                        @input="unidad = unidad.toUpperCase()" label="NOMBRE DE LA UNIDAD" required>
                                     </v-text-field>
                                 </v-col>
                                 <v-col cols="12" sm="4" md="4">

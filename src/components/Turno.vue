@@ -38,7 +38,7 @@
                                 </v-list-item-title>
                             </v-list-item>
                             <v-col cols="12" md="4">
-                                <v-btn color="success" @click="showAddTurno()">Nuevo Turno</v-btn>
+                                <v-btn color="success" @click="showAddTurno()">NUEVO TURNO</v-btn>
                             </v-col>
                             <v-card-title>
                                 <v-text-field v-model="searchTurno" append-icon="mdi-magnify" label="BUSCAR TURNOS"
@@ -116,8 +116,8 @@
         <v-dialog v-model="turnoModal" persistent :overlay="false" max-width="1080px"> <!-- Modal Turno -->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nuevo Turno</span>
-                    <span v-if="botonAct == 1">Editar Turno</span>
+                    <span v-if="botonAct == 0">NUEVO TURNO</span>
+                    <span v-if="botonAct == 1">EDITAR TURNO</span>
                 </v-card-title>
                 <v-card-text>
 
@@ -127,7 +127,7 @@
                                 <v-col cols="12" md="12">
                                     <v-col cols="12" md="12">
                                         <v-text-field v-model="turno" :counter="50" :rules="turnoRules"
-                                            @input="turno = turno.toUpperCase()" label="Nombre del Turno" required>
+                                            @input="turno = turno.toUpperCase()" label="NOMBRE DEL TURNO" required>
                                         </v-text-field>
                                     </v-col>
                                 </v-col>
@@ -206,8 +206,8 @@
         <v-dialog v-model="horarioModal" persistent :overlay="false" max-width="1080px"> <!-- Modal Horario-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nuevo Horario</span>
-                    <span v-if="botonAct == 1">Editar Horario</span>
+                    <span v-if="botonAct == 0">NUEVO HORARIO</span>
+                    <span v-if="botonAct == 1">EDITAR HORARIO</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation> <!-- Nuevo Horario / Editar Horario -->
@@ -215,16 +215,16 @@
                             <v-row>
                                 <v-col cols="12" md="12">
                                     <span>De </span>
-                                    <v-select v-model="diaInicio" :items="datosSemana" label="Primer dia..." prepend-icon="mdi-pick" required></v-select>
+                                    <v-select v-model="diaInicio" :items="datosSemana" label="PRIMER DÍA..." prepend-icon="mdi-pick" required></v-select>
                                     <span> A </span>
-                                    <v-select v-model="diaFinal" :items="datosSemana" label="Último dia..." prepend-icon="mdi-pick" required></v-select>
+                                    <v-select v-model="diaFinal" :items="datosSemana" label="ÚLTIMO DÍA..." prepend-icon="mdi-pick" required></v-select>
                                 </v-col>
                                 <v-col cols="12" md="12">
                                     <!-- time pickers -->
                                     <v-menu v-model="timePicker1" :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="horaInicio" label="Hora de Entrada"
+                                            <v-text-field v-model="horaInicio" label="HORA DE ENTRADA"
                                                 prepend-icon="mdi-clock-time-seven-outline" readonly v-bind="attrs"
                                                 v-on="on"></v-text-field>
                                         </template>
@@ -233,7 +233,7 @@
                                     <v-menu v-model="timePicker2" :close-on-content-click="false" :nudge-right="40"
                                         transition="scale-transition" offset-y min-width="auto">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="horaFinal" label="Hora de Salida"
+                                            <v-text-field v-model="horaFinal" label="HORA DE SALIDA"
                                                 prepend-icon="mdi-clock" readonly v-bind="attrs" v-on="on"></v-text-field>
                                         </template>
                                         <v-time-picker v-model="horaFinal" @input="timePicker2 = false"></v-time-picker>
@@ -311,7 +311,7 @@
         <v-dialog v-model="listarHorarioModal" max-width="1080px"> <!-- Modal Listar Horario-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>Lista de Horarios del Turno</span>
+                    <span>LISTA DE HORARIOS DEL TURNO</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Horarios -->

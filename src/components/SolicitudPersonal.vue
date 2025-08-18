@@ -10,8 +10,8 @@
         <v-dialog v-model="solicitudModal" max-width="1080px"> <!-- Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nueva Solicitud</span>
-                    <span v-if="botonAct == 1">Editar Solicitud</span>
+                    <span v-if="botonAct == 0">NUEVA SOLICITUD</span>
+                    <span v-if="botonAct == 1">EDITAR SOLICITUD</span>
                 </v-card-title>
                 <v-card-text>
 
@@ -20,12 +20,12 @@
                     <v-row>
                         <v-col cols="12" md="12">
                             <v-text-field v-model="puesto" :counter="50" :rules="puestoRules"
-                                @input="puesto = puesto.toUpperCase()" label="Nombre del puesto" required>
+                                @input="puesto = puesto.toUpperCase()" label="NOMBRE DEL PUESTO" required>
                             </v-text-field>
                         </v-col>
                         <v-col cols="12" md="12">
                             <v-textarea v-model="descripcion" :counter="200" :rules="descripcionRules" outlined
-                                @input="descripcion = descripcion.toUpperCase()" label="Requerimientos del puesto" required>
+                                @input="descripcion = descripcion.toUpperCase()" label="REQUERÍMIENTOS DEL PUESTO" required>
                             </v-textarea>
                         </v-col>
                                 <v-col cols="12" sm="4" md="4">

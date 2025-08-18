@@ -14,8 +14,8 @@
                 <v-card elevation="5" outlined shaped>
 
                     <v-card-title>
-                        <span v-if="botonAct == 0">Nuevo Departamento</span>
-                        <span v-if="botonAct == 1">Editar Departamento</span>
+                        <span v-if="botonAct == 0">NUEVO DEPARTAMENTO</span>
+                        <span v-if="botonAct == 1">EDITAR DEPARTAMENTO</span>
                     </v-card-title>
                     <v-card-text>
 
@@ -26,14 +26,14 @@
                                     <v-col cols="12" md="12">
                                         <v-text-field v-model="departamento" :counter="50" :rules="departamentoRules"
                                             @input="departamento = departamento.toUpperCase()"
-                                            label="Nombre del Departamento" required>
+                                            label="NOMBRE DEL DEPARTAMENTO" required>
                                         </v-text-field>
                                         <v-select v-model="idUnidad" :items="datosUnidad" item-text="unid"
-                                            item-value="idunid" label="Selecciona una unidad" prepend-icon="mdi-map"
+                                            item-value="idunid" label="SELECCIONA UNA UNIDAD" prepend-icon="mdi-map"
                                             :rules="unidadRules" required>
                                         </v-select>
                                         <v-select v-model="idArea" :items="datosArea" item-text="nom"
-                                            item-value="idarea" label="Selecciona una área" prepend-icon="mdi-map"
+                                            item-value="idarea" label="SELECCIONA UNA ÁREA" prepend-icon="mdi-map"
                                             :rules="areaRules" required>
                                         </v-select>
                                     </v-col>

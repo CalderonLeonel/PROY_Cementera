@@ -34,8 +34,8 @@
         <v-dialog v-model="cargoModal" max-width="1080px" persistent> <!-- Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nuevo Cargo</span>
-                    <span v-if="botonAct == 1">Editar Cargo</span>
+                    <span v-if="botonAct == 0">NUEVO CARGO</span>
+                    <span v-if="botonAct == 1">EDITAR CARGO</span>
                 </v-card-title>
                 <v-card-text>
 
@@ -44,17 +44,17 @@
                             <v-row>
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="nombreCargo" :counter="50" :rules="nombreRules"
-                                        @input="nombreCargo = nombreCargo.toUpperCase()" label="Nombre del Cargo"
+                                        @input="nombreCargo = nombreCargo.toUpperCase()" label="NOMBRE DEL CARGO"
                                         required>
                                     </v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="descripcion" :counter="200" :rules="descripcionRules"
                                         @input="descripcion = descripcion.toUpperCase()"
-                                        label="Descripcion"></v-text-field>
+                                        label="DESCRIPCIÓN"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="salario" :counter="10" :rules="salarioRules" label="Salario"
+                                    <v-text-field v-model="salario" :counter="10" :rules="salarioRules" label="SALARIO"
                                         required></v-text-field>
                                 </v-col>
                                 

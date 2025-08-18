@@ -46,11 +46,11 @@
                             <v-col cols="12" md="12">
                                 <v-col cols="12">
                                     <v-col cols="12" md="12">
-                                        <v-btn color="success" @click="showAddAsistenciaManual()">Registrar
-                                            Asistencia Manualmente</v-btn>
+                                        <v-btn color="success" @click="showAddAsistenciaManual()">REGISTRAR
+                                            ASISTENCIA MANUALMENTE</v-btn>
                                         <v-col cols="12" md="2"></v-col>
-                                        <v-btn color="success" @click="showAddAsistenciaQR()">Registrar Asistencia
-                                            Por QR</v-btn>
+                                        <v-btn color="success" @click="showAddAsistenciaQR()">REGISTAR ASISTENCIA
+                                            MEDIANTE QR</v-btn>
                                     </v-col>
                                     <v-card-title>
                                         <v-text-field v-model="searchAsistencia" append-icon="mdi-magnify"
@@ -150,8 +150,8 @@
         <v-dialog v-model="asistenciaModal" max-width="1080px" persistent> <!-- Modal Asistencia (Manual y QR)-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Registrar Asistencia Manual</span>
-                    <span v-if="botonAct == 1">Registrar Asistencia Por QR</span>
+                    <span v-if="botonAct == 0">REGISTRAR ASISTENCIA MANUAL</span>
+                    <span v-if="botonAct == 1">REGISTRAR ASISTENCIA MEDIANTE QR</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Empleados -->
@@ -227,7 +227,7 @@
         <v-dialog v-model="empleadoModal" max-width="1080px"> <!-- Seleccionar Empleado Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>Seleccionar Empleado</span>
+                    <span>SELECCIONAR EMPLEADO</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Empleados -->
@@ -276,7 +276,7 @@
         <v-dialog v-model="lectorQRModal" max-width="1080px" lazy-validation persistent> <!-- Modal Lector QR-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>Escáner de QR</span>
+                    <span>ESCÁNER DE QR</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Empleados -->

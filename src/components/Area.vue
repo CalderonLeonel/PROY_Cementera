@@ -3,15 +3,15 @@
 
         <div> <!-- Encabezado -->
             <v-alert dense color="#00A1B1" style="color: #ffffff">
-                <h5>AREAS</h5>
+                <h5>ÁREAS</h5>
             </v-alert>
         </div>
 
         <v-dialog v-model="areaModal" max-width="1080px" persistent> <!-- Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nueva Area</span>
-                    <span v-if="botonAct == 1">Editar Area</span>
+                    <span v-if="botonAct == 0">NUEVA ÁREA</span>
+                    <span v-if="botonAct == 1">EDITAR ÁREA</span>
                 </v-card-title>
                 <v-card-text>
 
@@ -20,7 +20,7 @@
                             <v-row>
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="nombre" :counter="50" :rules="nombreRules"
-                                        @input="nombre = nombre.toUpperCase()" label="Nombre del Area" required>
+                                        @input="nombre = nombre.toUpperCase()" label="NOMBRE DEL ÁREA" required>
                                     </v-text-field>
                                 </v-col>
                                 <v-col cols="12" sm="4" md="4">
@@ -38,7 +38,7 @@
                                             </v-btn>
                                             <v-btn icon v-if="botonAct == 0" color="#0ABF55"
                                                 @click="registrarArea()" style="float: left"
-                                                title="REGISTRAR AREA" class="mx-2" large>
+                                                title="REGISTRAR ÁREA" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -102,14 +102,14 @@
                         <v-col cols="12">
                             <v-list-item>
                                 <v-list-item-title class="text-center">
-                                    <h5>AREAS</h5>
+                                    <h5>ÁREAS</h5>
                                 </v-list-item-title>
                             </v-list-item>
                             <v-col cols="12" md="4">
-                                <v-btn color="success" @click="showAddArea()">Nueva Area</v-btn>
+                                <v-btn color="success" @click="showAddArea()">NUEVA ÁREA</v-btn>
                             </v-col>
                             <v-card-title>
-                                <v-text-field v-model="searchArea" append-icon="mdi-magnify" label="BUSCAR AREAS"
+                                <v-text-field v-model="searchArea" append-icon="mdi-magnify" label="BUSCAR ÁREAS"
                                     single-line hide-details></v-text-field>
                             </v-card-title>
 
@@ -136,11 +136,11 @@
                                         mdi-pencil
                                     </v-icon>
                                     <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2" color="#0ABF55" @click="activar(item)"
-                                        title="ACTIVAR AREA">
+                                        title="ACTIVAR ÁREA">
                                         mdi-check-circle-outline
                                     </v-icon>
                                     <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2" color="#BF120A" @click="desactivar(item)"
-                                        title="DESACTIVAR AREA">
+                                        title="DESACTIVAR ÁREA">
                                         mdi-cancel
                                     </v-icon>
                                 </template>
@@ -202,10 +202,10 @@ export default {
         areaModal: "",
         botonAct: 0,
         nombreRules: [
-            (v) => !!v || "NOMBRE DEL AREA ES REQUERIDO",
+            (v) => !!v || "NOMBRE DEL ÁREA ES REQUERIDO",
             (v) =>
                 (v && v.length <= 50) ||
-                "EL NOMBRE DE AREA DEBE TENER 50 CARACTERES COMO MAXIMO",
+                "EL NOMBRE DE ÁREA DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
 
         datosArea: [],
