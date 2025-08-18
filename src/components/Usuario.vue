@@ -27,11 +27,11 @@
             </v-snackbar>
         </div>
 
-        <v-dialog v-model="usuarioModal" max-width="1080px"> <!-- Usuarios Modal-->
+        <v-dialog v-model="usuarioModal" max-width="1080px" persistent> <!-- Usuarios Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nuevo Usuario</span>
-                    <span v-if="botonAct == 1">Editar Usuario</span>
+                    <span v-if="botonAct == 0">NUEVO USUARIO</span>
+                    <span v-if="botonAct == 1">EDITAR USUARIO</span>
                 </v-card-title>
                 <v-card-text>
 
@@ -50,11 +50,11 @@
                                 </v-col>
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="nombreUsuario" :counter="50" :rules="nombreRules"
-                                        @input="nombreUsuario = nombreUsuario.toUpperCase()" label="Nombre de Usuario" disabled required>
+                                        @input="nombreUsuario = nombreUsuario.toUpperCase()" label="NOMBRE DE USUARIO" disabled required>
                                     </v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
-                                        <v-select v-model="tipo" :items="datosTipo" label="Selecciona el tipo de cuenta"
+                                        <v-select v-model="tipo" :items="datosTipo" label="SELECCIONA EL TIPO DE CUENTA"
                                             prepend-icon="mdi-pick" required>
                                         </v-select>
                                 </v-col>
@@ -65,7 +65,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="11">
-                                    <v-select v-model="accesos" item-value="idacc" item-text="idacc" :items="accesos" label="Seleccionar Permisos"
+                                    <v-select v-model="accesos" item-value="idacc" item-text="idacc" :items="accesos" label="SELECCIONAR PERMISOS"
                                         multiple disabled
                                         ></v-select>
                                 </v-col>
@@ -113,10 +113,10 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="empleadoModal" max-width="1080px"> <!-- Empleados Modal-->
+        <v-dialog v-model="empleadoModal" max-width="1080px" persistent> <!-- Empleados Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>Seleccionar Empleado</span>
+                    <span>SELECCIONAR EMPLEADO</span>
                 </v-card-title>
                 <v-card-text>
             <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Empleados -->
@@ -365,7 +365,7 @@ export default {
         datosTipo: ["GERENTE","SUPERVISOR","SECRETARIO"],
         datosAcceso: [],
         idEmpleado: "",
-        nombreEmpleadoLabel: "Seleccionar empleado",
+        nombreEmpleadoLabel: "SELECCIONAR EMPLEADO",
         email: "",
 
         
