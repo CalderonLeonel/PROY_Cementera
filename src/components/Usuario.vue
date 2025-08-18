@@ -211,13 +211,9 @@
                         <v-col cols="12" md="12">
                         <v-data-table v-model="accesos" :headers="headersAcceso" :items="datosAcceso"
                             item-key="idacc" item-value show-select class="elevation-1">
-                            <!--
-                            <template v-slot:top>
-                            <v-switch v-model="singleSelect" label="Single select"class="pa-3">
-
-                            </v-switch>
+                             <template #[`item.descrip`]="{ item }">
+                                {{ item.descrip.toUpperCase() }}
                             </template>
-                        -->
                         </v-data-table>
                         <!--
                         <v-col cols="12" md="1">
