@@ -561,8 +561,18 @@ export default {
 
     methods: {
         colorEstado(est) {
-            if (est == 'EN LABORATORIO') return 'cyan'
-            else return 'red'
+            switch (est) {
+                case 'FASE INICIAL':
+                    return 'blue';
+                case 'FASE PRUEBAS':
+                    return 'orange';
+                case 'FASE FINAL':
+                    return 'green';
+                case 'EN LABORATORIO':
+                    return 'cyan';
+                default:
+                    return 'red';
+            }
         },
         //#region Listar
         listarProductoLabo() {
@@ -763,6 +773,7 @@ export default {
                     me.snackbarOK = true;
                     me.listarProductosLabo();
                     me.limpiar();
+                    me.closeRevisionModal();
                 })
                 .catch(function (error) {
                     me.mensajeSnackbar = error.response.data.message;
