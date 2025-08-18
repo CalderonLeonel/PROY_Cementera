@@ -147,7 +147,7 @@
             </v-tab-item>
         </v-tabs>
 
-        <v-dialog v-model="asistenciaModal" max-width="1080px" persistent> <!-- Modal Asistencia (Manual y QR)-->
+        <v-dialog v-model="asistenciaModal" max-width="1080px" persistent lazy-validation> <!-- Modal Asistencia (Manual y QR)-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span v-if="botonAct == 0">REGISTRAR ASISTENCIA MANUAL</span>
@@ -224,7 +224,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="empleadoModal" max-width="1080px"> <!-- Seleccionar Empleado Modal-->
+        <v-dialog v-model="empleadoModal" max-width="1080px" persistent lazy-validation> <!-- Seleccionar Empleado Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>SELECCIONAR EMPLEADO</span>
