@@ -341,11 +341,14 @@ export default {
         },
         
         actualizarSolicitud() {
-            this.actualizarsolicitud(
-                this.idSolicitud,
-                this.puesto,
-                this.descripcion
-            );
+            if (this.$refs.form.validate()) {
+                this.actualizarsolicitud(
+                    this.idSolicitud,
+                    this.puesto,
+                    this.descripcion
+                );
+            }
+            
         },
         
        
@@ -402,10 +405,13 @@ export default {
                 });
         },
         registrarSolicitud() {
-            this.registrarSolicitud(
-                this.puesto,
-                this.descripcion
-            );
+            if (this.$refs.form.validate()) {
+                this.registrarSolicitud(
+                    this.puesto,
+                    this.descripcion
+                );
+            }
+            
         },
         async registrarSolicitud(
             puesto,

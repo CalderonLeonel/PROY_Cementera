@@ -517,7 +517,10 @@ export default {
                 });
         },
         registrarTurno() {
-            this.registrarTurnos();
+            if (this.$refs.form.validate()) {
+                this.registrarTurnos();
+            }
+            
         },
         async registrarTurnos() {
             let me = this;
@@ -539,7 +542,10 @@ export default {
                 });
         },
         actualizarTurno() {
-            this.actualizarTurnos()
+            if (this.$refs.form.validate()) {
+                this.actualizarTurnos()
+            }
+            
         },
         async actualizarTurnos() {
             let me = this;

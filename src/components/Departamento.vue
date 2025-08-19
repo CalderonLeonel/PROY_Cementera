@@ -354,12 +354,15 @@ export default {
         },
 
         actualizarDepartamento() {
-            this.actualizardepartamento(
-                this.idDepartamento,
-                this.departamento,
-                this.idunid,
-                this.idarea
-            );
+            if (this.$refs.form.validate()) {
+                this.actualizardepartamento(
+                    this.idDepartamento,
+                    this.departamento,
+                    this.idunid,
+                    this.idarea
+                );
+            }
+            
         },
 
 
@@ -451,11 +454,14 @@ export default {
                 });
         },
         registrarDepartamento() {
-            this.registrarDepartamento(
-                this.departamento,
-                this.idUnidad,
-                this.idArea
-            );
+            if (this.$refs.form.validate()) {
+                this.registrarDepartamento(
+                    this.departamento,
+                    this.idUnidad,
+                    this.idArea
+                );
+            }
+            
         },
         async registrarDepartamento(
             departamento,

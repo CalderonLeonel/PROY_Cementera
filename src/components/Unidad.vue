@@ -302,10 +302,13 @@ export default {
         },
 
         actualizarUnidad() {
-            this.actualizarunidad(
-                this.idUnidad,
-                this.unidad
-            );
+            if (this.$refs.form.validate()) {
+                this.actualizarunidad(
+                    this.idUnidad,
+                    this.unidad
+                );
+            }
+            
         },
 
 
@@ -356,9 +359,12 @@ export default {
                 });
         },
         registrarUnidad() {
-            this.registrarUnidad(
+            if (this.$refs.form.validate()) {
+                this.registrarUnidad(
                 this.unidad
-            );
+                );
+            }
+            
         },
         async registrarUnidad(
             unidad

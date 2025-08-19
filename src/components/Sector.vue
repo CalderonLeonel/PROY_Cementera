@@ -550,7 +550,10 @@ export default {
         },
 
         actualizarSector() {
-            this.actualizarsector();
+            if (this.$refs.form.validate()) {
+                this.actualizarsector();
+            }
+            
         },
         async actualizarsector() {
             let me = this;
@@ -615,10 +618,12 @@ export default {
                 });
         },
         registrarSector() {
-            this.registrarSector(
-                this.sector,
-                this.idDepartamento
-            );
+            if (this.$refs.form.validate()) {
+                this.registrarSector(
+                    this.sector,
+                    this.idDepartamento
+                );
+            }
         },
         async registrarSector(
             sector,
