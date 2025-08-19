@@ -213,6 +213,14 @@ export default {
         }
         console.log("UserData: " + JSON.stringify(this.user));
     },
+    computed: {
+        logueado() {
+            if (this.user != null) {
+                this.user = JSON.parse(sessionStorage.getItem('session'));
+            }
+            return this.user;
+            }
+        },
     methods: {
         showGenerarMemorandum() {
             this.generarMemorandum = true;

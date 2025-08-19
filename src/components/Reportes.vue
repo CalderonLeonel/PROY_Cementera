@@ -105,7 +105,10 @@
 <script>
 export default {
     data: () => ({
+        valid: true,
+        user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
         flag: 1,
+
         timeout: 2000,
         snackbarOK: false,
         mensajeSnackbar: "",
@@ -113,6 +116,14 @@ export default {
         mensajeSnackbarError: "REGISTRO FALLIDO",
         user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
     }),
+    computed: {
+        logueado() {
+            if (this.user != null) {
+                this.user = JSON.parse(sessionStorage.getItem('session'));
+            }
+            return this.user;
+        }
+    },
     created: function () {
         if (this.user != null) {
             this.user = JSON.parse(sessionStorage.getItem('session'));

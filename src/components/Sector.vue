@@ -317,6 +317,10 @@ import axios from "axios";
 
 export default {
     data: () => ({
+        valid: true,
+        user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+        flag: 1,
+
         idSector: "",
         sector: "",
         estado: "",
@@ -371,11 +375,26 @@ export default {
         ],
 
     }),
+    computed: {
+        logueado() {
+            if (this.user != null) {
+                this.user = JSON.parse(sessionStorage.getItem('session'));
+            }
+            return this.user;
+        }
+    },
 
     created: function () {
-        //this.user = JSON.parse(sessionStorage.getItem("session"));
-        //this.idSector = this.user.idSector;
-        this.listarSectores();
+        if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+            this.listarSectores();
+        }
+        if (this.user == null) {
+            if (this.$route.path != '/login') {
+                this.$router.push("/login");
+            }
+        }
+        console.log("UserData: " + JSON.stringify(this.user));
     },
     methods: {
         async listarTurnos(idTurno) {
@@ -531,7 +550,10 @@ export default {
         },
 
         actualizarSector() {
-            this.actualizarsector();
+            if (this.$refs.form.validate()) {
+                this.actualizarsector();
+            }
+            
         },
         async actualizarsector() {
             let me = this;
@@ -596,10 +618,12 @@ export default {
                 });
         },
         registrarSector() {
-            this.registrarSector(
-                this.sector,
-                this.idDepartamento
-            );
+            if (this.$refs.form.validate()) {
+                this.registrarSector(
+                    this.sector,
+                    this.idDepartamento
+                );
+            }
         },
         async registrarSector(
             sector,
