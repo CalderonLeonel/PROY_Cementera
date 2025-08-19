@@ -332,7 +332,7 @@ export default {
         doc.text(`Empleado: ${empleadoData.paterno} ${empleadoData.materno ? ' ' + empleadoData.materno : ''} ${empleadoData.nombres}`, 80, 50);
 
 
-        const qrData = JSON.stringify(empleadoData);
+        const qrData = JSON.stringify(empleadoData.id);
         const qrCanvas = await QRCode.toCanvas(qrData);
         const qrImage = qrCanvas.toDataURL('image/png');
 
@@ -361,6 +361,7 @@ export default {
 
         imprimirCarnet() {
             const empleadoData = {
+                id: this.idEmpleado,
                 ci: this.ci,
                 paterno: this.paterno,
                 materno: this.materno,
