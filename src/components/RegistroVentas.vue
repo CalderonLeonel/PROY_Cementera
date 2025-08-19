@@ -4,12 +4,12 @@
 
         <v-dialog v-model="anularModal" max-width="500px">
             <v-card>
-                <v-card-title>Anular Factura</v-card-title>
+                <v-card-title>ANULAR PROFORMA</v-card-title>
                 <v-card-text>
                     <v-textarea v-model="motivoAnulacion" label="Motivo de anulación" required></v-textarea>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn color="red" @click="anularFactura">Anular</v-btn>
+                    <v-btn color="red" @click="anularProforma">Anular</v-btn>
                     <v-btn color="grey" @click="dialogoAnulacion = false">Cancelar</v-btn>
                 </v-card-actions>
             </v-card>
@@ -28,11 +28,11 @@
                     <v-data-table :headers="headerVenta" :items="datosVenta" :search="searchVenta"
                         :custom-filter="customFilter" class="elevation-1">
                         <template #[`item.actions`]="{ item }">
-                            <v-btn color="primary" small @click="imprimirFactura(item)">IMPRIMIR FACTURA</v-btn>
+                            <v-btn color="primary" small @click="imprimirProforma(item)">IMPRIMIR PROFORMA</v-btn>
 
                             <v-btn color="secondary" small @click="imprimirRecibo(item)">IMPRIMIR RECIBO</v-btn>
                             <v-btn color="error" small @click="openAnularModal(item)">
-                                ANULAR FACTURA
+                                ANULAR PROFORMA
                             </v-btn>
                         </template>
 
@@ -278,7 +278,7 @@ export default {
                 });
         },
 
-        async imprimirFactura(item) {
+        async imprimirProforma(item) {
             try {
                 const response = await axios.get(`/venta/listardetalle/` + item.idven);
                 const jsonData = response.data.resultado || [];
@@ -301,12 +301,12 @@ export default {
                 const doc = new jsPDF();
 
                 doc.setFontSize(12);
-                doc.text("FACTURA", 105, 20, { align: "center" });
+                doc.text("Proforma", 105, 20, { align: "center" });
                 doc.text("CON DERECHO A CREDITO FISCAL", 105, 30, { align: "center" });
                 doc.text("Drymix Bolivia SRL.", 105, 40, { align: "center" });
                 doc.setFontSize(11);
                 doc.text(`NIT: 8456748562`, 105, 50, { align: "center" });
-                doc.text(`Factura`, 105, 60, { align: "center" });
+                doc.text(`Proforma`, 105, 60, { align: "center" });
                 doc.text(`N°: ${item.idven}`, 105, 70, { align: "center" });
 
                 doc.text(`Fecha: ${this.getFormattedDate(item.creadate)}`, 105, 80, { align: "center" });
@@ -344,7 +344,7 @@ export default {
                 startY += 40;
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "normal");
-                doc.text("ESTA FACTURA CONTRIBUYE AL DESARROLLO DE NUESTRO PAÍS, EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LEY", 105, startY, { align: "center" });
+                doc.text("ESTA Proforma CONTRIBUYE AL DESARROLLO DE NUESTRO PAÍS, EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LEY", 105, startY, { align: "center" });
                 doc.text("Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los servicios que utilices.", 105, startY + 10, { align: "center" });
                 
                 var pageWidth = doc.internal.pageSize.getWidth();                     
@@ -356,7 +356,7 @@ export default {
                 qrX,
                 startY );
 
-                doc.save("factura_" + this.getFormattedDateTime(item.creadate) + ".pdf");
+                doc.save("Proforma_" + this.getFormattedDateTime(item.creadate) + ".pdf");
             } catch (error) {
                 console.error(error);
             }
@@ -452,7 +452,7 @@ export default {
 
         },
 
-        async anularFactura() {
+        async anularProforma() {
             if (!this.motivoAnulacion.trim()) {
                 this.mensajeSnackbarError = "El motivo de anulación es requerido.";
                 this.snackbarError = true;
@@ -463,13 +463,13 @@ export default {
                 await axios.post(`/venta/offventa/` + this.ventaSeleccionada.idven + "," + this.motivoAnulacion);
                 this.dialogoAnulacion = false;
                 this.listarVentas();
-                this.$emit("factura-anulada", this.ventaSeleccionada.idven);
+                this.$emit("Proforma-anulada", this.ventaSeleccionada.idven);
                 this.anularModal = false
             } catch (error) {
-                console.error("Error anulando la factura:", error);
+                console.error("Error anulando la Proforma:", error);
                 this.snackbarError = true;
                 this.mensajeSnackbarError =
-                    "Error al intentar anular la factura. Intente nuevamente.";
+                    "Error al intentar anular la Proforma. Intente nuevamente.";
             }
         },
 

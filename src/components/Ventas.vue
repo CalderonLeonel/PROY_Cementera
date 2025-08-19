@@ -585,7 +585,7 @@ export default {
                     this.recuperarUltimaVenta();
                     console.log('se registra el carrito')
                     await this.registrarVentasCarrito()
-                    console.log('se imprime la factura') 
+                    console.log('se imprime la proforma') 
                     await this.imprimirDocumentos();
                     console.log(this.idUltimaVenta)
                    
@@ -765,10 +765,10 @@ export default {
 
         async imprimirDocumentos(){
             this.imprimirRecibo(this.razonSocial, this.idUltimaVenta, this.fechaVenta);
-            this.imprimirFactura(this.nit, this.razonSocial, this.idUltimaVenta, this.fechaVenta);
+            this.imprimirProforma(this.nit, this.razonSocial, this.idUltimaVenta, this.fechaVenta);
         },
 
-        async imprimirFactura(nit, razonSocial, idventa, fechaVenta) {
+        async imprimirProforma(nit, razonSocial, idventa, fechaVenta) {
             try {
                 const response = await axios.get("/venta/listardetalle/" + idventa);
                 const jsonData = response.data.resultado || [];
@@ -788,12 +788,11 @@ export default {
                 const doc = new jsPDF();
 
                 doc.setFontSize(12);
-                doc.text("FACTURA", 105, 20, { align: "center" });
-                doc.text("CON DERECHO A CREDITO FISCAL", 105, 30, { align: "center" });
+                doc.text("Proforma", 105, 20, { align: "center" });
                 doc.text("Drymix Bolivia SRL.", 105, 40, { align: "center" });
                 doc.setFontSize(11);
                 doc.text(`NIT: 8456748562`, 105, 50, { align: "center" });
-                doc.text(`Factura`, 105, 60, { align: "center" });
+                doc.text(`Proforma`, 105, 60, { align: "center" });
                 doc.text(`N°: ${idventa}`, 105, 70, { align: "center" });
 
                 doc.text(`Fecha: ${this.getFormattedDate(fechaVenta)}`, 105, 80, { align: "center" });
@@ -831,10 +830,9 @@ export default {
                 startY += 40;
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "normal");
-                doc.text("ESTA FACTURA CONTRIBUYE AL DESARROLLO DE NUESTRO PAÍS, EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LEY", 105, startY, { align: "center" });
-                doc.text("Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los servicios que utilices.", 105, startY + 10, { align: "center" });
+               
 
-                doc.save("factura_" + this.getFormattedDateTime(fechaVenta) + ".pdf");
+                doc.save("proforma_" + this.getFormattedDateTime(fechaVenta) + ".pdf");
             } catch (error) {
                 console.error(error);
             }
