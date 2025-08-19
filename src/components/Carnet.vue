@@ -96,7 +96,7 @@
                             <h5>EMPLEADO:</h5>
                         </td>
                         <td style="border: inset 0pt">
-                            {{ paterno }} {{ materno }} {{ nombres }}
+                            {{ paterno }} {{ materno ? ' ' + materno : '' }} {{ nombres }}
                         </td>
                         <td style="border: inset 0pt"></td>
                     </tr>
@@ -329,7 +329,7 @@ export default {
         doc.setTextColor(...secondaryColor);
         doc.setFontSize(12);
         doc.text(`Documento: ${empleadoData.ci}`, 80, 40);
-        doc.text(`Empleado: ${empleadoData.paterno} ${empleadoData.materno} ${empleadoData.nombres}`, 80, 50);
+        doc.text(`Empleado: ${empleadoData.paterno} ${empleadoData.materno ? ' ' + empleadoData.materno : ''} ${empleadoData.nombres}`, 80, 50);
 
 
         const qrData = JSON.stringify(empleadoData);

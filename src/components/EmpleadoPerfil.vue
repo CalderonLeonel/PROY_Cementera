@@ -52,9 +52,7 @@
                                                 </v-col>
                                                 <v-col cols="12" md="6">
                                                     <v-alert dense>
-                                                        <h5 dense> {{ this.$route.params.nom + " " +
-                            this.$route.params.pat + " " +
-                            this.$route.params.mat }}
+                                                        <h5 dense> {{ this.$route.params.nom + " " +this.$route.params.pat + (this.$route.params.mat ? " " + this.$route.params.mat : "")  }}
                                                         </h5>
                                                         <hr>
                                                     </v-alert>
