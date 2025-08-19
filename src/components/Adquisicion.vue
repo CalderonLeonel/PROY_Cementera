@@ -1123,6 +1123,7 @@ export default {
             var formatted = item.fechaVencimiento;
             this.fechaVencimiento = this.changeFormatField(formatted);
             this.estado = item.estado;
+            
             this.agregarCotizacionAdquisicionModal = true;
         },
 
@@ -1225,18 +1226,22 @@ export default {
         },
 
         editarCotizacionAdq() {
+             console.log("entrar a editarCotizacionAdq: ");
             if (this.$refs.form.validate()) {
-                if (this.documentoArchivo != null || this.documentoArchivo != "") {
-                    this.registrarDocumento().then(() => {
-                        this.editarCotizacionAdquisicionArchivo(this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado, this.documentoArchivo);
-                        this.botonactCot = 0;
-                        });
-                }
-                else {
-                    this.editarCotizacionAdquisicion(this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado);
+                console.log('[editar] form inválido');
+                if (this.documentoArchivo == null || this.documentoArchivo == '') {
+                    console.log("sin archivo: ");
+                    this.editarCotizacionAdquisicion(this.idCotizacion,this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado);
                     this.botonactCot = 0;
                 }
-                
+                else {
+                    console.log("archivo: " + this.documentoArchivo.name);
+                        this.almacenarArchivo(this.documentoArchivo);
+                        this.guardarDocumento(this.documentoArchivo.name, this.nombreCotizacion, "adq"+this.idcotizacion, "ACTIVO"); 
+                        this.editarCotizacionAdquisicionArchivo(this.idCotizacion,this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado, this.documentoArchivo.name);
+
+                    this.botonactCot = 0;
+                }
             }
         },
         async editarCotizacionAdquisicion(
@@ -1247,6 +1252,7 @@ export default {
             fechaVencimiento,
             estado
         ) {
+            console.log('[editar] form sin archivo');
             let me = this;
             await axios
                 .post(
@@ -1281,12 +1287,6 @@ export default {
 
         },
 
-        editarCotizacionAdqFile() {
-            if (this.$refs.form.validate()) {
-                this.editarCotizacionAdquisicionArchivo(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, this.estado,this.nombreArchivo.name);
-                this.botonactCot = 0;
-            }
-        },
         async editarCotizacionAdquisicionArchivo(
             idCotizacion,
             idUsuario,
@@ -1296,10 +1296,13 @@ export default {
             estado,
             archivo
         ) {
-            const ext = archivo.split('.');
+         const ext = archivo.split('.');    
             const date = new Date();
-            const fechaHoraActual = date.getDate().toString().padStart(2, '0')+'_'+(date.getMonth() + 1).toString().padStart(2, '0')+'_'+date.getFullYear();
-            const nombreArchivo =  ext[0]+'_'+fechaHoraActual+'.'+ext[1];
+            const fechaHoraActual = date.getDate().toString().padStart(2, '0') + '_' + 
+                                    (date.getMonth() + 1).toString().padStart(2, '0') + '_' + 
+                                    date.getFullYear();
+
+            const nombreArchivo = ext[0] + '_' + fechaHoraActual + '.' + ext[1];
             let me = this;
             await axios
                 .post(
