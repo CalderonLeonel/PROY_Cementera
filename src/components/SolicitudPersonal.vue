@@ -190,6 +190,10 @@ import axios from "axios";
 
 export default {
     data: () => ({
+        valid: true,
+        user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+        flag: 1,
+
         idSolicitud: "",
         puesto: "",
         descripcion: "",
@@ -234,12 +238,30 @@ export default {
             { text: "OPCIONES", value: "actions", sortable: false },
         ],
     }),
+    computed: {
+        logueado() {
+            if (this.user != null) {
+                this.user = JSON.parse(sessionStorage.getItem('session'));
+            }
+            return this.user;
+        }
+    },
 
     created: function () {
-        this.user = JSON.parse(sessionStorage.getItem("session"));
-        this.idUsuario = this.user['id_usuario'];
-        console.log("ID: "+this.idUsuario+" y "+this.user.tipo);
-        this.listarSolicitudes();
+
+
+        if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem("session"));
+            this.idUsuario = this.user['id_usuario'];
+            console.log("ID: "+this.idUsuario+" y "+this.user.tipo);
+            this.listarSolicitudes();
+        }
+        if (this.user == null) {
+            if (this.$route.path != '/login') {
+                this.$router.push("/login");
+            }
+        }
+        console.log("UserData: " + JSON.stringify(this.user));
     },
 
     methods: {

@@ -383,6 +383,10 @@ import axios from "axios";
 
 export default {
     data: () => ({
+        valid: true,
+        user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+        flag: 1,
+
         idTurno: "",
         turno: "",
         estado: "",
@@ -447,9 +451,26 @@ export default {
                 "EL NOMBRE DEL TURNO DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
     }),
+    computed: {
+        logueado() {
+            if (this.user != null) {
+                this.user = JSON.parse(sessionStorage.getItem('session'));
+            }
+            return this.user;
+        }
+    },
 
     created: function () {
-        this.listarTurnos();
+        if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+            this.listarTurnos();
+        }
+        if (this.user == null) {
+            if (this.$route.path != '/login') {
+                this.$router.push("/login");
+            }
+        }
+        console.log("UserData: " + JSON.stringify(this.user));
     },
 
     methods: {

@@ -346,6 +346,10 @@ import axios from "axios";
 
 export default {
     data: () => ({
+        valid: true,
+        user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+        flag: 1,
+
         idUsuario: "",
         nombreUsuario: "",
         password: "",
@@ -419,9 +423,27 @@ export default {
             { text: "DESCRIPCION", value: "descrip" },
         ],
     }),
+    computed: {
+        logueado() {
+            if (this.user != null) {
+                this.user = JSON.parse(sessionStorage.getItem('session'));
+            }
+            return this.user;
+        }
+    },
 
     created: function () {
-        this.listarUsuarios();
+        if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+            this.listarUsuarios();
+        }
+        if (this.user == null) {
+            if (this.$route.path != '/login') {
+                this.$router.push("/login");
+            }
+        }
+        console.log("UserData: " + JSON.stringify(this.user));
+        
     },
 
     methods: {

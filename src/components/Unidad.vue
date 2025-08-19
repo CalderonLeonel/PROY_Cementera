@@ -182,6 +182,10 @@ import axios from "axios";
 
 export default {
     data: () => ({
+        valid: true,
+        user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+        flag: 1,
+
         idUnidad: "",
         unidad: "",
         estado: "",
@@ -217,11 +221,26 @@ export default {
             { text: "OPCIONES", value: "actions", sortable: false },
         ],
     }),
+    computed: {
+        logueado() {
+            if (this.user != null) {
+                this.user = JSON.parse(sessionStorage.getItem('session'));
+            }
+            return this.user;
+        }
+    },
 
     created: function () {
-        //this.user = JSON.parse(sessionStorage.getItem("session"));
-        //this.idUnidad = this.user.idUnidad;
-        this.listarUnidades();
+        if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+            this.listarUnidades();
+        }
+        if (this.user == null) {
+            if (this.$route.path != '/login') {
+                this.$router.push("/login");
+            }
+        }
+        console.log("UserData: " + JSON.stringify(this.user));
     },
 
     methods: {

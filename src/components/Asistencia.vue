@@ -325,6 +325,10 @@ import { QrcodeStream } from 'vue-qrcode-reader'
 
 export default {
     data: () => ({
+        valid: true,
+        user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+        flag: 1,
+
         //idAsistencia: "",
         idEmpleado: "",
         nombres: "",
@@ -394,12 +398,28 @@ export default {
         ],
 
     }),
+    computed: {
+        logueado() {
+            if (this.user != null) {
+                this.user = JSON.parse(sessionStorage.getItem('session'));
+            }
+            return this.user;
+        }
+    },
 
     created: function () {
-        //this.user = JSON.parse(sessionStorage.getItem("session"));
-        //this.idAsistencia = this.user.idAsistencia;
-        this.listarAsistenciasDelDia();
-        this.listarAsistencias();
+        if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+            this.listarAsistenciasDelDia();
+            this.listarAsistencias();
+        }
+        if (this.user == null) {
+            if (this.$route.path != '/login') {
+                this.$router.push("/login");
+            }
+        }
+        console.log("UserData: " + JSON.stringify(this.user));
+        
     },
     components: {
         QrcodeStream

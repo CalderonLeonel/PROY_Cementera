@@ -228,6 +228,10 @@ import QRCode from 'qrcode';
 export default {
     data() {
         return {
+            valid: true,
+            user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+            flag: 1,
+
             idEmpleado: "",
             nombres: "",
             paterno: "",
@@ -286,14 +290,32 @@ export default {
 
         };
     },
+    computed: {
+        logueado() {
+            if (this.user != null) {
+                this.user = JSON.parse(sessionStorage.getItem('session'));
+            }
+            return this.user;
+        }
+    },
     created: function () {
-        this.user = JSON.parse(sessionStorage.getItem("session"));
-
         this.usuario = this.user.personal;
-        this.id_sede = this.user.id_sede;
-        this.nomus = this.user.nombres + ' ' + this.user.paterno + ' ' + this.user.materno;
-        this.patus = this.user.paterno;
-        this.matus = this.user.materno;
+            this.id_sede = this.user.id_sede;
+            this.nomus = this.user.nombres + ' ' + this.user.paterno + ' ' + this.user.materno;
+            this.patus = this.user.paterno;
+            this.matus = this.user.materno;
+        if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+            
+        }
+        if (this.user == null) {
+            if (this.$route.path != '/login') {
+                this.$router.push("/login");
+            }
+        }
+        console.log("UserData: " + JSON.stringify(this.user));
+
+        
 
         //this.listarGestion();
         //this.toDataURL();
