@@ -543,7 +543,18 @@
                                     <v-text-field v-model="nombreCategoria" label="NOMBRE TIPO ITEM" :counter="60"
                                         :rules="nombreCategoriaRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
                                         required></v-text-field>
-                                </v-col>                         
+                                </v-col>         
+                                 <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreCategoriaRules"
+                                        @click="openProveedorModal()" style="float: right" title="BUSCAR CATEGORÍA">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="3">
+                                    <v-text-field v-model="nombreCategoria" label="NOMBRE CATEGORÍA" :counter="60"
+                                        :rules="nombreRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
+                                        disabled required></v-text-field>
+                                </v-col>                
                                 <v-col cols="12" md="12"> </v-col>
                                 <v-col cols="12" sm="4" md="4">
                                     <v-toolbar dense shaped >
