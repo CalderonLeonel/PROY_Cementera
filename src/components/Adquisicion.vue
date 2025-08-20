@@ -800,15 +800,21 @@ export default {
             itemModal: false,
             datosItem: [],
             headerItem: [
-
-                { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                { text: "MEDIDA", value: "medida", sortable: true },
-                { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
-                { text: "ESTADO", value: "estado", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false }
-                //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
-            ],
+                 { text: "CÓDIGO SKU", value: "sku", sortable: true },
+                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
+                 { text: "MEDIDA", value: "medida", sortable: true },
+                 { text: "CATEGORÍA", value: "categoria", sortable: true },
+                 { text: "SUBCATEGORÍA", value: "subcategoria", sortable: true },
+                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
+                 { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
+                 { text: "ESTADO", value: "estado", sortable: true },
+                 { text: "PROVEEDOR", value: "proveedor", sortable: true },
+                 { text: "FECHA EXP.", value: "fechaexp", sortable: true },
+                 { text: "COSTO REF", value: "costoref", sortable: true },
+                 { text: "ACCIONES", value: "actions", sortable: false }
+                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+             ],
 
 
 
