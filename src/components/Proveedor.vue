@@ -161,6 +161,26 @@
                                         :rules="emailRules" @input="correoProveedor = correoProveedor"
                                         required></v-text-field>
                                 </v-col>
+                                <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" @click="showPaises()"
+                                        style="float: right" title="BUSCAR PAISES">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="5">
+                                    <v-text-field v-model="pais" label="NOMBRE PAIS" :counter="50" :rules="paisRules"
+                                        @input="pais = pais.toUpperCase()" disabled required></v-text-field>
+                                </v-col>
+                                 <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" @click="showCategorias()"
+                                        style="float: right" title="BUSCAR CATEGORÍAS">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="5">
+                                    <v-text-field v-model="categoria" label="NOMBRE CATEGORÍA" :counter="50" :rules="categoriaRules"
+                                        @input="categoria = categoria.toUpperCase()" disabled required></v-text-field>
+                                </v-col>
                                 <v-col cols="12" md="12">
                                     <v-file-input v-model="documentoArchivo"
                                         accept=".jpg, .jpeg, .webp, .png, .gif, .bmp, .docx, .xlsx, .pptx, .pdf, .csv, .xml"
@@ -240,11 +260,7 @@
             </v-card>
         </v-dialog>
 
-        
-    </v-card>
-    
-
-     <v-dialog v-model="paisesModal" max-width="900px" lazy-validation persistent>
+             <v-dialog v-model="paisesModal" max-width="900px" lazy-validation persistent>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>PAISES</span>
@@ -293,6 +309,11 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+        
+    </v-card>
+    
+
+
 
 </template>
 <script>
