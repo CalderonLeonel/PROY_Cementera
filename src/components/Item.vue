@@ -80,7 +80,7 @@
  
                                  <template #[`item.actions`]="{ item }">
                                      <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposItem(item)"
-                                         title="ACTUALIZAR INFORMACION">
+                                         title="ACTUALIZAR INFORMACIÓN">
                                          mdi-pencil
                                      </v-icon>
                                      <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
@@ -101,7 +101,7 @@
                      </v-row>
                      <v-row v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
                          <v-col cols="12" md="2">
-                             <v-btn color="success" @click="showModalAgregarTipoItem()">NUEVO TIPO DE ITEM</v-btn>  
+                             <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA CATEGORÍA</v-btn>  
                          </v-col>
                          <v-col cols="12" md="12">
                             <v-btn color="primary" @click="showModalActivarTipo()">LISTA DE ITEMS DESACTIVADOS</v-btn>
@@ -109,16 +109,16 @@
                          <v-col cols="12">
                              <v-list-item>
                                  <v-list-item-title class="text-center">
-                                     <h5>TIPOS DE ITEM</h5>
+                                     <h5>CATEGORÍAS</h5>
                                  </v-list-item-title>
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="BUSCAR TIPO DE ITEM"
+                                <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR TIPO DE ITEM"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
-                             <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItem" :search="searchTipoItem"
+                             <v-data-table :headers="headerCategoria" :items="datosCategoria" :search="searchCategoria"
                                  :items-per-page="5" class="elevation-1" id="tableId">
  
                                  <template #[`item.estado`]="{ item }">
@@ -128,16 +128,64 @@
                                  </template>
  
                                  <template #[`item.actions`]="{ item }">
-                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposTipoItem(item)"
-                                         title="ACTUALIZAR INFORMACION">
+                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposCategoria(item)"
+                                         title="ACTUALIZAR INFORMACIÓN">
                                          mdi-pencil
                                      </v-icon>
                                      <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
-                                         title="ACTIVAR STAND">
+                                         title="ACTIVAR CATEGORÍA">
                                          mdi-check-circle-outline
                                      </v-icon>
                                      <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionTip(item)"
-                                         title="DESACTIVAR STAND">
+                                         title="DESACTIVAR CATEGORÍA">
+                                         mdi-close-circle
+                                     </v-icon>             
+                                 </template>
+ 
+                               
+ 
+ 
+                             </v-data-table>
+                         </v-col>
+                     </v-row>
+
+                     <v-row v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
+                         <v-col cols="12" md="2">
+                             <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA SUBCATEGORÍA</v-btn>  
+                         </v-col>
+                        
+                         <v-col cols="12">
+                             <v-list-item>
+                                 <v-list-item-title class="text-center">
+                                     <h5>SUBCATEGORÍAS</h5>
+                                 </v-list-item-title>
+                             </v-list-item>
+ 
+                             <v-card-title>
+                                <v-text-field v-model="searchSubcategoria" append-icon="mdi-magnify" label="BUSCAR TIPO DE ITEM"
+                                     single-line hide-details></v-text-field>
+                             </v-card-title>
+ 
+                             <v-data-table :headers="headerSubCategoria" :items="datosSubCategoria" :search="searchSubcategoria"
+                                 :items-per-page="5" class="elevation-1" id="tableId">
+ 
+                                 <template #[`item.estado`]="{ item }">
+                                     <v-chip :color="getColor(item.estado)" dark>
+                                         {{ item.estado }}
+                                     </v-chip>
+                                 </template>
+ 
+                                 <template #[`item.actions`]="{ item }">
+                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposSubcategoria(item)"
+                                         title="ACTUALIZAR INFORMACIÓN">
+                                         mdi-pencil
+                                     </v-icon>
+                                     <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
+                                         title="ACTIVAR SUBCATEGORÍA">
+                                         mdi-check-circle-outline
+                                     </v-icon>
+                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionSub(item)"
+                                         title="DESACTIVAR SUBCATEGORÍA">
                                          mdi-close-circle
                                      </v-icon>             
                                  </template>
@@ -347,13 +395,13 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchTipoItem" append-icon="mdi-magnify" label="BUSCAR TIPOS DISPONIBLES"
+                                    <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR TIPOS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItem" :search="searchTipoItem"
+                                <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItem" :search="searchCategoria"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon small class="mr-2" @click="seleccionarTipo(item)">
@@ -957,7 +1005,7 @@
              valor:0,
  
              buscarTipoItem: "",
-             searchTipoItem: "",
+             searchCategoria: "",
              agregarCategoriaModal: false,
              confirmacionAnulacionTipo: false,
 
@@ -1888,7 +1936,7 @@
 
 
 
-        llenarCamposTipoItem(item) {
+        llenarCamposCategoria(item) {
             this.botonActTT = 1;
             this.idTipoItem = item.idtipodeitem;
             this.nombreCategoria = item.nombretipoitem;
@@ -2055,7 +2103,7 @@
         },
 
 
-        showModalAgregarTipoItem(){
+        showModalAgregarCategoria(){
             this.agregarCategoriaModal = true;
             this.botonActTT = 0;  
         },
