@@ -1109,10 +1109,7 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarCotizacionesAdquisicion();
                     me.listarCotizacionesAdquisicionPendientes();
-                    me.listarCotizacionesItem();
-                    me.closeModalAgregarCotizacionAdquisicion();
                     me.limpiar();
 
                 })
@@ -1164,10 +1161,8 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarCotizacionesAdquisicion();
                     me.listarCotizacionesAdquisicionPendientes();
                     me.listarCotizacionesItem();
-                    me.closeModalAgregarCotizacionAdquisicion();
                     me.limpiar();
 
                 })
@@ -1614,6 +1609,7 @@ export default {
                 this.fechaVencimiento = item.fechaVencimiento;
                 this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'ACTIVO');
                 this.limpiar();
+                this.listarCotizacionesAdquisicionPendientes();
             }
           
 
@@ -1626,6 +1622,7 @@ export default {
             this.fechaVencimiento = item.fechaVencimiento;
             this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'INACTIVO');
             this.limpiar();
+            this.listarCotizacionesAdquisicionPendientes();
         },
 
 
