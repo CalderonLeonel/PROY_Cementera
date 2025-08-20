@@ -337,264 +337,6 @@
                 </v-card-text>
             </v-card>
         </v-dialog>  
-        
-
-        <v-dialog v-model="itemAlmacenModal" persistent :overlay="false" max-width="900px">
-            <v-card elevation="5" outlined shaped>
-                <v-card-title>
-                    <span>LISTA DE ITEMS DISPONIBLES EN EL ALMACÉN</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12">
-                                <v-card-title>
-                                    <v-text-field v-model="searchItemAlmacen" append-icon="mdi-magnify" label="BUSCAR ITEMS DISPONIBLES"
-                                        single-line hide-details></v-text-field>
-                                </v-card-title>
-                            </v-col>
-
-                            <v-col cols="12">
-                                <v-data-table :headers="headerItemAlmacen" :items="datosStock" :search="searchItemAlmacen"
-                                    :items-per-page="5" class="elevation-1" id="tableId">
-                                    <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarItemAlmacen(item)">
-                                            mdi-check-circle
-                                        </v-icon>
-                                    </template>
-                                </v-data-table>
-                            </v-col>
-                            <v-col cols="10"></v-col>
-                            <v-col cols="2">
-                                <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeItemAlmacenModal()" style="float: right"
-                                        title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
-                              
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-card-text>
-            </v-card>
-        </v-dialog>       
-
-
-
-         <v-dialog v-model="agregarInventarioModal" persistent :overlay="false" max-width="1000px">
-            <v-card elevation="5" outlined>
-                <v-card-title>
-                    <span>GESTIÓN DE TRANSACCIONES DE INVENTARIO</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-form ref="form" v-model="valid" lazy-validation>
-                        <v-container>
-                            <v-row>
-                                <v-col cols="12" md="12">
-                                    <v-combobox
-                                    label="MOVIMIENTO" v-model="movimiento" @input="movimiento = movimiento.toUpperCase()" required
-                                    :items="['ENTRADA', 'SALIDA']"
-                                    ></v-combobox>
-                                </v-col>     
-                                <v-col cols="12" md="11" v-if="movimiento=='ENTRADA'">
-                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM"
-                                        :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
-                                        disabled required></v-text-field>
-                                </v-col>
-
-                                <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null'
-                                        @click="openItemDispModal()" style="float: right" title="BUSCAR ITEM">
-                                        <v-icon dark> mdi-magnify </v-icon>
-                                    </v-btn>
-                                </v-col> 
-
-                                <v-col cols="12" md="11" v-if="movimiento=='ENTRADA'">
-                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACÉN"
-                                        :rules="nombreAlmacenRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
-                                        disabled required></v-text-field>
-                                </v-col>
-
-                                <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null' 
-                                        @click="openAlmacenModal()" style="float: right" title="BUSCAR ALMACÉN">
-                                        <v-icon dark> mdi-magnify </v-icon>
-                                    </v-btn>
-                                </v-col>  
-                                <v-col cols="12" md="4" v-if="movimiento=='ENTRADA'">
-                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadEntradaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
-                                         @input="cantidad = cantidad.toUpperCase()"
-                                        required></v-text-field>
-                                </v-col>      
-                                
-                                
-
-
-                             
-
-                                <v-col cols="12" md="11" v-if="movimiento=='SALIDA'">
-                                    <v-text-field v-model="nombreAlmacen" label="NOMBRE ALMACÉN"
-                                        :rules="nombreAlmacenRules" @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
-                                        disabled required></v-text-field>
-                                </v-col>
-
-                                <v-col cols="12" md="1" v-if="movimiento=='SALIDA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null' 
-                                        @click="openAlmacenConStockModal()" style="float: right" title="BUSCAR ALMACENES CON STOCK">
-                                        <v-icon dark> mdi-magnify </v-icon>
-                                    </v-btn>
-                                </v-col>   
-                                
-                                <v-col cols="12" md="11" v-if="movimiento=='SALIDA'">
-                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM"
-                                        :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
-                                        disabled required></v-text-field>
-                                </v-col>
-
-                                <v-col cols="12" md="1" v-if="movimiento=='SALIDA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreAlmacenRules" :disabled='movimiento==null || nombreAlmacen==""' 
-                                        @click="openItemAlmacenModal()" style="float: right" title="BUSCAR ITEM">
-                                        <v-icon dark> mdi-magnify </v-icon>
-                                    </v-btn>
-                                </v-col> 
-                               
-                                <v-col cols="12" md="4" v-if="movimiento=='SALIDA'">
-                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadSalidaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
-                                         @input="cantidad = cantidad.toUpperCase()"
-                                        required></v-text-field>
-                                </v-col>   
-
-                                <v-col cols="12" sm="4" md="12"></v-col>
-                                   
-                                <v-col cols="12" sm="4" md="4">
-                                    <v-toolbar dense shaped >
-                                        <v-toolbar-title>
-                                            <h6>
-                                                OPCIONES:
-                                            </h6>
-                                        </v-toolbar-title>
-                                        <v-col cols="2">
-                                            <v-btn icon v-if="botonActInv == 1" color="#0A62BF" @click="editarInv()" :disabled='movimiento==null'
-                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
-                                                <v-icon dark> mdi-pencil </v-icon>
-                                            </v-btn>
-                                            <v-btn icon v-if="botonActInv == 0" color="#0ABF55" @click="registrarInv()" :disabled='movimiento==null'
-                                                style="float: left" title="REGISTRAR TRANSACCIÓN" class="mx-2" large>
-                                                <v-icon dark> mdi-content-save </v-icon>
-                                            </v-btn>
-                                        </v-col>
-                                        <v-col cols="2">
-                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large :disabled='movimiento==null'
-                                                class="mx-2" title="LIMPIAR FORMULARIO">
-                                                <v-icon dark> mdi-eraser </v-icon>
-                                            </v-btn>
-                                        </v-col>
-                                    </v-toolbar>
-                                </v-col>
-                               
-                                <v-col cols="8">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeModalAgregarTransaccion()" style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                    </v-form>
-
-                </v-card-text>
-            </v-card>
-        </v-dialog>
-
-         <v-dialog v-model="almacenModal" persistent :overlay="false" max-width="900px">
-            <v-card elevation="5" outlined shaped>
-                <v-card-title>
-                    <span>LISTA DE ALMACENES ACTIVOS</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12">
-                                <v-card-title>
-                                    <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACENES ACTIVOS"
-                                        single-line hide-details></v-text-field>
-                                </v-card-title>
-                            </v-col>
-
-                            <v-col cols="12">
-                                <v-data-table :headers="headerAlmacen" :items="datosAlmacen" :search="searchAlmacen"
-                                    :items-per-page="5" class="elevation-1" id="tableId">
-                                    <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarAlmacen(item)">
-                                            mdi-check-circle
-                                        </v-icon>
-                                    </template>
-                                </v-data-table>
-                            </v-col>
-                            <v-col cols="10"></v-col>
-                            <v-col cols="2">
-                                <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeAlmacenModal()" style="float: right"
-                                        title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
-                               
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-card-text>
-            </v-card>
-        </v-dialog>   
-
-
-        <v-dialog v-model="almacenConStockModal" persistent :overlay="false" max-width="900px">
-            <v-card elevation="5" outlined shaped>
-                <v-card-title>
-                    <span>LISTA DE ALMACENES CON ITEMS</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12">
-                                <v-card-title>
-                                    <v-text-field v-model="searchAlmacenConStock" append-icon="mdi-magnify" label="BUSCAR ALMACENES"
-                                        single-line hide-details></v-text-field>
-                                </v-card-title>
-                            </v-col>
-
-                            <v-col cols="12">
-                                <v-data-table :headers="headerAlmacen" :items="datosAlmacenConStock" :search="searchAlmacenConStock"
-                                    :items-per-page="5" class="elevation-1" id="tableId">
-                                    <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarAlmacen(item)">
-                                            mdi-check-circle
-                                        </v-icon>
-                                    </template>
-                                </v-data-table>
-                            </v-col>
-                            <v-col cols="10"></v-col>
-                            <v-col cols="2">
-                                <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeAlmacenConStockModal()" style="float: right"
-                                        title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
-                              
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-card-text>
-            </v-card>
-        </v-dialog>   
-
-
-       
-
-
         <v-dialog v-model="tipoModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
@@ -1225,14 +967,32 @@
  
              datosItem: [],
              headerItem: [
-                 
+                 { text: "CÓDIGO SKU", value: "sku", sortable: true },
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "CATEGORÍA", value: "categoria", sortable: true },
+                 { text: "SUBCATEGORÍA", value: "subcategoria", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
+                 { text: "PROVEEDOR", value: "proveedor", sortable: true },
+                 { text: "FECHA EXP.", value: "fechaexp", sortable: true },
+                 { text: "COSTO REF", value: "costoref", sortable: true },
+                 { text: "ACCIONES", value: "actions", sortable: false }
+                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+             ],
+
+            datosCategoria: [],
+            headerCategoria: [  
+                 { text: "CATEGORÍA", value: "categoria", sortable: true },
+                 { text: "ACCIONES", value: "actions", sortable: false }
+                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+             ],
+
+            datosSubCategoria: [],
+            headerSubCategoria: [  
+                 { text: "CATEGORÍA", value: "categoria", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
@@ -1241,8 +1001,8 @@
              datosTipoDeItemInactivos: [],
              headerTipoDeItem: [
                  
-                 { text: "NOMBRE DE TIPO DE ITEM", value: "nombretipoitem", sortable: true },
-                 { text: "ESTADO", value: "estado", sortable: true },
+                 { text: "SUBCATEGORÍA", value: "subcategoria", sortable: true },
+                 { text: "CATEGORÍA", value: "categoria", sortable: false },
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
