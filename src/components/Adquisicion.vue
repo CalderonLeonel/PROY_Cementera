@@ -276,12 +276,12 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-col cols="2">
-                                            <v-btn icon v-if="botonactCot == 1" color="#0A62BF"
+                                            <v-btn icon v-if="botonactCot == 1 && checkAccess(9, 'SUPERVISOR')" color="#0A62BF"
                                                 @click="editarCotizacionAdq()" style="float: left"
                                                 title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
-                                            <v-btn icon v-if="botonactCot == 0" color="#0ABF55"
+                                            <v-btn icon v-if="botonactCot == 0 && checkAccess(9, 'SUPERVISOR')" color="#0ABF55"
                                                 @click="registrarCotizacionAdq()" style="float: left"
                                                 title="REGISTRAR COTIZACIÓN DE ADQUISICIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
@@ -309,7 +309,7 @@
                                                 <v-icon dark> mdi-eye </v-icon>
                                             </v-btn>
                                         </v-col>
-                                        <v-col cols="2" icon v-if="botonactCot == 1 || cotizacionItem.estado == 'PENDIENTE'">
+                                        <v-col cols="2" icon v-if="botonactCot == 1 || cotizacionItem.estado == 'PENDIENTE' && checkAccess(9, 'SUPERVISOR')"">
                                               <v-btn icon color="primary"
                                                 @click="agregarItem(cotizacionItem)" style="float: left"
                                                 title="AGREGAR ITEMS" class="mx-2" large>
