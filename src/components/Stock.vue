@@ -95,44 +95,6 @@
                          <v-col cols="12">
                              <v-list-item>
                                  <v-list-item-title class="text-center">
-                                     <h5>STOCK DE ALMACENES CON PRODUCTOS</h5>
-                                 </v-list-item-title>
-                             </v-list-item>
- 
-                             <v-card-title>
-                                <v-text-field v-model="searchProductoAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACENES"
-                                     single-line hide-details></v-text-field>
-                             </v-card-title>
- 
-                             <v-data-table :headers="headerAlmacen" :items="datosProductoAlmacen" :search="searchProductoAlmacen"
-                                 :items-per-page="5" class="elevation-1" id="tableId">
- 
-                        
- 
-                                 <template #[`item.actions`]="{ item }">
-                                     <v-icon x-large color="primary" class="mr-2" @click="mostrarProductos(item)"
-                                         title="VER STOCK DE ALMACÉN">
-                                         mdi-eye
-                                     </v-icon>  
-                                     <v-icon  x-large color="primary" class="mr-2" @click="exportToPDFProductDetailed(item)"
-                                         title="GENERAR PDF DE STOCK">
-                                         mdi-file-pdf-box
-                                     </v-icon>                 
-                                 </template>
-
-                                
- 
-                               
- 
- 
-                             </v-data-table>
-                         </v-col>
-                     </v-row>
-
-                     <v-row>
-                         <v-col cols="12">
-                             <v-list-item>
-                                 <v-list-item-title class="text-center">
                                      <h5>SALDO GENERAL DE ITEMS POR ALMACEN</h5>
                                  </v-list-item-title>
                              </v-list-item>

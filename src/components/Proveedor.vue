@@ -135,6 +135,17 @@
                                         :rules="nombreRules" @input="nombreProveedor = nombreProveedor"
                                         required></v-text-field>
                                 </v-col>
+                                 <v-col cols="12" md="6">
+                                    <v-text-field v-model="nombreRazon" label="RAZÓN SOCIAL" :counter="60"
+                                        :rules="nombreRazon" @input="nombreRazon = nombreRazon"
+                                        required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="6">
+                                    <v-text-field v-model="numeroNIT" type="number" label="NIT" :counter="10"
+                                        :rules="nitRules" @input="numeroNIT = numeroNIT"
+                                        required></v-text-field>
+                                </v-col>
+                                 
                                 <v-col cols="12" md="6">
                                     <v-text-field v-model="contactoProveedorPrincipal" type="number" label="CONTACTO" :counter="10"
                                         :rules="phone1Rules" @input="contactoProveedorPrincipal = contactoProveedorPrincipal"
@@ -149,6 +160,26 @@
                                     <v-text-field v-model="correoProveedor" type="email" label="CORREO" :counter="100"
                                         :rules="emailRules" @input="correoProveedor = correoProveedor"
                                         required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" @click="showPaises()"
+                                        style="float: right" title="BUSCAR PAISES">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="5">
+                                    <v-text-field v-model="pais" label="NOMBRE PAIS" :counter="50" :rules="paisRules"
+                                        @input="pais = pais.toUpperCase()" disabled required></v-text-field>
+                                </v-col>
+                                 <v-col cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" @click="showCategorias()"
+                                        style="float: right" title="BUSCAR CATEGORÍAS">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" md="5">
+                                    <v-text-field v-model="categoria" label="NOMBRE CATEGORÍA" :counter="50" :rules="categoriaRules"
+                                        @input="categoria = categoria.toUpperCase()" disabled required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
                                     <v-file-input v-model="documentoArchivo"
@@ -228,8 +259,61 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+
+             <v-dialog v-model="paisesModal" max-width="900px" lazy-validation persistent>
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>PAISES</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-list-item>
+                                        <v-list-item-title class="text-center">
+                                            <h5>PAISES</h5>
+                                        </v-list-item-title>
+                                    </v-list-item>
+                                    <v-col cols="12">
+                                        <v-card-title>
+                                            <v-text-field v-model="buscarPaises" append-icon="mdi-magnify"
+                                                label="BUSCAR PAISES" single-line hide-details></v-text-field>
+                                        </v-card-title>
+                                    </v-col>
+                                    <v-data-table :headers="headersPais" :items="datosPais" :search="buscarPaises"
+                                        :items-per-page="5" class="elevation-1" id="tableId">
+
+                                        <template #[`item.actions`]="{ item }">
+                                            <v-icon large class="mr-2" @click="seleccionarPais(item)" color="#0091EA"
+                                                title="SELECCIONAR PAIS">
+                                                mdi-check-circle
+                                            </v-icon>
+                                        </template>
+                                    </v-data-table>
+                                </v-col>
+                                <v-col cols="12" sm="4" md="4">
+
+                                </v-col>
+                                <v-col cols="8">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closePaises()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+
+                            </v-row>
+                        </v-container>
+                    </v-form>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+        
     </v-card>
     
+
+
 
 </template>
 <script>
@@ -283,6 +367,10 @@ export default {
             headerProveedor: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
                 { text: "NOMBRE DE PROVEEDOR", value: "nomprv", sortable: true },
+                { text: "NIT", value: "nit", sortable: true },
+                { text: "RAZÓN SOCIAL", value: "raz", sortable: true },
+                { text: "CATEGORÍA", value: "cat", sortable: true },
+                { text: "PAIS", value: "pais", sortable: true },
                 { text: "CONTACTO PRINCIPAL DE PROVEEDOR", value: "cto1pro", sortable: true },
                 { text: "CONTACTO SECUNDARIO DE PROVEEDOR", value: "cto2pro", sortable: true },
                 { text: "CORREO DE PROVEEDOR", value: "croprov", sortable: true },

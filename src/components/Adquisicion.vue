@@ -46,8 +46,7 @@
 
                     <v-row>
                         <v-col cols="12" md="4">
-                            <v-btn color="success" @click="showModalAgregarCotizacionAdquisicion()">NUEVA COTIZACIÓN DE
-                                ADQUISICIONES</v-btn>
+                            <v-btn color="success" @click="showModalAgregarCotizacionAdquisicion()">NUEVA COTIZACIÓN</v-btn>
                         </v-col>
                         <v-col cols="12">
                             <v-list-item>
@@ -88,17 +87,8 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.estado == 'PENDIENTE'" x-large color="primary" class="mr-2" @click="agregarItem(item)"
-                                        title="AGREGAR ITEMS">
-                                        mdi-playlist-plus
-                                    </v-icon>
                                     <v-icon v-if="item.estado == 'PENDIENTE'" class="mr-2" color="primary" x-large
                                         @click="llenarCamposCotizacionAdquisicion(item)" title="ACTUALIZAR INFORMACION">
-                                        mdi-pencil
-                                    </v-icon>
-                                   
-                                    <v-icon x-large color="primary" class="mr-2" @click="mostrarItems(item)"
-                                        title="VER ITEMS">
                                         mdi-eye
                                     </v-icon>
                                     <v-icon v-if="item.estado != 'PENDIENTE'" class="mr-2" color="primary" x-large @click="exportToPDFDetailed(item)"
@@ -286,17 +276,49 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-col cols="2">
-                                            <v-btn icon v-if="botonactCot == 1" color="#0A62BF"
+                                            <v-btn icon v-if="botonactCot == 1 && checkAccess(9, 'SUPERVISOR')" color="#0A62BF"
                                                 @click="editarCotizacionAdq()" style="float: left"
                                                 title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
-                                            <v-btn icon v-if="botonactCot == 0" color="#0ABF55"
+                                            <v-btn icon v-if="botonactCot == 0 && checkAccess(9, 'SUPERVISOR')" color="#0ABF55"
                                                 @click="registrarCotizacionAdq()" style="float: left"
                                                 title="REGISTRAR COTIZACIÓN DE ADQUISICIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn> 
+                                        </v-col> 
+                                        <v-col cols="2" v-if="botonactCot == 1 && checkAccess(9, 'GERENTE')">
+                                             <v-btn icon  color="green"
+                                                @click="aprobarAdquisicion(cotizacionItem)" style="float: left"
+                                                title="APROBAR" class="mx-2" large>
+                                                <v-icon dark> mdi-check-circle </v-icon>
+                                            </v-btn>
+                                        </v-col> 
+                                        <v-col cols="2" v-if="botonactCot == 1 && checkAccess(9, 'GERENTE')">
+                                             <v-btn icon  color="red"
+                                                @click="denegarAdquisicion(cotizacionItem)" style="float: left"
+                                                title="DENEGAR" class="mx-2" large>
+                                                <v-icon dark> mdi-close-circle </v-icon>
                                             </v-btn>
                                         </v-col>
+                                       
+                                        <v-col cols="2" v-if="botonactCot == 1">
+                                             <v-btn icon  color="primary"
+                                                @click="mostrarItems(cotizacionItem)" style="float: left"
+                                                title="VER ITEMS" class="mx-2" large>
+                                                <v-icon dark> mdi-eye </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2" icon v-if="botonactCot == 1 || cotizacionItem.estado == 'PENDIENTE' && checkAccess(9, 'SUPERVISOR')"">
+                                              <v-btn icon color="primary"
+                                                @click="agregarItem(cotizacionItem)" style="float: left"
+                                                title="AGREGAR ITEMS" class="mx-2" large>
+                                                <v-icon dark> mdi-playlist-plus </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        
+
+                                               
                                         <v-col cols="2">
                                             <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
                                                 class="mx-2" title="LIMPIAR FORMULARIO">
@@ -516,8 +538,9 @@
                                             <v-btn icon v-if="botonactCotIt == 0" color="#0ABF55" :disabled='nombreCotizacion==null'
                                                 @click="registrarCotizacionIt()" style="float: left"
                                                 title="REGISTRAR COTIZACIÓN DE ITEM" class="mx-2" large>
-                                                <v-icon dark> mdi-content-save </v-icon>
+                                                <v-icon dark> mdi-playlist-plus </v-icon>
                                             </v-btn>
+                                         
                                         </v-col>
                                         <v-col cols="2">
                                             <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
@@ -669,6 +692,8 @@ export default {
             itemsCriticos: '',
             datosExistencia: [],
 
+            cotizacionItem : [],
+
 
             documentoArchivo: '',
 
@@ -800,15 +825,21 @@ export default {
             itemModal: false,
             datosItem: [],
             headerItem: [
-
-                { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
-                { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                { text: "MEDIDA", value: "medida", sortable: true },
-                { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
-                { text: "ESTADO", value: "estado", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false }
-                //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
-            ],
+                 { text: "CÓDIGO SKU", value: "sku", sortable: true },
+                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
+                 { text: "MEDIDA", value: "medida", sortable: true },
+                 { text: "CATEGORÍA", value: "categoria", sortable: true },
+                 { text: "SUBCATEGORÍA", value: "subcategoria", sortable: true },
+                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
+                 { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
+                 { text: "ESTADO", value: "estado", sortable: true },
+                 { text: "PROVEEDOR", value: "proveedor", sortable: true },
+                 { text: "FECHA EXP.", value: "fechaexp", sortable: true },
+                 { text: "COSTO REF", value: "costoref", sortable: true },
+                 { text: "ACCIONES", value: "actions", sortable: false }
+                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+             ],
 
 
 
@@ -1123,7 +1154,7 @@ export default {
             var formatted = item.fechaVencimiento;
             this.fechaVencimiento = this.changeFormatField(formatted);
             this.estado = item.estado;
-            
+            this.cotizacionItem = item;
             this.agregarCotizacionAdquisicionModal = true;
         },
 
@@ -1276,8 +1307,9 @@ export default {
                     me.listarCotizacionesAdquisicion();
                     me.listarCotizacionesAdquisicionPendientes();
                     me.listarCotizacionesItem();
-                    me.closeModalAgregarCotizacionAdquisicion();
                     me.limpiar();
+                    me.closeModalAgregarCotizacionAdquisicion();
+
 
                 })
                 .catch(function (error) {
@@ -1328,8 +1360,9 @@ export default {
                     me.listarCotizacionesAdquisicion();
                     me.listarCotizacionesAdquisicionPendientes();
                     me.listarCotizacionesItem();
-                    me.closeModalAgregarCotizacionAdquisicion();
                     me.limpiar();
+                    me.closeModalAgregarCotizacionAdquisicion();
+                  
 
                 })
                 .catch(function (error) {
@@ -1489,6 +1522,7 @@ export default {
         editarCotizacionIt() {
             if (this.$refs.form.validate()) {
                 this.editarCotizacionItem(this.idCotizacionItem, this.idCotizacion, this.idItem, this.precioUnitario, this.cantidad, 'ACTIVO');
+                this.listarDetallesCotizacion(this.cotizacionItem.idCotizacion);
                 this.botonactCotIt = 0;
             }
         },
@@ -1773,8 +1807,9 @@ export default {
                 this.idProveedor = item.idProveedor;
                 this.nombreCotizacion = item.nombreCotizacion;
                 this.fechaVencimiento = item.fechaVencimiento;
-                this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'ACTIVO');
                 this.limpiar();
+                this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'ACTIVO');
+                
             }
           
 
@@ -1785,8 +1820,9 @@ export default {
             this.idProveedor = item.idProveedor;
             this.nombreCotizacion = item.nombreCotizacion;
             this.fechaVencimiento = item.fechaVencimiento;
-            this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'INACTIVO');
             this.limpiar();
+            this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'INACTIVO');
+            
         },
 
 
