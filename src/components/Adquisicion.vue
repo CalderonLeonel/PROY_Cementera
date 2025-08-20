@@ -287,14 +287,14 @@
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn> 
                                         </v-col> 
-                                        <v-col cols="2" v-if="botonactCot == 1">
+                                        <v-col cols="2" v-if="botonactCot == 1 && checkAccess(9, 'GERENTE')">
                                              <v-btn icon  color="green"
                                                 @click="aprobarAdquisicion(cotizacionItem)" style="float: left"
                                                 title="APROBAR" class="mx-2" large>
                                                 <v-icon dark> mdi-check-circle </v-icon>
                                             </v-btn>
                                         </v-col> 
-                                        <v-col cols="2" v-if="botonactCot == 1">
+                                        <v-col cols="2" v-if="botonactCot == 1 && checkAccess(9, 'GERENTE')">
                                              <v-btn icon  color="red"
                                                 @click="denegarAdquisicion(cotizacionItem)" style="float: left"
                                                 title="DENEGAR" class="mx-2" large>
