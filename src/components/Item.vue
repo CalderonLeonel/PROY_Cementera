@@ -408,8 +408,8 @@
                                     ></v-select>
                                 </v-col>    
                                 <v-col v-if="botonActIt == 0" cols="12" md="3">
-                                    <v-text-field v-model="nombreTipoITem" label="NOMBRE TIPO ITEM" :counter="60"
-                                        :rules="nombreTipoRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
+                                    <v-text-field v-model="nombreCategoria" label="NOMBRE TIPO ITEM" :counter="60"
+                                        :rules="nombreCategoriaRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
                                 <v-col v-if="botonActIt == 0" cols="12" md="1">
@@ -473,18 +473,18 @@
             </v-card>
         </v-dialog>
 
-         <v-dialog v-model="agregarTipoItemModal" persistent :overlay="false" max-width="1000px">
+         <v-dialog v-model="agregarCategoriaModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>GESTIÓN DE TIPO DE ITEMS</span>
+                    <span>CATEGORÍA</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="nombreTipoITem" label="NOMBRE TIPO ITEM" :counter="60"
-                                        :rules="nombreTipoRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
+                                    <v-text-field v-model="nombreCategoria" label="NOMBRE CATEGORÍA" :counter="60"
+                                        :rules="nombreCategoriaRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>                         
                                 <v-col cols="12" md="12"> </v-col>
@@ -528,6 +528,64 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+
+
+         <v-dialog v-model="agregarSubcategoria" persistent :overlay="false" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>SUBCATEGORÍAS</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="nombreCategoria" label="NOMBRE TIPO ITEM" :counter="60"
+                                        :rules="nombreCategoriaRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>                         
+                                <v-col cols="12" md="12"> </v-col>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped >
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonActTT == 1" color="#0A62BF" @click="editarTipo()"
+                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarTipo()" 
+                                                style="float: left" title="REGISTRAR TIPO DE ITEM" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large 
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
+                                </v-col>
+
+                                <v-col cols="8">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeModalAgregarTipoItem()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+        
 
         <v-dialog v-model="confirmacionAnulacionTipo" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
@@ -590,197 +648,12 @@
         </v-dialog>
 
 
-        <v-dialog v-model="confirmacionAnulacionInventario" persistent :overlay="false" max-width="1000px">
-            <v-card elevation="5" outlined>
-                <v-card-title>
-                    <span>¿ESTAS SEGURO?</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-container>
-                            <v-row>
-                                <v-col cols="3"></v-col>
-                                <v-col cols="3">
-                                    <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anularInventario()" style="float: right" title="ANULAR INVENTARIO">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        ANULAR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="3">
-                                    <v-btn class="mx-2"  dark x-big color="#00A1B1"
-                                        @click="closeAnulacionInventario()" style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="3"></v-col>
-                            </v-row>
-                    </v-container>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
-
-        <v-dialog v-model="revalorizarInventario" persistent :overlay="false" max-width="1000px">
-            <v-card elevation="5" outlined>
-                <v-card-title>
-                    <span>GESTIÓN DE REVALORARIZACIÓN DE INVENTARIO</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-form ref="form" v-model="valid" lazy-validation>
-                        <v-container>
-                            <v-row>
-                                <v-col cols="12" md="11">
-                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM"
-                                        :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
-                                        disabled required></v-text-field>
-                                </v-col>
-
-                                <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
-                                        @click="openItemPrecioModal()" style="float: right" title="BUSCAR ITEM">
-                                        <v-icon dark> mdi-magnify </v-icon>
-                                    </v-btn>
-                                </v-col>        
-                                <v-col cols="12" md="4">
-                                    <v-text-field v-model="valor" label="NUEVO VALOR" type="number" :counter="25"
-                                         @input="valor = valor.toUpperCase()" :rules="valorRules"
-                                        required></v-text-field>
-                                </v-col>     
-                        
-                                    
-                                <v-col cols="12" md="12"> </v-col>
-                                <v-col cols="12" sm="4" md="4">
-                                    <v-toolbar dense shaped >
-                                        <v-toolbar-title>
-                                            <h6>
-                                                OPCIONES:
-                                            </h6>
-                                        </v-toolbar-title>
-                                        <v-col cols="2">
-                                            <v-btn icon color="#0ABF55" @click="registrarPrecioItem()" 
-                                                style="float: left" title="REGISTRAR NUEVO PRECIO" class="mx-2" large>
-                                                <v-icon dark> mdi-content-save </v-icon>
-                                            </v-btn>
-                                        </v-col>
-                                        <v-col cols="2">
-                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large 
-                                                class="mx-2" title="LIMPIAR FORMULARIO">
-                                                <v-icon dark> mdi-eraser </v-icon>
-                                            </v-btn>
-                                        </v-col>
-                                    </v-toolbar>
-                                </v-col>
-                                
-                                <v-col cols="8">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeRevalorizarInventarioModal()" style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                    </v-form>
-
-                </v-card-text>
-            </v-card>
-        </v-dialog>
+        
+     
 
 
-        <v-dialog
-            v-model="detalleStockDialog"
-            persistent :overlay="false"
-            max-width="900px"
-            transition="dialog-transition"
-        >
-            <v-card>
-                <v-card-title primary-title>
-                    CONTENIDO
-                </v-card-title>
-            </v-card>
-            <v-card>
-                    <v-data-table :headers="headerStock" :items="datosStock"
-                        :items-per-page="5" class="elevation-1">
-                    </v-data-table>
-            </v-card>
-            <v-card>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeDetalleStock()" style="float: right"
-                                        title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
-               
-                    <v-spacer></v-spacer>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
 
-        <v-dialog
-            v-model="detalleProductosAlmacenados"
-            persistent :overlay="false"
-            max-width="900px"
-            transition="dialog-transition"
-        >
-            <v-card>
-                <v-card-title>
-                    <v-text-field v-model="searchProductoAlmacen" append-icon="mdi-magnify" label="BUSCAR PRODUCTO"
-                        single-line hide-details></v-text-field>
-                </v-card-title>
-            </v-card>
-            <v-card>
-                    <v-data-table :headers="headerProductos" :items="datosProductos" :search="searchProductoAlmacen"
-                        :items-per-page="5" class="elevation-1">
-                    </v-data-table>
-            </v-card>
-            <v-card>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeDetalleAlmacenamientoProducto()" style="float: right"
-                                        title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
-               
-                    <v-spacer></v-spacer>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-
-        <v-dialog
-            v-model="saldoAlmacenItemModal"
-            persistent :overlay="false"
-            max-width="900px"
-            transition="dialog-transition"
-        >
-            <v-card>
-                <v-card-title>
-                    <v-text-field v-model="searchAlmacen" append-icon="mdi-magnify" label="BUSCAR ALMACÉN"
-                        single-line hide-details></v-text-field>
-                </v-card-title>
-            </v-card>
-            <v-card>
-                    <v-data-table :headers="headerSaldoAlmacenItem" :items="datosSaldoAlmacenItem" :search="searchAlmacen"
-                        :items-per-page="5" class="elevation-1">
-                    </v-data-table>
-            </v-card>
-            <v-card>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeSaldoAlmacenItemModal()" style="float: right"
-                                        title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
-                 
-                    <v-spacer></v-spacer>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+       
 
 
      </v-card>
@@ -827,7 +700,7 @@
              estIt:"",
 
              idTipoItem:"",
-             nombreTipoITem: "",
+             nombreCategoria: "",
              estTT: "",
 
             estado: "ACTIVO",
@@ -844,7 +717,7 @@
                (v && v.length <= 60) ||
                  "EL NOMBRE DEL ITEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
-             nombreTipoRules: [
+             nombreCategoriaRules: [
                (v) => !!v || "SE REQUIERE EL NOMBRE DEL TIPO DE ITEM.",
                (v) =>
                (v && v.length <= 60) ||
@@ -1074,7 +947,7 @@
  
              buscarTipoItem: "",
              searchTipoItem: "",
-             agregarTipoItemModal: false,
+             agregarCategoriaModal: false,
              confirmacionAnulacionTipo: false,
 
 
@@ -1685,7 +1558,7 @@
 
          registrarTipo() {
             if (this.$refs.form.validate()) {
-                this.registrarTipos(this.nombreTipoITem, this.estado);
+                this.registrarTipos(this.nombreCategoria, this.estado);
             }            
         },
         async registrarTipos(
@@ -1696,7 +1569,7 @@
             await axios
                 .post(
                     "/inventario/agregartipodeitem/" +
-                    this.nombreTipoITem +
+                    this.nombreCategoria +
                     "," +
                     this.estado
                 )
@@ -1716,7 +1589,7 @@
 
         editarTipo() {
             if (this.$refs.form.validate()) {
-            this.editarTipo( this.idTipoItem,this.nombreTipoITem, this.estado);
+            this.editarTipo( this.idTipoItem,this.nombreCategoria, this.estado);
             this.botonActTT = 0;
             }
         },
@@ -1731,7 +1604,7 @@
                     "/inventario/actualizartipodeitem/" +
                     this.idTipoItem +
                     "," +
-                    this.nombreTipoITem +
+                    this.nombreCategoria +
                     "," +
                     this.estado
                 )
@@ -2007,9 +1880,9 @@
         llenarCamposTipoItem(item) {
             this.botonActTT = 1;
             this.idTipoItem = item.idtipodeitem;
-            this.nombreTipoITem = item.nombretipoitem;
+            this.nombreCategoria = item.nombretipoitem;
             this.estado = item.estado;
-            this.agregarTipoItemModal = true;
+            this.agregarCategoriaModal = true;
         },
 
         llenarCamposInventario(item) {
@@ -2166,18 +2039,18 @@
 
         seleccionarTipo(item){
             this.idTipoItem = item.idtipodeitem;
-            this.nombreTipoITem = item.nombretipoitem;
+            this.nombreCategoria = item.nombretipoitem;
             this.tipoModal = false;
         },
 
 
         showModalAgregarTipoItem(){
-            this.agregarTipoItemModal = true;
+            this.agregarCategoriaModal = true;
             this.botonActTT = 0;  
         },
 
         closeModalAgregarTipoItem(){
-            this.agregarTipoItemModal = false;
+            this.agregarCategoriaModal = false;
             this.limpiar();
             this.botonActTT = 0;
      
