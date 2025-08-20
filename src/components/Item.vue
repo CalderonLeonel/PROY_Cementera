@@ -448,21 +448,21 @@
                                         :rules="descripcionRules" @input="descripcion = descripcion.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>   
-                                <v-col v-if="botonActIt == 0" cols="12" md="4">
+                                <v-col v-if="botonActIt == 0" cols="12" md="3">
                                     <v-select
                                     label="MEDIDA"  v-model="medida" @input="medida =medida.toUpperCase()" required
                                     :items="['LITROS', 'KILOGRAMOS', 'MILILITROS', 'TONELADAS', 'GRAMOS', 'UNIDADES']" 
                                     :rules="[v => !!v || 'La medida es requerida']"
                                     ></v-select>
                                 </v-col>    
-                                <v-col v-if="botonActIt == 0" cols="12" md="3">
-                                    <v-text-field v-model="nombreCategoria" label="NOMBRE TIPO ITEM" :counter="60"
+                                <v-col v-if="botonActIt == 0" cols="12" md="4">
+                                    <v-text-field v-model="nombreCategoria" label="NOMBRE SUBCATEGORÍA" :counter="60"
                                         :rules="nombreCategoriaRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
                                 <v-col v-if="botonActIt == 0" cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
-                                        @click="openTipoModal()" style="float: right" title="BUSCAR TIPO ITEM">
+                                        @click="openCategoriaModal()" style="float: right" title="BUSCAR CATEGORÍA">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col> 
@@ -477,7 +477,36 @@
                                     :items="['PEPS', 'UEPS', 'PROMEDIO PONDERADO']"
                                     :rules="[v => !!v || 'El Metodo de Valuación es requerido']"
                                     ></v-select>
-                                </v-col>                   
+                                </v-col> 
+                                 <v-col v-if="botonActIt == 0" cols="12" md="3">
+                                    <v-text-field v-model="nombreProveedor" label="NOMBRE PROVEEDOR" :counter="60"
+                                        :rules="nombreProveedorRules" @input="nombreProveedor = nombreProveedor.toUpperCase()"
+                                        disabled required></v-text-field>
+                                </v-col>
+                                <v-col v-if="botonActIt == 0" cols="12" md="1">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreProveedorRules"
+                                        @click="openProveedorModal()" style="float: right" title="BUSCAR PROVEEDOR">
+                                        <v-icon dark> mdi-magnify </v-icon>
+                                    </v-btn>
+                                </v-col>   
+                                 <v-col cols="12" md="4">
+                                    <v-menu v-model="menuFecha" :close-on-content-click="false" :nudge-right="40"
+                                        transition="scale-transition" offset-y min-width="auto">
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-text-field v-model="fechaVencimiento" label="FECHA DE VENCIMIENTO"
+                                                prepend-icon="mdi-calendar" readonly required :rules="fechaRules"
+                                                v-bind="attrs" v-on="on"></v-text-field>
+                                        </template>
+                                        <v-date-picker v-model="fechaVencimiento" @input="menuFecha = false" locale="es"
+                                            color="blue lighten-1" header-color="primary"
+                                            :min="getDate()"></v-date-picker>
+                                    </v-menu>
+                                </v-col>          
+                                 <v-col cols="12" md="4">
+                                    <v-text-field v-model="costoReferencia" label="COSTO REFERENCIA" type="number" :counter="25"
+                                         @input="costoReferencia = costoReferencia" :rules="costoRules"
+                                        required></v-text-field>
+                                </v-col>       
                                 <v-col cols="12" md="12"> </v-col>
                                 <v-col cols="12" sm="4" md="4">
                                     <v-toolbar dense shaped >
@@ -588,7 +617,7 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="nombreCategoria" label="NOMBRE TIPO ITEM" :counter="60"
+                                    <v-text-field v-model="nombreCategoria" label="NOMBRE CATEGORÍA" :counter="60"
                                         :rules="nombreCategoriaRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>         
@@ -753,6 +782,9 @@
             nombreAlmacen:"",
 
 
+            menuFecha: false,
+
+
              nombreItem:"",
              descripcion:"",
              medida:"",
@@ -877,7 +909,7 @@
             headerStock: [   
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombretipoitem", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
                  { text: "STOCK", value: "total", sortable: true },
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -947,7 +979,7 @@
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombretipoitem", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
@@ -966,7 +998,7 @@
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombretipoitem", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -979,7 +1011,7 @@
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombretipoitem", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
@@ -1028,7 +1060,7 @@
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombretipoitem", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -1068,6 +1100,11 @@
        
      },
      methods: {
+
+        getDate() {
+            var fecha = new Date().toISOString();
+            return fecha;
+        },
 
         getAlertas(){
             var items = [];
@@ -2087,7 +2124,7 @@
         },
 
 
-        openTipoModal(){
+        openCategoriaModal(){
             this.listarTipoItems();
             this.tipoModal = true;
         },
