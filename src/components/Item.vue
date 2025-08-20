@@ -924,6 +924,7 @@
 
             datosSubCategoria: [],
             headerSubCategoria: [  
+                 { text: "SUBCATEGORÍA", value: "subcategoria", sortable: true },
                  { text: "CATEGORÍA", value: "categoria", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
