@@ -1,0 +1,498 @@
+<template>
+    <div> <!--one-->
+        <!--<v-btn dark color="#00A1B1" @click.stop="showScheduleForm=true">Mostrar Areas</v-btn> --> <!--one -->
+        <v-card elevation="5" outlined shaped>
+
+            <div> <!-- Encabezado -->
+                <v-alert dense color="#00A1B1" style="color: #ffffff">
+                    <h5>DEPARTAMENTOS</h5>
+                </v-alert>
+            </div>
+
+            <v-dialog v-model="departamentoModal" max-width="1080px"> <!-- Modal -->
+
+                <v-card elevation="5" outlined shaped>
+
+                    <v-card-title>
+                        <span v-if="botonAct == 0">NUEVO DEPARTAMENTO</span>
+                        <span v-if="botonAct == 1">EDITAR DEPARTAMENTO</span>
+                    </v-card-title>
+                    <v-card-text>
+
+                        <v-form ref="form" v-model="valid" lazy-validation>
+                            <!-- Nueva Departamento / Editar Departamento -->
+                            <v-container>
+                                <v-row>
+                                    <v-col cols="12" md="12">
+                                        <v-text-field v-model="departamento" :counter="50" :rules="departamentoRules"
+                                            @input="departamento = departamento.toUpperCase()"
+                                            label="NOMBRE DEL DEPARTAMENTO" required>
+                                        </v-text-field>
+                                        <v-select v-model="idUnidad" :items="datosUnidad" item-text="unid"
+                                            item-value="idunid" label="SELECCIONA UNA UNIDAD" prepend-icon="mdi-map"
+                                            :rules="unidadRules" required>
+                                        </v-select>
+                                        <v-select v-model="idArea" :items="datosArea" item-text="nom"
+                                            item-value="idarea" label="SELECCIONA UNA ÁREA" prepend-icon="mdi-map"
+                                            :rules="areaRules" required>
+                                        </v-select>
+                                    </v-col>
+                                    
+                                    <v-col cols="12" sm="4" md="4">
+                                        <v-toolbar dense shaped>
+                                            <v-toolbar-title>
+                                                <h6>
+                                                    OPCIONES:
+                                                </h6>
+                                            </v-toolbar-title>
+                                            <v-col cols="2">
+                                                <v-btn icon v-if="botonAct == 1" color="#0A62BF"
+                                                    @click="actualizarDepartamento()" style="float: left"
+                                                    title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                    <v-icon dark> mdi-pencil </v-icon>
+                                                </v-btn>
+                                                <v-btn icon v-if="botonAct == 0" color="#0ABF55"
+                                                    @click="registrarDepartamento()" style="float: left"
+                                                    title="REGISTRAR DEPARTAMENTO" class="mx-2" large>
+                                                    <v-icon dark> mdi-content-save </v-icon>
+                                                </v-btn>
+                                            </v-col>
+                                            <v-col cols="2">
+                                                <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
+                                                    class="mx-2" title="LIMPIAR FORMULARIO">
+                                                    <v-icon dark> mdi-eraser </v-icon>
+                                                </v-btn>
+                                            </v-col>
+                                        </v-toolbar>
+                                    </v-col>
+                                    <v-col cols="8">
+                                        <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                            @click="closeDepartamento()" style="float: right"
+                                            title="SALIR">
+                                            <v-icon dark> mdi-close-circle-outline </v-icon>
+                                            SALIR
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
+
+                                <div class="text-center">
+                                    <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense
+                                        color="#00FF00" outlined>
+                                        <strong>{{ mensajeSnackbar }}</strong>
+
+
+                                        <template v-slot:action="{ attrs }">
+                                            <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                                mdi-close
+                                            </v-icon>
+                                        </template>
+                                    </v-snackbar>
+                                </div>
+
+                                <div class="text-center">
+
+                                    <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense
+                                        color="error" outlined>
+                                        <strong>{{ mensajeSnackbarError }}</strong>
+
+                                        <template v-slot:action="{ attrs }">
+                                            <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                                mdi-close
+                                            </v-icon>
+                                        </template>
+                                    </v-snackbar>
+                                </div>
+                            </v-container>
+                        </v-form>
+
+                    </v-card-text>
+                </v-card>
+            </v-dialog>
+
+            <v-form ref="form" v-model="valid" lazy-validation persistent> <!-- Listar Departamentos -->
+                <v-container>
+                    <v-row>
+                        <v-col cols="12" md="12">
+                            <v-col cols="12">
+                                <v-list-item>
+                                    <v-list-item-title class="text-center">
+                                        <h5>DEPARTAMENTOS</h5>
+                                    </v-list-item-title>
+                                </v-list-item>
+                                <v-col cols="12" md="4">
+                                    <v-btn color="success" @click="showAddDepartamento()">Nuevo
+                                        Departamento</v-btn>
+                                </v-col>
+                                <v-card-title>
+                                    <v-text-field v-model="searchDepartamento" append-icon="mdi-magnify"
+                                        label="BUSCAR DEPARTAMENTOS" single-line hide-details></v-text-field>
+                                </v-card-title>
+
+
+                                <v-data-table :headers="headersDepartamento" :items="datosDepartamento"
+                                    :search="searchDepartamento" :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.credte`]="{ item }">
+                                        <td>{{ new Date(item.credte).toLocaleDateString('es-ES', {
+                                            day: 'numeric',
+                                            month: 'long', year: 'numeric'
+                                        }) }}</td>
+                                                                    </template>
+                                                                    <template #[`item.upddte`]="{ item }">
+                                                                        <td v-if="item.upddte == null">-</td>
+                                                                        <td v-if="item.upddte != null">{{ new
+                                            Date(item.upddte).toLocaleDateString('es-ES', {
+                                                day: 'numeric', month:
+                                                    'long', year: 'numeric'
+                                            }) }}</td>
+                                    </template>
+                                    <template #[`item.act`]="{ item }">
+                                        <v-chip :color="getColor(item.act)" dark>
+                                            {{ item.act }}
+                                        </v-chip>
+                                    </template>
+
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2" color="#0ABF55" @click="activar(item)"
+                                            title="ACTIVAR DEPARTAMENTO">
+                                            mdi-check-circle-outline
+                                        </v-icon>
+                                        <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2" color="#BF120A" @click="desactivar(item)"
+                                            title="DESACTIVAR DEPARTAMENTO">
+                                            mdi-cancel
+                                        </v-icon>
+                                        <v-icon large class="mr-2" color="#0A628F" @click="showEditDepartamento(item)"
+                                            title="EDITAR INFORMACION">
+                                            mdi-pencil
+                                        </v-icon>
+
+
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                        </v-col>
+                    </v-row>
+
+                    <div class="text-center">
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
+                            outlined>
+                            <strong>{{ mensajeSnackbar }}</strong>
+
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarOK = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+                    <div class="text-center">
+
+                        <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error"
+                            outlined>
+                            <strong>{{ mensajeSnackbarError }}</strong>
+
+                            <template v-slot:action="{ attrs }">
+                                <v-icon right v-bind="attrs" @click="snackbarError = false">
+                                    mdi-close
+                                </v-icon>
+                            </template>
+                        </v-snackbar>
+                    </div>
+                </v-container>
+            </v-form>
+
+
+        </v-card>
+        <ScheduleForm v-model="showScheduleForm" /> <!--one-->
+    </div> <!--one-->
+</template>
+<script>
+import axios from "axios";
+import ScheduleForm from './Sector.vue'; // one
+
+export default {
+    data: () => ({
+        valid: true,
+        user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+        flag: 1,
+
+        idDepartamento: "",
+        departamento: "",
+        estado: "",
+        createDate: "",
+        lastDate: "",
+        idArea: "",
+        idUnidad: "",
+        valid: true,
+
+        searchDepartamento: "",
+        datosDepartamento: [],
+        datosUnidad: [],
+        datosArea: [],
+
+        showScheduleForm: false, //one
+        snackbarOK: false,
+        mensajeSnackbar: "",
+        snackbarError: false,
+        mensajeSnackbarError: "REGISTRO FALLIDO",
+        timeout: 2000,
+
+        departamentoModal: "",
+        botonAct: 0,
+        departamentoRules: [
+            (v) => !!v || "NOMBRE DE DEPARTAMENTO ES REQUERIDO",
+            (v) =>
+                (v && v.length <= 50) ||
+                "EL NOMBRE DE LA DEPARTAMENTO DEBE TENER 50 CARACTERES COMO MAXIMO",
+        ],
+        unidadRules: [
+            (v) => !!v || "ASIGNAR UNA UNIDAD ES REQUERIDO",
+
+        ],
+        areaRules: [
+            (v) => !!v || "ASIGNAR UN AREA ES REQUERIDO",
+        ],
+
+        headersDepartamento: [
+            { text: "DEPARTAMENTO", value: "nom" },
+            { text: "UNIDAD", value: "unid" },
+            { text: "AREA", value: "area" },
+            { text: "ESTADO", value: "act" },
+            { text: "FECHA CREACION", value: "credte" },
+            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte" },
+            { text: "OPCIONES", value: "actions", sortable: false },
+        ],
+
+    }),
+    computed: {
+        logueado() {
+            if (this.user != null) {
+                this.user = JSON.parse(sessionStorage.getItem('session'));
+            }
+            return this.user;
+        }
+    },
+
+    created: function () {
+        if (this.user != null) {
+            this.user = JSON.parse(sessionStorage.getItem('session'));
+            this.listarDepartamentos();
+        }
+        if (this.user == null) {
+            if (this.$route.path != '/login') {
+                this.$router.push("/login");
+            }
+        }
+        console.log("UserData: " + JSON.stringify(this.user));
+    },
+    components: { //one/
+        ScheduleForm
+    },
+    methods: {
+
+        activar(item) {
+            this.idDepartamento = item.iddep;
+            this.activardepartamento(this.idDepartamento);
+        },
+        async activardepartamento(idDepartamento) {
+            let me = this;
+            await axios
+                .post("/departamento/ondepartamento/" + this.idDepartamento).then(function (response) {
+
+                    me.listarDepartamentos();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        },
+        desactivar(item) {
+            this.idDepartamento = item.iddep;
+            this.desactivardepartamento(this.idDepartamento);
+        },
+        async desactivardepartamento(idDepartamento) {
+            let me = this;
+            await axios
+                .post("/departamento/offdepartamento/" + this.idDepartamento).then(function (response) {
+
+                    me.listarDepartamentos();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        },
+        getColor(est) {
+            if (est == 'ACTIVO') return 'green'
+            else return 'red'
+        },
+
+        showAddDepartamento() {
+            this.botonAct = 0;
+            if (this.datosUnidad.length == 0) this.listarUnidades();
+            if (this.datosArea.length == 0) this.listarAreas();
+            this.departamentoModal = true;
+        },
+        showEditDepartamento(item) {
+            this.botonAct = 1;
+            if (this.datosUnidad.length == 0) this.listarUnidades();
+            if (this.datosArea.length == 0) this.listarAreas();
+            this.llenarCamposDepartamento(item);
+            this.departamentoModal = true;
+        },
+
+        closeDepartamento() {
+            this.departamentoModal = false;
+            this.limpiar();
+        },
+
+        llenarCamposDepartamento(item) {
+            this.departamento = item.nom;
+            this.idUnidad = item.idunid;
+            this.idArea = item.idarea;
+            this.idDepartamento = item.iddep;
+        },
+
+        actualizarDepartamento() {
+            if (this.$refs.form.validate()) {
+                this.actualizardepartamento(
+                    this.idDepartamento,
+                    this.departamento,
+                    this.idunid,
+                    this.idarea
+                );
+            }
+            
+        },
+
+
+        async actualizardepartamento(
+            idDepartamento,
+            departamento,
+            idUnidad,
+            idArea
+        ) {
+            let me = this;
+
+            await axios
+                .post(
+                    "/departamento/editardepartamento/" +
+                    this.idDepartamento +
+                    "," +
+                    this.departamento +
+                    "," +
+                    this.idUnidad +
+                    "," +
+                    this.idArea
+
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarDepartamentos(me.idDepartamento);
+                    me.limpiar();
+                    me.closeDepartamento();
+
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                });
+        },
+
+        limpiar() {
+            this.departamento = "";
+            this.idUnidad = ""; this.datosUnidad = [];
+            this.idArea = ""; this.datosArea = [];
+        },
+
+        async listarDepartamentos(idDepartamento) {
+            let me = this;
+            await axios
+                .get("/departamento/listardepartamentos/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosDepartamento = [];
+                    } else {
+                        me.datosDepartamento = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        async listarUnidades(idUnidad) {
+            let me = this;
+            await axios
+                .get("/unidad/listarunidades/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosUnidad = [];
+                    } else {
+                        me.datosUnidad = response.data.resultado;
+                        console.log("datosUnidad: " + JSON.stringify(me.datosUnidad.idunid))
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        async listarAreas(idArea) {
+            let me = this;
+            await axios
+                .get("/area/listarareas/")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+
+                        me.datosArea = [];
+                    } else {
+                        me.datosArea = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        registrarDepartamento() {
+            if (this.$refs.form.validate()) {
+                this.registrarDepartamento(
+                    this.departamento,
+                    this.idUnidad,
+                    this.idArea
+                );
+            }
+            
+        },
+        async registrarDepartamento(
+            departamento,
+            idUnidad,
+            idArea
+        ) {
+            let me = this;
+
+            await axios
+                .post(
+                    "/departamento/adddepartamento/" +
+                    this.departamento +
+                    "," +
+                    this.idUnidad +
+                    "," +
+                    this.idArea
+
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarDepartamentos(me.idDepartamento);
+                    me.limpiar();
+                    me.closeDepartamento();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+        },
+    },
+};
+</script>
