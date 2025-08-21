@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="5" outlined v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'COMUN') || checkAccess(10, 'GERENTE')">
+    <v-card elevation="5" outlined >
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
@@ -53,7 +53,7 @@
          <div>
              <v-form ref="form" v-model="valid" lazy-validation>
                  <v-container>
-                     <v-row v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
+                     <v-row >
                          <v-col cols="12" md="4">
                              <v-btn color="success" @click="showModalAgregarItem()">NUEVO ITEM</v-btn>
                          </v-col>
@@ -99,7 +99,7 @@
                              </v-data-table>
                          </v-col>
                      </v-row>
-                     <v-row v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
+                     <v-row >
                          <v-col cols="12" md="2">
                              <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA CATEGORÍA</v-btn>  
                          </v-col>
@@ -114,7 +114,7 @@
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR Categoria DE ITEM"
+                                <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR CATEGORÍA DE ITEM"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
@@ -149,7 +149,7 @@
                          </v-col>
                      </v-row>
 
-                     <v-row v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
+                     <v-row >
                          <v-col cols="12" md="2">
                              <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA SUBCATEGORÍA</v-btn>  
                          </v-col>
@@ -206,7 +206,7 @@
          <v-dialog v-model="activarCategoriaModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>Categoria DE ITEMS INACTIVOS</span><br>
+                    <span>Categoria DE CATEGORÍAS INACTIVAS</span><br>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -221,7 +221,7 @@
 
                                     <v-card-title>
                                         <v-text-field v-model="buscarCategoria" append-icon="mdi-magnify"
-                                            label="BUSCAR CategoriaS DE ITEM" single-line hide-details></v-text-field>
+                                            label="BUSCAR CATEGORÍAS" single-line hide-details></v-text-field>
                                     </v-card-title>
                                     <v-data-table :headers="headercategoria" :items="datoscategoriaInactivos"
                                         :search="buscarCategoria" :items-per-page="5" class="elevation-1" id="tableId">
@@ -388,14 +388,14 @@
         <v-dialog v-model="CategoriaModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE Categoria DE ITEMS ACTIVOS</span>
+                    <span>LISTA DE CATEGORIÍAS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR CategoriaS DISPONIBLES"
+                                    <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR CATEGORÍAS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -405,7 +405,7 @@
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon small class="mr-2" @click="seleccionarCategoria(item)">
-                                            mdi-check-circle
+                                            mdi-eye-circle
                                         </v-icon>
                                     </template>
                                 </v-data-table>
@@ -427,7 +427,46 @@
         </v-dialog>         
 
 
+<v-dialog v-model="SubcategoriaModal" persistent :overlay="false" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA DE CATEGORIÍAS</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="searchSubcategoria" append-icon="mdi-magnify" label="BUSCAR CategoriaS DISPONIBLES"
+                                        single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
 
+                            <v-col cols="12">
+                                <v-data-table :headers="headerSubCategoria" :items="datossubcategoria" :search="searchSubcategoria"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarSubcategoria(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeSubcategoriaModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                               
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>         
 
          <v-dialog v-model="agregarItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
@@ -550,6 +589,47 @@
             </v-card>
         </v-dialog>
 
+
+        <v-dialog v-model="proveedorModal" persistent :overlay="false" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA PROVEEDORES ACTIVOS</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="searchProveedor" append-icon="mdi-magnify"
+                                        label="BUSCAR PROVEEDOR ACTIVO" single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <v-data-table :headers="headerProveedor" :items="datosProveedor"
+                                    :search="searchProveedor" :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarProveedor(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeProveedorModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
          <v-dialog v-model="agregarCategoriaModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
@@ -607,7 +687,7 @@
         </v-dialog>
 
 
-         <v-dialog v-model="agregarSubcategoria" persistent :overlay="false" max-width="1000px">
+         <v-dialog v-model="agregarSubcategoriaModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>SUBCATEGORÍAS</span>
@@ -617,13 +697,13 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="nombreCategoria" label="NOMBRE CATEGORÍA" :counter="60"
-                                        :rules="nombreCategoriaRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
+                                    <v-text-field v-model="nombreSubcategoria" label="NOMBRE SUBCATEGORÍA" :counter="60"
+                                        :rules="nombreSubcategoriaRules" @input="nombreSubcategoria = nombreSubcategoria.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>         
                                  <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreCategoriaRules"
-                                        @click="openProveedorModal()" style="float: right" title="BUSCAR CATEGORÍA">
+                                        @click="openCategoriaModal()" style="float: right" title="BUSCAR CATEGORÍA">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -641,12 +721,12 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-col cols="2">
-                                            <v-btn icon v-if="botonActTT == 1" color="#0A62BF" @click="editarCategoria()"
+                                            <v-btn icon v-if="botonActTT == 1" color="#0A62BF" @click="editarSubcategoria()"
                                                 style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
-                                            <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarCategoria()" 
-                                                style="float: left" title="REGISTRAR Categoria DE ITEM" class="mx-2" large>
+                                            <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarSubcategoria()" 
+                                                style="float: left" title="REGISTRAR SUBCATEGORIA" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -673,6 +753,8 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+
+
         
 
         <v-dialog v-model="confirmacionAnulacionCategoria" persistent :overlay="false" max-width="1000px">
@@ -793,6 +875,10 @@
              idCategoria:"",
              nombreCategoria: "",
              estTT: "",
+
+            proveedorModal: false,
+            idProveedor: 0,
+            nombreProveedor: "",
 
             estado: "ACTIVO",
              valid: true,
@@ -964,13 +1050,7 @@
  
              datoscategoria: [],
              datoscategoriaInactivos: [],
-             headercategoria: [
-                 
-                 { text: "SUBCATEGORÍA", value: "subcategoria", sortable: true },
-                 { text: "CATEGORÍA", value: "categoria", sortable: false },
-                 { text: "ACCIONES", value: "actions", sortable: false }
-                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
-             ],
+             
 
 
              datosItemDisponibles: [],
@@ -1042,11 +1122,16 @@
              agregarCategoriaModal: false,
              confirmacionAnulacionCategoria: false,
 
+             buscarSubcategoria: "",
+             searchSubcategoria: "",
+             agregarSubcategoriaModal: false,
+             confirmacionAnulacionSubcategoria: false,
+
 
 
              itemModal:false,
              CategoriaModal:false,
-
+             SubcategoriaModal:false,
 
              botonActInv:0,
              botonActIt:0,
@@ -1078,15 +1163,15 @@
          }
      },
      created: function (){
-       this.listarInventario();
-       this.listarItem();
-       this.listarCategoria();
+       /*this.listarInventario();
+       //this.listarItem();
+       //this.listarCategoria();
        this.listarstock();
        this.listaralmacenproducto();
-       this.listarSaldoItem();
+       //this.listarSaldoItem();
        this.getListaExistencias().then(() => {
        this.getAlertas();
-        });
+        });*/
 
         if (this.user != null) {
             this.user = JSON.parse(sessionStorage.getItem('session'));
@@ -2127,6 +2212,14 @@
             this.agregarCategoriaModal = true;
         },
 
+        llenarCamposSubcategoria(item) {
+            this.botonActTT = 1;
+            this.idsubcategoria = item.idsubcategoria;
+            this.nombreSubcategoria = item.nombreSubcategoria;
+            this.estado = item.estado;
+            this.agregarSubcategoriaModal = true;
+        },
+
         llenarCamposInventario(item) {
             this.botonActInv = 1;
             this.idTransaccion = item.idTransaccion;
@@ -2276,12 +2369,38 @@
 
         closeCategoriaModal(){
             this.CategoriaModal = false;
-            this.limpiar();
         },
+
+        closeSubcategoriaModal(){
+            this.SubcategoriaModal = false;
+        },
+
+        openProveedorModal() {
+            this.listarProveedores();
+            this.proveedorModal = true;
+        },
+
+        closeProveedorModal() {
+            this.proveedorModal = false;
+        },
+
+        seleccionarProveedor(item) {
+            this.idProveedor = item.idprv;
+            this.nombreProveedor = item.nomprv;
+            this.proveedorModal = false;
+        },
+
 
         seleccionarCategoria(item){
             this.idCategoria = item.idcategoria;
             this.nombreCategoria = item.nombreCategoria;
+            this.SubcategoriaModal = true;
+        },
+
+          seleccionarSubcategoria(item){
+            this.idSubcategoria = item.id_subcategoria;
+            this.nombreCategoria = item.subcategoria;
+            this.SubcategoriaModal = false;
             this.CategoriaModal = false;
         },
 
