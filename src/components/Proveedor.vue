@@ -116,11 +116,62 @@
                             </v-data-table>
                         </v-col>
                     </v-row>
+                      <v-row >
+                                <v-col cols="12" md="2">
+                                    <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA CATEGORÍA</v-btn>  
+                                </v-col>
+                                <v-col cols="12" md="12">
+                                    <v-btn color="primary" @click="showModalActivarCategoria()">LISTA DE ITEMS DESACTIVADOS</v-btn>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-list-item>
+                                        <v-list-item-title class="text-center">
+                                            <h5>CATEGORÍAS</h5>
+                                        </v-list-item-title>
+                                    </v-list-item>
+        
+                                    <v-card-title>
+                                        <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR CATEGORÍA DE PROVEEDOR"
+                                            single-line hide-details></v-text-field>
+                                    </v-card-title>
+        
+                                    <v-data-table :headers="headerCategoria" :items="datosCategoria" :search="searchCategoria"
+                                        :items-per-page="5" class="elevation-1" id="tableId">
+        
+                                        <template #[`item.estado`]="{ item }">
+                                            <v-chip :color="getColor(item.estado)" dark>
+                                                {{ item.estado }}
+                                            </v-chip>
+                                        </template>
+        
+                                        <template #[`item.actions`]="{ item }">
+                                            <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposCategoria(item)"
+                                                title="ACTUALIZAR INFORMACIÓN">
+                                                mdi-pencil
+                                            </v-icon>
+                                            <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
+                                                title="ACTIVAR CATEGORÍA">
+                                                mdi-check-circle-outline
+                                            </v-icon>
+                                            <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionCat(item)"
+                                                title="DESACTIVAR CATEGORÍA">
+                                                mdi-close-circle
+                                            </v-icon>             
+                                        </template>
+        
+                                    
+        
+        
+                                    </v-data-table>
+                                </v-col>
+                            </v-row>
 
                 </v-container>
             </v-form>
 
         </div>
+
+          
         <v-dialog v-model="agregarProveedorModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
@@ -222,7 +273,7 @@
                                         SALIR
                                     </v-btn>
                                 </v-col>
-                            </v-row>
+                            </v-row>     
                         </v-container>
                     </v-form>
 
@@ -384,6 +435,23 @@ export default {
             agregarProveedorModal: false,
             confirmacionAnulacionProveedor: false,
             botonAct: 0,
+
+            
+            idCategoria:"",
+            nombreCategoria: "",
+
+            datosCategoria: [],
+            headerCategoria: [  
+                 { text: "CATEGORÍA DE PROVEEDOR", value: "categoria", sortable: true },
+                 { text: "ACCIONES", value: "actions", sortable: false }
+                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+             ],
+
+
+            buscarCategoria: "",
+            searchCategoria: "",
+            agregarCategoriaModal: false,
+            confirmacionAnulacionCategoria: false,
 
 
 
@@ -832,6 +900,35 @@ export default {
         closeModalAgregarProveedor() {
             this.agregarProveedorModal = false;
             this.limpiar();
+        },
+
+        showCategorias(){
+            this.listarCategorias();
+            this.CategoriaModal = true;
+        },
+
+        closeCategoriaModal(){
+            this.CategoriaModal = false;
+            this.limpiar();
+        },
+
+        seleccionarCategoria(item){
+            this.idCategoria = item.idcategoria;
+            this.nombreCategoria = item.nombreCategoria;
+            this.CategoriaModal = false;
+        },
+
+
+        showModalAgregarCategoria(){
+            this.agregarCategoriaModal = true;
+            this.botonActTT = 0;  
+        },
+
+        closeModalAgregarCategoria(){
+            this.agregarCategoriaModal = false;
+            this.limpiar();
+            this.botonActTT = 0;
+     
         },
 
         limpiar () {
