@@ -388,7 +388,7 @@
         <v-dialog v-model="CategoriaModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE CATEGORIÍAS</span>
+                    <span>LISTA DE CATEGORÍAS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -404,8 +404,11 @@
                                 <v-data-table :headers="headercategoria" :items="datoscategoria" :search="searchCategoria"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarCategoria(item)">
+                                        <v-icon v-if="seleccionarCategoriaTabla==true" small class="mr-2" @click="seleccionarCategoriaItem(item)">
                                             mdi-eye-circle
+                                        </v-icon>
+                                         <v-icon v-else small class="mr-2" @click="seleccionarCategoriaTabla(item)">
+                                            mdi-check-circle
                                         </v-icon>
                                     </template>
                                 </v-data-table>
@@ -874,6 +877,7 @@
 
              idCategoria:"",
              nombreCategoria: "",
+             seleccionarCategoriaTabla: false,
              estTT: "",
 
             proveedorModal: false,
@@ -1823,6 +1827,116 @@
 
         },
 
+        //Subcategoría
+
+         listarSubcategoria() {
+             this.listarSubcategorias();
+         },
+         async listarSubcategorias() {
+           let me = this;
+           await axios
+             .get("/inventario/listarcategoriaactivo/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datoscategoria = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datoscategoria = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+
+         listarSubcategoriaInactivo() {
+             this.listarSubcategoriasInactivos();
+         },
+         async listarSubcategoriasInactivos() {
+           let me = this;
+           await axios
+             .get("inventario/listarcategoriainactivo/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datoscategoriaInactivos = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datoscategoriaInactivos = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+
+         registrarSubcategoria() {
+            if (this.$refs.form.validate()) {
+                this.registrarSubcategorias(this.nombreCategoria, this.estado);
+            }            
+        },
+        async registrarSubcategorias(
+            nombreCategoria,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/agregarcategoria/" +
+                    this.nombreCategoria +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarCategorias();
+                    me.closeModalAgregarCategoria();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+        editarSubcategoria() {
+            if (this.$refs.form.validate()) {
+            this.editarCategoria( this.idCategoria,this.nombreCategoria, this.estado);
+            this.botonActTT = 0;
+            }
+        },
+        async editarSubcategoria(
+            idCategoria,
+            nombreCategoria,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/actualizarcategoria/" +
+                    this.idCategoria +
+                    "," +
+                    this.nombreCategoria +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarCategorias();
+                    me.closeModalAgregarCategoria();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
 
 
         confirmacionAnulacionCat(item){
@@ -2402,7 +2516,13 @@
         },
 
 
-        openCategoriaModal(){
+        openCategoriaModal(tipo)
+        {
+            if (tipo === 'item') {
+                this.seleccionarCategoriaTabla = true;
+            } else {
+                 this.seleccionarCategoriaTabla = true;
+            }
             this.listarCategorias();
             this.CategoriaModal = true;
         },
@@ -2431,10 +2551,16 @@
         },
 
 
-        seleccionarCategoria(item){
+        seleccionarCategoriaItem(item){
             this.idCategoria = item.idcategoria;
             this.nombreCategoria = item.nombreCategoria;
             this.SubcategoriaModal = true;
+        },
+
+         seleccionarCategoriaSubcategoria(item){
+            this.idCategoria = item.idcategoria;
+            this.nombreCategoria = item.nombreCategoria;
+            this.CategoriaModal = false;
         },
 
           seleccionarSubcategoria(item){
