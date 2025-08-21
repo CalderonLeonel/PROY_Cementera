@@ -171,6 +171,63 @@
 
         </div>
 
+        <v-dialog v-model="agregarCategoriaModal" persistent :overlay="false" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>CATEGORÍA</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="nombreCategoria" label="NOMBRE CATEGORÍA" :counter="60"
+                                        :rules="nombreCategoriaRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>                         
+                                <v-col cols="12" md="12"> </v-col>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped >
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonActTT == 1" color="#0A62BF" @click="editarCategoria()"
+                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarCategoria()" 
+                                                style="float: left" title="REGISTRAR Categoria DE ITEM" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large 
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
+                                </v-col>
+
+                                <v-col cols="8">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeModalAgregarCategoria()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+
           
         <v-dialog v-model="agregarProveedorModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
