@@ -1157,6 +1157,25 @@
                 { text: "TOTAL", value: "total", sortable: true },
             ],
 
+
+            searchProveedor: "",
+            datosProveedor: [],
+            headerProveedor: [
+                //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
+                { text: "NOMBRE DE PROVEEDOR", value: "nomprv", sortable: true },
+                { text: "NIT", value: "nit", sortable: true },
+                { text: "RAZÓN SOCIAL", value: "raz", sortable: true },
+                { text: "CATEGORÍA", value: "cat", sortable: true },
+                { text: "PAIS", value: "pais", sortable: true },
+                { text: "CONTACTO PRINCIPAL DE PROVEEDOR", value: "cto1pro", sortable: true },
+                { text: "CONTACTO SECUNDARIO DE PROVEEDOR", value: "cto2pro", sortable: true },
+                { text: "CORREO DE PROVEEDOR", value: "croprov", sortable: true },
+                { text: "ESTADO", value: "est", sortable: true },
+                { text: "ARCHIVO", value: "arch", sortable: false },
+                { text: "ACCIONES", value: "actions", sortable: false }
+                //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+            ],
+
              snackbarOK: false,
              snackbarError : false,
              //#endregion
@@ -2123,6 +2142,27 @@
                 .catch(function (error) {
                     console.log(error);
                 });
+        },
+
+        listarProveedor() {
+            this.listarProveedores();
+        },
+        async listarProveedores() {
+          let me = this;
+          await axios
+            .get("/proveedor/listarproveedoresactivos/")
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosProveedor = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosProveedor = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
         },
 
 
