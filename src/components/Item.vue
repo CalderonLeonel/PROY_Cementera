@@ -104,7 +104,7 @@
                              <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA CATEGORÍA</v-btn>  
                          </v-col>
                          <v-col cols="12" md="12">
-                            <v-btn color="primary" @click="showModalActivarTipo()">LISTA DE ITEMS DESACTIVADOS</v-btn>
+                            <v-btn color="primary" @click="showModalActivarCategoria()">LISTA DE ITEMS DESACTIVADOS</v-btn>
                          </v-col>
                          <v-col cols="12">
                              <v-list-item>
@@ -114,7 +114,7 @@
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR TIPO DE ITEM"
+                                <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR Categoria DE ITEM"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
@@ -136,7 +136,7 @@
                                          title="ACTIVAR CATEGORÍA">
                                          mdi-check-circle-outline
                                      </v-icon>
-                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionTip(item)"
+                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionCat(item)"
                                          title="DESACTIVAR CATEGORÍA">
                                          mdi-close-circle
                                      </v-icon>             
@@ -162,7 +162,7 @@
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchSubcategoria" append-icon="mdi-magnify" label="BUSCAR TIPO DE ITEM"
+                                <v-text-field v-model="searchSubcategoria" append-icon="mdi-magnify" label="BUSCAR Categoria DE ITEM"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
@@ -203,10 +203,10 @@
  
          </div>
 
-         <v-dialog v-model="activarTipoItemModal" persistent max-width="800px">
+         <v-dialog v-model="activarCategoriaModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>TIPO DE ITEMS INACTIVOS</span><br>
+                    <span>Categoria DE ITEMS INACTIVOS</span><br>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -220,11 +220,11 @@
                                     </v-list-item>
 
                                     <v-card-title>
-                                        <v-text-field v-model="buscarTipoItem" append-icon="mdi-magnify"
-                                            label="BUSCAR TIPOS DE ITEM" single-line hide-details></v-text-field>
+                                        <v-text-field v-model="buscarCategoria" append-icon="mdi-magnify"
+                                            label="BUSCAR CategoriaS DE ITEM" single-line hide-details></v-text-field>
                                     </v-card-title>
-                                    <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItemInactivos"
-                                        :search="buscarTipoItem" :items-per-page="5" class="elevation-1" id="tableId">
+                                    <v-data-table :headers="headercategoria" :items="datoscategoriaInactivos"
+                                        :search="buscarCategoria" :items-per-page="5" class="elevation-1" id="tableId">
 
                                         <template #[`item.estado`]="{ item }">
                                             <v-chip :color="getColor(item.estado)" dark>
@@ -247,7 +247,7 @@
                                 <v-col cols="10"></v-col>
                                 <v-col cols="12">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeModalActivarTipo()" style="float: right" title="SALIR">
+                                        @click="closeModalActivarCategoria()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -385,26 +385,26 @@
                 </v-card-text>
             </v-card>
         </v-dialog>  
-        <v-dialog v-model="tipoModal" persistent :overlay="false" max-width="900px">
+        <v-dialog v-model="CategoriaModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE TIPO DE ITEMS ACTIVOS</span>
+                    <span>LISTA DE Categoria DE ITEMS ACTIVOS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR TIPOS DISPONIBLES"
+                                    <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR CategoriaS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItem" :search="searchCategoria"
+                                <v-data-table :headers="headercategoria" :items="datoscategoria" :search="searchCategoria"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarTipo(item)">
+                                        <v-icon small class="mr-2" @click="seleccionarCategoria(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -413,7 +413,7 @@
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
                                 <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeTipoModal()" style="float: right"
+                                        @click="closeCategoriaModal()" style="float: right"
                                         title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
@@ -573,12 +573,12 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-col cols="2">
-                                            <v-btn icon v-if="botonActTT == 1" color="#0A62BF" @click="editarTipo()"
+                                            <v-btn icon v-if="botonActTT == 1" color="#0A62BF" @click="editarCategoria()"
                                                 style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
-                                            <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarTipo()" 
-                                                style="float: left" title="REGISTRAR TIPO DE ITEM" class="mx-2" large>
+                                            <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarCategoria()" 
+                                                style="float: left" title="REGISTRAR Categoria DE ITEM" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -593,7 +593,7 @@
 
                                 <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeModalAgregarTipoItem()" style="float: right" title="SALIR">
+                                        @click="closeModalAgregarCategoria()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -641,12 +641,12 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-col cols="2">
-                                            <v-btn icon v-if="botonActTT == 1" color="#0A62BF" @click="editarTipo()"
+                                            <v-btn icon v-if="botonActTT == 1" color="#0A62BF" @click="editarCategoria()"
                                                 style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
-                                            <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarTipo()" 
-                                                style="float: left" title="REGISTRAR TIPO DE ITEM" class="mx-2" large>
+                                            <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarCategoria()" 
+                                                style="float: left" title="REGISTRAR Categoria DE ITEM" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -661,7 +661,7 @@
 
                                 <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeModalAgregarTipoItem()" style="float: right" title="SALIR">
+                                        @click="closeModalAgregarCategoria()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -675,7 +675,7 @@
         </v-dialog>
         
 
-        <v-dialog v-model="confirmacionAnulacionTipo" persistent :overlay="false" max-width="1000px">
+        <v-dialog v-model="confirmacionAnulacionCategoria" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>¿ESTAS SEGURO?</span>
@@ -686,14 +686,14 @@
                                 <v-col cols="3"></v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anularTipo()" style="float: right" title="ANULAR TIPO">
+                                        @click="anularCategoria()" style="float: right" title="ANULAR Categoria">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         ANULAR
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#00A1B1"
-                                        @click="closeAnulacionTipo()" style="float: right" title="SALIR">
+                                        @click="closeAnulacionCategoria()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -762,7 +762,7 @@
          return {
 
             drawer: false,
-            user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+            user: { id_usuario: 0, usuario: '', accesos: [], Categoria: '', nombres: '', paterno: '', materno: '' },
 
             mensajeSnackbarError: "REGISTRO FALLIDO",
 
@@ -790,7 +790,7 @@
              medida:"",
              estIt:"",
 
-             idTipoItem:"",
+             idCategoria:"",
              nombreCategoria: "",
              estTT: "",
 
@@ -809,10 +809,10 @@
                  "EL NOMBRE DEL ITEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreCategoriaRules: [
-               (v) => !!v || "SE REQUIERE EL NOMBRE DEL TIPO DE ITEM.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL Categoria DE ITEM.",
                (v) =>
                (v && v.length <= 60) ||
-                 "EL NOMBRE DEL TIPO NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+                 "EL NOMBRE DEL Categoria NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreAlmacenRules: [
                (v) => !!v || "SE REQUIERE EL NOMBRE DEL ALMACÉN.",
@@ -909,7 +909,7 @@
             headerStock: [   
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "CATEGORÍA", value: "nombretipoitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
                  { text: "STOCK", value: "total", sortable: true },
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -922,7 +922,7 @@
             headerProductos: [
                 { text: "NOMBRE DE PRODUCTO", value: "nombreprod", sortable: true },
                 { text: "CÓDIGO DE PRODUCTO", value: "codprod", sortable: true },
-                { text: "TIPO", value: "nombretipo", sortable: true },
+                { text: "Categoria", value: "nombreCategoria", sortable: true },
                 { text: "TOTAL", value: "total", sortable: false },
             ],
            
@@ -962,9 +962,9 @@
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
  
-             datosTipoDeItem: [],
-             datosTipoDeItemInactivos: [],
-             headerTipoDeItem: [
+             datoscategoria: [],
+             datoscategoriaInactivos: [],
+             headercategoria: [
                  
                  { text: "SUBCATEGORÍA", value: "subcategoria", sortable: true },
                  { text: "CATEGORÍA", value: "categoria", sortable: false },
@@ -979,7 +979,7 @@
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
-                 { text: "CATEGORÍA", value: "nombretipoitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
@@ -998,7 +998,7 @@
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "CATEGORÍA", value: "nombretipoitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -1011,7 +1011,7 @@
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "CATEGORÍA", value: "nombretipoitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
@@ -1021,7 +1021,7 @@
              searchItemAlmacen: "",
              itemAlmacenModal: false,
 
-             activarTipoItemModal:false,
+             activarCategoriaModal:false,
 
  
              buscarInventario: "",
@@ -1037,15 +1037,15 @@
              confirmacionAnulacionItem: false,
              valor:0,
  
-             buscarTipoItem: "",
+             buscarCategoria: "",
              searchCategoria: "",
              agregarCategoriaModal: false,
-             confirmacionAnulacionTipo: false,
+             confirmacionAnulacionCategoria: false,
 
 
 
              itemModal:false,
-             tipoModal:false,
+             CategoriaModal:false,
 
 
              botonActInv:0,
@@ -1060,7 +1060,7 @@
                  
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "CATEGORÍA", value: "nombretipoitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -1080,7 +1080,7 @@
      created: function (){
        this.listarInventario();
        this.listarItem();
-       this.listarTipoItem();
+       this.listarCategoria();
        this.listarstock();
        this.listaralmacenproducto();
        this.listarSaldoItem();
@@ -1494,14 +1494,14 @@
 
          registrarIt() {
             if (this.$refs.form.validate()) {
-            this.registrarItem(this.nombreItem, this.descripcion,this.medida,this.idTipoItem,this.limitecritico, this.metodoValuacion, this.estado);
+            this.registrarItem(this.nombreItem, this.descripcion,this.medida,this.idCategoria,this.limitecritico, this.metodoValuacion, this.estado);
             }
         },
         async registrarItem(
             nombreItem,
             descripcion,
             medida,
-            idTipoItem,
+            idCategoria,
             limitecritico,
             metodoValuacion,
             estado
@@ -1518,7 +1518,7 @@
                     "," +
                     this.estado +
                     "," +
-                    this.idTipoItem +
+                    this.idCategoria +
                     "," +
                     this.limitecritico +
                     "," +
@@ -1611,20 +1611,20 @@
         },
 
  
-         listarTipoItem() {
-             this.listarTipoItems();
+         listarCategoria() {
+             this.listarCategorias();
          },
-         async listarTipoItems() {
+         async listarCategorias() {
            let me = this;
            await axios
-             .get("/inventario/listartipodeitemactivo/")
+             .get("/inventario/listarcategoriaactivo/")
              .then(function (response) {
                if (response.data.resultado == null) {
-                 me.datosTipoDeItem = [];
+                 me.datoscategoria = [];
                  console.log(response.data);
                } else {
                  console.log(response.data);
-                 me.datosTipoDeItem = response.data.resultado;
+                 me.datoscategoria = response.data.resultado;
                }
              })
              .catch(function (error) {
@@ -1632,20 +1632,20 @@
              });
          },
 
-         listarTipoItemInactivo() {
-             this.listarTipoItemsInactivos();
+         listarCategoriaInactivo() {
+             this.listarCategoriasInactivos();
          },
-         async listarTipoItemsInactivos() {
+         async listarCategoriasInactivos() {
            let me = this;
            await axios
-             .get("inventario/listartipodeiteminactivo/")
+             .get("inventario/listarcategoriainactivo/")
              .then(function (response) {
                if (response.data.resultado == null) {
-                 me.datosTipoDeItemInactivos = [];
+                 me.datoscategoriaInactivos = [];
                  console.log(response.data);
                } else {
                  console.log(response.data);
-                 me.datosTipoDeItemInactivos = response.data.resultado;
+                 me.datoscategoriaInactivos = response.data.resultado;
                }
              })
              .catch(function (error) {
@@ -1653,19 +1653,19 @@
              });
          },
 
-         registrarTipo() {
+         registrarCategoria() {
             if (this.$refs.form.validate()) {
-                this.registrarTipos(this.nombreCategoria, this.estado);
+                this.registrarCategorias(this.nombreCategoria, this.estado);
             }            
         },
-        async registrarTipos(
-            nombreTipoITem,
+        async registrarCategorias(
+            nombreCategoria,
             estado
         ) {
             let me = this;
             await axios
                 .post(
-                    "/inventario/agregartipodeitem/" +
+                    "/inventario/agregarcategoria/" +
                     this.nombreCategoria +
                     "," +
                     this.estado
@@ -1674,8 +1674,8 @@
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarTipoItems();
-                    me.closeModalAgregarTipoItem();
+                    me.listarCategorias();
+                    me.closeModalAgregarCategoria();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -1684,22 +1684,22 @@
 
         },
 
-        editarTipo() {
+        editarCategoria() {
             if (this.$refs.form.validate()) {
-            this.editarTipo( this.idTipoItem,this.nombreCategoria, this.estado);
+            this.editarCategoria( this.idCategoria,this.nombreCategoria, this.estado);
             this.botonActTT = 0;
             }
         },
-        async editarTipo(
-            idTipoItem,
-            nombreTipoITem,
+        async editarCategoria(
+            idCategoria,
+            nombreCategoria,
             estado
         ) {
             let me = this;
             await axios
                 .post(
-                    "/inventario/actualizartipodeitem/" +
-                    this.idTipoItem +
+                    "/inventario/actualizarcategoria/" +
+                    this.idCategoria +
                     "," +
                     this.nombreCategoria +
                     "," +
@@ -1709,8 +1709,153 @@
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarTipoItems();
-                    me.closeModalAgregarTipoItem();
+                    me.listarCategorias();
+                    me.closeModalAgregarCategoria();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
+
+
+        confirmacionAnulacionCat(item){
+            this.idCategoria = item.idcategoria;
+            this.confirmacionAnulacionCategoria = true;
+        },
+        closeAnulacionCategoria(){
+            this.confirmacionAnulacionCategoria = false;
+        },
+        anularCategoria() {
+            this.desactivarCategoria(this.idCategoria);
+            this.confirmacionAnulacionCategoria = false;
+            this.listarCategoria();
+        },
+        async desactivarCategoria(idCategoria) {
+            let me = this;
+            await axios
+                .post("/inventario/eliminarcategoria/" + this.idCategoria).then(function (response) {
+                    me.listarCategorias();
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    alert('error')
+                    me.snackbarError = true;
+                });
+
+        },
+
+
+         listarSubcategoria() {
+             this.listarSubcategorias();
+         },
+         async listarSubcategorias() {
+           let me = this;
+           await axios
+             .get("/inventario/listarsubcategoriaactivo/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datossubcategoria = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datossubcategoria = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+
+         listarSubcategoriaInactivo() {
+             this.listarSubcategoriasInactivos();
+         },
+         async listarSubcategoriasInactivos() {
+           let me = this;
+           await axios
+             .get("inventario/listarsubcategoriainactivo/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datossubcategoriaInactivos = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datossubcategoriaInactivos = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+
+         registrarSubcategoria() {
+            if (this.$refs.form.validate()) {
+                this.registrarSubcategorias(this.nombreSubcategoria, this.estado);
+            }            
+        },
+        async registrarSubcategorias(
+            nombreSubcategoria,
+            idcategoria,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/agregarsubcategoria/" +
+                    this.nombreSubcategoria +
+                    "," +
+                     this.idcategoria +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarSubcategorias();
+                    me.closeModalAgregarSubcategoria();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+        editarSubcategoria() {
+            if (this.$refs.form.validate()) {
+            this.editarSubcategoria( this.idSubcategoria,this.nombreSubcategoria, this.estado);
+            this.botonActTT = 0;
+            }
+        },
+        async editarSubcategoria(
+            idSubcategoria,
+            nombreSubcategoria,
+            idcategoria,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/actualizarsubcategoria/" +
+                    this.idSubcategoria +
+                    "," +
+                    this.nombreSubcategoria +
+                    "," +
+                     this.idcategoria +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarSubcategorias();
+                    me.closeModalAgregarSubcategoria();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -1722,22 +1867,22 @@
 
 
         confirmacionAnulacionTip(item){
-            this.idTipoItem = item.idtipodeitem;
-            this.confirmacionAnulacionTipo = true;
+            this.idSubcategoria = item.idsubcategoria;
+            this.confirmacionAnulacionSubcategoria = true;
         },
-        closeAnulacionTipo(){
-            this.confirmacionAnulacionTipo = false;
+        closeAnulacionSubcategoria(){
+            this.confirmacionAnulacionSubcategoria = false;
         },
-        anularTipo() {
-            this.desactivarTipo(this.idTipoItem);
-            this.confirmacionAnulacionTipo = false;
-            this.listarTipoItem();
+        anularSubcategoria() {
+            this.desactivarSubcategoria(this.idSubcategoria);
+            this.confirmacionAnulacionSubcategoria = false;
+            this.listarSubcategoria();
         },
-        async desactivarTipo(idTipoItem) {
+        async desactivarSubcategoria(idSubcategoria) {
             let me = this;
             await axios
-                .post("/inventario/eliminartipodeitem/" + this.idTipoItem).then(function (response) {
-                    me.listarTipoItems();
+                .post("/inventario/eliminarsubcategoria/" + this.idSubcategoria).then(function (response) {
+                    me.listarSubcategorias();
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                 })
@@ -1976,8 +2121,8 @@
 
         llenarCamposCategoria(item) {
             this.botonActTT = 1;
-            this.idTipoItem = item.idtipodeitem;
-            this.nombreCategoria = item.nombretipoitem;
+            this.idCategoria = item.idcategoria;
+            this.nombreCategoria = item.nombreCategoria;
             this.estado = item.estado;
             this.agregarCategoriaModal = true;
         },
@@ -2125,19 +2270,19 @@
 
 
         openCategoriaModal(){
-            this.listarTipoItems();
-            this.tipoModal = true;
+            this.listarCategorias();
+            this.CategoriaModal = true;
         },
 
-        closeTipoModal(){
-            this.tipoModal = false;
+        closeCategoriaModal(){
+            this.CategoriaModal = false;
             this.limpiar();
         },
 
-        seleccionarTipo(item){
-            this.idTipoItem = item.idtipodeitem;
-            this.nombreCategoria = item.nombretipoitem;
-            this.tipoModal = false;
+        seleccionarCategoria(item){
+            this.idCategoria = item.idcategoria;
+            this.nombreCategoria = item.nombreCategoria;
+            this.CategoriaModal = false;
         },
 
 
@@ -2146,34 +2291,34 @@
             this.botonActTT = 0;  
         },
 
-        closeModalAgregarTipoItem(){
+        closeModalAgregarCategoria(){
             this.agregarCategoriaModal = false;
             this.limpiar();
             this.botonActTT = 0;
      
         },
 
-        showModalActivarTipo(){
-            this.listarTipoItemInactivo();
-            this.activarTipoItemModal = true;  
+        showModalActivarCategoria(){
+            this.listarCategoriaInactivo();
+            this.activarCategoriaModal = true;  
         },
 
-        closeModalActivarTipo(){
-            this.activarTipoItemModal = false;
+        closeModalActivarCategoria(){
+            this.activarCategoriaModal = false;
         },
 
         activar(item){
-            this.idTipoItem = item.idtipodeitem;
-            this.activarTipoItem(this.idTipoItem);
-            this.activarTipoItemModal = false;
+            this.idCategoria = item.idcategoria;
+            this.activarCategoria(this.idCategoria);
+            this.activarCategoriaModal = false;
         },
 
-        async activarTipoItem(idTipoItem) {
+        async activarCategoria(idCategoria) {
             let me = this;
             await axios
-                .post("/inventario/activartipodeitem/" + this.idTipoItem).then(function (response) {
+                .post("/inventario/activarcategoria/" + this.idCategoria).then(function (response) {
 
-                    me.listarTipoItem();
+                    me.listarCategoria();
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                 })
@@ -2263,13 +2408,13 @@
                 const bodyData = jsonData.map(data => [
                     data.nombreitem, 
                     data.descripcion,
-                    data.nombretipoitem,
+                    data.nombreCategoria,
                     data.valor,
                     data.total
                 ]);
                 const doc = new jsPDF();
                     doc.text("Reporte de Almacén: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
-                   doc.autoTable({ head: [["Item", "Descripción", "Tipo de Item", "Precio Unitario", "Stock"]], body: bodyData });
+                   doc.autoTable({ head: [["Item", "Descripción", "Categoria de Item", "Precio Unitario", "Stock"]], body: bodyData });
                     doc.save("inventario.pdf");
             } catch (error) {
                 console.error(error);
@@ -2285,19 +2430,19 @@
                 const bodyData = jsonData.map(data => [
                     data.nombreprod, 
                     data.codprod,
-                    data.nombretipo,
+                    data.nombreCategoria,
                     data.total
                 ]);
                 const doc = new jsPDF();
                     doc.text("Reporte de Almacén: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
-                   doc.autoTable({ head: [["Producto", "Código de Producto", "Tipo de Producto",  "Cantidad"]], body: bodyData });
+                   doc.autoTable({ head: [["Producto", "Código de Producto", "Categoria de Producto",  "Cantidad"]], body: bodyData });
                     doc.save("inventario.pdf");
             } catch (error) {
                 console.error(error);
             }
             },
 
-            checkAccess(accesoCorrecto, tipoCorrecto) {
+            checkAccess(accesoCorrecto, CategoriaCorrecto) {
                 //this.user = JSON.parse(sessionStorage.getItem('session'));
                 if (this.user == null) {
                     return false;
@@ -2313,9 +2458,9 @@
                     });
                     } else checkedAccess = true;
 
-                    //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
-                    if (tipoCorrecto != '0') {
-                    if (this.user['tipo'] == tipoCorrecto) {
+                    //Si CategoriaCorrecto es '0', no se requiere ningun Categoria de cuenta para acceder
+                    if (CategoriaCorrecto != '0') {
+                    if (this.user['Categoria'] == CategoriaCorrecto) {
                         checkedType = true;
                     }
                     } else checkedType = true;
