@@ -1,32 +1,5 @@
 <template>
     <v-card elevation="5" outlined shaped>
-        <v-dialog v-model="agregarProduccionModal" persistent max-width="800px">
-            <v-card elevation="5" outlined shaped>
-                <v-card-title>
-                    <span>AGREGAR PRODUCCION</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-form ref="form" v-model="valid" lazy-validation>
-                        <v-container>
-                            <v-row>
-
-
-                                <v-col cols="10"></v-col>
-                                <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeAgregarProduccion()" style="float: right"
-                                        title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>                      
-                                </v-col>
-                            </v-row>
-                        </v-container>
-                    </v-form>
-
-                </v-card-text>
-            </v-card>
-        </v-dialog>
 
         <v-dialog v-model="infoProduccionModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
@@ -44,11 +17,12 @@
                                         @input="codigoProduccion = codigoProduccion.toUpperCase()" required
                                         disabled></v-text-field>
                                 </v-col>
-                              
+
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="nombreProducto" label="PRODUCTO" :counter="100"
-                                        :rules="nombreProductoRules" @input="nombreProducto = nombreProducto.toUpperCase()"
-                                        required disabled></v-text-field>
+                                        :rules="nombreProductoRules"
+                                        @input="nombreProducto = nombreProducto.toUpperCase()" required
+                                        disabled></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="cantidadProduccion" label="CANTIDAD" :counter="100"
@@ -60,78 +34,11 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeInfoProduccionModal()" style="float: right"
-                                        title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>            
-                                </v-col>
-
-                            </v-row>
-                        </v-container>
-                    </v-form>
-
-                </v-card-text>
-            </v-card>
-        </v-dialog>
-
-        <v-dialog v-model="produccionTerminadaModal" persistent max-width="800px">
-            <v-card elevation="5" outlined shaped>
-                <v-card-title>
-                    <span>PRODUCCIONES TERMINADAS</span><br>
-                </v-card-title>
-                <v-card-text>
-                    <v-form ref="form" v-model="valid" lazy-validation>
-                        <v-container>
-                            <v-row>
-                                <v-col cols="12">
-                                    <v-list-item>
-                                        <v-list-item-title class="text-center">
-                                            <h5>Produccion</h5>
-                                        </v-list-item-title>
-                                    </v-list-item>
-
-                                    <v-card-title>
-                                        <v-text-field v-model="buscarProducciones" append-icon="mdi-magnify"
-                                            label="BUSCAR PRODUCCIONES" single-line hide-details></v-text-field>
-                                    </v-card-title>
-                                    <v-data-table :headers="headersProduccionTer" :items="datosProduccionTer"
-                                        :search="buscarProducciones" :items-per-page="5" class="elevation-1" id="tableId">
-
-                                        <template #[`item.est`]="{ item }">
-                                            <v-chip :color="colorEstado(item.est)" dark>
-                                                {{ item.est }}
-                                            </v-chip>
-                                        </template>
-
-
-                                        <template #[`item.actions`]="{ item }">
-                                            <v-icon v-if="item.est == 'INACTIVO'" color="green" large class="mr-2"
-                                                @click="activar(item)" title="ACTIVAR PRODUCCION">
-                                                mdi-check-circle-outline
-                                            </v-icon>
-                                            <v-icon v-if="item.est == 'ACTIVO'" color="red" large class="mr-2"
-                                                @click="desactivar(item)" title="DESACTIVAR PRODUCCION">
-                                                mdi-cancel
-                                            </v-icon>
-                                            <v-icon large class="mr-2" color="#0A62BF" @click="showInfoProduccion(item)"
-                                                title="VER INFORMACION">
-                                                mdi-eye
-                                            </v-icon>
-                                        </template>
-
-                                    </v-data-table>
-                                </v-col>
-                                <v-col cols="10"></v-col>
-                                <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeProduccionTerminadaModal()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeInfoProduccionModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
-                                  
                                 </v-col>
 
                             </v-row>
@@ -141,6 +48,7 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+
 
         <v-dialog v-model="productosModal" persistent max-width="900px">
             <v-card elevation="5" outlined shaped>
@@ -158,8 +66,8 @@
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headersProductos" :items="datosProductos" :search="buscarproductos"
-                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                <v-data-table :headers="headersProductos" :items="datosProductos"
+                                    :search="buscarproductos" :items-per-page="5" class="elevation-1" id="tableId">
 
                                     <template #[`item.est`]="{ item }">
                                         <v-chip :color="colorEstado(item.est)" dark>
@@ -177,12 +85,11 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeProductosModal()" style="float: right"
-                                        title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
-                                    </v-btn>
+                                <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeProductosModal()"
+                                    style="float: right" title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    SALIR
+                                </v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -240,7 +147,7 @@
                                                             <v-text-field v-model="codigoProduccion" label="CODIGO"
                                                                 :counter="100" :rules="codigoProduccionRules"
                                                                 @input="codigoProduccion = codigoProduccion.toUpperCase()"
-                                                                required></v-text-field>
+                                                                required readonly></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" md="1">
                                                             <v-btn class="mx-2" fab dark x-small color="cyan"
@@ -253,7 +160,7 @@
                                                             <v-text-field v-model="nombreProducto" label="PRODUCTO"
                                                                 :counter="100" :rules="nombreProductoRules"
                                                                 @input="nombreProducto = nombreProducto.toUpperCase()"
-                                                                required disabled></v-text-field>
+                                                                required readonly></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" md="4">
                                                             <v-text-field v-model="cantidadProduccion" label="CANTIDAD"
@@ -266,7 +173,24 @@
                                                             <v-text-field v-model="nombreFabrica" label="FABRICA"
                                                                 :counter="100" :rules="nombreFabricaRules"
                                                                 @input="nombreProducto = nombreProducto.toUpperCase()"
-                                                                required disabled></v-text-field>
+                                                                required readonly></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" md="4">
+                                                            <v-menu ref="menu" v-model="menuFechaVencimiento"
+                                                                :close-on-content-click="false"
+                                                                transition="scale-transition" offset-y min-width="auto">
+                                                                <template v-slot:activator="{ on, attrs }">
+                                                                    <v-text-field v-model="fechaVencimiento"
+                                                                        label="FECHA VENCIMIENTO"
+                                                                        prepend-icon="mdi-calendar" readonly
+                                                                        v-bind="attrs" v-on="on"
+                                                                        :rules="fechaVencimientoRules"
+                                                                        required></v-text-field>
+                                                                </template>
+                                                                <v-date-picker v-model="fechaVencimiento"
+                                                                    @input="menuFechaVencimiento = false"
+                                                                    locale="es"></v-date-picker>
+                                                            </v-menu>
                                                         </v-col>
                                                         <v-col cols="12" md="8"></v-col>
 
@@ -338,8 +262,9 @@
 
 
                                                                 <template #[`item.actions`]="{ item }">
-                                                                    <v-icon v-if="item.est == 'EN PRODUCCION'" color="green"
-                                                                        class="mx-2" large @click="terminar(item)"
+                                                                    <v-icon v-if="item.est == 'EN PRODUCCION'"
+                                                                        color="green" class="mx-2" large
+                                                                        @click="terminar(item)"
                                                                         title="TERMINAR PRODUCCION">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
@@ -374,43 +299,49 @@
                                                 <v-container>
                                                     <v-row>
                                                         <v-col cols="12">
-                                    <v-list-item>
-                                        <v-list-item-title class="text-center">
-                                            <h5>Produccion</h5>
-                                        </v-list-item-title>
-                                    </v-list-item>
+                                                            <v-list-item>
+                                                                <v-list-item-title class="text-center">
+                                                                    <h5>Produccion</h5>
+                                                                </v-list-item-title>
+                                                            </v-list-item>
 
-                                    <v-card-title>
-                                        <v-text-field v-model="buscarProducciones" append-icon="mdi-magnify"
-                                            label="BUSCAR PRODUCCIONES" single-line hide-details></v-text-field>
-                                    </v-card-title>
-                                    <v-data-table :headers="headersProduccionTer" :items="datosProduccionTer"
-                                        :search="buscarProducciones" :items-per-page="5" class="elevation-1" id="tableId">
+                                                            <v-card-title>
+                                                                <v-text-field v-model="buscarProducciones"
+                                                                    append-icon="mdi-magnify"
+                                                                    label="BUSCAR PRODUCCIONES" single-line
+                                                                    hide-details></v-text-field>
+                                                            </v-card-title>
+                                                            <v-data-table :headers="headersProduccionTer"
+                                                                :items="datosProduccionTer" :search="buscarProducciones"
+                                                                :items-per-page="5" class="elevation-1" id="tableId">
 
-                                        <template #[`item.est`]="{ item }">
-                                            <v-chip :color="colorEstado(item.est)" dark>
-                                                {{ item.est }}
-                                            </v-chip>
-                                        </template>
+                                                                <template #[`item.est`]="{ item }">
+                                                                    <v-chip :color="colorEstado(item.est)" dark>
+                                                                        {{ item.est }}
+                                                                    </v-chip>
+                                                                </template>
 
 
-                                        <template #[`item.actions`]="{ item }">
-                                            <v-icon v-if="item.est == 'INACTIVO'" color="green" large class="mr-2"
-                                                @click="activar(item)" title="ACTIVAR PRODUCCION">
-                                                mdi-check-circle-outline
-                                            </v-icon>
-                                            <v-icon v-if="item.est == 'ACTIVO'" color="red" large class="mr-2"
-                                                @click="desactivar(item)" title="DESACTIVAR PRODUCCION">
-                                                mdi-cancel
-                                            </v-icon>
-                                            <v-icon large class="mr-2" color="#0A62BF" @click="showInfoProduccion(item)"
-                                                title="VER INFORMACION">
-                                                mdi-eye
-                                            </v-icon>
-                                        </template>
+                                                                <template #[`item.actions`]="{ item }">
+                                                                    <v-icon v-if="item.est == 'INACTIVO'" color="green"
+                                                                        large class="mr-2" @click="activar(item)"
+                                                                        title="ACTIVAR PRODUCCION">
+                                                                        mdi-check-circle-outline
+                                                                    </v-icon>
+                                                                    <v-icon v-if="item.est == 'ACTIVO'" color="red"
+                                                                        large class="mr-2" @click="desactivar(item)"
+                                                                        title="DESACTIVAR PRODUCCION">
+                                                                        mdi-cancel
+                                                                    </v-icon>
+                                                                    <v-icon large class="mr-2" color="#0A62BF"
+                                                                        @click="showInfoProduccion(item)"
+                                                                        title="VER INFORMACION">
+                                                                        mdi-eye
+                                                                    </v-icon>
+                                                                </template>
 
-                                    </v-data-table>
-                                </v-col>
+                                                            </v-data-table>
+                                                        </v-col>
                                                     </v-row>
                                                 </v-container>
                                             </v-form>
@@ -423,7 +354,8 @@
                     </v-row>
 
                     <div class="text-center">
-                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00" outlined>
+                        <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
+                            outlined>
                             <strong>{{ mensajeSnackbar }}</strong>
 
 
@@ -470,6 +402,8 @@ export default {
             cantidadProduccion: "",
             codigoProduccion: "",
             buscarProduccion: "",
+            fechaVencimiento: "",
+            menuFechaVencimiento: false,
             datosProduccion: [],
             headersProduccion: [
                 { text: "CODIGO PRODUCCION", value: "codprodu", sortable: true },
@@ -540,13 +474,40 @@ export default {
             mensajeSnackbarError: "REGISTRO FALLIDO",
             timeout: 2000,
             //#endregion
+
+            //#region Rules
+            fechaVencimientoRules: [
+                v => !!v || "La fecha de vencimiento es obligatoria"
+            ],
+            //#endregion
         }
     },
     created: function () {
         this.listarProduccion();
         this.listarProduccionT();
+        this.generarCodigoProduccion();
     },
     methods: {
+        generarCodigoProduccion() {
+            // Prefijo fijo
+            const prefijo = "PROD";
+
+            // Fecha actual en formato YYYYMMDD
+            const hoy = new Date();
+            const yyyy = hoy.getFullYear();
+            const mm = String(hoy.getMonth() + 1).padStart(2, "0");
+            const dd = String(hoy.getDate()).padStart(2, "0");
+            const fecha = `${yyyy}${mm}${dd}`;
+
+            // Número aleatorio de 4 dígitos
+            const random = Math.floor(1000 + Math.random() * 9000);
+
+            // Construcción final
+            const codigo = `${prefijo}-${fecha}-${random}`;
+
+            // Lo asignamos al campo del formulario
+            this.codigoProduccion = codigo;
+        },
         colorEstado(est) {
             if (est == 'TERMINADO') return 'green'
             else return 'orange'
@@ -619,13 +580,14 @@ export default {
 
         //#region Adicion
         registrarProduccion() {
-            this.registroProduccion(this.codigoProduccion, this.idFabrica, this.idProducto, this.cantidadProduccion);
+            this.registroProduccion(this.codigoProduccion, this.idFabrica, this.idProducto, this.cantidadProduccion, this.fechaVencimiento);
         },
         async registroProduccion(
             codigoProduccion,
             idFabrica,
             idProducto,
-            cantidadProduccion
+            cantidadProduccion,
+            fechaVencimiento
 
         ) {
             let me = this;
@@ -638,7 +600,9 @@ export default {
                     "," +
                     this.idProducto +
                     "," +
-                    this.cantidadProduccion
+                    this.cantidadProduccion +
+                    "," +
+                    this.fechaVencimiento
                 )
                 .then(function (response) {
 
@@ -774,8 +738,11 @@ export default {
         },
         //#endregion
         limpiar() {
-            this.nombreProduccion = "";
             this.codigoProduccion = "";
+            this.cantidadProduccion = "";
+            this.nombreProducto = "";
+            this.nombreFabrica = "";
+            this.fechaVencimiento = "";
         },
 
     },
