@@ -118,7 +118,7 @@
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
-                             <v-data-table :headers="headerCategoria" :items="datosCategoria" :search="searchCategoria"
+                             <v-data-table :headers="headerCategoria" :items="datoscategoria" :search="searchCategoria"
                                  :items-per-page="5" class="elevation-1" id="tableId">
  
                                  <template #[`item.estado`]="{ item }">
@@ -166,7 +166,7 @@
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
-                             <v-data-table :headers="headerSubCategoria" :items="datosSubCategoria" :search="searchSubcategoria"
+                             <v-data-table :headers="headerSubCategoria" :items="datossubcategoria" :search="searchSubcategoria"
                                  :items-per-page="5" class="elevation-1" id="tableId">
  
                                  <template #[`item.estado`]="{ item }">
@@ -1189,6 +1189,7 @@
        this.listarInventario();
        this.listarItem();
        this.listarCategoria();
+       this.listarSubcategoria();
        this.listarstock();
        this.listaralmacenproducto();
        this.listarSaldoItem();
@@ -1829,47 +1830,7 @@
 
         //Subcategoría
 
-         listarSubcategoria() {
-             this.listarSubcategorias();
-         },
-         async listarSubcategorias() {
-           let me = this;
-           await axios
-             .get("/inventario/listarsubcategoriaactivo/")
-             .then(function (response) {
-               if (response.data.resultado == null) {
-                 me.datoscategoria = [];
-                 console.log(response.data);
-               } else {
-                 console.log(response.data);
-                 me.datoscategoria = response.data.resultado;
-               }
-             })
-             .catch(function (error) {
-               console.log(error);
-             });
-         },
-
-         listarSubcategoriaInactivo() {
-             this.listarSubcategoriasInactivos();
-         },
-         async listarSubcategoriasInactivos() {
-           let me = this;
-           await axios
-             .get("inventario/listarsubcategoriainactivo/")
-             .then(function (response) {
-               if (response.data.resultado == null) {
-                 me.datoscategoriaInactivos = [];
-                 console.log(response.data);
-               } else {
-                 console.log(response.data);
-                 me.datoscategoriaInactivos = response.data.resultado;
-               }
-             })
-             .catch(function (error) {
-               console.log(error);
-             });
-         },
+        
 
          registrarSubcategoria() {
             if (this.$refs.form.validate()) {
