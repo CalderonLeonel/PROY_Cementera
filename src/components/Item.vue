@@ -223,7 +223,7 @@
                                         <v-text-field v-model="buscarCategoria" append-icon="mdi-magnify"
                                             label="BUSCAR CATEGORÍAS" single-line hide-details></v-text-field>
                                     </v-card-title>
-                                    <v-data-table :headers="headercategoria" :items="datoscategoriaInactivos"
+                                    <v-data-table :headers="headerCategoria" :items="datoscategoriaInactivos"
                                         :search="buscarCategoria" :items-per-page="5" class="elevation-1" id="tableId">
 
                                         <template #[`item.estado`]="{ item }">
@@ -401,7 +401,7 @@
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headercategoria" :items="datoscategoria" :search="searchCategoria"
+                                <v-data-table :headers="headerCategoria" :items="datoscategoria" :search="searchCategoria"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon v-if="seleccionarCategoriaTabla==true" small class="mr-2" @click="seleccionarCategoriaItem(item)">
@@ -899,10 +899,10 @@
                  "EL NOMBRE DEL ITEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreCategoriaRules: [
-               (v) => !!v || "SE REQUIERE EL NOMBRE DEL Categoria DE ITEM.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL CATEGORÍA.",
                (v) =>
                (v && v.length <= 60) ||
-                 "EL NOMBRE DEL Categoria NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+                 "EL NOMBRE DE LA CATEGORÍA NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreAlmacenRules: [
                (v) => !!v || "SE REQUIERE EL NOMBRE DEL ALMACÉN.",
@@ -1037,7 +1037,6 @@
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
-            datosCategoria: [],
             headerCategoria: [  
                  { text: "CATEGORÍA", value: "categoria", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -2323,9 +2322,9 @@
 
         llenarCamposCategoria(item) {
             this.botonActTT = 1;
-            this.idCategoria = item.idcategoria;
-            this.nombreCategoria = item.nombreCategoria;
-            this.estado = item.estado;
+            this.idCategoria = item.idcat;
+            this.nombreCategoria = item.categoria;
+            this.estado = item.est;
             this.agregarCategoriaModal = true;
         },
 
