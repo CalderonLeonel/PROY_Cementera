@@ -166,7 +166,7 @@
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchSubcategoria" append-icon="mdi-magnify" label="BUSCAR Categoria DE ITEM"
+                                <v-text-field v-model="searchSubcategoria" append-icon="mdi-magnify" label="BUSCAR SUBCATEGORÍAS"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
@@ -881,6 +881,7 @@
 
              idCategoria:0,
              nombreCategoria: "",
+             nombreSubcategoria: "",
              seleccionarCategoriaTabla: false,
              estTT: "",
 
@@ -1863,7 +1864,7 @@
 
          registrarSubcategoria() {
             if (this.$refs.form.validate()) {
-                this.registrarSubcategorias(this.nombreCategoria,this.idCategoria, "ACTIVO");
+                this.registrarSubcategorias(this.nombreSubcategoria,this.idCategoria, "ACTIVO");
             }            
         },
         async registrarSubcategorias(
@@ -1885,8 +1886,8 @@
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarCategorias();
-                    me.closeModalAgregarCategoria();
+                    me.listarSubcategorias();
+                    me.closeModalAgregarSubcategoria();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
