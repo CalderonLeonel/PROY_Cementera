@@ -2314,6 +2314,8 @@
             this.descripcion = item.descripcion;
             this.limitecritico = item.limite;
             this.metodoValuacion = item.metodovaluacion;
+            this.fechaVencimiento = item.fechaExpiracion;
+            this.costoReferencia = item.costoReferencia;
             this.estado = item.estado;
             this.agregarItemModal = true;
         },
