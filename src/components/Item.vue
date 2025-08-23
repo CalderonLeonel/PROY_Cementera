@@ -151,7 +151,7 @@
 
                      <v-row >
                          <v-col cols="12" md="2">
-                             <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA SUBCATEGORÍA</v-btn>  
+                             <v-btn color="success" @click="showModalAgregarSubcategoria()">NUEVA SUBCATEGORÍA</v-btn>  
                          </v-col>
                         
                          <v-col cols="12">
@@ -744,7 +744,7 @@
 
                                 <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeModalAgregarCategoria()" style="float: right" title="SALIR">
+                                        @click="closeModalAgregarSubcategoria()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -1025,14 +1025,14 @@
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
-                 { text: "CATEGORÍA", value: "categoria", sortable: true },
-                 { text: "SUBCATEGORÍA", value: "subcategoria", sortable: true },
+                 { text: "CATEGORÍA", value: "nombrecategoria", sortable: true },
+                 { text: "SUBCATEGORÍA", value: "nombresubcategoria", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
-                 { text: "PROVEEDOR", value: "proveedor", sortable: true },
-                 { text: "FECHA EXP.", value: "fechaexp", sortable: true },
-                 { text: "COSTO REF", value: "costoref", sortable: true },
+                 { text: "PROVEEDOR", value: "nombreProveedor", sortable: true },
+                 { text: "FECHA EXP.", value: "fechaExpiracion", sortable: true },
+                 { text: "COSTO REF", value: "costoReferencia", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
@@ -1186,15 +1186,15 @@
          }
      },
      created: function (){
-       /*this.listarInventario();
-       //this.listarItem();
-       //this.listarCategoria();
+       this.listarInventario();
+       this.listarItem();
+       this.listarCategoria();
        this.listarstock();
        this.listaralmacenproducto();
-       //this.listarSaldoItem();
+       this.listarSaldoItem();
        this.getListaExistencias().then(() => {
        this.getAlertas();
-        });*/
+        });
 
         if (this.user != null) {
             this.user = JSON.parse(sessionStorage.getItem('session'));
@@ -1835,7 +1835,7 @@
          async listarSubcategorias() {
            let me = this;
            await axios
-             .get("/inventario/listarcategoriaactivo/")
+             .get("/inventario/listarsubcategoriaactivo/")
              .then(function (response) {
                if (response.data.resultado == null) {
                  me.datoscategoria = [];
@@ -1856,7 +1856,7 @@
          async listarSubcategoriasInactivos() {
            let me = this;
            await axios
-             .get("inventario/listarcategoriainactivo/")
+             .get("inventario/listarsubcategoriainactivo/")
              .then(function (response) {
                if (response.data.resultado == null) {
                  me.datoscategoriaInactivos = [];
@@ -1883,8 +1883,10 @@
             let me = this;
             await axios
                 .post(
-                    "/inventario/agregarcategoria/" +
+                    "/inventario/agregarsubcategoria/" +
                     this.nombreCategoria +
+                    "," +
+                    this.idCategoria +
                     "," +
                     this.estado
                 )
@@ -2554,6 +2556,7 @@
         seleccionarCategoriaItem(item){
             this.idCategoria = item.idcategoria;
             this.nombreCategoria = item.nombreCategoria;
+            this.listarSubcategoriasDe(item.idcategoria);
             this.SubcategoriaModal = true;
         },
 
@@ -2578,6 +2581,18 @@
 
         closeModalAgregarCategoria(){
             this.agregarCategoriaModal = false;
+            this.limpiar();
+            this.botonActTT = 0;
+     
+        },
+
+        showModalAgregarSubcategoria(){
+            this.agregarSubcategoriaModal = true;
+            this.botonActTT = 0;  
+        },
+
+        closeModalAgregarSubcategoria(){
+            this.agregarSubcategoriaModal = false;
             this.limpiar();
             this.botonActTT = 0;
      
