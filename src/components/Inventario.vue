@@ -1462,7 +1462,9 @@
                     "," +
                     this.cantidad +
                     "," +
-                    this.estado
+                    this.estado +
+                    "," +
+                    this.refencia
                 )
                 .then(function (response) {
 
@@ -1500,7 +1502,10 @@
                     "," +
                     this.metodoValuacion +
                     "," +
-                    this.estado
+                    this.estado +
+                    "," +
+                    this.refencia
+
                 )
                 .then(function (response) {
 
