@@ -716,7 +716,7 @@
                                 </v-col>
                                 <v-col cols="12" md="3">
                                     <v-text-field v-model="nombreCategoria" label="NOMBRE CATEGORÍA" :counter="60"
-                                        :rules="nombreRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
+                                        :rules="nombreCategoriaRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>                
                                 <v-col cols="12" md="12"> </v-col>
@@ -903,10 +903,16 @@
                  "EL NOMBRE DEL ITEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreCategoriaRules: [
-               (v) => !!v || "SE REQUIERE EL NOMBRE DEL CATEGORÍA.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DE LA CATEGORÍA.",
                (v) =>
                (v && v.length <= 60) ||
                  "EL NOMBRE DE LA CATEGORÍA NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+             ],
+            nombreSubcategoriaRules: [
+               (v) => !!v || "SE REQUIERE EL NOMBRE DE LA SUBCATEGORÍA.",
+               (v) =>
+               (v && v.length <= 60) ||
+                 "EL NOMBRE DE LA SUBCATEGORÍA NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreAlmacenRules: [
                (v) => !!v || "SE REQUIERE EL NOMBRE DEL ALMACÉN.",
@@ -932,7 +938,7 @@
 
             limiteRules: [
                 (v) => !!v || "EL LIMITE ES OBLIGATORIO.",
-                (v) => parseFloat(v) >= 0 || "EL LIMITE DEBE SER MAYOR A 0.",
+                (v) => parseFloat(v) > 0 || "EL LIMITE DEBE SER MAYOR A 0.",
                 (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO."
             ],
                         
@@ -955,6 +961,13 @@
                (v) => !!v || "SE REQUIERE EL CORREO ELECTRONICO DEL PROVEEDOR.",
                (v) => /.+@.+\..+/.test(v) || "DEBE SER UN CORREO ELECTRONICO VALIDO.",
               ],
+
+            costoRules: [
+                (v) => parseFloat(v) > 0 || "EL COSTO DEBE SER MAYOR A 0.",
+                (v) => !!v || "EL COSTO ES OBLIGATORIO.",
+                (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO."
+            ],
+              
              datosInventario: [],
              headerInventario: [
                  
