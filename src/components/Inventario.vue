@@ -425,6 +425,12 @@
                                     <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadSalidaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
                                          @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
+                                </v-col>  
+                                
+                                <v-col cols="12" md="12">
+                                    <v-text-field v-model="referencia" label="REFERENCIA" :counter="100"
+                                        :rules="referenciaRules" @input="referencia = referencia.toUpperCase()"
+                                        required></v-text-field>
                                 </v-col>   
 
                                 <v-col cols="12" sm="4" md="12"></v-col>
@@ -1043,6 +1049,7 @@
 
              nombreItem:"",
              descripcion:"",
+             referencia:"",
              medida:"",
              estIt:"",
 
@@ -1101,6 +1108,10 @@
             descripcionRules: [
                 (v) => !!v || "SE REQUIERE LA DESCRIPCIÓN.",
                 (v) => (v === null || v.length <= 150) || "LA DESCRIPCIÓN NO DEBE SUPERAR LOS 150 CARACTERES.",
+            ],
+            referenciaRules: [
+                (v) => !!v || "SE REQUIERE LA REFERENCIA.",
+                (v) => (v === null || v.length <= 100) || "LA REFERENCIA NO DEBE SUPERAR LOS 100 CARACTERES.",
             ],
              phone1Rules: [
                (v) => !!v || "SE REQUIERE UN NUMERO TELEFONICO O CELULAR.",
