@@ -77,6 +77,10 @@
                                          {{ item.estado }}
                                      </v-chip>
                                  </template>
+
+                                <template #[`item.fechaExpiracion`]="{ item }">
+                                        {{ getFormattedDate(item.fechaExpiracion) }}
+                                    </template>
  
                                  <template #[`item.actions`]="{ item }">
                                      <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposItem(item)"
@@ -407,7 +411,7 @@
                                         <v-icon v-if="seleccionarCategoriaTabla==true" small class="mr-2" @click="seleccionarCategoriaItem(item)">
                                             mdi-eye-circle
                                         </v-icon>
-                                         <v-icon v-else small class="mr-2" @click="seleccionarCategoriaTabla(item)">
+                                         <v-icon v-if="seleccionarCategoriaTabla==false" small class="mr-2" @click="seleccionarCategoriaSubcategoria(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -504,7 +508,7 @@
                                 </v-col>
                                 <v-col v-if="botonActIt == 0" cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
-                                        @click="openCategoriaModal()" style="float: right" title="BUSCAR CATEGORÍA">
+                                        @click="openCategoriaModal('item')" style="float: right" title="BUSCAR CATEGORÍA">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col> 
@@ -706,13 +710,13 @@
                                 </v-col>         
                                  <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreCategoriaRules"
-                                        @click="openCategoriaModal()" style="float: right" title="BUSCAR CATEGORÍA">
+                                        @click="openCategoriaModal('tipo')" style="float: right" title="BUSCAR CATEGORÍA">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="3">
                                     <v-text-field v-model="nombreCategoria" label="NOMBRE CATEGORÍA" :counter="60"
-                                        :rules="nombreRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
+                                        :rules="nombreCategoriaRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>                
                                 <v-col cols="12" md="12"> </v-col>
@@ -899,10 +903,16 @@
                  "EL NOMBRE DEL ITEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreCategoriaRules: [
-               (v) => !!v || "SE REQUIERE EL NOMBRE DEL CATEGORÍA.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DE LA CATEGORÍA.",
                (v) =>
                (v && v.length <= 60) ||
                  "EL NOMBRE DE LA CATEGORÍA NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+             ],
+            nombreSubcategoriaRules: [
+               (v) => !!v || "SE REQUIERE EL NOMBRE DE LA SUBCATEGORÍA.",
+               (v) =>
+               (v && v.length <= 60) ||
+                 "EL NOMBRE DE LA SUBCATEGORÍA NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreAlmacenRules: [
                (v) => !!v || "SE REQUIERE EL NOMBRE DEL ALMACÉN.",
@@ -928,7 +938,7 @@
 
             limiteRules: [
                 (v) => !!v || "EL LIMITE ES OBLIGATORIO.",
-                (v) => parseFloat(v) >= 0 || "EL LIMITE DEBE SER MAYOR A 0.",
+                (v) => parseFloat(v) > 0 || "EL LIMITE DEBE SER MAYOR A 0.",
                 (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO."
             ],
                         
@@ -951,6 +961,13 @@
                (v) => !!v || "SE REQUIERE EL CORREO ELECTRONICO DEL PROVEEDOR.",
                (v) => /.+@.+\..+/.test(v) || "DEBE SER UN CORREO ELECTRONICO VALIDO.",
               ],
+
+            costoRules: [
+                (v) => parseFloat(v) > 0 || "EL COSTO DEBE SER MAYOR A 0.",
+                (v) => !!v || "EL COSTO ES OBLIGATORIO.",
+                (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO."
+            ],
+              
              datosInventario: [],
              headerInventario: [
                  
@@ -1212,6 +1229,19 @@
         getDate() {
             var fecha = new Date().toISOString();
             return fecha;
+        },
+
+        getFormattedDate(oldDate) {
+            let fecha = new Date(oldDate);
+            let dia = fecha.getDate();
+            let mes = fecha.getMonth() + 1;
+            let anio = fecha.getFullYear();
+            if (dia < 10) dia = '0' + dia;
+            if (mes < 10) mes = '0' + mes;
+
+            let fechaFormateada = anio +'-' + mes + '-' + dia;
+
+            return fechaFormateada;
         },
 
         getAlertas(){
@@ -2314,7 +2344,7 @@
             this.descripcion = item.descripcion;
             this.limitecritico = item.limite;
             this.metodoValuacion = item.metodovaluacion;
-            this.fechaVencimiento = item.fechaExpiracion;
+            this.fechaVencimiento = this.getFormattedDate(item.fechaExpiracion);
             this.costoReferencia = item.costoReferencia;
             this.estado = item.estado;
             this.agregarItemModal = true;
@@ -2332,6 +2362,7 @@
 
         llenarCamposSubcategoria(item) {
             this.botonActTT = 1;
+            this.seleccionarCategoriaTabla = false;
             this.idsubcategoria = item.idsubcategoria;
             this.nombreSubcategoria = item.subcategoria;
             this.idCategoria = item.id_categoria;
@@ -2487,7 +2518,7 @@
             if (tipo === 'item') {
                 this.seleccionarCategoriaTabla = true;
             } else {
-                 this.seleccionarCategoriaTabla = true;
+                 this.seleccionarCategoriaTabla = false;
             }
             this.listarCategorias();
             this.CategoriaModal = true;
@@ -2518,15 +2549,31 @@
 
 
         seleccionarCategoriaItem(item){
-            this.idCategoria = item.idcategoria;
-            this.nombreCategoria = item.nombreCategoria;
-            this.listarSubcategoriasDe(item.idcategoria);
+            this.idCategoria = item.idcat;
+            this.nombreCategoria = item.categoria;
+            this.listarSubcategoriasDe(item.idcat);
             this.SubcategoriaModal = true;
         },
 
+        async listarSubcategoriasDe(idCat) {
+          let me = this;
+          await axios
+            .get("/inventario/listarsubcateriasde/"+idCat)
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosSubCategoria = [];
+              } else {
+                me.datosSubCategoria = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
          seleccionarCategoriaSubcategoria(item){
-            this.idCategoria = item.idcategoria;
-            this.nombreCategoria = item.nombreCategoria;
+            this.idCategoria = item.idcat;
+            this.nombreCategoria = item.categoria;
             this.CategoriaModal = false;
         },
 
