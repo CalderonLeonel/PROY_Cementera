@@ -2331,7 +2331,9 @@
         llenarCamposSubcategoria(item) {
             this.botonActTT = 1;
             this.idsubcategoria = item.idsubcategoria;
-            this.nombreSubcategoria = item.nombreSubcategoria;
+            this.nombreSubcategoria = item.subcategoria;
+            this.idCategoria = item.id_categoria;
+            this.nombreCategoria = item.categoria;
             this.estado = item.estado;
             this.agregarSubcategoriaModal = true;
         },
