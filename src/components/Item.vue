@@ -77,6 +77,10 @@
                                          {{ item.estado }}
                                      </v-chip>
                                  </template>
+
+                                <template #[`item.fechaExpiracion`]="{ item }">
+                                        {{ getFormattedDate(item.fechaExpiracion) }}
+                                    </template>
  
                                  <template #[`item.actions`]="{ item }">
                                      <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposItem(item)"
@@ -1214,6 +1218,19 @@
             return fecha;
         },
 
+        getFormattedDate(oldDate) {
+            let fecha = new Date(oldDate);
+            let dia = fecha.getDate();
+            let mes = fecha.getMonth() + 1;
+            let anio = fecha.getFullYear();
+            if (dia < 10) dia = '0' + dia;
+            if (mes < 10) mes = '0' + mes;
+
+            let fechaFormateada = anio +'-' + mes + '-' + dia;
+
+            return fechaFormateada;
+        },
+
         getAlertas(){
             var items = [];
             var stock = [];
@@ -2314,7 +2331,7 @@
             this.descripcion = item.descripcion;
             this.limitecritico = item.limite;
             this.metodoValuacion = item.metodovaluacion;
-            this.fechaVencimiento = item.fechaExpiracion;
+            this.fechaVencimiento = this.getFormattedDate(item.fechaExpiracion);
             this.costoReferencia = item.costoReferencia;
             this.estado = item.estado;
             this.agregarItemModal = true;
