@@ -166,11 +166,11 @@
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchSubcategoria" append-icon="mdi-magnify" label="BUSCAR Categoria DE ITEM"
+                                <v-text-field v-model="searchSubcategoria" append-icon="mdi-magnify" label="BUSCAR SUBCATEGORÍAS"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
-                             <v-data-table :headers="headerSubCategoria" :items="datossubcategoria" :search="searchSubcategoria"
+                             <v-data-table :headers="headersubcategoria" :items="datossubcategoria" :search="searchSubcategoria"
                                  :items-per-page="5" class="elevation-1" id="tableId">
  
                                  <template #[`item.estado`]="{ item }">
@@ -450,7 +450,7 @@
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headerSubCategoria" :items="datossubcategoria" :search="searchSubcategoria"
+                                <v-data-table :headers="headersubcategoria" :items="datossubcategoria" :search="searchSubcategoria"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon small class="mr-2" @click="seleccionarSubcategoria(item)">
@@ -879,8 +879,9 @@
              medida:"",
              estIt:"",
 
-             idCategoria:"",
+             idCategoria:0,
              nombreCategoria: "",
+             nombreSubcategoria: "",
              seleccionarCategoriaTabla: false,
              estTT: "",
 
@@ -1060,8 +1061,8 @@
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
-            datosSubCategoria: [],
-            headerSubCategoria: [  
+            datossubcategoria: [],
+            headersubcategoria: [  
                  { text: "SUBCATEGORÍA", value: "subcategoria", sortable: true },
                  { text: "CATEGORÍA", value: "categoria", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -1205,7 +1206,7 @@
        this.listarInventario();
        this.listarItem();
        this.listarCategoria();
-       this.listarSubcategoria();
+       this.listarSubcategorias();
        this.listarstock();
        this.listaralmacenproducto();
        this.listarSaldoItem();
@@ -1863,29 +1864,30 @@
 
          registrarSubcategoria() {
             if (this.$refs.form.validate()) {
-                this.registrarSubcategorias(this.nombreCategoria, this.estado);
+                this.registrarSubcategorias(this.nombreSubcategoria,this.idCategoria, "ACTIVO");
             }            
         },
         async registrarSubcategorias(
             nombreCategoria,
+            idcategoria,
             estado
         ) {
             let me = this;
             await axios
                 .post(
                     "/inventario/agregarsubcategoria/" +
-                    this.nombreCategoria +
+                    nombreCategoria +
                     "," +
-                    this.idCategoria +
+                    idcategoria +
                     "," +
-                    this.estado
+                    estado
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarCategorias();
-                    me.closeModalAgregarCategoria();
+                    me.listarSubcategorias();
+                    me.closeModalAgregarSubcategoria();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -1894,7 +1896,7 @@
 
         },
 
-        editarSubcategoria() {
+        editarSubcategorias() {
             if (this.$refs.form.validate()) {
             this.editarCategoria( this.idCategoria,this.nombreCategoria, this.estado);
             this.botonActTT = 0;
@@ -2002,77 +2004,7 @@
              });
          },
 
-         registrarSubcategoria() {
-            if (this.$refs.form.validate()) {
-                this.registrarSubcategorias(this.nombreSubcategoria, this.estado);
-            }            
-        },
-        async registrarSubcategorias(
-            nombreSubcategoria,
-            idcategoria,
-            estado
-        ) {
-            let me = this;
-            await axios
-                .post(
-                    "/inventario/agregarsubcategoria/" +
-                    this.nombreSubcategoria +
-                    "," +
-                     this.idcategoria +
-                    "," +
-                    this.estado
-                )
-                .then(function (response) {
-
-                    me.mensajeSnackbar = response.data.message;
-                    me.snackbarOK = true;
-                    me.listarSubcategorias();
-                    me.closeModalAgregarSubcategoria();
-                })
-                .catch(function (error) {
-                    me.snackbarError = true;
-
-                });
-
-        },
-
-        editarSubcategoria() {
-            if (this.$refs.form.validate()) {
-            this.editarSubcategoria( this.idSubcategoria,this.nombreSubcategoria, this.estado);
-            this.botonActTT = 0;
-            }
-        },
-        async editarSubcategoria(
-            idSubcategoria,
-            nombreSubcategoria,
-            idcategoria,
-            estado
-        ) {
-            let me = this;
-            await axios
-                .post(
-                    "/inventario/actualizarsubcategoria/" +
-                    this.idSubcategoria +
-                    "," +
-                    this.nombreSubcategoria +
-                    "," +
-                     this.idcategoria +
-                    "," +
-                    this.estado
-                )
-                .then(function (response) {
-
-                    me.mensajeSnackbar = response.data.message;
-                    me.snackbarOK = true;
-                    me.listarSubcategorias();
-                    me.closeModalAgregarSubcategoria();
-                })
-                .catch(function (error) {
-                    me.snackbarError = true;
-                    alert('error');
-                });
-
-        },
+       
 
 
 
@@ -2561,9 +2493,9 @@
             .get("/inventario/listarsubcateriasde/"+idCat)
             .then(function (response) {
               if (response.data.resultado == null) {
-                me.datosSubCategoria = [];
+                me.datossubcategoria = [];
               } else {
-                me.datosSubCategoria = response.data.resultado;
+                me.datossubcategoria = response.data.resultado;
               }
             })
             .catch(function (error) {
@@ -2572,6 +2504,7 @@
         },
 
          seleccionarCategoriaSubcategoria(item){
+
             this.idCategoria = item.idcat;
             this.nombreCategoria = item.categoria;
             this.CategoriaModal = false;
