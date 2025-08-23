@@ -118,7 +118,7 @@
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
-                             <v-data-table :headers="headerCategoria" :items="datosCategoria" :search="searchCategoria"
+                             <v-data-table :headers="headerCategoria" :items="datoscategoria" :search="searchCategoria"
                                  :items-per-page="5" class="elevation-1" id="tableId">
  
                                  <template #[`item.estado`]="{ item }">
@@ -151,7 +151,7 @@
 
                      <v-row >
                          <v-col cols="12" md="2">
-                             <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA SUBCATEGORÍA</v-btn>  
+                             <v-btn color="success" @click="showModalAgregarSubcategoria()">NUEVA SUBCATEGORÍA</v-btn>  
                          </v-col>
                         
                          <v-col cols="12">
@@ -166,7 +166,7 @@
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
-                             <v-data-table :headers="headerSubCategoria" :items="datosSubCategoria" :search="searchSubcategoria"
+                             <v-data-table :headers="headerSubCategoria" :items="datossubcategoria" :search="searchSubcategoria"
                                  :items-per-page="5" class="elevation-1" id="tableId">
  
                                  <template #[`item.estado`]="{ item }">
@@ -223,7 +223,7 @@
                                         <v-text-field v-model="buscarCategoria" append-icon="mdi-magnify"
                                             label="BUSCAR CATEGORÍAS" single-line hide-details></v-text-field>
                                     </v-card-title>
-                                    <v-data-table :headers="headercategoria" :items="datoscategoriaInactivos"
+                                    <v-data-table :headers="headerCategoria" :items="datoscategoriaInactivos"
                                         :search="buscarCategoria" :items-per-page="5" class="elevation-1" id="tableId">
 
                                         <template #[`item.estado`]="{ item }">
@@ -401,7 +401,7 @@
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headercategoria" :items="datoscategoria" :search="searchCategoria"
+                                <v-data-table :headers="headerCategoria" :items="datoscategoria" :search="searchCategoria"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon v-if="seleccionarCategoriaTabla==true" small class="mr-2" @click="seleccionarCategoriaItem(item)">
@@ -744,7 +744,7 @@
 
                                 <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeModalAgregarCategoria()" style="float: right" title="SALIR">
+                                        @click="closeModalAgregarSubcategoria()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -899,10 +899,10 @@
                  "EL NOMBRE DEL ITEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreCategoriaRules: [
-               (v) => !!v || "SE REQUIERE EL NOMBRE DEL Categoria DE ITEM.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL CATEGORÍA.",
                (v) =>
                (v && v.length <= 60) ||
-                 "EL NOMBRE DEL Categoria NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+                 "EL NOMBRE DE LA CATEGORÍA NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreAlmacenRules: [
                (v) => !!v || "SE REQUIERE EL NOMBRE DEL ALMACÉN.",
@@ -1025,19 +1025,18 @@
                  { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
-                 { text: "CATEGORÍA", value: "categoria", sortable: true },
-                 { text: "SUBCATEGORÍA", value: "subcategoria", sortable: true },
+                 { text: "CATEGORÍA", value: "nombrecategoria", sortable: true },
+                 { text: "SUBCATEGORÍA", value: "nombresubcategoria", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
-                 { text: "PROVEEDOR", value: "proveedor", sortable: true },
-                 { text: "FECHA EXP.", value: "fechaexp", sortable: true },
-                 { text: "COSTO REF", value: "costoref", sortable: true },
+                 { text: "PROVEEDOR", value: "nombreProveedor", sortable: true },
+                 { text: "FECHA EXP.", value: "fechaExpiracion", sortable: true },
+                 { text: "COSTO REF", value: "costoReferencia", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
-            datosCategoria: [],
             headerCategoria: [  
                  { text: "CATEGORÍA", value: "categoria", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -1186,15 +1185,16 @@
          }
      },
      created: function (){
-       /*this.listarInventario();
-       //this.listarItem();
-       //this.listarCategoria();
+       this.listarInventario();
+       this.listarItem();
+       this.listarCategoria();
+       this.listarSubcategoria();
        this.listarstock();
        this.listaralmacenproducto();
-       //this.listarSaldoItem();
+       this.listarSaldoItem();
        this.getListaExistencias().then(() => {
        this.getAlertas();
-        });*/
+        });
 
         if (this.user != null) {
             this.user = JSON.parse(sessionStorage.getItem('session'));
@@ -1829,47 +1829,7 @@
 
         //Subcategoría
 
-         listarSubcategoria() {
-             this.listarSubcategorias();
-         },
-         async listarSubcategorias() {
-           let me = this;
-           await axios
-             .get("/inventario/listarcategoriaactivo/")
-             .then(function (response) {
-               if (response.data.resultado == null) {
-                 me.datoscategoria = [];
-                 console.log(response.data);
-               } else {
-                 console.log(response.data);
-                 me.datoscategoria = response.data.resultado;
-               }
-             })
-             .catch(function (error) {
-               console.log(error);
-             });
-         },
-
-         listarSubcategoriaInactivo() {
-             this.listarSubcategoriasInactivos();
-         },
-         async listarSubcategoriasInactivos() {
-           let me = this;
-           await axios
-             .get("inventario/listarcategoriainactivo/")
-             .then(function (response) {
-               if (response.data.resultado == null) {
-                 me.datoscategoriaInactivos = [];
-                 console.log(response.data);
-               } else {
-                 console.log(response.data);
-                 me.datoscategoriaInactivos = response.data.resultado;
-               }
-             })
-             .catch(function (error) {
-               console.log(error);
-             });
-         },
+        
 
          registrarSubcategoria() {
             if (this.$refs.form.validate()) {
@@ -1883,8 +1843,10 @@
             let me = this;
             await axios
                 .post(
-                    "/inventario/agregarcategoria/" +
+                    "/inventario/agregarsubcategoria/" +
                     this.nombreCategoria +
+                    "," +
+                    this.idCategoria +
                     "," +
                     this.estado
                 )
@@ -2352,6 +2314,8 @@
             this.descripcion = item.descripcion;
             this.limitecritico = item.limite;
             this.metodoValuacion = item.metodovaluacion;
+            this.fechaVencimiento = item.fechaExpiracion;
+            this.costoReferencia = item.costoReferencia;
             this.estado = item.estado;
             this.agregarItemModal = true;
         },
@@ -2360,16 +2324,18 @@
 
         llenarCamposCategoria(item) {
             this.botonActTT = 1;
-            this.idCategoria = item.idcategoria;
-            this.nombreCategoria = item.nombreCategoria;
-            this.estado = item.estado;
+            this.idCategoria = item.idcat;
+            this.nombreCategoria = item.categoria;
+            this.estado = item.est;
             this.agregarCategoriaModal = true;
         },
 
         llenarCamposSubcategoria(item) {
             this.botonActTT = 1;
             this.idsubcategoria = item.idsubcategoria;
-            this.nombreSubcategoria = item.nombreSubcategoria;
+            this.nombreSubcategoria = item.subcategoria;
+            this.idCategoria = item.id_categoria;
+            this.nombreCategoria = item.categoria;
             this.estado = item.estado;
             this.agregarSubcategoriaModal = true;
         },
@@ -2554,6 +2520,7 @@
         seleccionarCategoriaItem(item){
             this.idCategoria = item.idcategoria;
             this.nombreCategoria = item.nombreCategoria;
+            this.listarSubcategoriasDe(item.idcategoria);
             this.SubcategoriaModal = true;
         },
 
@@ -2578,6 +2545,18 @@
 
         closeModalAgregarCategoria(){
             this.agregarCategoriaModal = false;
+            this.limpiar();
+            this.botonActTT = 0;
+     
+        },
+
+        showModalAgregarSubcategoria(){
+            this.agregarSubcategoriaModal = true;
+            this.botonActTT = 0;  
+        },
+
+        closeModalAgregarSubcategoria(){
+            this.agregarSubcategoriaModal = false;
             this.limpiar();
             this.botonActTT = 0;
      
