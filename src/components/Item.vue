@@ -407,7 +407,7 @@
                                         <v-icon v-if="seleccionarCategoriaTabla==true" small class="mr-2" @click="seleccionarCategoriaItem(item)">
                                             mdi-eye-circle
                                         </v-icon>
-                                         <v-icon v-else small class="mr-2" @click="seleccionarCategoriaTabla(item)">
+                                         <v-icon v-if="seleccionarCategoriaTabla==false" small class="mr-2" @click="seleccionarCategoriaSubcategoria(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -504,7 +504,7 @@
                                 </v-col>
                                 <v-col v-if="botonActIt == 0" cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
-                                        @click="openCategoriaModal()" style="float: right" title="BUSCAR CATEGORÍA">
+                                        @click="openCategoriaModal('item')" style="float: right" title="BUSCAR CATEGORÍA">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col> 
@@ -706,7 +706,7 @@
                                 </v-col>         
                                  <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreCategoriaRules"
-                                        @click="openCategoriaModal()" style="float: right" title="BUSCAR CATEGORÍA">
+                                        @click="openCategoriaModal('tipo')" style="float: right" title="BUSCAR CATEGORÍA">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -2332,6 +2332,7 @@
 
         llenarCamposSubcategoria(item) {
             this.botonActTT = 1;
+            this.seleccionarCategoriaTabla = false;
             this.idsubcategoria = item.idsubcategoria;
             this.nombreSubcategoria = item.subcategoria;
             this.idCategoria = item.id_categoria;
@@ -2487,7 +2488,7 @@
             if (tipo === 'item') {
                 this.seleccionarCategoriaTabla = true;
             } else {
-                 this.seleccionarCategoriaTabla = true;
+                 this.seleccionarCategoriaTabla = false;
             }
             this.listarCategorias();
             this.CategoriaModal = true;
@@ -2518,15 +2519,31 @@
 
 
         seleccionarCategoriaItem(item){
-            this.idCategoria = item.idcategoria;
-            this.nombreCategoria = item.nombreCategoria;
-            this.listarSubcategoriasDe(item.idcategoria);
+            this.idCategoria = item.idcat;
+            this.nombreCategoria = item.categoria;
+            this.listarSubcategoriasDe(item.idcat);
             this.SubcategoriaModal = true;
         },
 
+        async listarSubcategoriasDe(idCat) {
+          let me = this;
+          await axios
+            .get("/inventario/listarsubcateriasde/"+idCat)
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosSubCategoria = [];
+              } else {
+                me.datosSubCategoria = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
          seleccionarCategoriaSubcategoria(item){
-            this.idCategoria = item.idcategoria;
-            this.nombreCategoria = item.nombreCategoria;
+            this.idCategoria = item.idcat;
+            this.nombreCategoria = item.categoria;
             this.CategoriaModal = false;
         },
 
