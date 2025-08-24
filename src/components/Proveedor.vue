@@ -715,11 +715,11 @@ export default {
                     this.contactoProveedorecundario=this.contactoProveedorPrincipal;
                 }
                 if (this.documentoArchivo == null || this.documentoArchivo == '') {
-                    this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
+                    this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado,this.nombreRazon,this.numeroNIT,this.idPais,this.categoria);
 
                 }
                 else {
-                    this.registrarProveedorArchivo(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name);  
+                    this.registrarProveedorArchivo(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name,this.nombreRazon,this.numeroNIT,this.idPais,this.categoria);  
                     this.almacenarArchivo(this.documentoArchivo)
                     this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro"+this.idProveedor,"ACTIVO");
                 }
