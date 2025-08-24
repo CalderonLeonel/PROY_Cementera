@@ -2334,6 +2334,8 @@
             this.nombreProveedor = item.nombreProveedor;
             this.limitecritico = item.limite;
             this.metodoValuacion = item.metodovaluacion;
+            this.medida = item.medida;
+            this.sku = item.sku;
             this.fechaVencimiento = this.getFormattedDate(item.fechaExpiracion);
             this.costoReferencia = item.costoReferencia;
             this.estado = item.estado;
