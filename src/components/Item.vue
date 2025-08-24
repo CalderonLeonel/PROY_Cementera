@@ -494,16 +494,16 @@
                                         :rules="descripcionRules" @input="descripcion = descripcion.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>   
-                                <v-col v-if="botonActIt == 0" cols="12" md="3">
+                                <v-col cols="12" md="3">
                                     <v-select
                                     label="MEDIDA"  v-model="medida" @input="medida =medida.toUpperCase()" required
-                                    :items="['LITROS', 'KILOGRAMOS', 'MILILITROS', 'TONELADAS', 'GRAMOS', 'UNIDADES']" 
-                                    :rules="[v => !!v || 'La medida es requerida']"
+                                    :items="medidaItems" 
+                                    :rules="medidaRules"
                                     ></v-select>
                                 </v-col>    
-                                <v-col v-if="botonActIt == 0" cols="12" md="4">
-                                    <v-text-field v-model="nombreCategoria" label="NOMBRE SUBCATEGORÍA" :counter="60"
-                                        :rules="nombreCategoriaRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
+                                <v-col  cols="12" md="4">
+                                    <v-text-field v-model="nombreSubcategoria" label="NOMBRE SUBCATEGORÍA" :counter="60"
+                                        :rules="nombreSubcategoriaRules" @input="nombreSubcategoria = nombreSubcategoria.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
                                 <v-col v-if="botonActIt == 0" cols="12" md="1">
@@ -524,7 +524,7 @@
                                     :rules="[v => !!v || 'El Metodo de Valuación es requerido']"
                                     ></v-select>
                                 </v-col> 
-                                 <v-col v-if="botonActIt == 0" cols="12" md="3">
+                                 <v-col  cols="12" md="3">
                                     <v-text-field v-model="nombreProveedor" label="NOMBRE PROVEEDOR" :counter="60"
                                         :rules="nombreProveedorRules" @input="nombreProveedor = nombreProveedor.toUpperCase()"
                                         disabled required></v-text-field>
@@ -877,6 +877,23 @@
              nombreItem:"",
              descripcion:"",
              medida:"",
+
+            medidaItems: [
+            { text: "TONELADAS (t)",        value: "TONELADAS" },
+            { text: "KILOGRAMOS (kg)",      value: "KILOGRAMOS" },
+            { text: "METROS CÚBICOS (m³)",  value: "M3" },
+            { text: "LITROS (L)",           value: "LITROS" },
+            { text: "UNIDADES (u)",         value: "UNIDADES" },
+            { text: "GALÓN (gal)",          value: "GALON" },
+            { text: "TONELADAS LARGAS (lt)",value: "TONELADAS_LARGAS" },
+            { text: "TONELADAS CORTAS (st)",value:"TONELADAS_CORTAS"},
+            { text: "GRAMOS (g)",           value: "GRAMOS" },
+            { text: "MILILITROS (mL)",      value: "MILILITROS" },
+            { text: "METROS (m)",           value: "METROS" },
+            { text: "METROS CUADRADOS (m²)",value: "M2" }
+            ],
+
+
              estIt:"",
 
              idCategoria:0,
@@ -935,6 +952,10 @@
                 (v) => parseFloat(v) >= 0 || "EL VALOR DEBE SER MAYOR A 0.",
                 (v) => !!v || "EL VALOR ES OBLIGATORIO.",
                 (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO."
+            ],
+             medidaRules: [
+                v => !!v || "LA MEDIDA ES OBLIGATORIA.",
+                v => ['LITROS', 'KILOGRAMOS', 'MILILITROS', 'TONELADAS', 'GRAMOS','M3','GALON', 'UNIDADES','TONELADAS_LARGAS','TONELADAS_CORTAS','M2','METROS'].includes(v) || "SELECCIONA UNA MEDIDA VÁLIDA."
             ],
 
             limiteRules: [
@@ -1631,9 +1652,41 @@
              });
          },
 
+        formatText(text, len) {
+        const s = (text ?? '')
+            .normalize('NFD')               
+            .replace(/[\u0300-\u036f]/g, '')
+            .toUpperCase();                 
+
+        return Number.isInteger(len) ? s.slice(0, len) : s;
+        },
+
+        timeSuffixDDhhmm(date = new Date()) {
+            const pad2 = n => String(n).padStart(2, '0');
+            const DD   = pad2(date.getDate());
+            const hh   = pad2(date.getHours());
+            const mm   = pad2(date.getSeconds());
+            return `${DD}${hh}${mm}`;
+        },
+
+
+         generateSKU(){
+            var text = "";
+            const nombre = this.formatText(this.nombreItem,4);
+            const subcat = this.formatText(this.nombreSubcategoria,3);
+            const cat = this.formatText(this.nombreCategoria,3);
+            const prov = this.formatText(this.nombreProveedor,4);
+            const time = this.timeSuffixDDhhmm(); 
+            
+            const prefix = subcat + '-' +  cat+ '-' + nombre + '-' + prov;
+            this.sku = prefix + '-' + time;
+         },
+
          registrarIt() {
             if (this.$refs.form.validate()) {
-            this.registrarItem(this.nombreItem, this.descripcion,this.medida,this.idCategoria,this.limitecritico, this.metodoValuacion, this.estado);
+            this.generateSKU();
+            alert(this.sku);
+            this.registrarItem(this.nombreItem, this.descripcion,this.medida,this.idSubcategoria,this.limitecritico, this.metodoValuacion, this.estado, this.idProveedor,this.costoReferencia, this.fechaVencimiento);
             }
         },
         async registrarItem(
@@ -1657,12 +1710,20 @@
                     "," +
                     this.estado +
                     "," +
-                    this.idCategoria +
+                    this.idsubcategoria +
                     "," +
                     this.limitecritico +
                     "," +
-                    this.metodoValuacion
-                )
+                    this.metodoValuacion+
+                    "," +
+                    this.sku +
+                    "," +
+                    this.idProveedor +
+                    "," +
+                    this.fechaVencimiento+
+                    "," +
+                    this.costoReferencia
+                ) 
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
@@ -1703,11 +1764,23 @@
                     "," +
                     this.descripcion +
                     "," +
+                    this.medida +
+                    "," +
                     this.estado +
+                    "," +
+                    this.idsubcategoria +
                     "," +
                     this.limitecritico +
                     "," +
-                    this.metodoValuacion
+                    this.metodoValuacion+
+                    "," +
+                    this.sku +
+                    "," +
+                    this.idProveedor +
+                    "," +
+                    this.fechaVencimiento+
+                    "," +
+                    this.costoReferencia
                 )
                 .then(function (response) {
 
@@ -2274,8 +2347,16 @@
             this.idItem = item.iditem;
             this.nombreItem = item.nombreitem;
             this.descripcion = item.descripcion;
+            this.idsubcategoria = item.id_subcategoria;
+            this.nombreSubcategoria = item.nombresubcategoria;
+            this.idCategoria = item.id_categoria;
+            this.nombreCategoria = item.categoria;
+            this.idProveedor = item.idProveedor;
+            this.nombreProveedor = item.nombreProveedor;
             this.limitecritico = item.limite;
             this.metodoValuacion = item.metodovaluacion;
+            this.medida = item.medida;
+            this.sku = item.sku;
             this.fechaVencimiento = this.getFormattedDate(item.fechaExpiracion);
             this.costoReferencia = item.costoReferencia;
             this.estado = item.estado;
@@ -2511,8 +2592,8 @@
         },
 
           seleccionarSubcategoria(item){
-            this.idSubcategoria = item.id_subcategoria;
-            this.nombreCategoria = item.subcategoria;
+            this.idsubcategoria = item.id_subcategoria;
+            this.nombreSubcategoria = item.subcategoria;
             this.SubcategoriaModal = false;
             this.CategoriaModal = false;
         },
