@@ -808,11 +808,11 @@ export default {
         editarProv() {
             if (this.$refs.form.validate()) {
                 if (this.documentoArchivo == '' || this.documentoArchivo == null) {
-                    this.editarProveedor(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
+                    this.editarProveedor(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado,this.nombreRazon,this.numeroNIT,this.idPais,this.categoria);
                     this.botonAct = 0;
                 }
                 else {
-                    this.editarProveedorArchivo(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name);                       
+                    this.editarProveedorArchivo(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name,this.nombreRazon,this.numeroNIT,this.idPais,this.categoria);                       
                     this.almacenarArchivo(this.documentoArchivo)
                     this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro"+this.idProveedor,"ACTIVO"); 
                     this.botonAct = 0;         
