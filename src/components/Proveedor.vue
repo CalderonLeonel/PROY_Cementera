@@ -745,7 +745,15 @@ export default {
                     "," +
                     this.correoProveedor +
                     "," +
-                    this.estado
+                    this.estado +
+                    "," +
+                    this.nombreRazon +
+                    "," +
+                    this.numeroNIT  +
+                    "," + 
+                    this.idPais +
+                    "," + 
+                    this.categoria
                 )
                 .then(function (response) {
 
@@ -788,7 +796,15 @@ export default {
                     "," +
                     this.estado +
                     "," +
-                    nombreArchivo
+                    nombreArchivo + 
+                    "," +
+                    this.nombreRazon +
+                    "," +
+                    this.numeroNIT  +
+                    "," + 
+                    this.idPais +
+                    "," + 
+                    this.categoria
                 )
                 .then(function (response) {
 
@@ -841,7 +857,15 @@ export default {
                     "," +
                     this.correoProveedor +
                     "," +
-                    this.estado
+                    this.estado +  
+                    "," +
+                    this.nombreRazon +
+                    "," +
+                    this.numeroNIT  +
+                    "," + 
+                    this.idPais +
+                    "," + 
+                    this.categoria
                 )
                 .then(function (response) {
 
@@ -888,7 +912,15 @@ export default {
                     "," +
                     this.estado +
                     "," +
-                    nombreArchivo
+                    nombreArchivo +
+                    "," +
+                    this.nombreRazon +
+                    "," +
+                    this.numeroNIT  +
+                    "," + 
+                    this.idPais +
+                    "," + 
+                    this.categoria
                 )
                 .then(function (response) {
 
