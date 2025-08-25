@@ -555,7 +555,8 @@ export default {
             ],
 
 
-
+            numeroNIT:"",
+            nombreRazon:"",
 
             snackbarOK: false,
             snackbarError : false,
@@ -754,8 +755,8 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.limpiar();
                     me.listarProveedores();
+                    me.limpiar();
                     me.closeModalAgregarProveedor();
                 })
                 .catch(function (error) {
@@ -805,8 +806,8 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.limpiar();
                     me.listarProveedores();
+                    me.limpiar();
                     me.closeModalAgregarProveedor();
                 })
                 .catch(function (error) {
@@ -866,8 +867,8 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.limpiar();
                     me.listarProveedores();
+                    me.limpiar();
                     me.closeModalAgregarProveedor();
                 })
                 .catch(function (error) {
@@ -921,8 +922,8 @@ export default {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.limpiar();
                     me.listarProveedores();
+                    me.limpiar();
                     me.closeModalAgregarProveedor();
                 })
                 .catch(function (error) {
@@ -1057,7 +1058,12 @@ export default {
             }else{
                 this.contactoProveedorecundario = item.cto2pro;
             }
-            
+            this.numeroNIT = item.nit;
+            this.nombreRazon = item.raz;
+            this.idPais = item.idpais;
+            this.pais = item.pais;
+            this.idCategoria = item.idcatprv;
+            this.nombreCategoria = item.cat;
             this.correoProveedor = item.croprov;
             this.estado = item.est;
             this.documentoArchivo.suffix = item.arch;
@@ -1097,9 +1103,8 @@ export default {
 
         closeModalAgregarCategoria(){
             this.agregarCategoriaModal = false;
-            this.limpiar();
             this.botonActTT = 0;
-     
+                 this.limpiar();
         },
 
         limpiar () {
