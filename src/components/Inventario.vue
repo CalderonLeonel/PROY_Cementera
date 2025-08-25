@@ -447,9 +447,9 @@
                                 
 
                                 <v-col cols="12" md="12" v-if="movimiento!=null"">
-                                    <v-text-field v-model="lote" label="LOTE O SERIE"
+                                    <v-text-field v-model="lote" label="LOTE O SERIE (SI SE REQUIERE)"
                                         :rules="loteRules" @input="lote = lote.toUpperCase()" :disabled='nombreItem==null' hint="EJM: 2025-LOTE01"
-                                         required></v-text-field>
+                                         ></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="11" v-if="movimiento!=null">
                                     <v-text-field v-model="referencia" label="REFERENCIA"
@@ -1098,7 +1098,7 @@
                 'REGULARIZACIÓN',
             ],
 
-             lote:"",
+             lote:" ",
              medida:"",
              estIt:"",
 
@@ -1160,6 +1160,9 @@
             ],
             referenciaRules: [
                 (v) => !!v || "SE REQUIERE LA REFERENCIA.",
+                (v) => (v === null || v.length <= 100) || "LA REFERENCIA NO DEBE SUPERAR LOS 100 CARACTERES.",
+            ],
+            loteRules: [
                 (v) => (v === null || v.length <= 100) || "LA REFERENCIA NO DEBE SUPERAR LOS 100 CARACTERES.",
             ],
              phone1Rules: [
@@ -1514,7 +1517,11 @@
                     "," +
                     this.estado +
                     "," +
-                    this.refencia
+                    this.refencia +
+                    "," +
+                    this.lote +
+                    "," +
+                    this.motivo
                 )
                 .then(function (response) {
 
@@ -1554,7 +1561,11 @@
                     "," +
                     this.estado +
                     "," +
-                    this.refencia
+                    this.refencia +
+                    "," +
+                    this.lote +
+                    "," +
+                    this.motivo
 
                 )
                 .then(function (response) {
