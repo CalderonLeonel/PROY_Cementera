@@ -1223,6 +1223,7 @@
 
             datosStock: [],
             headerStock: [   
+                 { text: "SKU", value: "sku", sortable: true },
                  { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
@@ -1247,7 +1248,7 @@
  
              datosItem: [],
              headerItem: [
-                 
+                 { text: "SKU", value: "sku", sortable: true },
                  { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
@@ -1272,7 +1273,7 @@
 
              datosItemDisponibles: [],
              headerItemDisponibles: [
-                 
+                 { text: "SKU", value: "sku", sortable: true },
                  { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
@@ -1292,7 +1293,7 @@
              itemRevalModal: false,
              datosItemPrecio: [],
              headerItemPrecio: [
-                 
+                 { text: "SKU", value: "sku", sortable: true },
                  { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
@@ -1305,7 +1306,7 @@
              
              datosItemAlmacen: [],
              headerItemAlmacen: [
-                 
+                 { text: "SKU", value: "sku", sortable: true },
                  { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
@@ -1354,7 +1355,7 @@
 
              datosSaldoItem: [],
              headerSaldoItem: [
-                 
+                 { text: "SKU", value: "sku", sortable: true },
                  { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
