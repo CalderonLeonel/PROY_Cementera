@@ -120,9 +120,7 @@
                                 <v-col cols="12" md="2">
                                     <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA CATEGORÍA</v-btn>  
                                 </v-col>
-                                <v-col cols="12" md="12">
-                                    <v-btn color="primary" @click="showModalActivarCategoria()">LISTA DE ITEMS DESACTIVADOS</v-btn>
-                                </v-col>
+                               
                                 <v-col cols="12">
                                     <v-list-item>
                                         <v-list-item-title class="text-center">
@@ -131,11 +129,11 @@
                                     </v-list-item>
         
                                     <v-card-title>
-                                        <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR CATEGORÍA DE PROVEEDOR"
+                                        <v-text-field v-model="buscarCategoria" append-icon="mdi-magnify" label="BUSCAR CATEGORÍA DE PROVEEDOR"
                                             single-line hide-details></v-text-field>
                                     </v-card-title>
         
-                                    <v-data-table :headers="headerCategoria" :items="datosCategoria" :search="searchCategoria"
+                                    <v-data-table :headers="headerCategoria" :items="datoscategoria" :search="buscarCategoria"
                                         :items-per-page="5" class="elevation-1" id="tableId">
         
                                         <template #[`item.estado`]="{ item }">
@@ -149,14 +147,7 @@
                                                 title="ACTUALIZAR INFORMACIÓN">
                                                 mdi-pencil
                                             </v-icon>
-                                            <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
-                                                title="ACTIVAR CATEGORÍA">
-                                                mdi-check-circle-outline
-                                            </v-icon>
-                                            <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionCat(item)"
-                                                title="DESACTIVAR CATEGORÍA">
-                                                mdi-close-circle
-                                            </v-icon>             
+                                              
                                         </template>
         
                                     
@@ -348,13 +339,13 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR CategoriaS DISPONIBLES"
+                                    <v-text-field v-model="buscarCategoria" append-icon="mdi-magnify" label="BUSCAR CATEGORÍAS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headerCategoria" :items="datoscategoria" :search="searchCategoria"
+                                <v-data-table :headers="headerCategoria" :items="datoscategoria" :search="buscarCategoria"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon small class="mr-2" @click="seleccionarCategoria(item)">
@@ -535,7 +526,7 @@ export default {
             botonAct: 0,
 
             
-            idCategoria:"",
+            idCategoria:0,
             nombreCategoria: "",
 
             datoscategoria: [],
@@ -553,6 +544,7 @@ export default {
 
 
             paisesModal: false,
+            buscarPaises: "",
             CategoriaModal: false,
             pais: "",   
             idPais: 0,
@@ -563,6 +555,8 @@ export default {
             ],
 
 
+
+
             snackbarOK: false,
             snackbarError : false,
             //#endregion
@@ -570,6 +564,7 @@ export default {
     },
     created: function (){
       this.listarProveedor();
+      this.listarCategorias();
       this.getListaExistencias().then(() => {
         this.getAlertas();
         });
@@ -715,11 +710,11 @@ export default {
                     this.contactoProveedorecundario=this.contactoProveedorPrincipal;
                 }
                 if (this.documentoArchivo == null || this.documentoArchivo == '') {
-                    this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado,this.nombreRazon,this.numeroNIT,this.idPais,this.categoria);
+                    this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado,this.nombreRazon,this.numeroNIT,this.idPais,this.idCategoria);
 
                 }
                 else {
-                    this.registrarProveedorArchivo(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name,this.nombreRazon,this.numeroNIT,this.idPais,this.categoria);  
+                    this.registrarProveedorArchivo(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name,this.nombreRazon,this.numeroNIT,this.idPais,this.idCategoria);  
                     this.almacenarArchivo(this.documentoArchivo)
                     this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro"+this.idProveedor,"ACTIVO");
                 }
@@ -753,7 +748,7 @@ export default {
                     "," + 
                     this.idPais +
                     "," + 
-                    this.categoria
+                    this.idCategoria
                 )
                 .then(function (response) {
 
@@ -804,7 +799,7 @@ export default {
                     "," + 
                     this.idPais +
                     "," + 
-                    this.categoria
+                    this.idCategoria
                 )
                 .then(function (response) {
 
@@ -824,11 +819,11 @@ export default {
         editarProv() {
             if (this.$refs.form.validate()) {
                 if (this.documentoArchivo == '' || this.documentoArchivo == null) {
-                    this.editarProveedor(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado,this.nombreRazon,this.numeroNIT,this.idPais,this.categoria);
+                    this.editarProveedor(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado,this.nombreRazon,this.numeroNIT,this.idPais,this.id_categoria_proveedor);
                     this.botonAct = 0;
                 }
                 else {
-                    this.editarProveedorArchivo(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name,this.nombreRazon,this.numeroNIT,this.idPais,this.categoria);                       
+                    this.editarProveedorArchivo(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name,this.nombreRazon,this.numeroNIT,this.idPais,this.id_categoria_proveedor);                       
                     this.almacenarArchivo(this.documentoArchivo)
                     this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro"+this.idProveedor,"ACTIVO"); 
                     this.botonAct = 0;         
@@ -1089,7 +1084,7 @@ export default {
         },
 
         seleccionarCategoria(item){
-            this.idCategoria = item.idcat;
+            this.idCategoria = item.id_categoria_proveedor;
             this.nombreCategoria = item.categoria;
             this.CategoriaModal = false;
         },
@@ -1113,27 +1108,7 @@ export default {
         //#endregion
 
 
-          listarCategoria() {
-             this.listarCategorias();
-         },
-         async listarCategorias() {
-           let me = this;
-           await axios
-             .get("/inventario/listarcategoriaactivo/")
-             .then(function (response) {
-               if (response.data.resultado == null) {
-                 me.datoscategoria = [];
-                 console.log(response.data);
-               } else {
-                 console.log(response.data);
-                 me.datoscategoria = response.data.resultado;
-               }
-             })
-             .catch(function (error) {
-               console.log(error);
-             });
-         },
-
+        
 
 
         
@@ -1214,6 +1189,124 @@ export default {
 
                 });
         },
+
+
+        listarCategoria() {
+             this.listarCategorias();
+         },
+         async listarCategorias() {
+           let me = this;
+           await axios
+             .get("/proveedor/listarcategoriaactivo/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datoscategoria = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datoscategoria = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+
+         listarCategoriaInactivo() {
+             this.listarCategoriasInactivos();
+         },
+         async listarCategoriasInactivos() {
+           let me = this;
+           await axios
+             .get("proveedor/listarcategoriainactivo/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datoscategoriaInactivos = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datoscategoriaInactivos = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+
+         registrarCategoria() {
+            if (this.$refs.form.validate()) {
+                this.registrarCategorias(this.nombreCategoria, this.estado);
+            }            
+        },
+        async registrarCategorias(
+            nombreCategoria,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/proveedor/agregarcategoria/" +
+                    this.nombreCategoria +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarCategorias();
+                    me.closeModalAgregarCategoria();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+        editarCategoria() {
+            if (this.$refs.form.validate()) {
+            this.editarCategoria( this.idCategoria,this.nombreCategoria, this.estado);
+            this.botonActTT = 0;
+            }
+        },
+        async editarCategoria(
+            idCategoria,
+            nombreCategoria,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/proveedor/actualizarcategoria/" +
+                    this.idCategoria +
+                    "," +
+                    this.nombreCategoria +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarCategorias();
+                    me.closeModalAgregarCategoria();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
+         llenarCamposCategoria(item) {
+            this.botonActTT = 1;
+            this.idCategoria = item.id_categoria_proveedor;
+            this.nombreCategoria = item.categoria;
+            this.estado = item.estado;
+            this.agregarCategoriaModal = true;
+        },
+
       },
       
       
