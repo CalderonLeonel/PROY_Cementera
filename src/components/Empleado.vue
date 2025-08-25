@@ -93,7 +93,7 @@
                                 </v-col>
                                 <v-col cols="12" md="12">
                                     <v-select v-model="idCargo" :items="datosCargo" item-text="carg" item-value="idcarg"
-                                        label="SELECCIONA UNA CARGO" prepend-icon="mdi-account-tie-hat"
+                                        label="SELECCIONA UN CARGO" prepend-icon="mdi-account-tie-hat"
                                         :rules="cargoRules" required>
                                     </v-select>
                                 </v-col>
