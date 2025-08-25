@@ -120,7 +120,7 @@
          <v-dialog v-model="activarTipoItemModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>TIPO DE ITEMS INACTIVOS</span><br>
+                    <span>TIPO DE ÍTEMS INACTIVOS</span><br>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -129,13 +129,13 @@
                                 <v-col cols="12">
                                     <v-list-item>
                                         <v-list-item-title class="text-center">
-                                            <h5>ITEMS</h5>
+                                            <h5>ÍTEMS</h5>
                                         </v-list-item-title>
                                     </v-list-item>
 
                                     <v-card-title>
                                         <v-text-field v-model="buscarTipoItem" append-icon="mdi-magnify"
-                                            label="BUSCAR TIPOS DE ITEM" single-line hide-details></v-text-field>
+                                            label="BUSCAR TIPOS DE ÍTEM" single-line hide-details></v-text-field>
                                     </v-card-title>
                                     <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItemInactivos"
                                         :search="buscarTipoItem" :items-per-page="5" class="elevation-1" id="tableId">
@@ -178,14 +178,14 @@
          <v-dialog v-model="itemModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE ITEMS ACTIVOS</span>
+                    <span>LISTA DE ÍTEMS ACTIVOS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ITEMS DISPONIBLES"
+                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ÍTEMS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -220,14 +220,14 @@
         <v-dialog v-model="itemDispModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE ITEMS DISPONIBLES PARA ALMACENAR</span>
+                    <span>LISTA DE ÍTEMS DISPONIBLES PARA ALMACENAR</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchItemDisponibles" append-icon="mdi-magnify" label="BUSCAR ITEMS DISPONIBLES"
+                                    <v-text-field v-model="searchItemDisponibles" append-icon="mdi-magnify" label="BUSCAR ÍTEMS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -262,14 +262,14 @@
         <v-dialog v-model="itemRevalModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE ITEMS DISPONIBLES PARA REVALORIZAR</span>
+                    <span>LISTA DE ÍTEMS DISPONIBLES PARA REVALORIZAR</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchItemDisponibles" append-icon="mdi-magnify" label="BUSCAR ITEMS"
+                                    <v-text-field v-model="searchItemDisponibles" append-icon="mdi-magnify" label="BUSCAR ÍTEMS"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -304,14 +304,14 @@
         <v-dialog v-model="itemAlmacenModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE ITEMS DISPONIBLES EN EL ALMACÉN</span>
+                    <span>LISTA DE ÍTEMS DISPONIBLES EN EL ALMACÉN</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchItemAlmacen" append-icon="mdi-magnify" label="BUSCAR ITEMS DISPONIBLES"
+                                    <v-text-field v-model="searchItemAlmacen" append-icon="mdi-magnify" label="BUSCAR ÍTEMS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -383,14 +383,14 @@
     
 
                                 <v-col cols="12" md="11" v-if="movimiento=='ENTRADA'">
-                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM"
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ÍTEM"
                                         :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null'
-                                        @click="openItemDispModal()" style="float: right" title="BUSCAR ITEM">
+                                        @click="openItemDispModal()" style="float: right" title="BUSCAR ÍTEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col> 
@@ -432,14 +432,14 @@
                                 </v-col>   
                                 
                                 <v-col cols="12" md="11" v-if="movimiento=='SALIDA'">
-                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM"
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ÍTEM"
                                         :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="1" v-if="movimiento=='SALIDA'">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreAlmacenRules" :disabled='movimiento==null || nombreAlmacen==""' 
-                                        @click="openItemAlmacenModal()" style="float: right" title="BUSCAR ITEM">
+                                        @click="openItemAlmacenModal()" style="float: right" title="BUSCAR ÍTEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col> 
@@ -447,14 +447,14 @@
                                 
 
                                 <v-col cols="12" md="12" v-if="movimiento!=null"">
-                                    <v-text-field v-model="lote" label="LOTE O SERIE"
-                                        :rules="loteRules" @input="lote = lote.toUpperCase()" :disabled='movimiento==null' hint="EJM: 2025-LOTE01"
-                                        disabled required></v-text-field>
+                                    <v-text-field v-model="lote" label="LOTE O SERIE (SI SE REQUIERE)"
+                                        :rules="loteRules" @input="lote = lote.toUpperCase()" :disabled='nombreItem==null' hint="EJM: 2025-LOTE01"
+                                         ></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="11" v-if="movimiento!=null">
                                     <v-text-field v-model="referencia" label="REFERENCIA"
-                                        :rules="referenciaRules" @input="referencia = referencia.toUpperCase()" :disabled='movimiento==null' hint="EJM: FA-3458014 - NUMERO DE FACTURA O GUIA, ETC"
-                                        disabled required></v-text-field>
+                                        :rules="referenciaRules" @input="referencia = referencia.toUpperCase()" :disabled='nombreItem==null' hint="EJM: FA-3458014 - NUMERO DE FACTURA O GUIA, ETC"
+                                         required></v-text-field>
                                 </v-col>
                                
                                 <v-col cols="12" md="4" v-if="movimiento=='SALIDA'">
@@ -555,7 +555,7 @@
         <v-dialog v-model="almacenConStockModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE ALMACENES CON ITEMS</span>
+                    <span>LISTA DE ALMACENES CON ÍTEMS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -600,7 +600,7 @@
         <v-dialog v-model="tipoModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE TIPO DE ITEMS ACTIVOS</span>
+                    <span>LISTA DE TIPO DE ÍTEMS ACTIVOS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -644,14 +644,14 @@
          <v-dialog v-model="agregarItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>GESTIÓN DE ITEMS</span>
+                    <span>GESTIÓN DE ÍTEMS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM" :counter="60"
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ÍTEM" :counter="60"
                                         :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>   
@@ -668,13 +668,13 @@
                                     ></v-select>
                                 </v-col>    
                                 <v-col v-if="botonActIt == 0" cols="12" md="3">
-                                    <v-text-field v-model="nombreTipoITem" label="NOMBRE TIPO ITEM" :counter="60"
+                                    <v-text-field v-model="nombreTipoITem" label="NOMBRE TIPO ÍTEM" :counter="60"
                                         :rules="nombreTipoRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
                                 <v-col v-if="botonActIt == 0" cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
-                                        @click="openTipoModal()" style="float: right" title="BUSCAR TIPO ITEM">
+                                        @click="openTipoModal()" style="float: right" title="BUSCAR TIPO ÍTEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col> 
@@ -704,7 +704,7 @@
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
                                             <v-btn icon v-if="botonActIt == 0" color="#0ABF55" @click="registrarIt()" 
-                                                style="float: left" title="REGISTRAR ITEM" class="mx-2" large>
+                                                style="float: left" title="REGISTRAR ÍTEM" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -736,14 +736,14 @@
          <v-dialog v-model="agregarTipoItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>GESTIÓN DE TIPO DE ITEMS</span>
+                    <span>GESTIÓN DE TIPO DE ÍTEMS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="nombreTipoITem" label="NOMBRE TIPO ITEM" :counter="60"
+                                    <v-text-field v-model="nombreTipoITem" label="NOMBRE TIPO ÍTEM" :counter="60"
                                         :rules="nombreTipoRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>                         
@@ -761,7 +761,7 @@
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
                                             <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarTipo()" 
-                                                style="float: left" title="REGISTRAR TIPO DE ITEM" class="mx-2" large>
+                                                style="float: left" title="REGISTRAR TIPO DE ÍTEM" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -830,7 +830,7 @@
                                 <v-col cols="3"></v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anularItem()" style="float: right" title="ANULAR ITEM">
+                                        @click="anularItem()" style="float: right" title="ANULAR ÍTEM">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         ANULAR
                                     </v-btn>
@@ -890,14 +890,14 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="11">
-                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM"
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ÍTEM"
                                         :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
-                                        @click="openItemPrecioModal()" style="float: right" title="BUSCAR ITEM">
+                                        @click="openItemPrecioModal()" style="float: right" title="BUSCAR ÍTEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>        
@@ -1098,7 +1098,7 @@
                 'REGULARIZACIÓN',
             ],
 
-             lote:"",
+             lote:" ",
              medida:"",
              estIt:"",
 
@@ -1115,13 +1115,13 @@
                  "EL NOMBRE DEL PROVEEDOR NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreItemRules: [
-               (v) => !!v || "SE REQUIERE EL NOMBRE DEL ITEM.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL ÍTEM.",
                (v) =>
                (v && v.length <= 60) ||
-                 "EL NOMBRE DEL ITEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+                 "EL NOMBRE DEL ÍTEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreTipoRules: [
-               (v) => !!v || "SE REQUIERE EL NOMBRE DEL TIPO DE ITEM.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL TIPO DE ÍTEM.",
                (v) =>
                (v && v.length <= 60) ||
                  "EL NOMBRE DEL TIPO NO DEBE SOBREPASAR LOS 60 CARACTERES.",
@@ -1162,6 +1162,9 @@
                 (v) => !!v || "SE REQUIERE LA REFERENCIA.",
                 (v) => (v === null || v.length <= 100) || "LA REFERENCIA NO DEBE SUPERAR LOS 100 CARACTERES.",
             ],
+            loteRules: [
+                (v) => (v === null || v.length <= 100) || "LA REFERENCIA NO DEBE SUPERAR LOS 100 CARACTERES.",
+            ],
              phone1Rules: [
                (v) => !!v || "SE REQUIERE UN NUMERO TELEFONICO O CELULAR.",
                (v) =>
@@ -1181,7 +1184,7 @@
              headerInventario: [
                  
                  { text: "NUMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
-                 { text: "ITEM", value: "nombreitem", sortable: true },
+                 { text: "ÍTEM", value: "nombreitem", sortable: true },
                  { text: "ALMACÉN", value: "nombrealmacen", sortable: true },
                  { text: "MOVIMIENTO", value: "movimiento", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
@@ -1223,9 +1226,10 @@
 
             datosStock: [],
             headerStock: [   
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "SKU", value: "sku", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
                  { text: "STOCK", value: "total", sortable: true },
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -1247,11 +1251,11 @@
  
              datosItem: [],
              headerItem: [
-                 
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "SKU", value: "sku", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
@@ -1263,7 +1267,7 @@
              datosTipoDeItemInactivos: [],
              headerTipoDeItem: [
                  
-                 { text: "NOMBRE DE TIPO DE ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "NOMBRE DE TIPO DE ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -1272,11 +1276,11 @@
 
              datosItemDisponibles: [],
              headerItemDisponibles: [
-                 
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "SKU", value: "sku", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
@@ -1292,10 +1296,10 @@
              itemRevalModal: false,
              datosItemPrecio: [],
              headerItemPrecio: [
-                 
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "SKU", value: "sku", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -1305,10 +1309,10 @@
              
              datosItemAlmacen: [],
              headerItemAlmacen: [
-                 
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "SKU", value: "sku", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
@@ -1354,10 +1358,10 @@
 
              datosSaldoItem: [],
              headerSaldoItem: [
-                 
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "SKU", value: "sku", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -1513,7 +1517,11 @@
                     "," +
                     this.estado +
                     "," +
-                    this.refencia
+                    this.refencia +
+                    "," +
+                    this.lote +
+                    "," +
+                    this.motivo
                 )
                 .then(function (response) {
 
@@ -1553,7 +1561,11 @@
                     "," +
                     this.estado +
                     "," +
-                    this.refencia
+                    this.refencia +
+                    "," +
+                    this.lote +
+                    "," +
+                    this.motivo
 
                 )
                 .then(function (response) {
