@@ -353,12 +353,35 @@
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-container>
                             <v-row>
-                                <v-col cols="12" md="12">
+                                 <v-col cols="12" md="12">
+                                    <v-btn-toggle v-model="movimiento" rounded class="d-flex w-100">
+                                        <v-btn value="ENTRADA" :color="movimiento === 'ENTRADA' ? 'success' : 'grey lighten-1'" :variant="movimiento === 'ENTRADA' ? 'flat' : 'outlined'" class="flex-grow-1">
+                                            <v-icon :color="movimiento === 'ENTRADA' ? 'white' : 'success'">mdi-location-enter</v-icon>
+                                            <span :class="movimiento === 'ENTRADA' ? 'text-white' : 'text-success'">Entrada</span>
+                                        </v-btn>
+                                        <v-btn  value="SALIDA" :color="movimiento === 'SALIDA' ? 'error' : 'grey lighten-1'" :variant="movimiento === 'SALIDA' ? 'flat' : 'outlined'" class="flex-grow-1">
+                                            <v-icon :color="movimiento === 'SALIDA' ? 'white' : 'error'">mdi-location-exit</v-icon>
+                                            <span :class="movimiento === 'SALIDA' ? 'text-white' : 'text-error'">Salida</span>
+                                        </v-btn>
+                                    </v-btn-toggle>
+                                </v-col>
+ 
+                                <v-col cols="12" md="12" v-if="movimiento!=null">
                                     <v-combobox
-                                    label="MOVIMIENTO" v-model="movimiento" @input="movimiento = movimiento.toUpperCase()" required
-                                    :items="['ENTRADA', 'SALIDA']"
-                                    ></v-combobox>
-                                </v-col>     
+                                    v-model="motivo"
+                                    :items="motivoSugerencias"
+                                    label="MOTIVO"
+                                    :rules='motivoRules'
+                                    :disabled='movimiento==null'
+                                    
+                                    solo
+                                    hint="ELIGE UN MOTIVO O ESCRIBE UNO NUEVO"
+                                    persistent-hint
+                                    />
+        
+                                </v-col>
+    
+
                                 <v-col cols="12" md="11" v-if="movimiento=='ENTRADA'">
                                     <v-text-field v-model="nombreItem" label="NOMBRE ITEM"
                                         :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
@@ -420,18 +443,29 @@
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col> 
+
+                                
+
+                                <v-col cols="12" md="12" v-if="movimiento!=null"">
+                                    <v-text-field v-model="lote" label="LOTE O SERIE"
+                                        :rules="loteRules" @input="lote = lote.toUpperCase()" :disabled='movimiento==null' hint="EJM: 2025-LOTE01"
+                                        disabled required></v-text-field>
+                                </v-col>
+                                <v-col cols="12" md="11" v-if="movimiento!=null">
+                                    <v-text-field v-model="referencia" label="REFERENCIA"
+                                        :rules="referenciaRules" @input="referencia = referencia.toUpperCase()" :disabled='movimiento==null' hint="EJM: FA-3458014 - NUMERO DE FACTURA O GUIA, ETC"
+                                        disabled required></v-text-field>
+                                </v-col>
                                
                                 <v-col cols="12" md="4" v-if="movimiento=='SALIDA'">
                                     <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadSalidaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
                                          @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>  
+
+
                                 
-                                <v-col cols="12" md="12">
-                                    <v-text-field v-model="referencia" label="REFERENCIA" :counter="100"
-                                        :rules="referenciaRules" @input="referencia = referencia.toUpperCase()"
-                                        required></v-text-field>
-                                </v-col>   
+                               
 
                                 <v-col cols="12" sm="4" md="12"></v-col>
                                    
@@ -1050,6 +1084,21 @@
              nombreItem:"",
              descripcion:"",
              referencia:"",
+             motivo:"",
+
+
+            motivoSugerencias: [
+                'RECEPCIÓN',
+                'AJUSTE DE INVENTARIO',
+                'DEVOLUCIÓN',
+                'TRASLADO INTERNO',
+                'CONTEO CÍCLICO/AUDITORÍA',
+                'DAÑO',
+                'VENCIMIENTO',
+                'REGULARIZACIÓN',
+            ],
+
+             lote:"",
              medida:"",
              estIt:"",
 

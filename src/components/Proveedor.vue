@@ -276,7 +276,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="pais" label="NOMBRE PAIS" :counter="50" :rules="paisRules"
+                                    <v-text-field v-model="pais" label="NOMBRE PAÍS" :counter="50" :rules="paisRules"
                                         @input="pais = pais.toUpperCase()" disabled required></v-text-field>
                                 </v-col>
                                  <v-col cols="12" md="1">
@@ -286,8 +286,8 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="categoria" label="NOMBRE CATEGORÍA" :counter="50" :rules="categoriaRules"
-                                        @input="categoria = categoria.toUpperCase()" disabled required></v-text-field>
+                                    <v-text-field v-model="nombreCategoria" label="NOMBRE CATEGORÍA" :counter="50" :rules="categoriaRules"
+                                        @input="nombreCategoria = nombreCategoria.toUpperCase()" disabled required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
                                     <v-file-input v-model="documentoArchivo"
@@ -341,7 +341,7 @@
         <v-dialog v-model="CategoriaModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE Categoria DE ITEMS ACTIVOS</span>
+                    <span>LISTA DE CATEGORÍAS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -354,7 +354,7 @@
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headercategoria" :items="datoscategoria" :search="searchCategoria"
+                                <v-data-table :headers="headerCategoria" :items="datoscategoria" :search="searchCategoria"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
                                         <v-icon small class="mr-2" @click="seleccionarCategoria(item)">
@@ -538,9 +538,9 @@ export default {
             idCategoria:"",
             nombreCategoria: "",
 
-            datosCategoria: [],
+            datoscategoria: [],
             headerCategoria: [  
-                 { text: "CATEGORÍA DE PROVEEDOR", value: "categoria", sortable: true },
+                 { text: "CATEGORÍA", value: "categoria", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
@@ -551,6 +551,16 @@ export default {
             agregarCategoriaModal: false,
             confirmacionAnulacionCategoria: false,
 
+
+            paisesModal: false,
+            CategoriaModal: false,
+            pais: "",   
+            idPais: 0,
+            datosPais: [],
+            headersPais: [
+                { text: "NOMBRE", value: "nompais", sortable: false },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
 
 
             snackbarOK: false,
@@ -705,11 +715,11 @@ export default {
                     this.contactoProveedorecundario=this.contactoProveedorPrincipal;
                 }
                 if (this.documentoArchivo == null || this.documentoArchivo == '') {
-                    this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
+                    this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado,this.nombreRazon,this.numeroNIT,this.idPais,this.categoria);
 
                 }
                 else {
-                    this.registrarProveedorArchivo(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name);  
+                    this.registrarProveedorArchivo(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name,this.nombreRazon,this.numeroNIT,this.idPais,this.categoria);  
                     this.almacenarArchivo(this.documentoArchivo)
                     this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro"+this.idProveedor,"ACTIVO");
                 }
@@ -735,7 +745,15 @@ export default {
                     "," +
                     this.correoProveedor +
                     "," +
-                    this.estado
+                    this.estado +
+                    "," +
+                    this.nombreRazon +
+                    "," +
+                    this.numeroNIT  +
+                    "," + 
+                    this.idPais +
+                    "," + 
+                    this.categoria
                 )
                 .then(function (response) {
 
@@ -778,7 +796,15 @@ export default {
                     "," +
                     this.estado +
                     "," +
-                    nombreArchivo
+                    nombreArchivo + 
+                    "," +
+                    this.nombreRazon +
+                    "," +
+                    this.numeroNIT  +
+                    "," + 
+                    this.idPais +
+                    "," + 
+                    this.categoria
                 )
                 .then(function (response) {
 
@@ -798,11 +824,11 @@ export default {
         editarProv() {
             if (this.$refs.form.validate()) {
                 if (this.documentoArchivo == '' || this.documentoArchivo == null) {
-                    this.editarProveedor(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
+                    this.editarProveedor(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado,this.nombreRazon,this.numeroNIT,this.idPais,this.categoria);
                     this.botonAct = 0;
                 }
                 else {
-                    this.editarProveedorArchivo(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name);                       
+                    this.editarProveedorArchivo(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name,this.nombreRazon,this.numeroNIT,this.idPais,this.categoria);                       
                     this.almacenarArchivo(this.documentoArchivo)
                     this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro"+this.idProveedor,"ACTIVO"); 
                     this.botonAct = 0;         
@@ -831,7 +857,15 @@ export default {
                     "," +
                     this.correoProveedor +
                     "," +
-                    this.estado
+                    this.estado +  
+                    "," +
+                    this.nombreRazon +
+                    "," +
+                    this.numeroNIT  +
+                    "," + 
+                    this.idPais +
+                    "," + 
+                    this.categoria
                 )
                 .then(function (response) {
 
@@ -878,7 +912,15 @@ export default {
                     "," +
                     this.estado +
                     "," +
-                    nombreArchivo
+                    nombreArchivo +
+                    "," +
+                    this.nombreRazon +
+                    "," +
+                    this.numeroNIT  +
+                    "," + 
+                    this.idPais +
+                    "," + 
+                    this.categoria
                 )
                 .then(function (response) {
 
@@ -920,6 +962,42 @@ export default {
                     me.snackbarError = true;
                 });
 
+        },
+
+         listarPais() {
+            this.listarPaises();
+        },
+        async listarPaises() {
+            let me = this;
+            await axios
+                .get("/pais/listarpaises")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosPais = [];
+
+                    } else {
+                        me.datosPais = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+
+        showPaises() {
+            this.paisesModal = true;
+            this.listarPaises();
+        },
+        closePaises() {
+            this.paisesModal = false;
+        },
+
+        seleccionarPais(item) {
+            this.idPais = item.idpai;
+            console.log("idPais: " + this.idPais + " idpai: " + item.idpai)
+            this.pais = item.nompais;
+            this.paisesModal = false;
         },
         
 
@@ -1002,7 +1080,7 @@ export default {
 
         showCategorias(){
             this.listarCategorias();
-            this.CategoriaModal = true;
+            this.CategoriaModal  = true;
         },
 
         closeCategoriaModal(){
@@ -1011,8 +1089,8 @@ export default {
         },
 
         seleccionarCategoria(item){
-            this.idCategoria = item.idcategoria;
-            this.nombreCategoria = item.nombreCategoria;
+            this.idCategoria = item.idcat;
+            this.nombreCategoria = item.categoria;
             this.CategoriaModal = false;
         },
 
@@ -1034,6 +1112,27 @@ export default {
         },
         //#endregion
 
+
+          listarCategoria() {
+             this.listarCategorias();
+         },
+         async listarCategorias() {
+           let me = this;
+           await axios
+             .get("/inventario/listarcategoriaactivo/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datoscategoria = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datoscategoria = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
 
 
 
