@@ -452,7 +452,7 @@ export default {
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
                 { text: "ITEM", value: "nombreitem", sortable: true },
                 { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                { text: "TIPO", value: "nombretipoitem", sortable: true },
+                { text: "CATEGORÍA", value: "categoria", sortable: true },
                 { text: "MEDIDA", value: "medida", sortable: true },
                 { text: "CANTIDAD", value: "cantidad", sortable: true },
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },

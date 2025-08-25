@@ -116,11 +116,110 @@
                             </v-data-table>
                         </v-col>
                     </v-row>
+                      <v-row >
+                                <v-col cols="12" md="2">
+                                    <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA CATEGORÍA</v-btn>  
+                                </v-col>
+                               
+                                <v-col cols="12">
+                                    <v-list-item>
+                                        <v-list-item-title class="text-center">
+                                            <h5>CATEGORÍAS</h5>
+                                        </v-list-item-title>
+                                    </v-list-item>
+        
+                                    <v-card-title>
+                                        <v-text-field v-model="buscarCategoria" append-icon="mdi-magnify" label="BUSCAR CATEGORÍA DE PROVEEDOR"
+                                            single-line hide-details></v-text-field>
+                                    </v-card-title>
+        
+                                    <v-data-table :headers="headerCategoria" :items="datoscategoria" :search="buscarCategoria"
+                                        :items-per-page="5" class="elevation-1" id="tableId">
+        
+                                        <template #[`item.estado`]="{ item }">
+                                            <v-chip :color="getColor(item.estado)" dark>
+                                                {{ item.estado }}
+                                            </v-chip>
+                                        </template>
+        
+                                        <template #[`item.actions`]="{ item }">
+                                            <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposCategoria(item)"
+                                                title="ACTUALIZAR INFORMACIÓN">
+                                                mdi-pencil
+                                            </v-icon>
+                                              
+                                        </template>
+        
+                                    
+        
+        
+                                    </v-data-table>
+                                </v-col>
+                            </v-row>
 
                 </v-container>
             </v-form>
 
         </div>
+
+        <v-dialog v-model="agregarCategoriaModal" persistent :overlay="false" max-width="1000px">
+            <v-card elevation="5" outlined>
+                <v-card-title>
+                    <span>CATEGORÍA</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="4">
+                                    <v-text-field v-model="nombreCategoria" label="NOMBRE CATEGORÍA" :counter="60"
+                                        :rules="nombreCategoriaRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>                         
+                                <v-col cols="12" md="12"> </v-col>
+                                <v-col cols="12" sm="4" md="4">
+                                    <v-toolbar dense shaped >
+                                        <v-toolbar-title>
+                                            <h6>
+                                                OPCIONES:
+                                            </h6>
+                                        </v-toolbar-title>
+                                        <v-col cols="2">
+                                            <v-btn icon v-if="botonActTT == 1" color="#0A62BF" @click="editarCategoria()"
+                                                style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
+                                                <v-icon dark> mdi-pencil </v-icon>
+                                            </v-btn>
+                                            <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarCategoria()" 
+                                                style="float: left" title="REGISTRAR Categoria DE ITEM" class="mx-2" large>
+                                                <v-icon dark> mdi-content-save </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large 
+                                                class="mx-2" title="LIMPIAR FORMULARIO">
+                                                <v-icon dark> mdi-eraser </v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-toolbar>
+                                </v-col>
+
+                                <v-col cols="8">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeModalAgregarCategoria()" style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-form>
+
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+
+          
         <v-dialog v-model="agregarProveedorModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
@@ -137,7 +236,7 @@
                                 </v-col>
                                  <v-col cols="12" md="6">
                                     <v-text-field v-model="nombreRazon" label="RAZÓN SOCIAL" :counter="60"
-                                        :rules="nombreRazon" @input="nombreRazon = nombreRazon"
+                                        :rules="nombreRazonRules" @input="nombreRazon = nombreRazon"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="6">
@@ -168,7 +267,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="pais" label="NOMBRE PAIS" :counter="50" :rules="paisRules"
+                                    <v-text-field v-model="pais" label="NOMBRE PAÍS" :counter="50" :rules="paisRules"
                                         @input="pais = pais.toUpperCase()" disabled required></v-text-field>
                                 </v-col>
                                  <v-col cols="12" md="1">
@@ -178,8 +277,8 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="categoria" label="NOMBRE CATEGORÍA" :counter="50" :rules="categoriaRules"
-                                        @input="categoria = categoria.toUpperCase()" disabled required></v-text-field>
+                                    <v-text-field v-model="nombreCategoria" label="NOMBRE CATEGORÍA" :counter="50" :rules="categoriaRules"
+                                        @input="nombreCategoria = nombreCategoria.toUpperCase()" disabled required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="12">
                                     <v-file-input v-model="documentoArchivo"
@@ -222,13 +321,54 @@
                                         SALIR
                                     </v-btn>
                                 </v-col>
-                            </v-row>
+                            </v-row>     
                         </v-container>
                     </v-form>
 
                 </v-card-text>
             </v-card>
         </v-dialog>
+
+        <v-dialog v-model="CategoriaModal" persistent :overlay="false" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA DE CATEGORÍAS</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="buscarCategoria" append-icon="mdi-magnify" label="BUSCAR CATEGORÍAS DISPONIBLES"
+                                        single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <v-data-table :headers="headerCategoria" :items="datoscategoria" :search="buscarCategoria"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarCategoria(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeCategoriaModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                               
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>         
 
         <v-dialog v-model="confirmacionAnulacionProveedor" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
@@ -359,6 +499,17 @@ export default {
             (v) => (!v || (v.length >= 7 && v.length <= 10)) ||
                 "EL TELÉFONO SECUNDARIO DEBE TENER ENTRE 7 Y 10 CARACTERES.",
             ],
+            nombreRazonRules: [
+              (v) => !!v || "SE REQUIERE LA RAZÓN SOCIAL DEL PROVEEDOR.",
+              (v) =>
+              (v && v.length <= 60) ||
+                "LA RAZÓN SOCIAL NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+            ],
+            nitRules:[ 
+              (v) => !!v || "SE REQUIERE EL NIT DEL PROVEEDOR.",
+              (v) => (v && v.length >= 5) || "EL NIT DEBE TENER AL MENOS 5 CARACTERES.",
+              (v) => (v && v.length <= 10) || "EL NIT DEBE TENER HASTA 10 CARACTERES.",
+            ],
             emailRules: [
               (v) => !!v || "SE NECESITA EL CORREO ELECTRONICO DEL PROVEEDOR.",
               (v) => /.+@.+\..+/.test(v) || "DEBE SER UN CORREO ELECTRONICO VALIDO.",
@@ -385,7 +536,38 @@ export default {
             confirmacionAnulacionProveedor: false,
             botonAct: 0,
 
+            
+            idCategoria:0,
+            nombreCategoria: "",
 
+            datoscategoria: [],
+            headerCategoria: [  
+                 { text: "CATEGORÍA", value: "categoria", sortable: true },
+                 { text: "ACCIONES", value: "actions", sortable: false }
+                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+             ],
+
+
+            buscarCategoria: "",
+            searchCategoria: "",
+            agregarCategoriaModal: false,
+            confirmacionAnulacionCategoria: false,
+
+
+            paisesModal: false,
+            buscarPaises: "",
+            CategoriaModal: false,
+            pais: "",   
+            idPais: 0,
+            datosPais: [],
+            headersPais: [
+                { text: "NOMBRE", value: "nompais", sortable: false },
+                { text: "OPCIONES", value: "actions", sortable: false },
+            ],
+
+
+            numeroNIT:"",
+            nombreRazon:"",
 
             snackbarOK: false,
             snackbarError : false,
@@ -394,6 +576,7 @@ export default {
     },
     created: function (){
       this.listarProveedor();
+      this.listarCategorias();
       this.getListaExistencias().then(() => {
         this.getAlertas();
         });
@@ -516,10 +699,12 @@ export default {
               console.log(error);
             });
         },
+
         activar(item) {
             this.idProveedor = item.idProveedor;
             this.activarproveedor(this.idProveedor);
         },
+        
         async activarproveedor(idProveedor) {
             let me = this;
             /*await axios
@@ -539,11 +724,11 @@ export default {
                     this.contactoProveedorecundario=this.contactoProveedorPrincipal;
                 }
                 if (this.documentoArchivo == null || this.documentoArchivo == '') {
-                    this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
+                    this.registrarProveedor(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado,this.nombreRazon,this.numeroNIT,this.idPais,this.idCategoria);
 
                 }
                 else {
-                    this.registrarProveedorArchivo(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name);  
+                    this.registrarProveedorArchivo(this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name,this.nombreRazon,this.numeroNIT,this.idPais,this.idCategoria);  
                     this.almacenarArchivo(this.documentoArchivo)
                     this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro"+this.idProveedor,"ACTIVO");
                 }
@@ -569,14 +754,22 @@ export default {
                     "," +
                     this.correoProveedor +
                     "," +
-                    this.estado
+                    this.estado +
+                    "," +
+                    this.nombreRazon +
+                    "," +
+                    this.numeroNIT  +
+                    "," + 
+                    this.idPais +
+                    "," + 
+                    this.idCategoria
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.limpiar();
                     me.listarProveedores();
+                    me.limpiar();
                     me.closeModalAgregarProveedor();
                 })
                 .catch(function (error) {
@@ -612,14 +805,22 @@ export default {
                     "," +
                     this.estado +
                     "," +
-                    nombreArchivo
+                    nombreArchivo + 
+                    "," +
+                    this.nombreRazon +
+                    "," +
+                    this.numeroNIT  +
+                    "," + 
+                    this.idPais +
+                    "," + 
+                    this.idCategoria
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.limpiar();
                     me.listarProveedores();
+                    me.limpiar();
                     me.closeModalAgregarProveedor();
                 })
                 .catch(function (error) {
@@ -632,11 +833,11 @@ export default {
         editarProv() {
             if (this.$refs.form.validate()) {
                 if (this.documentoArchivo == '' || this.documentoArchivo == null) {
-                    this.editarProveedor(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado);
+                    this.editarProveedor(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado,this.nombreRazon,this.numeroNIT,this.idPais,this.id_categoria_proveedor);
                     this.botonAct = 0;
                 }
                 else {
-                    this.editarProveedorArchivo(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name);                       
+                    this.editarProveedorArchivo(this.idProveedor,this.nombreProveedor, this.contactoProveedorPrincipal, this.contactoProveedorecundario,this.correoProveedor,this.estado, this.documentoArchivo.name,this.nombreRazon,this.numeroNIT,this.idPais,this.id_categoria_proveedor);                       
                     this.almacenarArchivo(this.documentoArchivo)
                     this.guardarDocumento(this.documentoArchivo.name,this.nombreProveedor,"pro"+this.idProveedor,"ACTIVO"); 
                     this.botonAct = 0;         
@@ -665,14 +866,22 @@ export default {
                     "," +
                     this.correoProveedor +
                     "," +
-                    this.estado
+                    this.estado +
+                    "," +
+                    this.nombreRazon +
+                    "," +
+                    this.numeroNIT  +
+                    "," + 
+                    this.idPais +
+                    "," + 
+                    this.idCategoria
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.limpiar();
                     me.listarProveedores();
+                    me.limpiar();
                     me.closeModalAgregarProveedor();
                 })
                 .catch(function (error) {
@@ -712,14 +921,22 @@ export default {
                     "," +
                     this.estado +
                     "," +
-                    nombreArchivo
+                    nombreArchivo +
+                    "," +
+                    this.nombreRazon +
+                    "," +
+                    this.numeroNIT  +
+                    "," + 
+                    this.idPais +
+                    "," + 
+                    this.idCategoria
                 )
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.limpiar();
                     me.listarProveedores();
+                    me.limpiar();
                     me.closeModalAgregarProveedor();
                 })
                 .catch(function (error) {
@@ -754,6 +971,42 @@ export default {
                     me.snackbarError = true;
                 });
 
+        },
+
+         listarPais() {
+            this.listarPaises();
+        },
+        async listarPaises() {
+            let me = this;
+            await axios
+                .get("/pais/listarpaises")
+                .then(function (response) {
+                    if (response.data.resultado == null) {
+                        me.datosPais = [];
+
+                    } else {
+                        me.datosPais = response.data.resultado;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+
+
+        showPaises() {
+            this.paisesModal = true;
+            this.listarPaises();
+        },
+        closePaises() {
+            this.paisesModal = false;
+        },
+
+        seleccionarPais(item) {
+            this.idPais = item.idpai;
+            console.log("idPais: " + this.idPais + " idpai: " + item.idpai)
+            this.pais = item.nompais;
+            this.paisesModal = false;
         },
         
 
@@ -818,7 +1071,12 @@ export default {
             }else{
                 this.contactoProveedorecundario = item.cto2pro;
             }
-            
+            this.numeroNIT = item.nit;
+            this.nombreRazon = item.raz;
+            this.idPais = item.idpais;
+            this.pais = item.pais;
+            this.idCategoria = item.idcatprv;
+            this.nombreCategoria = item.cat;
             this.correoProveedor = item.croprov;
             this.estado = item.est;
             this.documentoArchivo.suffix = item.arch;
@@ -834,12 +1092,41 @@ export default {
             this.limpiar();
         },
 
+        showCategorias(){
+            this.listarCategorias();
+            this.CategoriaModal  = true;
+        },
+
+        closeCategoriaModal(){
+            this.CategoriaModal = false;
+            this.limpiar();
+        },
+
+        seleccionarCategoria(item){
+            this.idCategoria = item.id_categoria_proveedor;
+            this.nombreCategoria = item.categoria;
+            this.CategoriaModal = false;
+        },
+
+
+        showModalAgregarCategoria(){
+            this.agregarCategoriaModal = true;
+            this.botonActTT = 0;  
+        },
+
+        closeModalAgregarCategoria(){
+            this.agregarCategoriaModal = false;
+            this.botonActTT = 0;
+                 this.limpiar();
+        },
+
         limpiar () {
             this.$refs.form.reset()
         },
         //#endregion
 
 
+        
 
 
         
@@ -920,6 +1207,124 @@ export default {
 
                 });
         },
+
+
+        listarCategoria() {
+             this.listarCategorias();
+         },
+         async listarCategorias() {
+           let me = this;
+           await axios
+             .get("/proveedor/listarcategoriaactivo/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datoscategoria = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datoscategoria = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+
+         listarCategoriaInactivo() {
+             this.listarCategoriasInactivos();
+         },
+         async listarCategoriasInactivos() {
+           let me = this;
+           await axios
+             .get("proveedor/listarcategoriainactivo/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datoscategoriaInactivos = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datoscategoriaInactivos = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+
+         registrarCategoria() {
+            if (this.$refs.form.validate()) {
+                this.registrarCategorias(this.nombreCategoria, this.estado);
+            }            
+        },
+        async registrarCategorias(
+            nombreCategoria,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/proveedor/agregarcategoria/" +
+                    this.nombreCategoria +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarCategorias();
+                    me.closeModalAgregarCategoria();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+        editarCategoria() {
+            if (this.$refs.form.validate()) {
+            this.editarCategoria( this.idCategoria,this.nombreCategoria, this.estado);
+            this.botonActTT = 0;
+            }
+        },
+        async editarCategoria(
+            idCategoria,
+            nombreCategoria,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/proveedor/actualizarcategoria/" +
+                    this.idCategoria +
+                    "," +
+                    this.nombreCategoria +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarCategorias();
+                    me.closeModalAgregarCategoria();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
+         llenarCamposCategoria(item) {
+            this.botonActTT = 1;
+            this.idCategoria = item.id_categoria_proveedor;
+            this.nombreCategoria = item.categoria;
+            this.estado = item.estado;
+            this.agregarCategoriaModal = true;
+        },
+
       },
       
       

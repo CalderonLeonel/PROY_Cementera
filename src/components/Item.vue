@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="5" outlined v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'COMUN') || checkAccess(10, 'GERENTE')">
+    <v-card elevation="5" outlined >
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
@@ -47,25 +47,25 @@
             </v-alert>
          <div>
              <v-alert dense style="color: #ffffff;" color="indigo">
-                 <h3>ITEMS</h3>
+                 <h3>ÍTEMS</h3>
              </v-alert>
          </div>
          <div>
              <v-form ref="form" v-model="valid" lazy-validation>
                  <v-container>
-                     <v-row v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
+                     <v-row >
                          <v-col cols="12" md="4">
-                             <v-btn color="success" @click="showModalAgregarItem()">NUEVO ITEM</v-btn>
+                             <v-btn color="success" @click="showModalAgregarItem()">NUEVO ÍTEM</v-btn>
                          </v-col>
                          <v-col cols="12">
                              <v-list-item>
                                  <v-list-item-title class="text-center">
-                                     <h5>ITEMS</h5>
+                                     <h5>ÍTEMS</h5>
                                  </v-list-item-title>
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ITEMS"
+                                <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ÍTEMS"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
@@ -77,6 +77,10 @@
                                          {{ item.estado }}
                                      </v-chip>
                                  </template>
+
+                                <template #[`item.fechaExpiracion`]="{ item }">
+                                        {{ getFormattedDate(item.fechaExpiracion) }}
+                                    </template>
  
                                  <template #[`item.actions`]="{ item }">
                                      <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposItem(item)"
@@ -99,12 +103,12 @@
                              </v-data-table>
                          </v-col>
                      </v-row>
-                     <v-row v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
+                     <v-row >
                          <v-col cols="12" md="2">
                              <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA CATEGORÍA</v-btn>  
                          </v-col>
                          <v-col cols="12" md="12">
-                            <v-btn color="primary" @click="showModalActivarTipo()">LISTA DE ITEMS DESACTIVADOS</v-btn>
+                            <v-btn color="primary" @click="showModalActivarCategoria()">LISTA DE ÍTEMS DESACTIVADOS</v-btn>
                          </v-col>
                          <v-col cols="12">
                              <v-list-item>
@@ -114,11 +118,11 @@
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR TIPO DE ITEM"
+                                <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR CATEGORÍA DE ÍTEM"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
-                             <v-data-table :headers="headerCategoria" :items="datosCategoria" :search="searchCategoria"
+                             <v-data-table :headers="headerCategoria" :items="datoscategoria" :search="searchCategoria"
                                  :items-per-page="5" class="elevation-1" id="tableId">
  
                                  <template #[`item.estado`]="{ item }">
@@ -136,7 +140,7 @@
                                          title="ACTIVAR CATEGORÍA">
                                          mdi-check-circle-outline
                                      </v-icon>
-                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionTip(item)"
+                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionCat(item)"
                                          title="DESACTIVAR CATEGORÍA">
                                          mdi-close-circle
                                      </v-icon>             
@@ -149,9 +153,9 @@
                          </v-col>
                      </v-row>
 
-                     <v-row v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
+                     <v-row >
                          <v-col cols="12" md="2">
-                             <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA SUBCATEGORÍA</v-btn>  
+                             <v-btn color="success" @click="showModalAgregarSubcategoria()">NUEVA SUBCATEGORÍA</v-btn>  
                          </v-col>
                         
                          <v-col cols="12">
@@ -162,11 +166,11 @@
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchSubcategoria" append-icon="mdi-magnify" label="BUSCAR TIPO DE ITEM"
+                                <v-text-field v-model="searchSubcategoria" append-icon="mdi-magnify" label="BUSCAR SUBCATEGORÍAS"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
-                             <v-data-table :headers="headerSubCategoria" :items="datosSubCategoria" :search="searchSubcategoria"
+                             <v-data-table :headers="headersubcategoria" :items="datossubcategoria" :search="searchSubcategoria"
                                  :items-per-page="5" class="elevation-1" id="tableId">
  
                                  <template #[`item.estado`]="{ item }">
@@ -203,10 +207,10 @@
  
          </div>
 
-         <v-dialog v-model="activarTipoItemModal" persistent max-width="800px">
+         <v-dialog v-model="activarCategoriaModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>TIPO DE ITEMS INACTIVOS</span><br>
+                    <span>LISTA CATEGORÍAS INACTIVAS</span><br>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -215,16 +219,16 @@
                                 <v-col cols="12">
                                     <v-list-item>
                                         <v-list-item-title class="text-center">
-                                            <h5>ITEMS</h5>
+                                            <h5>CATEGORÍAS</h5>
                                         </v-list-item-title>
                                     </v-list-item>
 
                                     <v-card-title>
-                                        <v-text-field v-model="buscarTipoItem" append-icon="mdi-magnify"
-                                            label="BUSCAR TIPOS DE ITEM" single-line hide-details></v-text-field>
+                                        <v-text-field v-model="buscarCategoria" append-icon="mdi-magnify"
+                                            label="BUSCAR CATEGORÍAS" single-line hide-details></v-text-field>
                                     </v-card-title>
-                                    <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItemInactivos"
-                                        :search="buscarTipoItem" :items-per-page="5" class="elevation-1" id="tableId">
+                                    <v-data-table :headers="headerCategoria" :items="datoscategoriaInactivos"
+                                        :search="buscarCategoria" :items-per-page="5" class="elevation-1" id="tableId">
 
                                         <template #[`item.estado`]="{ item }">
                                             <v-chip :color="getColor(item.estado)" dark>
@@ -247,7 +251,7 @@
                                 <v-col cols="10"></v-col>
                                 <v-col cols="12">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeModalActivarTipo()" style="float: right" title="SALIR">
+                                        @click="closeModalActivarCategoria()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -264,14 +268,14 @@
          <v-dialog v-model="itemModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE ITEMS ACTIVOS</span>
+                    <span>LISTA DE ÍTEMS ACTIVOS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ITEMS DISPONIBLES"
+                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ÍTEMS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -306,14 +310,14 @@
         <v-dialog v-model="itemDispModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE ITEMS DISPONIBLES PARA ALMACENAR</span>
+                    <span>LISTA DE ÍTEMS DISPONIBLES PARA ALMACENAR</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchItemDisponibles" append-icon="mdi-magnify" label="BUSCAR ITEMS DISPONIBLES"
+                                    <v-text-field v-model="searchItemDisponibles" append-icon="mdi-magnify" label="BUSCAR ÍTEMS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -348,14 +352,14 @@
         <v-dialog v-model="itemRevalModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE ITEMS DISPONIBLES PARA REVALORIZAR</span>
+                    <span>LISTA DE ÍTEMS DISPONIBLES PARA REVALORIZAR</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchItemDisponibles" append-icon="mdi-magnify" label="BUSCAR ITEMS"
+                                    <v-text-field v-model="searchItemDisponibles" append-icon="mdi-magnify" label="BUSCAR ÍTEMS"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -385,26 +389,29 @@
                 </v-card-text>
             </v-card>
         </v-dialog>  
-        <v-dialog v-model="tipoModal" persistent :overlay="false" max-width="900px">
+        <v-dialog v-model="CategoriaModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE TIPO DE ITEMS ACTIVOS</span>
+                    <span>LISTA DE CATEGORÍAS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR TIPOS DISPONIBLES"
+                                    <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR CATEGORÍAS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
 
                             <v-col cols="12">
-                                <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItem" :search="searchCategoria"
+                                <v-data-table :headers="headerCategoria" :items="datoscategoria" :search="searchCategoria"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarTipo(item)">
+                                        <v-icon v-if="seleccionarCategoriaTabla==true" small class="mr-2" @click="seleccionarCategoriaItem(item)">
+                                            mdi-eye-circle
+                                        </v-icon>
+                                         <v-icon v-if="seleccionarCategoriaTabla==false" small class="mr-2" @click="seleccionarCategoriaSubcategoria(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -413,7 +420,7 @@
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
                                 <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeTipoModal()" style="float: right"
+                                        @click="closeCategoriaModal()" style="float: right"
                                         title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
@@ -427,19 +434,58 @@
         </v-dialog>         
 
 
+<v-dialog v-model="SubcategoriaModal" persistent :overlay="false" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA DE CATEGORIÍAS</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="searchSubcategoria" append-icon="mdi-magnify" label="BUSCAR CATEGORÍAS DISPONIBLES"
+                                        single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
 
+                            <v-col cols="12">
+                                <v-data-table :headers="headersubcategoria" :items="datossubcategoria" :search="searchSubcategoria"
+                                    :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarSubcategoria(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeSubcategoriaModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                               
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>         
 
          <v-dialog v-model="agregarItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>GESTIÓN DE ITEMS</span>
+                    <span>GESTIÓN DE ÍTEMS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM" :counter="60"
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ÍTEM" :counter="60"
                                         :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>   
@@ -448,21 +494,21 @@
                                         :rules="descripcionRules" @input="descripcion = descripcion.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>   
-                                <v-col v-if="botonActIt == 0" cols="12" md="3">
+                                <v-col cols="12" md="3">
                                     <v-select
                                     label="MEDIDA"  v-model="medida" @input="medida =medida.toUpperCase()" required
-                                    :items="['LITROS', 'KILOGRAMOS', 'MILILITROS', 'TONELADAS', 'GRAMOS', 'UNIDADES']" 
-                                    :rules="[v => !!v || 'La medida es requerida']"
+                                    :items="medidaItems" 
+                                    :rules="medidaRules"
                                     ></v-select>
                                 </v-col>    
-                                <v-col v-if="botonActIt == 0" cols="12" md="4">
-                                    <v-text-field v-model="nombreCategoria" label="NOMBRE SUBCATEGORÍA" :counter="60"
-                                        :rules="nombreCategoriaRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
+                                <v-col  cols="12" md="4">
+                                    <v-text-field v-model="nombreSubcategoria" label="NOMBRE SUBCATEGORÍA" :counter="60"
+                                        :rules="nombreSubcategoriaRules" @input="nombreSubcategoria = nombreSubcategoria.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
                                 <v-col v-if="botonActIt == 0" cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
-                                        @click="openCategoriaModal()" style="float: right" title="BUSCAR CATEGORÍA">
+                                        @click="openCategoriaModal('item')" style="float: right" title="BUSCAR CATEGORÍA">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col> 
@@ -478,7 +524,7 @@
                                     :rules="[v => !!v || 'El Metodo de Valuación es requerido']"
                                     ></v-select>
                                 </v-col> 
-                                 <v-col v-if="botonActIt == 0" cols="12" md="3">
+                                 <v-col  cols="12" md="3">
                                     <v-text-field v-model="nombreProveedor" label="NOMBRE PROVEEDOR" :counter="60"
                                         :rules="nombreProveedorRules" @input="nombreProveedor = nombreProveedor.toUpperCase()"
                                         disabled required></v-text-field>
@@ -521,7 +567,7 @@
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
                                             <v-btn icon v-if="botonActIt == 0" color="#0ABF55" @click="registrarIt()" 
-                                                style="float: left" title="REGISTRAR ITEM" class="mx-2" large>
+                                                style="float: left" title="REGISTRAR ÍTEM" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -550,6 +596,47 @@
             </v-card>
         </v-dialog>
 
+
+        <v-dialog v-model="proveedorModal" persistent :overlay="false" max-width="900px">
+            <v-card elevation="5" outlined shaped>
+                <v-card-title>
+                    <span>LISTA PROVEEDORES ACTIVOS</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-card-title>
+                                    <v-text-field v-model="searchProveedor" append-icon="mdi-magnify"
+                                        label="BUSCAR PROVEEDOR ACTIVO" single-line hide-details></v-text-field>
+                                </v-card-title>
+                            </v-col>
+
+                            <v-col cols="12">
+                                <v-data-table :headers="headerProveedor" :items="datosProveedor"
+                                    :search="searchProveedor" :items-per-page="5" class="elevation-1" id="tableId">
+                                    <template #[`item.actions`]="{ item }">
+                                        <v-icon small class="mr-2" @click="seleccionarProveedor(item)">
+                                            mdi-check-circle
+                                        </v-icon>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                            <v-col cols="10"></v-col>
+                            <v-col cols="2">
+                                <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeProveedorModal()" style="float: right"
+                                        title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
          <v-dialog v-model="agregarCategoriaModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
@@ -573,12 +660,12 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-col cols="2">
-                                            <v-btn icon v-if="botonActTT == 1" color="#0A62BF" @click="editarTipo()"
+                                            <v-btn icon v-if="botonActTT == 1" color="#0A62BF" @click="editarCategoria()"
                                                 style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
-                                            <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarTipo()" 
-                                                style="float: left" title="REGISTRAR TIPO DE ITEM" class="mx-2" large>
+                                            <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarCategoria()" 
+                                                style="float: left" title="REGISTRAR Categoria DE ÍTEM" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -593,7 +680,7 @@
 
                                 <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeModalAgregarTipoItem()" style="float: right" title="SALIR">
+                                        @click="closeModalAgregarCategoria()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -607,7 +694,7 @@
         </v-dialog>
 
 
-         <v-dialog v-model="agregarSubcategoria" persistent :overlay="false" max-width="1000px">
+         <v-dialog v-model="agregarSubcategoriaModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>SUBCATEGORÍAS</span>
@@ -617,19 +704,19 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="nombreCategoria" label="NOMBRE CATEGORÍA" :counter="60"
-                                        :rules="nombreCategoriaRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
+                                    <v-text-field v-model="nombreSubcategoria" label="NOMBRE SUBCATEGORÍA" :counter="60"
+                                        :rules="nombreSubcategoriaRules" @input="nombreSubcategoria = nombreSubcategoria.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>         
                                  <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreCategoriaRules"
-                                        @click="openProveedorModal()" style="float: right" title="BUSCAR CATEGORÍA">
+                                        @click="openCategoriaModal('tipo')" style="float: right" title="BUSCAR CATEGORÍA">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="3">
                                     <v-text-field v-model="nombreCategoria" label="NOMBRE CATEGORÍA" :counter="60"
-                                        :rules="nombreRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
+                                        :rules="nombreCategoriaRules" @input="nombreCategoria = nombreCategoria.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>                
                                 <v-col cols="12" md="12"> </v-col>
@@ -641,12 +728,12 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-col cols="2">
-                                            <v-btn icon v-if="botonActTT == 1" color="#0A62BF" @click="editarTipo()"
+                                            <v-btn icon v-if="botonActTT == 1" color="#0A62BF" @click="editarSubcategoria()"
                                                 style="float: left" title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
-                                            <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarTipo()" 
-                                                style="float: left" title="REGISTRAR TIPO DE ITEM" class="mx-2" large>
+                                            <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarSubcategoria()" 
+                                                style="float: left" title="REGISTRAR SUBCATEGORIA" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -661,7 +748,7 @@
 
                                 <v-col cols="8">
                                     <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeModalAgregarTipoItem()" style="float: right" title="SALIR">
+                                        @click="closeModalAgregarSubcategoria()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -673,9 +760,11 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+
+
         
 
-        <v-dialog v-model="confirmacionAnulacionTipo" persistent :overlay="false" max-width="1000px">
+        <v-dialog v-model="confirmacionAnulacionCategoria" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>¿ESTAS SEGURO?</span>
@@ -686,14 +775,14 @@
                                 <v-col cols="3"></v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anularTipo()" style="float: right" title="ANULAR TIPO">
+                                        @click="anularCategoria()" style="float: right" title="ANULAR Categoria">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         ANULAR
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#00A1B1"
-                                        @click="closeAnulacionTipo()" style="float: right" title="SALIR">
+                                        @click="closeAnulacionCategoria()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -716,7 +805,7 @@
                                 <v-col cols="3"></v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anularItem()" style="float: right" title="ANULAR ITEM">
+                                        @click="anularItem()" style="float: right" title="ANULAR ÍTEM">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         ANULAR
                                     </v-btn>
@@ -762,7 +851,7 @@
          return {
 
             drawer: false,
-            user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '' },
+            user: { id_usuario: 0, usuario: '', accesos: [], Categoria: '', nombres: '', paterno: '', materno: '' },
 
             mensajeSnackbarError: "REGISTRO FALLIDO",
 
@@ -788,11 +877,34 @@
              nombreItem:"",
              descripcion:"",
              medida:"",
+
+            medidaItems: [
+            { text: "TONELADAS (t)",        value: "TONELADAS" },
+            { text: "KILOGRAMOS (kg)",      value: "KILOGRAMOS" },
+            { text: "METROS CÚBICOS (m³)",  value: "M3" },
+            { text: "LITROS (L)",           value: "LITROS" },
+            { text: "UNIDADES (u)",         value: "UNIDADES" },
+            { text: "GALÓN (gal)",          value: "GALON" },
+            { text: "TONELADAS LARGAS (lt)",value: "TONELADAS_LARGAS" },
+            { text: "TONELADAS CORTAS (st)",value:"TONELADAS_CORTAS"},
+            { text: "GRAMOS (g)",           value: "GRAMOS" },
+            { text: "MILILITROS (mL)",      value: "MILILITROS" },
+            { text: "METROS (m)",           value: "METROS" },
+            { text: "METROS CUADRADOS (m²)",value: "M2" }
+            ],
+
+
              estIt:"",
 
-             idTipoItem:"",
+             idCategoria:0,
              nombreCategoria: "",
+             nombreSubcategoria: "",
+             seleccionarCategoriaTabla: false,
              estTT: "",
+
+            proveedorModal: false,
+            idProveedor: 0,
+            nombreProveedor: "",
 
             estado: "ACTIVO",
              valid: true,
@@ -803,16 +915,22 @@
                  "EL NOMBRE DEL PROVEEDOR NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreItemRules: [
-               (v) => !!v || "SE REQUIERE EL NOMBRE DEL ITEM.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL ÍTEM.",
                (v) =>
                (v && v.length <= 60) ||
-                 "EL NOMBRE DEL ITEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+                 "EL NOMBRE DEL ÍTEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreCategoriaRules: [
-               (v) => !!v || "SE REQUIERE EL NOMBRE DEL TIPO DE ITEM.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DE LA CATEGORÍA.",
                (v) =>
                (v && v.length <= 60) ||
-                 "EL NOMBRE DEL TIPO NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+                 "EL NOMBRE DE LA CATEGORÍA NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+             ],
+            nombreSubcategoriaRules: [
+               (v) => !!v || "SE REQUIERE EL NOMBRE DE LA SUBCATEGORÍA.",
+               (v) =>
+               (v && v.length <= 60) ||
+                 "EL NOMBRE DE LA SUBCATEGORÍA NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreAlmacenRules: [
                (v) => !!v || "SE REQUIERE EL NOMBRE DEL ALMACÉN.",
@@ -835,10 +953,14 @@
                 (v) => !!v || "EL VALOR ES OBLIGATORIO.",
                 (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO."
             ],
+             medidaRules: [
+                v => !!v || "LA MEDIDA ES OBLIGATORIA.",
+                v => ['LITROS', 'KILOGRAMOS', 'MILILITROS', 'TONELADAS', 'GRAMOS','M3','GALON', 'UNIDADES','TONELADAS_LARGAS','TONELADAS_CORTAS','M2','METROS'].includes(v) || "SELECCIONA UNA MEDIDA VÁLIDA."
+            ],
 
             limiteRules: [
                 (v) => !!v || "EL LIMITE ES OBLIGATORIO.",
-                (v) => parseFloat(v) >= 0 || "EL LIMITE DEBE SER MAYOR A 0.",
+                (v) => parseFloat(v) > 0 || "EL LIMITE DEBE SER MAYOR A 0.",
                 (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO."
             ],
                         
@@ -861,11 +983,18 @@
                (v) => !!v || "SE REQUIERE EL CORREO ELECTRONICO DEL PROVEEDOR.",
                (v) => /.+@.+\..+/.test(v) || "DEBE SER UN CORREO ELECTRONICO VALIDO.",
               ],
+
+            costoRules: [
+                (v) => parseFloat(v) > 0 || "EL COSTO DEBE SER MAYOR A 0.",
+                (v) => !!v || "EL COSTO ES OBLIGATORIO.",
+                (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO."
+            ],
+              
              datosInventario: [],
              headerInventario: [
                  
                  { text: "NUMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
-                 { text: "ITEM", value: "nombreitem", sortable: true },
+                 { text: "ÍTEM", value: "nombreitem", sortable: true },
                  { text: "ALMACÉN", value: "nombrealmacen", sortable: true },
                  { text: "MOVIMIENTO", value: "movimiento", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
@@ -907,9 +1036,9 @@
 
             datosStock: [],
             headerStock: [   
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "CATEGORÍA", value: "nombretipoitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
                  { text: "STOCK", value: "total", sortable: true },
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -922,7 +1051,7 @@
             headerProductos: [
                 { text: "NOMBRE DE PRODUCTO", value: "nombreprod", sortable: true },
                 { text: "CÓDIGO DE PRODUCTO", value: "codprod", sortable: true },
-                { text: "TIPO", value: "nombretipo", sortable: true },
+                { text: "Categoria", value: "nombreCategoria", sortable: true },
                 { text: "TOTAL", value: "total", sortable: false },
             ],
            
@@ -932,54 +1061,47 @@
              datosItem: [],
              headerItem: [
                  { text: "CÓDIGO SKU", value: "sku", sortable: true },
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
-                 { text: "CATEGORÍA", value: "categoria", sortable: true },
-                 { text: "SUBCATEGORÍA", value: "subcategoria", sortable: true },
+                 { text: "CATEGORÍA", value: "nombrecategoria", sortable: true },
+                 { text: "SUBCATEGORÍA", value: "nombresubcategoria", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
-                 { text: "PROVEEDOR", value: "proveedor", sortable: true },
-                 { text: "FECHA EXP.", value: "fechaexp", sortable: true },
-                 { text: "COSTO REF", value: "costoref", sortable: true },
+                 { text: "PROVEEDOR", value: "nombreProveedor", sortable: true },
+                 { text: "FECHA EXP.", value: "fechaExpiracion", sortable: true },
+                 { text: "COSTO REF", value: "costoReferencia", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
-            datosCategoria: [],
             headerCategoria: [  
                  { text: "CATEGORÍA", value: "categoria", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
-            datosSubCategoria: [],
-            headerSubCategoria: [  
+            datossubcategoria: [],
+            headersubcategoria: [  
                  { text: "SUBCATEGORÍA", value: "subcategoria", sortable: true },
                  { text: "CATEGORÍA", value: "categoria", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
  
-             datosTipoDeItem: [],
-             datosTipoDeItemInactivos: [],
-             headerTipoDeItem: [
-                 
-                 { text: "SUBCATEGORÍA", value: "subcategoria", sortable: true },
-                 { text: "CATEGORÍA", value: "categoria", sortable: false },
-                 { text: "ACCIONES", value: "actions", sortable: false }
-                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
-             ],
+             datoscategoria: [],
+             datoscategoriaInactivos: [],
+             
 
 
              datosItemDisponibles: [],
              headerItemDisponibles: [
                  
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
-                 { text: "CATEGORÍA", value: "nombretipoitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
@@ -996,9 +1118,9 @@
              datosItemPrecio: [],
              headerItemPrecio: [
                  
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "CATEGORÍA", value: "nombretipoitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -1009,9 +1131,9 @@
              datosItemAlmacen: [],
              headerItemAlmacen: [
                  
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "CATEGORÍA", value: "nombretipoitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
@@ -1021,7 +1143,7 @@
              searchItemAlmacen: "",
              itemAlmacenModal: false,
 
-             activarTipoItemModal:false,
+             activarCategoriaModal:false,
 
  
              buscarInventario: "",
@@ -1037,16 +1159,21 @@
              confirmacionAnulacionItem: false,
              valor:0,
  
-             buscarTipoItem: "",
+             buscarCategoria: "",
              searchCategoria: "",
              agregarCategoriaModal: false,
-             confirmacionAnulacionTipo: false,
+             confirmacionAnulacionCategoria: false,
+
+             buscarSubcategoria: "",
+             searchSubcategoria: "",
+             agregarSubcategoriaModal: false,
+             confirmacionAnulacionSubcategoria: false,
 
 
 
              itemModal:false,
-             tipoModal:false,
-
+             CategoriaModal:false,
+             SubcategoriaModal:false,
 
              botonActInv:0,
              botonActIt:0,
@@ -1058,9 +1185,9 @@
              datosSaldoItem: [],
              headerSaldoItem: [
                  
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "CATEGORÍA", value: "nombretipoitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -1072,6 +1199,25 @@
                 { text: "TOTAL", value: "total", sortable: true },
             ],
 
+
+            searchProveedor: "",
+            datosProveedor: [],
+            headerProveedor: [
+                //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
+                { text: "NOMBRE DE PROVEEDOR", value: "nomprv", sortable: true },
+                { text: "NIT", value: "nit", sortable: true },
+                { text: "RAZÓN SOCIAL", value: "raz", sortable: true },
+                { text: "CATEGORÍA", value: "cat", sortable: true },
+                { text: "PAIS", value: "pais", sortable: true },
+                { text: "CONTACTO PRINCIPAL DE PROVEEDOR", value: "cto1pro", sortable: true },
+                { text: "CONTACTO SECUNDARIO DE PROVEEDOR", value: "cto2pro", sortable: true },
+                { text: "CORREO DE PROVEEDOR", value: "croprov", sortable: true },
+                { text: "ESTADO", value: "est", sortable: true },
+                { text: "ARCHIVO", value: "arch", sortable: false },
+                { text: "ACCIONES", value: "actions", sortable: false }
+                //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
+            ],
+
              snackbarOK: false,
              snackbarError : false,
              //#endregion
@@ -1080,7 +1226,8 @@
      created: function (){
        this.listarInventario();
        this.listarItem();
-       this.listarTipoItem();
+       this.listarCategoria();
+       this.listarSubcategorias();
        this.listarstock();
        this.listaralmacenproducto();
        this.listarSaldoItem();
@@ -1104,6 +1251,19 @@
         getDate() {
             var fecha = new Date().toISOString();
             return fecha;
+        },
+
+        getFormattedDate(oldDate) {
+            let fecha = new Date(oldDate);
+            let dia = fecha.getDate();
+            let mes = fecha.getMonth() + 1;
+            let anio = fecha.getFullYear();
+            if (dia < 10) dia = '0' + dia;
+            if (mes < 10) mes = '0' + mes;
+
+            let fechaFormateada = anio +'-' + mes + '-' + dia;
+
+            return fechaFormateada;
         },
 
         getAlertas(){
@@ -1492,16 +1652,48 @@
              });
          },
 
+        formatText(text, len) {
+        const s = (text ?? '')
+            .normalize('NFD')               
+            .replace(/[\u0300-\u036f]/g, '')
+            .toUpperCase();                 
+
+        return Number.isInteger(len) ? s.slice(0, len) : s;
+        },
+
+        timeSuffixDDhhmm(date = new Date()) {
+            const pad2 = n => String(n).padStart(2, '0');
+            const DD   = pad2(date.getDate());
+            const hh   = pad2(date.getHours());
+            const mm   = pad2(date.getSeconds());
+            return `${DD}${hh}${mm}`;
+        },
+
+
+         generateSKU(){
+            var text = "";
+            const nombre = this.formatText(this.nombreItem,4);
+            const subcat = this.formatText(this.nombreSubcategoria,3);
+            const cat = this.formatText(this.nombreCategoria,3);
+            const prov = this.formatText(this.nombreProveedor,4);
+            const time = this.timeSuffixDDhhmm(); 
+            
+            const prefix = subcat + '-' +  cat+ '-' + nombre + '-' + prov;
+            this.sku = prefix + '-' + time;
+         },
+
          registrarIt() {
             if (this.$refs.form.validate()) {
-            this.registrarItem(this.nombreItem, this.descripcion,this.medida,this.idTipoItem,this.limitecritico, this.metodoValuacion, this.estado);
+            this.generateSKU();
+            alert(this.sku);
+            this.registrarItem(this.nombreItem, this.descripcion,this.medida,this.idSubcategoria,this.limitecritico, this.metodoValuacion, this.estado, this.idProveedor,this.costoReferencia, this.fechaVencimiento);
             }
         },
         async registrarItem(
             nombreItem,
             descripcion,
             medida,
-            idTipoItem,
+            idCategoria,
             limitecritico,
             metodoValuacion,
             estado
@@ -1518,12 +1710,20 @@
                     "," +
                     this.estado +
                     "," +
-                    this.idTipoItem +
+                    this.idsubcategoria +
                     "," +
                     this.limitecritico +
                     "," +
-                    this.metodoValuacion
-                )
+                    this.metodoValuacion+
+                    "," +
+                    this.sku +
+                    "," +
+                    this.idProveedor +
+                    "," +
+                    this.fechaVencimiento+
+                    "," +
+                    this.costoReferencia
+                ) 
                 .then(function (response) {
 
                     me.mensajeSnackbar = response.data.message;
@@ -1564,11 +1764,23 @@
                     "," +
                     this.descripcion +
                     "," +
+                    this.medida +
+                    "," +
                     this.estado +
+                    "," +
+                    this.idsubcategoria +
                     "," +
                     this.limitecritico +
                     "," +
-                    this.metodoValuacion
+                    this.metodoValuacion+
+                    "," +
+                    this.sku +
+                    "," +
+                    this.idProveedor +
+                    "," +
+                    this.fechaVencimiento+
+                    "," +
+                    this.costoReferencia
                 )
                 .then(function (response) {
 
@@ -1611,20 +1823,20 @@
         },
 
  
-         listarTipoItem() {
-             this.listarTipoItems();
+         listarCategoria() {
+             this.listarCategorias();
          },
-         async listarTipoItems() {
+         async listarCategorias() {
            let me = this;
            await axios
-             .get("/inventario/listartipodeitemactivo/")
+             .get("/inventario/listarcategoriaactivo/")
              .then(function (response) {
                if (response.data.resultado == null) {
-                 me.datosTipoDeItem = [];
+                 me.datoscategoria = [];
                  console.log(response.data);
                } else {
                  console.log(response.data);
-                 me.datosTipoDeItem = response.data.resultado;
+                 me.datoscategoria = response.data.resultado;
                }
              })
              .catch(function (error) {
@@ -1632,20 +1844,20 @@
              });
          },
 
-         listarTipoItemInactivo() {
-             this.listarTipoItemsInactivos();
+         listarCategoriaInactivo() {
+             this.listarCategoriasInactivos();
          },
-         async listarTipoItemsInactivos() {
+         async listarCategoriasInactivos() {
            let me = this;
            await axios
-             .get("inventario/listartipodeiteminactivo/")
+             .get("inventario/listarcategoriainactivo/")
              .then(function (response) {
                if (response.data.resultado == null) {
-                 me.datosTipoDeItemInactivos = [];
+                 me.datoscategoriaInactivos = [];
                  console.log(response.data);
                } else {
                  console.log(response.data);
-                 me.datosTipoDeItemInactivos = response.data.resultado;
+                 me.datoscategoriaInactivos = response.data.resultado;
                }
              })
              .catch(function (error) {
@@ -1653,19 +1865,19 @@
              });
          },
 
-         registrarTipo() {
+         registrarCategoria() {
             if (this.$refs.form.validate()) {
-                this.registrarTipos(this.nombreCategoria, this.estado);
+                this.registrarCategorias(this.nombreCategoria, this.estado);
             }            
         },
-        async registrarTipos(
-            nombreTipoITem,
+        async registrarCategorias(
+            nombreCategoria,
             estado
         ) {
             let me = this;
             await axios
                 .post(
-                    "/inventario/agregartipodeitem/" +
+                    "/inventario/agregarcategoria/" +
                     this.nombreCategoria +
                     "," +
                     this.estado
@@ -1674,8 +1886,8 @@
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarTipoItems();
-                    me.closeModalAgregarTipoItem();
+                    me.listarCategorias();
+                    me.closeModalAgregarCategoria();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -1684,22 +1896,22 @@
 
         },
 
-        editarTipo() {
+        editarCategoria() {
             if (this.$refs.form.validate()) {
-            this.editarTipo( this.idTipoItem,this.nombreCategoria, this.estado);
+            this.editarCategoria( this.idCategoria,this.nombreCategoria, this.estado);
             this.botonActTT = 0;
             }
         },
-        async editarTipo(
-            idTipoItem,
-            nombreTipoITem,
+        async editarCategoria(
+            idCategoria,
+            nombreCategoria,
             estado
         ) {
             let me = this;
             await axios
                 .post(
-                    "/inventario/actualizartipodeitem/" +
-                    this.idTipoItem +
+                    "/inventario/actualizarcategoria/" +
+                    this.idCategoria +
                     "," +
                     this.nombreCategoria +
                     "," +
@@ -1709,8 +1921,81 @@
 
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
-                    me.listarTipoItems();
-                    me.closeModalAgregarTipoItem();
+                    me.listarCategorias();
+                    me.closeModalAgregarCategoria();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
+        //Subcategoría
+
+        
+
+         registrarSubcategoria() {
+            if (this.$refs.form.validate()) {
+                this.registrarSubcategorias(this.nombreSubcategoria,this.idCategoria, "ACTIVO");
+            }            
+        },
+        async registrarSubcategorias(
+            nombreCategoria,
+            idcategoria,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/agregarsubcategoria/" +
+                    nombreCategoria +
+                    "," +
+                    idcategoria +
+                    "," +
+                    estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarSubcategorias();
+                    me.closeModalAgregarSubcategoria();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+
+        },
+
+        editarSubcategorias() {
+            if (this.$refs.form.validate()) {
+            this.editarCategoria( this.idCategoria,this.nombreCategoria, this.estado);
+            this.botonActTT = 0;
+            }
+        },
+        async editarSubcategoria(
+            idCategoria,
+            nombreCategoria,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/actualizarcategoria/" +
+                    this.idCategoria +
+                    "," +
+                    this.nombreCategoria +
+                    "," +
+                    this.estado
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.listarCategorias();
+                    me.closeModalAgregarCategoria();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -1721,23 +2006,98 @@
 
 
 
-        confirmacionAnulacionTip(item){
-            this.idTipoItem = item.idtipodeitem;
-            this.confirmacionAnulacionTipo = true;
+        confirmacionAnulacionCat(item){
+            this.idCategoria = item.idcategoria;
+            this.confirmacionAnulacionCategoria = true;
         },
-        closeAnulacionTipo(){
-            this.confirmacionAnulacionTipo = false;
+        closeAnulacionCategoria(){
+            this.confirmacionAnulacionCategoria = false;
         },
-        anularTipo() {
-            this.desactivarTipo(this.idTipoItem);
-            this.confirmacionAnulacionTipo = false;
-            this.listarTipoItem();
+        anularCategoria() {
+            this.desactivarCategoria(this.idCategoria);
+            this.confirmacionAnulacionCategoria = false;
+            this.listarCategoria();
         },
-        async desactivarTipo(idTipoItem) {
+        async desactivarCategoria(idCategoria) {
             let me = this;
             await axios
-                .post("/inventario/eliminartipodeitem/" + this.idTipoItem).then(function (response) {
-                    me.listarTipoItems();
+                .post("/inventario/eliminarcategoria/" + this.idCategoria).then(function (response) {
+                    me.listarCategorias();
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    alert('error')
+                    me.snackbarError = true;
+                });
+
+        },
+
+
+         listarSubcategoria() {
+             this.listarSubcategorias();
+         },
+         async listarSubcategorias() {
+           let me = this;
+           await axios
+             .get("/inventario/listarsubcategoriaactivo/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datossubcategoria = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datossubcategoria = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+
+         listarSubcategoriaInactivo() {
+             this.listarSubcategoriasInactivos();
+         },
+         async listarSubcategoriasInactivos() {
+           let me = this;
+           await axios
+             .get("inventario/listarsubcategoriainactivo/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datossubcategoriaInactivos = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datossubcategoriaInactivos = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+
+       
+
+
+
+        confirmacionAnulacionTip(item){
+            this.idSubcategoria = item.idsubcategoria;
+            this.confirmacionAnulacionSubcategoria = true;
+        },
+        closeAnulacionSubcategoria(){
+            this.confirmacionAnulacionSubcategoria = false;
+        },
+        anularSubcategoria() {
+            this.desactivarSubcategoria(this.idSubcategoria);
+            this.confirmacionAnulacionSubcategoria = false;
+            this.listarSubcategoria();
+        },
+        async desactivarSubcategoria(idSubcategoria) {
+            let me = this;
+            await axios
+                .post("/inventario/eliminarsubcategoria/" + this.idSubcategoria).then(function (response) {
+                    me.listarSubcategorias();
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                 })
@@ -1895,6 +2255,27 @@
                 });
         },
 
+        listarProveedor() {
+            this.listarProveedores();
+        },
+        async listarProveedores() {
+          let me = this;
+          await axios
+            .get("/proveedor/listarproveedoresactivos/")
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datosProveedor = [];
+                console.log(response.data);
+              } else {
+                console.log(response.data);
+                me.datosProveedor = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
 
         verAlmacenes(item){
             this.idtiem = item.iditem;
@@ -1966,8 +2347,18 @@
             this.idItem = item.iditem;
             this.nombreItem = item.nombreitem;
             this.descripcion = item.descripcion;
+            this.idsubcategoria = item.id_subcategoria;
+            this.nombreSubcategoria = item.nombresubcategoria;
+            this.idCategoria = item.id_categoria;
+            this.nombreCategoria = item.categoria;
+            this.idProveedor = item.idProveedor;
+            this.nombreProveedor = item.nombreProveedor;
             this.limitecritico = item.limite;
             this.metodoValuacion = item.metodovaluacion;
+            this.medida = item.medida;
+            this.sku = item.sku;
+            this.fechaVencimiento = this.getFormattedDate(item.fechaExpiracion);
+            this.costoReferencia = item.costoReferencia;
             this.estado = item.estado;
             this.agregarItemModal = true;
         },
@@ -1976,10 +2367,21 @@
 
         llenarCamposCategoria(item) {
             this.botonActTT = 1;
-            this.idTipoItem = item.idtipodeitem;
-            this.nombreCategoria = item.nombretipoitem;
-            this.estado = item.estado;
+            this.idCategoria = item.idcat;
+            this.nombreCategoria = item.categoria;
+            this.estado = item.est;
             this.agregarCategoriaModal = true;
+        },
+
+        llenarCamposSubcategoria(item) {
+            this.botonActTT = 1;
+            this.seleccionarCategoriaTabla = false;
+            this.idsubcategoria = item.idsubcategoria;
+            this.nombreSubcategoria = item.subcategoria;
+            this.idCategoria = item.id_categoria;
+            this.nombreCategoria = item.categoria;
+            this.estado = item.estado;
+            this.agregarSubcategoriaModal = true;
         },
 
         llenarCamposInventario(item) {
@@ -2124,20 +2526,76 @@
         },
 
 
-        openCategoriaModal(){
-            this.listarTipoItems();
-            this.tipoModal = true;
+        openCategoriaModal(tipo)
+        {
+            if (tipo === 'item') {
+                this.seleccionarCategoriaTabla = true;
+            } else {
+                 this.seleccionarCategoriaTabla = false;
+            }
+            this.listarCategorias();
+            this.CategoriaModal = true;
         },
 
-        closeTipoModal(){
-            this.tipoModal = false;
-            this.limpiar();
+        closeCategoriaModal(){
+            this.CategoriaModal = false;
         },
 
-        seleccionarTipo(item){
-            this.idTipoItem = item.idtipodeitem;
-            this.nombreCategoria = item.nombretipoitem;
-            this.tipoModal = false;
+        closeSubcategoriaModal(){
+            this.SubcategoriaModal = false;
+        },
+
+        openProveedorModal() {
+            this.listarProveedores();
+            this.proveedorModal = true;
+        },
+
+        closeProveedorModal() {
+            this.proveedorModal = false;
+        },
+
+        seleccionarProveedor(item) {
+            this.idProveedor = item.idprv;
+            this.nombreProveedor = item.nomprv;
+            this.proveedorModal = false;
+        },
+
+
+        seleccionarCategoriaItem(item){
+            this.idCategoria = item.idcat;
+            this.nombreCategoria = item.categoria;
+            this.listarSubcategoriasDe(item.idcat);
+            this.SubcategoriaModal = true;
+        },
+
+        async listarSubcategoriasDe(idCat) {
+          let me = this;
+          await axios
+            .get("/inventario/listarsubcateriasde/"+idCat)
+            .then(function (response) {
+              if (response.data.resultado == null) {
+                me.datossubcategoria = [];
+              } else {
+                me.datossubcategoria = response.data.resultado;
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        },
+
+         seleccionarCategoriaSubcategoria(item){
+
+            this.idCategoria = item.idcat;
+            this.nombreCategoria = item.categoria;
+            this.CategoriaModal = false;
+        },
+
+          seleccionarSubcategoria(item){
+            this.idsubcategoria = item.id_subcategoria;
+            this.nombreSubcategoria = item.subcategoria;
+            this.SubcategoriaModal = false;
+            this.CategoriaModal = false;
         },
 
 
@@ -2146,34 +2604,46 @@
             this.botonActTT = 0;  
         },
 
-        closeModalAgregarTipoItem(){
+        closeModalAgregarCategoria(){
             this.agregarCategoriaModal = false;
             this.limpiar();
             this.botonActTT = 0;
      
         },
 
-        showModalActivarTipo(){
-            this.listarTipoItemInactivo();
-            this.activarTipoItemModal = true;  
+        showModalAgregarSubcategoria(){
+            this.agregarSubcategoriaModal = true;
+            this.botonActTT = 0;  
         },
 
-        closeModalActivarTipo(){
-            this.activarTipoItemModal = false;
+        closeModalAgregarSubcategoria(){
+            this.agregarSubcategoriaModal = false;
+            this.limpiar();
+            this.botonActTT = 0;
+     
+        },
+
+        showModalActivarCategoria(){
+            this.listarCategoriaInactivo();
+            this.activarCategoriaModal = true;  
+        },
+
+        closeModalActivarCategoria(){
+            this.activarCategoriaModal = false;
         },
 
         activar(item){
-            this.idTipoItem = item.idtipodeitem;
-            this.activarTipoItem(this.idTipoItem);
-            this.activarTipoItemModal = false;
+            this.idCategoria = item.idcategoria;
+            this.activarCategoria(this.idCategoria);
+            this.activarCategoriaModal = false;
         },
 
-        async activarTipoItem(idTipoItem) {
+        async activarCategoria(idCategoria) {
             let me = this;
             await axios
-                .post("/inventario/activartipodeitem/" + this.idTipoItem).then(function (response) {
+                .post("/inventario/activarcategoria/" + this.idCategoria).then(function (response) {
 
-                    me.listarTipoItem();
+                    me.listarCategoria();
                     me.mensajeSnackbar = response.data.message;
                     me.snackbarOK = true;
                 })
@@ -2263,13 +2733,13 @@
                 const bodyData = jsonData.map(data => [
                     data.nombreitem, 
                     data.descripcion,
-                    data.nombretipoitem,
+                    data.nombreCategoria,
                     data.valor,
                     data.total
                 ]);
                 const doc = new jsPDF();
                     doc.text("Reporte de Almacén: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
-                   doc.autoTable({ head: [["Item", "Descripción", "Tipo de Item", "Precio Unitario", "Stock"]], body: bodyData });
+                   doc.autoTable({ head: [["Item", "Descripción", "Categoria de Item", "Precio Unitario", "Stock"]], body: bodyData });
                     doc.save("inventario.pdf");
             } catch (error) {
                 console.error(error);
@@ -2285,19 +2755,19 @@
                 const bodyData = jsonData.map(data => [
                     data.nombreprod, 
                     data.codprod,
-                    data.nombretipo,
+                    data.nombreCategoria,
                     data.total
                 ]);
                 const doc = new jsPDF();
                     doc.text("Reporte de Almacén: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
-                   doc.autoTable({ head: [["Producto", "Código de Producto", "Tipo de Producto",  "Cantidad"]], body: bodyData });
+                   doc.autoTable({ head: [["Producto", "Código de Producto", "Categoria de Producto",  "Cantidad"]], body: bodyData });
                     doc.save("inventario.pdf");
             } catch (error) {
                 console.error(error);
             }
             },
 
-            checkAccess(accesoCorrecto, tipoCorrecto) {
+            checkAccess(accesoCorrecto, CategoriaCorrecto) {
                 //this.user = JSON.parse(sessionStorage.getItem('session'));
                 if (this.user == null) {
                     return false;
@@ -2313,9 +2783,9 @@
                     });
                     } else checkedAccess = true;
 
-                    //Si tipoCorrecto es '0', no se requiere ningun tipo de cuenta para acceder
-                    if (tipoCorrecto != '0') {
-                    if (this.user['tipo'] == tipoCorrecto) {
+                    //Si CategoriaCorrecto es '0', no se requiere ningun Categoria de cuenta para acceder
+                    if (CategoriaCorrecto != '0') {
+                    if (this.user['Categoria'] == CategoriaCorrecto) {
                         checkedType = true;
                     }
                     } else checkedType = true;

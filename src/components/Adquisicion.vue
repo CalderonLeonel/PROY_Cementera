@@ -276,12 +276,12 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-col cols="2">
-                                            <v-btn icon v-if="botonactCot == 1 && checkAccess(9, 'SUPERVISOR')" color="#0A62BF"
+                                            <v-btn icon v-if="botonactCot == 1" color="#0A62BF"
                                                 @click="editarCotizacionAdq()" style="float: left"
                                                 title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
-                                            <v-btn icon v-if="botonactCot == 0 && checkAccess(9, 'SUPERVISOR')" color="#0ABF55"
+                                            <v-btn icon v-if="botonactCot == 0" color="#0ABF55"
                                                 @click="registrarCotizacionAdq()" style="float: left"
                                                 title="REGISTRAR COTIZACIÓN DE ADQUISICIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
@@ -435,7 +435,7 @@
         <v-dialog v-model="proveedorModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE TIPO DE PROVEEDORES ACTIVOS</span>
+                    <span>LISTA PROVEEDORES ACTIVOS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -1683,6 +1683,7 @@ export default {
 
 
         showModalAgregarCotizacionAdquisicion() {
+            this.botonactCot = 0;
             this.agregarCotizacionAdquisicionModal = true;
         },
         closeModalAgregarCotizacionAdquisicion() {
