@@ -448,13 +448,13 @@
 
                                 <v-col cols="12" md="12" v-if="movimiento!=null"">
                                     <v-text-field v-model="lote" label="LOTE O SERIE"
-                                        :rules="loteRules" @input="lote = lote.toUpperCase()" :disabled='movimiento==null' hint="EJM: 2025-LOTE01"
-                                        disabled required></v-text-field>
+                                        :rules="loteRules" @input="lote = lote.toUpperCase()" :disabled='nombreItem==null' hint="EJM: 2025-LOTE01"
+                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="11" v-if="movimiento!=null">
                                     <v-text-field v-model="referencia" label="REFERENCIA"
-                                        :rules="referenciaRules" @input="referencia = referencia.toUpperCase()" :disabled='movimiento==null' hint="EJM: FA-3458014 - NUMERO DE FACTURA O GUIA, ETC"
-                                        disabled required></v-text-field>
+                                        :rules="referenciaRules" @input="referencia = referencia.toUpperCase()" :disabled='nombreItem==null' hint="EJM: FA-3458014 - NUMERO DE FACTURA O GUIA, ETC"
+                                         required></v-text-field>
                                 </v-col>
                                
                                 <v-col cols="12" md="4" v-if="movimiento=='SALIDA'">
