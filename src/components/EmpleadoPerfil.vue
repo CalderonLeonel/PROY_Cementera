@@ -102,7 +102,7 @@
                                                 <!-- FOTO CARNET -->
                                                 <v-col cols="12" md="3">
                                                     <v-alert dense color="#00A1B1" style="color: #ffffff">
-                                                        <h5>NUMERO DE CARNET:</h5>
+                                                        <h5>NÚMERO DE CARNET:</h5>
                                                     </v-alert>
                                                 </v-col>
                                                 <v-col cols="12" md="9">
@@ -218,7 +218,7 @@
                                                         </div>
                                                         <v-col cols="12" md="4">
                                                             <v-btn color="success" @click="showAddObservacion()">Nueva
-                                                                Observacion</v-btn>
+                                                                Observación</v-btn>
                                                         </v-col>
 
                                                         <v-card-title>
@@ -244,17 +244,17 @@
                                                             <template #[`item.actions`]="{ item }">
                                                                 <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2" color="#0ABF55"
                                                                     @click="activarObservacion(item)"
-                                                                    title="ACTIVAR OBSERVACION">
+                                                                    title="ACTIVAR OBSERVACIÓN">
                                                                     mdi-check-circle-outline
                                                                 </v-icon>
                                                                 <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2" color="#BF120A"
                                                                     @click="desactivarObservacion(item)"
-                                                                    title="DESACTIVAR OBSERVACION">
+                                                                    title="DESACTIVAR OBSERVACIÓN">
                                                                     mdi-cancel
                                                                 </v-icon>
                                                                 <v-icon large class="mr-2" color="#0A628F"
                                                                     @click="showEditObservacion(item)"
-                                                                    title="EDITAR INFORMACION">
+                                                                    title="EDITAR INFORMACIÓN">
                                                                     mdi-pencil
                                                                 </v-icon>
                                                             </template>
@@ -286,7 +286,7 @@
                                                             </v-alert>
                                                         </div>
                                                         <v-col cols="12" md="4">
-                                                            <v-btn color="success" @click="showAddVacacion()">Registrar Vacacion</v-btn>
+                                                            <v-btn color="success" @click="showAddVacacion()">Registrar Vacación</v-btn>
                                                         </v-col>
                                                         <v-card-title>
                                                             <v-text-field v-model="searchVacacion"
@@ -319,17 +319,17 @@
                                                             <template #[`item.actions`]="{ item }">
                                                                 <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2" color="#0ABF55"
                                                                     @click="activarVacacion(item)"
-                                                                    title="ACTIVAR VACACION">
+                                                                    title="ACTIVAR VACACIÓN">
                                                                     mdi-check-circle-outline
                                                                 </v-icon>
                                                                 <v-icon v-if="item.act == 'ACTIVO'" large class="mr-2" color="#BF120A"
                                                                     @click="desactivarVacacion(item)"
-                                                                    title="ANULAR VACACION">
+                                                                    title="ANULAR VACACIÓN">
                                                                     mdi-cancel
                                                                 </v-icon>
                                                                 <v-icon large class="mr-2" color="#0A628F"
                                                                     @click="showEditVacacion(item)"
-                                                                    title="EDITAR INFORMACION">
+                                                                    title="EDITAR INFORMACIÓN">
                                                                     mdi-pencil
                                                                 </v-icon>
                                                             </template>
@@ -454,8 +454,8 @@
         <v-dialog v-model="observacionModal" persistent :overlay="false" max-width="1080px"> <!-- Modal Observacion-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nueva Observacion</span>
-                    <span v-if="botonAct == 1">Editar Observacion</span>
+                    <span v-if="botonAct == 0">Nueva Observación</span>
+                    <span v-if="botonAct == 1">Editar Observación</span>
                 </v-card-title>
                 <v-card-text>
 
@@ -465,7 +465,7 @@
                                 <v-col cols="12" md="12">
                                     <v-text-field v-model="observacion" :counter="50" :rules="observacionRules"
                                         @input="observacion = observacion.toUpperCase()"
-                                        label="TÍTULO DE LA OBSERVACION" required>
+                                        label="TÍTULO DE LA OBSERVACIÓN" required>
                                     </v-text-field>
                                     <v-textarea v-model="comentario" :counter="250" :rules="comentarioRules" outlined
                                         @input="comentario = comentario.toUpperCase()" label="DESCRIPCIÓN O COMENTARIO"
@@ -554,8 +554,8 @@
         <v-dialog v-model="vacacionModal" persistent :overlay="false" max-width="1080px"> <!-- Modal Vacacion-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nueva Vacacion</span>
-                    <span v-if="botonAct == 1">Editar Vacacion</span>
+                    <span v-if="botonAct == 0">Nueva Vacación</span>
+                    <span v-if="botonAct == 1">Editar Vacación</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation> <!-- Nueva Vacacion / Editar Vacacion -->
@@ -719,21 +719,21 @@ export default {
         ],
 
         observacionRules: [
-            (v) => !!v || "TITULO ES REQUERIDO",
+            (v) => !!v || "TÍTULO ES REQUERIDO",
             (v) =>
                 (v && v.length <= 50) ||
-                "EL TITULO DE LA OBSERVACION DEBE TENER 50 CARACTERES COMO MAXIMO",
+                "EL TÍTULO DE LA OBSERVACIÓN DEBE TENER 50 CARACTERES COMO MÁXIMO",
         ],
         comentarioRules: [
             (v) =>
                 (v && v.length <= 200) ||
-                "LA DESCRIPCION DEBE TENER 200 CARACTERES COMO MAXIMO",
+                "LA DESCRIPCIÓN DEBE TENER 200 CARACTERES COMO MÁXIMO",
         ],
         fechaRules: [
             (v) => !!v || "FECHA ES REQUERIDA",
         ],
         headersObservacion: [
-            { text: "OBSERVACION", value: "obs" },
+            { text: "OBSERVACIÓN", value: "obs" },
             { text: "COMENTARIO", value: "com" },
             { text: "FECHA", value: "fec" },
             { text: "ESTADO", value: "act" },
@@ -741,16 +741,16 @@ export default {
         ],
 
         diaInicioRules: [
-            (v) => !!v || "DIA INICIO ES REQUERIDO",
+            (v) => !!v || "DÍA INICIO ES REQUERIDO",
         ],
         diaFinalRules: [
-            (v) => !!v || "DIA INICIO ES REQUERIDO",
+            (v) => !!v || "DÍA INICIO ES REQUERIDO",
         ],
         headersVacacion: [
             { text: "AÑO", value: "anio" },
-            { text: "DIA INICIO", value: "fecini" },
-            { text: "DIA FINAL", value: "fecfin" },
-            { text: "DIAS TOTALES", value: "cont" },
+            { text: "DÍA INICIO", value: "fecini" },
+            { text: "DÍA FINAL", value: "fecfin" },
+            { text: "DÍAS TOTALES", value: "cont" },
             { text: "ESTADO", value: "act" },
             { text: "OPCIONES", value: "actions", sortable: false },
         ],
@@ -1002,7 +1002,7 @@ export default {
                     me.observacionModal = false;
                 })
                 .catch(function (error) {
-                    me.mensajeSnackbarError = "REGISTRO DE OBSERVACION FALLIDO",
+                    me.mensajeSnackbarError = "REGISTRO DE OBSERVACIÓN FALLIDO",
                         me.snackbarError = true;
                 });
         },
