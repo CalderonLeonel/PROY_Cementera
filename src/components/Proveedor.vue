@@ -699,10 +699,12 @@ export default {
               console.log(error);
             });
         },
+
         activar(item) {
             this.idProveedor = item.idProveedor;
             this.activarproveedor(this.idProveedor);
         },
+        
         async activarproveedor(idProveedor) {
             let me = this;
             /*await axios
@@ -864,7 +866,7 @@ export default {
                     "," +
                     this.correoProveedor +
                     "," +
-                    this.estado +  
+                    this.estado +
                     "," +
                     this.nombreRazon +
                     "," +

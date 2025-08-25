@@ -567,7 +567,7 @@
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
                                             <v-btn icon v-if="botonActIt == 0" color="#0ABF55" @click="registrarIt()" 
-                                                style="float: left" title="REGISTRAR ITEM" class="mx-2" large>
+                                                style="float: left" title="REGISTRAR ÍTEM" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -665,7 +665,7 @@
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
                                             <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarCategoria()" 
-                                                style="float: left" title="REGISTRAR Categoria DE ITEM" class="mx-2" large>
+                                                style="float: left" title="REGISTRAR Categoria DE ÍTEM" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -805,7 +805,7 @@
                                 <v-col cols="3"></v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anularItem()" style="float: right" title="ANULAR ITEM">
+                                        @click="anularItem()" style="float: right" title="ANULAR ÍTEM">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         ANULAR
                                     </v-btn>
@@ -915,10 +915,10 @@
                  "EL NOMBRE DEL PROVEEDOR NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreItemRules: [
-               (v) => !!v || "SE REQUIERE EL NOMBRE DEL ITEM.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL ÍTEM.",
                (v) =>
                (v && v.length <= 60) ||
-                 "EL NOMBRE DEL ITEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+                 "EL NOMBRE DEL ÍTEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreCategoriaRules: [
                (v) => !!v || "SE REQUIERE EL NOMBRE DE LA CATEGORÍA.",
@@ -994,7 +994,7 @@
              headerInventario: [
                  
                  { text: "NUMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
-                 { text: "ITEM", value: "nombreitem", sortable: true },
+                 { text: "ÍTEM", value: "nombreitem", sortable: true },
                  { text: "ALMACÉN", value: "nombrealmacen", sortable: true },
                  { text: "MOVIMIENTO", value: "movimiento", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
@@ -1036,7 +1036,7 @@
 
             datosStock: [],
             headerStock: [   
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
@@ -1061,7 +1061,7 @@
              datosItem: [],
              headerItem: [
                  { text: "CÓDIGO SKU", value: "sku", sortable: true },
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "CATEGORÍA", value: "nombrecategoria", sortable: true },
@@ -1098,7 +1098,7 @@
              datosItemDisponibles: [],
              headerItemDisponibles: [
                  
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
@@ -1118,7 +1118,7 @@
              datosItemPrecio: [],
              headerItemPrecio: [
                  
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
@@ -1131,7 +1131,7 @@
              datosItemAlmacen: [],
              headerItemAlmacen: [
                  
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
@@ -1185,7 +1185,7 @@
              datosSaldoItem: [],
              headerSaldoItem: [
                  
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },

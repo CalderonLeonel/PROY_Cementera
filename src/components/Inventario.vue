@@ -135,7 +135,7 @@
 
                                     <v-card-title>
                                         <v-text-field v-model="buscarTipoItem" append-icon="mdi-magnify"
-                                            label="BUSCAR TIPOS DE ITEM" single-line hide-details></v-text-field>
+                                            label="BUSCAR TIPOS DE ÍTEM" single-line hide-details></v-text-field>
                                     </v-card-title>
                                     <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItemInactivos"
                                         :search="buscarTipoItem" :items-per-page="5" class="elevation-1" id="tableId">
@@ -668,13 +668,13 @@
                                     ></v-select>
                                 </v-col>    
                                 <v-col v-if="botonActIt == 0" cols="12" md="3">
-                                    <v-text-field v-model="nombreTipoITem" label="NOMBRE TIPO ITEM" :counter="60"
+                                    <v-text-field v-model="nombreTipoITem" label="NOMBRE TIPO ÍTEM" :counter="60"
                                         :rules="nombreTipoRules" @input="nombreTipoITem = nombreTipoITem.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
                                 <v-col v-if="botonActIt == 0" cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
-                                        @click="openTipoModal()" style="float: right" title="BUSCAR TIPO ITEM">
+                                        @click="openTipoModal()" style="float: right" title="BUSCAR TIPO ÍTEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col> 
@@ -704,7 +704,7 @@
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
                                             <v-btn icon v-if="botonActIt == 0" color="#0ABF55" @click="registrarIt()" 
-                                                style="float: left" title="REGISTRAR ITEM" class="mx-2" large>
+                                                style="float: left" title="REGISTRAR ÍTEM" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -761,7 +761,7 @@
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
                                             <v-btn icon v-if="botonActTT == 0" color="#0ABF55" @click="registrarTipo()" 
-                                                style="float: left" title="REGISTRAR TIPO DE ITEM" class="mx-2" large>
+                                                style="float: left" title="REGISTRAR TIPO DE ÍTEM" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn>
                                         </v-col>
@@ -830,7 +830,7 @@
                                 <v-col cols="3"></v-col>
                                 <v-col cols="3">
                                     <v-btn class="mx-2"  dark x-big color="#BF120A"
-                                        @click="anularItem()" style="float: right" title="ANULAR ITEM">
+                                        @click="anularItem()" style="float: right" title="ANULAR ÍTEM">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         ANULAR
                                     </v-btn>
@@ -890,14 +890,14 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="11">
-                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM"
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ÍTEM"
                                         :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
-                                        @click="openItemPrecioModal()" style="float: right" title="BUSCAR ITEM">
+                                        @click="openItemPrecioModal()" style="float: right" title="BUSCAR ÍTEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>        
@@ -1115,13 +1115,13 @@
                  "EL NOMBRE DEL PROVEEDOR NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreItemRules: [
-               (v) => !!v || "SE REQUIERE EL NOMBRE DEL ITEM.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL ÍTEM.",
                (v) =>
                (v && v.length <= 60) ||
-                 "EL NOMBRE DEL ITEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+                 "EL NOMBRE DEL ÍTEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
              nombreTipoRules: [
-               (v) => !!v || "SE REQUIERE EL NOMBRE DEL TIPO DE ITEM.",
+               (v) => !!v || "SE REQUIERE EL NOMBRE DEL TIPO DE ÍTEM.",
                (v) =>
                (v && v.length <= 60) ||
                  "EL NOMBRE DEL TIPO NO DEBE SOBREPASAR LOS 60 CARACTERES.",
@@ -1181,7 +1181,7 @@
              headerInventario: [
                  
                  { text: "NUMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
-                 { text: "ITEM", value: "nombreitem", sortable: true },
+                 { text: "ÍTEM", value: "nombreitem", sortable: true },
                  { text: "ALMACÉN", value: "nombrealmacen", sortable: true },
                  { text: "MOVIMIENTO", value: "movimiento", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
@@ -1223,9 +1223,9 @@
 
             datosStock: [],
             headerStock: [   
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
                  { text: "STOCK", value: "total", sortable: true },
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -1248,10 +1248,10 @@
              datosItem: [],
              headerItem: [
                  
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
@@ -1263,7 +1263,7 @@
              datosTipoDeItemInactivos: [],
              headerTipoDeItem: [
                  
-                 { text: "NOMBRE DE TIPO DE ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "NOMBRE DE TIPO DE ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
@@ -1273,10 +1273,10 @@
              datosItemDisponibles: [],
              headerItemDisponibles: [
                  
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
@@ -1293,9 +1293,9 @@
              datosItemPrecio: [],
              headerItemPrecio: [
                  
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
@@ -1306,9 +1306,9 @@
              datosItemAlmacen: [],
              headerItemAlmacen: [
                  
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
@@ -1355,9 +1355,9 @@
              datosSaldoItem: [],
              headerSaldoItem: [
                  
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
-                 { text: "TIPO ITEM", value: "nombretipoitem", sortable: true },
+                 { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "ACCIONES", value: "actions", sortable: false }
