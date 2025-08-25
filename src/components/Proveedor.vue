@@ -236,7 +236,7 @@
                                 </v-col>
                                  <v-col cols="12" md="6">
                                     <v-text-field v-model="nombreRazon" label="RAZÓN SOCIAL" :counter="60"
-                                        :rules="nombreRazon" @input="nombreRazon = nombreRazon"
+                                        :rules="nombreRazonRules" @input="nombreRazon = nombreRazon"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="6">
@@ -498,6 +498,17 @@ export default {
             phone2Rules: [
             (v) => (!v || (v.length >= 7 && v.length <= 10)) ||
                 "EL TELÉFONO SECUNDARIO DEBE TENER ENTRE 7 Y 10 CARACTERES.",
+            ],
+            nombreRazonRules: [
+              (v) => !!v || "SE REQUIERE LA RAZÓN SOCIAL DEL PROVEEDOR.",
+              (v) =>
+              (v && v.length <= 60) ||
+                "LA RAZÓN SOCIAL NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+            ],
+            nitRules:[ 
+              (v) => !!v || "SE REQUIERE EL NIT DEL PROVEEDOR.",
+              (v) => (v && v.length >= 5) || "EL NIT DEBE TENER AL MENOS 5 CARACTERES.",
+              (v) => (v && v.length <= 10) || "EL NIT DEBE TENER HASTA 10 CARACTERES.",
             ],
             emailRules: [
               (v) => !!v || "SE NECESITA EL CORREO ELECTRONICO DEL PROVEEDOR.",
@@ -861,7 +872,7 @@ export default {
                     "," + 
                     this.idPais +
                     "," + 
-                    this.categoria
+                    this.idCategoria
                 )
                 .then(function (response) {
 
@@ -916,7 +927,7 @@ export default {
                     "," + 
                     this.idPais +
                     "," + 
-                    this.categoria
+                    this.idCategoria
                 )
                 .then(function (response) {
 
