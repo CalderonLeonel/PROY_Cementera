@@ -47,7 +47,7 @@
             </v-alert>
          <div>
              <v-alert dense style="color: #ffffff;" color="indigo">
-                 <h3>ITEMS</h3>
+                 <h3>ÍTEMS</h3>
              </v-alert>
          </div>
          <div>
@@ -55,17 +55,17 @@
                  <v-container>
                      <v-row >
                          <v-col cols="12" md="4">
-                             <v-btn color="success" @click="showModalAgregarItem()">NUEVO ITEM</v-btn>
+                             <v-btn color="success" @click="showModalAgregarItem()">NUEVO ÍTEM</v-btn>
                          </v-col>
                          <v-col cols="12">
                              <v-list-item>
                                  <v-list-item-title class="text-center">
-                                     <h5>ITEMS</h5>
+                                     <h5>ÍTEMS</h5>
                                  </v-list-item-title>
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ITEMS"
+                                <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ÍTEMS"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
@@ -108,7 +108,7 @@
                              <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA CATEGORÍA</v-btn>  
                          </v-col>
                          <v-col cols="12" md="12">
-                            <v-btn color="primary" @click="showModalActivarCategoria()">LISTA DE ITEMS DESACTIVADOS</v-btn>
+                            <v-btn color="primary" @click="showModalActivarCategoria()">LISTA DE ÍTEMS DESACTIVADOS</v-btn>
                          </v-col>
                          <v-col cols="12">
                              <v-list-item>
@@ -118,7 +118,7 @@
                              </v-list-item>
  
                              <v-card-title>
-                                <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR CATEGORÍA DE ITEM"
+                                <v-text-field v-model="searchCategoria" append-icon="mdi-magnify" label="BUSCAR CATEGORÍA DE ÍTEM"
                                      single-line hide-details></v-text-field>
                              </v-card-title>
  
@@ -210,7 +210,7 @@
          <v-dialog v-model="activarCategoriaModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>Categoria DE CATEGORÍAS INACTIVAS</span><br>
+                    <span>LISTA CATEGORÍAS INACTIVAS</span><br>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -219,7 +219,7 @@
                                 <v-col cols="12">
                                     <v-list-item>
                                         <v-list-item-title class="text-center">
-                                            <h5>ITEMS</h5>
+                                            <h5>CATEGORÍAS</h5>
                                         </v-list-item-title>
                                     </v-list-item>
 
@@ -268,14 +268,14 @@
          <v-dialog v-model="itemModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE ITEMS ACTIVOS</span>
+                    <span>LISTA DE ÍTEMS ACTIVOS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ITEMS DISPONIBLES"
+                                    <v-text-field v-model="searchItem" append-icon="mdi-magnify" label="BUSCAR ÍTEMS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -310,14 +310,14 @@
         <v-dialog v-model="itemDispModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE ITEMS DISPONIBLES PARA ALMACENAR</span>
+                    <span>LISTA DE ÍTEMS DISPONIBLES PARA ALMACENAR</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchItemDisponibles" append-icon="mdi-magnify" label="BUSCAR ITEMS DISPONIBLES"
+                                    <v-text-field v-model="searchItemDisponibles" append-icon="mdi-magnify" label="BUSCAR ÍTEMS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -352,14 +352,14 @@
         <v-dialog v-model="itemRevalModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE ITEMS DISPONIBLES PARA REVALORIZAR</span>
+                    <span>LISTA DE ÍTEMS DISPONIBLES PARA REVALORIZAR</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchItemDisponibles" append-icon="mdi-magnify" label="BUSCAR ITEMS"
+                                    <v-text-field v-model="searchItemDisponibles" append-icon="mdi-magnify" label="BUSCAR ÍTEMS"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -444,7 +444,7 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-card-title>
-                                    <v-text-field v-model="searchSubcategoria" append-icon="mdi-magnify" label="BUSCAR CategoriaS DISPONIBLES"
+                                    <v-text-field v-model="searchSubcategoria" append-icon="mdi-magnify" label="BUSCAR CATEGORÍAS DISPONIBLES"
                                         single-line hide-details></v-text-field>
                                 </v-card-title>
                             </v-col>
@@ -478,14 +478,14 @@
          <v-dialog v-model="agregarItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>GESTIÓN DE ITEMS</span>
+                    <span>GESTIÓN DE ÍTEMS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM" :counter="60"
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ÍTEM" :counter="60"
                                         :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>   
