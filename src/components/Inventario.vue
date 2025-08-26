@@ -373,7 +373,7 @@
                                     label="MOTIVO"
                                     :rules='motivoRules'
                                     :disabled='movimiento==null'
-                                    
+                                    required
                                     solo
                                     hint="ELIGE UN MOTIVO O ESCRIBE UNO NUEVO"
                                     persistent-hint
@@ -388,8 +388,8 @@
                                         disabled required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null'
+                                <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'  && motivo!=''">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null && motivo!=""'
                                         @click="openItemDispModal()" style="float: right" title="BUSCAR ÍTEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -401,19 +401,29 @@
                                         disabled required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null' 
+                                <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'  && motivo!=''">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null && motivo!=""' 
                                         @click="openAlmacenModal()" style="float: right" title="BUSCAR ALMACÉN">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>  
-                                <v-col cols="12" md="4" v-if="movimiento=='ENTRADA'">
-                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadEntradaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
+                                <v-col cols="12" md="4" v-if="movimiento=='ENTRADA' && motivo=='RECEPCIÓN'">
+                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadEntradaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem=="" && motivo!=""'
                                          @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
-                                </v-col>      
+                                </v-col>   
+                                  <v-col cols="12" md="4" v-if="movimiento=='ENTRADA'  && motivo!='RECEPCIÓN'">
+                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem=="" && motivo!=""'
+                                         @input="cantidad = cantidad.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>         
                                 
                                 
+                                <v-col cols="12" md="6" v-if="movimiento=='ENTRADA' && motivo!='RECEPCIÓN' && motivo!=''">
+                                    <v-text-field v-model="valor" type="number" label="COSTO UNITARIO" :disabled='movimiento==null && motivo=="" && motivo!="RECEPCIÓN"'
+                                        :rules="costoRules" @input="valor = valor.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>
 
 
                              
@@ -424,8 +434,8 @@
                                         disabled required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="1" v-if="movimiento=='SALIDA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null' 
+                                <v-col cols="12" md="1" v-if="movimiento=='SALIDA' && motivo!='' && motivo!=null">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null && motivo!=""' 
                                         @click="openAlmacenConStockModal()" style="float: right" title="BUSCAR ALMACENES CON STOCK">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -437,8 +447,8 @@
                                         disabled required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="1" v-if="movimiento=='SALIDA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreAlmacenRules" :disabled='movimiento==null || nombreAlmacen==""' 
+                                <v-col cols="12" md="1" v-if="movimiento=='SALIDA'  && motivo!=''">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreAlmacenRules" :disabled='movimiento==null || nombreAlmacen=="" && motivo==""' 
                                         @click="openItemAlmacenModal()" style="float: right" title="BUSCAR ÍTEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -448,17 +458,17 @@
 
                                 <v-col cols="12" md="12" v-if="movimiento!=null"">
                                     <v-text-field v-model="lote" label="LOTE O SERIE (SI SE REQUIERE)"
-                                        :rules="loteRules" @input="lote = lote.toUpperCase()" :disabled='nombreItem==null' hint="EJM: 2025-LOTE01"
+                                        :rules="loteRules" @input="lote = lote.toUpperCase()" :disabled='nombreItem=="" && motivo==""' hint="EJM: 2025-LOTE01"
                                          ></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="11" v-if="movimiento!=null">
                                     <v-text-field v-model="referencia" label="REFERENCIA"
-                                        :rules="referenciaRules" @input="referencia = referencia.toUpperCase()" :disabled='nombreItem==null' hint="EJM: FA-3458014 - NUMERO DE FACTURA O GUIA, ETC"
+                                        :rules="referenciaRules" @input="referencia = referencia.toUpperCase()" :disabled='nombreItem=="" && motivo==""' hint="EJM: FA-3458014 - NUMERO DE FACTURA O GUIA, ETC"
                                          required></v-text-field>
                                 </v-col>
                                
                                 <v-col cols="12" md="4" v-if="movimiento=='SALIDA'">
-                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadSalidaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
+                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadSalidaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem=="" && motivo==""'
                                          @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>  
@@ -1085,18 +1095,10 @@
              descripcion:"",
              referencia:"",
              motivo:"",
+        
 
 
-            motivoSugerencias: [
-                'RECEPCIÓN',
-                'AJUSTE DE INVENTARIO',
-                'DEVOLUCIÓN',
-                'TRASLADO INTERNO',
-                'CONTEO CÍCLICO/AUDITORÍA',
-                'DAÑO',
-                'VENCIMIENTO',
-                'REGULARIZACIÓN',
-            ],
+           
 
              lote:" ",
              medida:"",
@@ -1132,13 +1134,22 @@
                (v && v.length <= 60) ||
                  "EL NOMBRE DEL ALMACÉN NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
+
+             cantidadRules: [
+               (v) => !!v || "SE REQUIERE LA CANTIDAD.",
+               (v) => Number(v) >= 0 || "LA CANTIDAD DEBE SER MAYOR A 0."
+             ],
+
+
              cantidadSalidaRules: [
                (v) => !!v || "SE REQUIERE LA CANTIDAD.",
+               (v) => Number(v) >= 0 || "LA CANTIDAD DEBE SER MAYOR A 0.",
                (v) => ( Number(v) >= 1 && Number(v) <= this.cantidadMaximaItem ) || 'EL NÚMERO NO DEBE SOBREPASAR '+ this.cantidadMaximaItem,
              ],
 
              cantidadEntradaRules: [
                (v) => !!v || "SE REQUIERE LA CANTIDAD.",
+               (v) => Number(v) >= 0 || "LA CANTIDAD DEBE SER MAYOR A 0.",
                (v) => ( Number(v) >= 1 && Number(v) <= this.cantidadMaxima ) || 'EL NÚMERO NO DEBE SOBREPASAR '+ this.cantidadMaxima,
              ],
 
@@ -1180,6 +1191,12 @@
                (v) => !!v || "SE REQUIERE EL CORREO ELECTRONICO DEL PROVEEDOR.",
                (v) => /.+@.+\..+/.test(v) || "DEBE SER UN CORREO ELECTRONICO VALIDO.",
               ],
+
+            costoRules: [
+                (v) => !!v || "EL COSTO UNITARIO ES REQUERIDO.",
+                (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO.",
+                (v) => v > 0 || "EL COSTO UNITARIO DEBE SER MAYOR QUE 0.",
+            ],
              datosInventario: [],
              headerInventario: [
                  
@@ -1378,7 +1395,31 @@
              //#endregion
          }
      },
-     created: function (){
+     computed:{
+        motivoSugerencias() {
+            if (this.movimiento === 'ENTRADA') {
+                return [
+                    'RECEPCIÓN COMPRAS',    
+                    'RECEPCIÓN',            
+                    'DEVOLUCIÓN CLIENTE',
+                    'AJUSTE DE INVENTARIO (+)',
+                    'TRASLADO INTERNO (ENTRADA)',
+                    'REGULARIZACIÓN'
+                ];
+            } else {
+                return [
+                    'DEVOLUCIÓN PROVEEDOR',
+                    'AJUSTE DE INVENTARIO (-)',
+                    'TRASLADO INTERNO (SALIDA)',
+                    'CONSUMO / PRODUCCIÓN',
+                    'VENCIMIENTO / DAÑO'
+                ];
+            }
+
+    },  
+    },
+    
+    created: function (){
        this.listarInventario();
        this.listarItem();
        this.listarTipoItem();
@@ -1492,7 +1533,30 @@
             }
             else{*/
                 if (this.$refs.form.validate()) {
-                this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
+                    if (this.motivo != 'RECEPCIÓN') {
+                        this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
+                    }
+                    else{
+                        this.registarRevalorarizacionItem(this.idItem,this.valor).then(() => {
+                            alert(  this.idItem +
+                    "," +
+                    this.idAlmacen +
+                    "," +
+                    this.movimiento +
+                    "," +
+                    this.cantidad +
+                    "," +
+                    this.estado +
+                    "," +
+                    this.referencia +
+                    "," +
+                    this.lote +
+                    "," +
+                    this.motivo)
+                            //this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
+                        });
+                    }
+               
                 }
             //}
         },
@@ -1517,7 +1581,7 @@
                     "," +
                     this.estado +
                     "," +
-                    this.refencia +
+                    this.referencia +
                     "," +
                     this.lote +
                     "," +
@@ -1561,7 +1625,7 @@
                     "," +
                     this.estado +
                     "," +
-                    this.refencia +
+                    this.referencia +
                     "," +
                     this.lote +
                     "," +
@@ -1761,9 +1825,18 @@
              this.listarItemsDisponibles();
          },
          async listarItemsDisponibles() {
+            let response = "";
+            if (this.movimiento == 'ENTRADA') {
+                if(this.motivo == 'RECEPCIÓN'){
+                    response = "/inventario/listaritemdisponibles/";
+                }
+                else{
+                    response = "/inventario/listaritemdisponiblesInventario/";
+                }
+            }
            let me = this;
            await axios
-             .get("/inventario/listaritemdisponibles/")
+             .get(response)
              .then(function (response) {
                if (response.data.resultado == null) {
                  me.datosItemDisponibles = [];
@@ -2496,7 +2569,8 @@
 
 
         limpiar () {
-            this.$refs.form.reset()
+            this.$refs.form.reset();
+            this.motivo='';
         },
 
 

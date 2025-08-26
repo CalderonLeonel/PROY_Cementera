@@ -227,7 +227,7 @@
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-container>
                             <v-row>
-                                <v-col cols="12" md="1">
+                                <v-col cols="12" md="1" v-if="botonactCot != 1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
                                         @click="openProveedorModal()" style="float: right" title="BUSCAR PROVEEDOR">
                                         <v-icon dark> mdi-magnify </v-icon>
