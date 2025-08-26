@@ -1085,18 +1085,10 @@
              descripcion:"",
              referencia:"",
              motivo:"",
+        
 
 
-            motivoSugerencias: [
-                'RECEPCIÓN',
-                'AJUSTE DE INVENTARIO',
-                'DEVOLUCIÓN',
-                'TRASLADO INTERNO',
-                'CONTEO CÍCLICO/AUDITORÍA',
-                'DAÑO',
-                'VENCIMIENTO',
-                'REGULARIZACIÓN',
-            ],
+           
 
              lote:" ",
              medida:"",
@@ -1378,7 +1370,31 @@
              //#endregion
          }
      },
-     created: function (){
+     computed:{
+        motivoSugerencias() {
+            if (this.movimiento === 'ENTRADA') {
+                return [
+                    'RECEPCIÓN COMPRAS',    
+                    'RECEPCIÓN',            
+                    'DEVOLUCIÓN CLIENTE',
+                    'AJUSTE DE INVENTARIO (+)',
+                    'TRASLADO INTERNO (ENTRADA)',
+                    'REGULARIZACIÓN'
+                ];
+            } else {
+                return [
+                    'DEVOLUCIÓN PROVEEDOR',
+                    'AJUSTE DE INVENTARIO (-)',
+                    'TRASLADO INTERNO (SALIDA)',
+                    'CONSUMO / PRODUCCIÓN',
+                    'VENCIMIENTO / DAÑO'
+                ];
+            }
+
+    },  
+    },
+    
+    created: function (){
        this.listarInventario();
        this.listarItem();
        this.listarTipoItem();
@@ -1492,7 +1508,15 @@
             }
             else{*/
                 if (this.$refs.form.validate()) {
-                this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
+                    if (this.motivo == 'RECEPCIÓN') {
+                        this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
+                    }
+                    else{
+                        this.registarRevalorarizacionItem(this.idItem,this.valor).then(() => {
+                            this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
+                        });
+                    }
+               
                 }
             //}
         },
@@ -1761,9 +1785,18 @@
              this.listarItemsDisponibles();
          },
          async listarItemsDisponibles() {
+            let response = "";
+            if (this.movimiento == 'ENTRADA') {
+                if(this.motivo == 'RECEPCIÓN'){
+                    response = "/inventario/listaritemdisponibles/";
+                }
+                else{
+                    response = "/inventario/listaritemdisponiblesInventario/";
+                }
+            }
            let me = this;
            await axios
-             .get("/inventario/listaritemdisponibles/")
+             .get(response)
              .then(function (response) {
                if (response.data.resultado == null) {
                  me.datosItemDisponibles = [];
