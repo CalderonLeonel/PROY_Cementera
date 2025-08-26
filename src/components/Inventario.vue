@@ -373,7 +373,7 @@
                                     label="MOTIVO"
                                     :rules='motivoRules'
                                     :disabled='movimiento==null'
-                                    
+                                    required
                                     solo
                                     hint="ELIGE UN MOTIVO O ESCRIBE UNO NUEVO"
                                     persistent-hint
@@ -388,8 +388,8 @@
                                         disabled required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null'
+                                <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'  && motivo!=''">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null && motivo!=""'
                                         @click="openItemDispModal()" style="float: right" title="BUSCAR ÍTEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -401,8 +401,8 @@
                                         disabled required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null' 
+                                <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'  && motivo!=''">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null && motivo!=""' 
                                         @click="openAlmacenModal()" style="float: right" title="BUSCAR ALMACÉN">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -424,8 +424,8 @@
                                         disabled required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="1" v-if="movimiento=='SALIDA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null' 
+                                <v-col cols="12" md="1" v-if="movimiento=='SALIDA' && motivo!='' && motivo!=null">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null && motivo!=""' 
                                         @click="openAlmacenConStockModal()" style="float: right" title="BUSCAR ALMACENES CON STOCK">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -437,8 +437,8 @@
                                         disabled required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="1" v-if="movimiento=='SALIDA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreAlmacenRules" :disabled='movimiento==null || nombreAlmacen==""' 
+                                <v-col cols="12" md="1" v-if="movimiento=='SALIDA'  && motivo!=''">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreAlmacenRules" :disabled='movimiento==null || nombreAlmacen=="" && motivo!=""' 
                                         @click="openItemAlmacenModal()" style="float: right" title="BUSCAR ÍTEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -1126,11 +1126,13 @@
              ],
              cantidadSalidaRules: [
                (v) => !!v || "SE REQUIERE LA CANTIDAD.",
+               (v) => Number(v) >= 0 || "LA CANTIDAD DEBE SER MAYOR A 0.",
                (v) => ( Number(v) >= 1 && Number(v) <= this.cantidadMaximaItem ) || 'EL NÚMERO NO DEBE SOBREPASAR '+ this.cantidadMaximaItem,
              ],
 
              cantidadEntradaRules: [
                (v) => !!v || "SE REQUIERE LA CANTIDAD.",
+               (v) => Number(v) >= 0 || "LA CANTIDAD DEBE SER MAYOR A 0.",
                (v) => ( Number(v) >= 1 && Number(v) <= this.cantidadMaxima ) || 'EL NÚMERO NO DEBE SOBREPASAR '+ this.cantidadMaxima,
              ],
 
@@ -2529,7 +2531,8 @@
 
 
         limpiar () {
-            this.$refs.form.reset()
+            this.$refs.form.reset();
+            this.motivo='';
         },
 
 
