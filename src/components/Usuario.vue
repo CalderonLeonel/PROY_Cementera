@@ -497,7 +497,7 @@ export default {
             let min = Math.ceil(1000);
             let max = Math.floor(10000);
             this.nombreUsuario = item.nom[0] + item.pat[0] + (Math.floor(Math.random() * (max - min) + min));
-            this.password = Math.floor(Math.random() * (max - min) + min);
+            this.password = (Math.floor(Math.random() * (max - min) + min)) + Math.floor(Math.random() * (max - min) + min);
             console.log(this.nombreUsuario);
             console.log(this.password);
         },
