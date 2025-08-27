@@ -407,20 +407,20 @@
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>  
-                                <v-col cols="12" md="4" v-if="movimiento=='ENTRADA' && motivo=='RECEPCIÓN'">
+                                <v-col cols="12" md="4" v-if="movimiento=='ENTRADA' && motivo.value=='RECEPCIÓN'">
                                     <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadEntradaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem=="" && motivo!=""'
                                          @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>   
-                                  <v-col cols="12" md="4" v-if="movimiento=='ENTRADA'  && motivo!='RECEPCIÓN'">
+                                  <v-col cols="12" md="4" v-if="movimiento=='ENTRADA'  && motivo.value!='RECEPCIÓN'">
                                     <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem=="" && motivo!=""'
                                          @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>         
                                 
                                 
-                                <v-col cols="12" md="6" v-if="movimiento=='ENTRADA' && motivo!='RECEPCIÓN' && motivo!=''">
-                                    <v-text-field v-model="valor" type="number" label="COSTO UNITARIO" :disabled='movimiento==null && motivo=="" && motivo!="RECEPCIÓN"'
+                                <v-col cols="12" md="6" v-if="movimiento=='ENTRADA' && motivo.value!='RECEPCIÓN' && motivo.value!=''">
+                                    <v-text-field v-model="valor" type="number" label="COSTO UNITARIO" :disabled='movimiento==null && motivo=="" && motivo.value!="RECEPCIÓN"'
                                         :rules="costoRules" @input="valor = valor.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -1065,6 +1065,7 @@
 
  import jsPDF from "jspdf";
  import 'jspdf-autotable';
+import Alerta from "./Alerta.vue";
 
  export default {
      data() {
@@ -1093,14 +1094,15 @@
 
              nombreItem:"",
              descripcion:"",
-             referencia:"",
+             referencia:'',
+             cantidad: null,
              motivo:"",
         
 
 
            
 
-             lote:" ",
+             lote:'',
              medida:"",
              estIt:"",
 
@@ -1168,6 +1170,10 @@
             descripcionRules: [
                 (v) => !!v || "SE REQUIERE LA DESCRIPCIÓN.",
                 (v) => (v === null || v.length <= 150) || "LA DESCRIPCIÓN NO DEBE SUPERAR LOS 150 CARACTERES.",
+            ],
+            motivoRules: [
+                (v) => !!v || "EL MOTIVO ES OBLIGATORIO PARA CONTINUAR CON EL FORMULARIO.",
+             
             ],
             referenciaRules: [
                 (v) => !!v || "SE REQUIERE LA REFERENCIA.",
@@ -1398,25 +1404,27 @@
      computed:{
         motivoSugerencias() {
             if (this.movimiento === 'ENTRADA') {
-                return [
-                    'RECEPCIÓN COMPRAS',    
-                    'RECEPCIÓN',            
-                    'DEVOLUCIÓN CLIENTE',
-                    'AJUSTE DE INVENTARIO (+)',
-                    'TRASLADO INTERNO (ENTRADA)',
-                    'REGULARIZACIÓN'
-                ];
-            } else {
-                return [
-                    'DEVOLUCIÓN PROVEEDOR',
-                    'AJUSTE DE INVENTARIO (-)',
-                    'TRASLADO INTERNO (SALIDA)',
-                    'CONSUMO / PRODUCCIÓN',
-                    'VENCIMIENTO / DAÑO'
-                ];
+            return [
+                { text: 'RECEPCIÓN COMPRAS', value: 'RECEPCIÓN COMPRAS' },
+                { text: 'RECEPCIÓN', value: 'RECEPCIÓN' },
+                { text: 'DEVOLUCIÓN CLIENTE', value: 'DEVOLUCIÓN CLIENTE' },
+                { text: 'AJUSTE DE INVENTARIO (+)', value: 'AJUSTE DE INVENTARIO (+)' },
+                { text: 'TRASLADO INTERNO (ENTRADA)', value: 'TRASLADO INTERNO (ENTRADA)' },
+                { text: 'REGULARIZACIÓN', value: 'REGULARIZACIÓN' },
+            ]
             }
-
-    },  
+            if (this.movimiento === 'SALIDA') {
+            return [
+                { text: 'DEVOLUCIÓN PROVEEDOR', value: 'DEVOLUCIÓN PROVEEDOR' },
+                { text: 'AJUSTE DE INVENTARIO (-)', value: 'AJUSTE DE INVENTARIO (-)' },
+                { text: 'TRASLADO INTERNO (SALIDA)', value: 'TRASLADO INTERNO (SALIDA)' },
+                { text: 'CONSUMO / PRODUCCIÓN', value: 'CONSUMO / PRODUCCIÓN' },
+                { text: 'VENCIMIENTO / DAÑO', value: 'VENCIMIENTO / DAÑO' },
+                { text: 'REGULARIZACIÓN', value: 'REGULARIZACIÓN' },
+            ]
+            }
+            return []
+        }
     },
     
     created: function (){
@@ -1524,41 +1532,19 @@
              });
          },
 
-
-         
-
-         registrarInv() {
-           /* if(this.movimiento == 'SALIDA'){
-                this.registrarInventarioSalida(this.idItem, this.movimiento,this.cantidad,this.metodovaluacion, this.estado);
-            }
-            else{*/
-                if (this.$refs.form.validate()) {
-                    if (this.motivo != 'RECEPCIÓN') {
-                        this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
-                    }
-                    else{
-                        this.registarRevalorarizacionItem(this.idItem,this.valor).then(() => {
-                            alert(  this.idItem +
-                    "," +
-                    this.idAlmacen +
-                    "," +
-                    this.movimiento +
-                    "," +
-                    this.cantidad +
-                    "," +
-                    this.estado +
-                    "," +
-                    this.referencia +
-                    "," +
-                    this.lote +
-                    "," +
-                    this.motivo)
-                            //this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
-                        });
-                    }
-               
+        registrarInv() {
+            if (this.$refs.form.validate()) {
+                if (this.motivo.value == 'RECEPCIÓN') {
+                    this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
                 }
-            //}
+                else{
+                    this.registarRevalorarizacionItem(this.idItem, this.valor)
+                    .then(() => {
+                        this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
+                    })
+                }
+               
+            }
         },
         async registrarInventarioEntrada(
             idItem,
@@ -1743,7 +1729,6 @@
                     me.snackbarOK = true;
                     me.closeRevalorizarInventarioModal();
                     me.listaritemactivo();
-                    me.limpiar();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -1827,7 +1812,7 @@
          async listarItemsDisponibles() {
             let response = "";
             if (this.movimiento == 'ENTRADA') {
-                if(this.motivo == 'RECEPCIÓN'){
+                if(this.motivo.value == 'RECEPCIÓN'){
                     response = "/inventario/listaritemdisponibles/";
                 }
                 else{
@@ -2395,7 +2380,6 @@
 
         closeRevalorizarInventarioModal(){
             this.revalorizarInventario = false;
-            this.limpiar();
         },
 
 
