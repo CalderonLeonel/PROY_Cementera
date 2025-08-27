@@ -1685,7 +1685,6 @@
          registrarIt() {
             if (this.$refs.form.validate()) {
             this.generateSKU();
-            alert(this.sku);
             this.registrarItem(this.nombreItem, this.descripcion,this.medida,this.idSubcategoria,this.limitecritico, this.metodoValuacion, this.estado, this.idProveedor,this.costoReferencia, this.fechaVencimiento);
             }
         },
