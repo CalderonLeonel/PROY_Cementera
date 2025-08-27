@@ -1208,8 +1208,15 @@ import Alerta from "./Alerta.vue";
                  
                  { text: "NUMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
                  { text: "ÍTEM", value: "nombreitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombrecategoria", sortable: true },
+                 { text: "SUBCATEGORÍA", value: "nombresubcategoria", sortable: true },
+                 { text: "PROVEEDOR", value: "nombreproveedor", sortable: true },
+                 { text: "CATEGORÍA DE PROVEEDOR", value: "nombrecategoriaproveedor", sortable: true },
                  { text: "ALMACÉN", value: "nombrealmacen", sortable: true },
                  { text: "MOVIMIENTO", value: "movimiento", sortable: true },
+                 { text: "MOTIVO", value: "motivo", sortable: true },
+                 { text: "REFERENCIA", value: "referencia", sortable: true },
+                 { text: "LOTE", value: "lote", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
                  { text: "METODO DE VALUACIÓN", value: "metodoValuacion", sortable: true },
                  //{ text: "ESTADO", value: "estado", sortable: true },
@@ -1569,9 +1576,9 @@ import Alerta from "./Alerta.vue";
                     "," +
                     this.referencia +
                     "," +
-                    this.lote +
+                    this.motivo.value +
                     "," +
-                    this.motivo
+                    this.lote
                 )
                 .then(function (response) {
 
