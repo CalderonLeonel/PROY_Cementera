@@ -97,7 +97,7 @@
                                 <v-col cols="12">
                                     <v-list-item>
                                         <v-list-item-title class="text-center">
-                                            <h5>Cuentas Contables</h5>
+                                            <h5>CUENTAS CONTABLES</h5>
                                         </v-list-item-title>
                                     </v-list-item>
 
