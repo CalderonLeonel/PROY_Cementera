@@ -327,11 +327,7 @@
               <h6>ADQUISICIONES</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'AprobarAdquisicion' }"v-if="checkAccess(9, 'GERENTE')">
-            <v-list-item-title>
-              <h6>REVISAR ADQUISICIONES</h6>
-            </v-list-item-title>
-          </v-list-item>
+      
         </v-list-group>
         
         <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(10, '0') || checkAccess(10, 'GERENTE')">
