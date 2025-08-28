@@ -393,7 +393,7 @@ export default {
         accesosRules: [
             (v) =>
                 (v && v.length <= 200) ||
-                "LA DESCRIPCION DEBE TENER 200 CARACTERES COMO MAXIMO",
+                "LA DESCRIPCIÓN DEBE TENER 200 CARACTERES COMO MAXIMO",
         ],
 
         tipoRules: [
@@ -406,8 +406,8 @@ export default {
             { text: "EMPLEADO", value: "empl" },
             { text: "USUARIO", value: "nom" },
             { text: "ESTADO", value: "act" },
-            { text: "FECHA CREACION", value: "credte", sortable: false },
-            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
+            { text: "FECHA CREACIÓN", value: "credte", sortable: false },
+            { text: "ÚLTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
             { text: "OPTIONS", value: "actions", sortable: false },
         ],
         headersEmpleado: [
@@ -420,7 +420,7 @@ export default {
         headersAcceso: [
             { text: "Nro", value: "idacc", align: "start"},
             //{ text: "MODULO", value: "mod" },
-            { text: "DESCRIPCION", value: "descrip" },
+            { text: "DESCRIPCIÓN", value: "descrip" },
         ],
     }),
     computed: {
