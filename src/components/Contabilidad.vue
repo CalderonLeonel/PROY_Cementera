@@ -72,7 +72,7 @@
                                 <v-divider></v-divider>
 
                                 <v-col cols="12" md="12">
-                                    <v-textarea v-model="descripcion" label="DESCRIPCION" :counter="255"
+                                    <v-textarea v-model="descripcion" label="DESCRIPCIÓN" :counter="255"
                                         :rules="descripcionRules" @input="descripcion = descripcion.toUpperCase()" required
                                         textarea></v-textarea>
                                 </v-col>
@@ -113,7 +113,7 @@
                                         <template #[`item.actions`]="{ item }">
 
                                             <v-icon small class="mr-2" @click="seleccionarCuenta(item)"
-                                                title="ACTUALIZAR INFORMACION">
+                                                title="ACTUALIZAR INFORMACIÓN">
                                                 mdi-text-box-edit-outline
                                             </v-icon>
 
@@ -254,7 +254,7 @@ export default {
             headersCuentas: [
                 { text: "NUM. CUENTA", value: "numcnt", sortable: true },
                 { text: "NOM. CUENTA", value: "nom", sortable: true },
-                { text: "DESCRIPCION", value: "des", sortable: true },
+                { text: "DESCRIPCIÓN", value: "des", sortable: true },
                 { text: "TIPO CUENTA", value: "tipoc", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
                 { text: "OPCIONES", value: "actions", sortable: false },
