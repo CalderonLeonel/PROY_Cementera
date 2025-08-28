@@ -437,12 +437,12 @@
           </v-btn>
         </template>
 
-        <v-card width="380" class="rounded-lg">
+        <v-card width="400" class="rounded-lg">
           <v-card-title class="text-subtitle-1 font-weight-bold">ALERTAS</v-card-title>
           <v-divider />
           <v-list two-line style="max-height: 380px; overflow-y: auto;">
             <v-list-item v-for="(data,i) in datosAlerta" :key="i">
-              <v-list-item-avatar size="48">
+              <v-list-item-avatar size="128">
                 <v-img :src="axios.defaults.baseURL+'documento/descargarImagen/'+data.nombredoc" cover />
               </v-list-item-avatar>
               <v-list-item-content>
@@ -453,7 +453,7 @@
 
             <v-list-item v-if="!datosAlerta || !datosAlerta.length">
               <v-list-item-content>
-                <v-list-item-title class="text-grey--text">No hay notificaciones</v-list-item-title>
+                <v-list-item-title class="text-grey--text">NO SE TIENEN ALERTAS</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
