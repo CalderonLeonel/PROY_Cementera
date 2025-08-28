@@ -130,7 +130,7 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon large class="mr-2" color="#0A628F" @click="showEditUnidad(item)" title="EDITAR INFORMACION">
+                                    <v-icon large class="mr-2" color="#0A628F" @click="showEditUnidad(item)" title="EDITAR INFORMACIÓN">
                                         mdi-pencil
                                     </v-icon>
                                     <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2" color="#0ABF55" @click="activar(item)"
@@ -215,7 +215,7 @@ export default {
 
         headersUnidad: [
             { text: "UNIDAD", value: "unid" },
-            { text: "FECHA CREACION", value: "credte" },
+            { text: "FECHA CREACIÓN", value: "credte" },
             { text: "ULTIMA ACTUALIZACIÓN", value: "upddte" },
             { text: "ESTADO", value: "act" },
             { text: "OPCIONES", value: "actions", sortable: false },

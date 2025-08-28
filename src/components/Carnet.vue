@@ -123,7 +123,7 @@
         <v-card class="white--text" color="grey lighten-4" max-width="150%">
     <v-list-item>
         <v-list-item-title>
-            <h5>FOTOGRAFIA</h5>
+            <h5>FOTOGRAFÍA</h5>
         </v-list-item-title>
     </v-list-item>
 

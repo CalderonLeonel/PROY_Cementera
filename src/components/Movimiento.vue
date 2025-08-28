@@ -57,7 +57,7 @@
         <v-dialog v-model="fabricasModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE FABRICAS:</span><br>
+                    <span>LISTA DE FÁBRICAS:</span><br>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -66,13 +66,13 @@
                                 <v-col cols="12">
                                     <v-list-item>
                                         <v-list-item-title class="text-center">
-                                            <h5>FABRICAS</h5>
+                                            <h5>FÁBRICAS</h5>
                                         </v-list-item-title>
                                     </v-list-item>
 
                                     <v-card-title>
                                         <v-text-field v-model="searchFabricas" append-icon="mdi-magnify"
-                                            label="BUSCAR PRODUCTOS" single-line hide-details></v-text-field>
+                                            label="BUSCAR FÁBRICAS" single-line hide-details></v-text-field>
                                     </v-card-title>
 
                                     <v-data-table :headers="headersFabricas" :items="datosFabricas"
@@ -182,7 +182,7 @@
 
                                                                 <v-col cols="12" md="4">
                                                                     <v-text-field v-model="codigoMovimiento"
-                                                                        label="CODIGO MOVIMIENTO" :counter="100"
+                                                                        label="CÓDIGO MOVIMIENTO" :counter="100"
                                                                         :rules="codigoMovimientoRules"
                                                                         @input="codigoMovimiento = codigoMovimiento.toUpperCase()"
                                                                         required></v-text-field>
@@ -205,7 +205,7 @@
                                                             
                                                                 <v-col cols="12" md="4">
                                                                     <v-text-field v-model="nombreFabrica"
-                                                                        label="FABRICA" :counter="100"
+                                                                        label="FÁBRICA" :counter="100"
                                                                         :rules="nombreFabricaRules"
                                                                         @input="nombreFabrica = nombreFabrica.toUpperCase()"
                                                                         required disabled></v-text-field>
@@ -213,7 +213,7 @@
                                                                
                                                                 <v-col cols="12" md="3">
                                                                     <v-text-field v-model="nombreAlmacen"
-                                                                        label="ALMACEN" :counter="100"
+                                                                        label="ALMACÉN" :counter="100"
                                                                         :rules="nombreAlmacenRules"
                                                                         @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
                                                                         required disabled></v-text-field>
@@ -280,7 +280,7 @@
         <v-dialog v-model="infoMovimientoModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>INFORMACION DEL MOVIMIENTO:</span><br>
+                    <span>INFORMACIÓN DEL MOVIMIENTO:</span><br>
                     <span>{{ codigoMovimiento }}</span>
                 </v-card-title>
                 <v-card-text>
@@ -298,7 +298,7 @@
 
                                 <v-col cols="12" md="2"></v-col>
                                 <v-col cols="12" md="8">
-                                    <v-text-field v-model="codigoMovimiento" label="CODIGO Movimiento" :counter="100"
+                                    <v-text-field v-model="codigoMovimiento" label="CÓDIGO MOVIMIENTO" :counter="100"
                                         :rules="codigoMovimientoRules"
                                         @input="codigoMovimiento = codigoMovimiento.toUpperCase()"
                                         disabled></v-text-field>
@@ -327,7 +327,7 @@
 
         <div>
             <v-alert dense color="cyan" style="color: #ffffff">
-                <h5>MOVIMIENTOS DE PRODUCCION</h5>
+                <h5>MOVIMIENTOS DE PRODUCCIÓN</h5>
             </v-alert>
         </div>
         <div>
@@ -399,12 +399,12 @@
                                                                 </v-icon>
                                                                 <v-icon class="mx-2" large color="#0A62BF"
                                                                     @click="showEditMovimientoModal(item)"
-                                                                    title="ACTUALIZAR INFORMACION">
+                                                                    title="ACTUALIZAR INFORMACIÓN">
                                                                     mdi-pencil
                                                                 </v-icon>
                                                                 <v-icon class="mx-2" large color="#0A62BF"
                                                                     @click="showInfoMovimiento(item)"
-                                                                    title="VER INFORMACION">
+                                                                    title="VER INFORMACIÓN">
                                                                     mdi-eye
                                                                 </v-icon>
                                                             </template>
@@ -425,7 +425,7 @@
 
                                                                 <v-col cols="12" md="4">
                                                                     <v-text-field v-model="codigoMovimiento"
-                                                                        label="CODIGO MOVIMIENTO" :counter="100"
+                                                                        label="CÓDIGO MOVIMIENTO" :counter="100"
                                                                         :rules="codigoMovimientoRules"
                                                                         @input="codigoMovimiento = codigoMovimiento.toUpperCase()"
                                                                         required></v-text-field>
@@ -454,13 +454,13 @@
                                                                 <v-col cols="12" md="1">
                                                                     <v-btn class="mx-2" fab dark x-small color="cyan"
                                                                          @click="showFabricas()"
-                                                                        style="float: right" title="BUSCAR FABRICAS">
+                                                                        style="float: right" title="BUSCAR FÁBRICAS">
                                                                         <v-icon dark> mdi-magnify </v-icon>
                                                                     </v-btn>
                                                                 </v-col>
                                                                 <v-col cols="12" md="4">
                                                                     <v-text-field v-model="nombreFabrica"
-                                                                        label="FABRICA" :counter="100"
+                                                                        label="FÁBRICA" :counter="100"
                                                                         :rules="nombreFabricaRules"
                                                                         @input="nombreFabrica = nombreFabrica.toUpperCase()"
                                                                         required disabled></v-text-field>
@@ -474,7 +474,7 @@
                                                                 </v-col>
                                                                 <v-col cols="12" md="3">
                                                                     <v-text-field v-model="nombreAlmacen"
-                                                                        label="ALMACEN" :counter="100"
+                                                                        label="ALMACÉN" :counter="100"
                                                                         :rules="nombreAlmacenRules"
                                                                         @input="nombreAlmacen = nombreAlmacen.toUpperCase()"
                                                                         required disabled></v-text-field>
@@ -577,7 +577,7 @@ export default {
             cantidadMovimiento: "",
             datosMovimientos: [],
             headersMovimientos: [
-                { text: "CODIGO MOVIMIENTO", value: "codmov", sortable: false },
+                { text: "CÓDIGO MOVIMIENTO", value: "codmov", sortable: false },
                 { text: "MOVIMIENTO", value: "nommov", sortable: false },
                 { text: "ORIGEN", value: "nomfab", sortable: false },
                 { text: "DESTINO", value: "nomalm", sortable: false },
@@ -595,14 +595,14 @@ export default {
             datosProducto: [],
             headersProducto: [
                 { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
-                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
+                { text: "CÓDIGO DE PRODUCTO", value: "codprod", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
             datosProductoInh: [],
             headersProductoInh: [
                 { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
-                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
+                { text: "CÓDIGO DE PRODUCTO", value: "codprod", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -621,8 +621,8 @@ export default {
             ciudad: "",
             datosFabricas: [],
             headersFabricas: [
-                { text: "NOMBRE FABRICA", value: "nomfab", sortable: false },
-                { text: "CODIGO FABRICA", value: "codfab", sortable: false },
+                { text: "NOMBRE FÁBRICA", value: "nomfab", sortable: false },
+                { text: "CÓDIGO FÁBRICA", value: "codfab", sortable: false },
                 { text: "CIUDAD", value: "nomciu", sortable: false },
                 { text: "DEPARTAMENTO", value: "nomdep", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },

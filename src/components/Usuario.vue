@@ -393,7 +393,7 @@ export default {
         accesosRules: [
             (v) =>
                 (v && v.length <= 200) ||
-                "LA DESCRIPCION DEBE TENER 200 CARACTERES COMO MAXIMO",
+                "LA DESCRIPCIÓN DEBE TENER 200 CARACTERES COMO MAXIMO",
         ],
 
         tipoRules: [
@@ -406,9 +406,9 @@ export default {
             { text: "EMPLEADO", value: "empl" },
             { text: "USUARIO", value: "nom" },
             { text: "ESTADO", value: "act" },
-            { text: "FECHA CREACION", value: "credte", sortable: false },
-            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
-            { text: "OPTIONS", value: "actions", sortable: false },
+            { text: "FECHA CREACIÓN", value: "credte", sortable: false },
+            { text: "ÚLTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
+            { text: "OPCIONES", value: "actions", sortable: false },
         ],
         headersEmpleado: [
             { text: "NOMBRES", value: "nom" },
@@ -420,7 +420,7 @@ export default {
         headersAcceso: [
             { text: "Nro", value: "idacc", align: "start"},
             //{ text: "MODULO", value: "mod" },
-            { text: "DESCRIPCION", value: "descrip" },
+            { text: "DESCRIPCIÓN", value: "descrip" },
         ],
     }),
     computed: {
@@ -496,10 +496,24 @@ export default {
         generarDatosUsuario(item) {
             let min = Math.ceil(1000);
             let max = Math.floor(10000);
-            let min2 = Math.ceil(10000000);
-            let max2 = Math.floor(100000000);
+
+            const letters  = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            const numbers = "0123456789";
             this.nombreUsuario = item.nom[0] + item.pat[0] + (Math.floor(Math.random() * (max - min) + min));
-            this.password = (Math.floor(Math.random() * (max2 - min2) + min2));
+
+
+            let pass = ""
+            //10 caracteres entre letras y numeros
+            const complement = letters  + numbers;
+            for (let i = 0; i < 8; i++) {
+                pass += complement.charAt(Math.floor(Math.random() * complement.length));
+            }
+
+            //Contraseña aleatoria
+            this.password = pass.split('').sort(() => Math.random() - 0.5).join('');
+
+
+
             console.log(this.nombreUsuario);
             console.log(this.password);
         },

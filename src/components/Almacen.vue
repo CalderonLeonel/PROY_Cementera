@@ -379,7 +379,7 @@ export default {
                 (v) => !!v || "SE REQUIERE EL NOMBRE DEL ALMACÉN.",
                 (v) =>
                     (v && v.length <= 60) ||
-                    "EL NOMBRE DEL ALMACEN NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+                    "EL NOMBRE DEL ALMACÉN NO DEBE SOBREPASAR LOS 60 CARACTERES.",
             ],
 
             descripcionRules: [
@@ -424,7 +424,7 @@ export default {
                 { text: "NOMBRE DE ALMACÉN", value: "nombrealmacen", sortable: true },
                 { text: "DESCRIPCIÓN DE ALMACÉN", value: "descripcion", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
@@ -434,7 +434,7 @@ export default {
                 { text: "NOMBRE DE SECCION", value: "nombreseccion", sortable: true },
                 { text: "ALMACÉN", value: "nombrealmacen", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
@@ -444,13 +444,13 @@ export default {
                 { text: "NOMBRE DE STAND", value: "nombrestand", sortable: true },
                 { text: "SECCION", value: "nombreseccion", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
             headerAlmacenamiento: [
                 //{ text: "NOMBRE DE PROVEEDOR", value: "idprv", sortable: true },
-                { text: "ITEM", value: "nombreitem", sortable: true },
+                { text: "ÍTEM", value: "nombreitem", sortable: true },
                 { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                 { text: "CATEGORÍA", value: "categoria", sortable: true },
                 { text: "MEDIDA", value: "medida", sortable: true },

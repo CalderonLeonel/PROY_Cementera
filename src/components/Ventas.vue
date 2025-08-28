@@ -138,7 +138,7 @@
                         <v-col cols="12">
                             <v-list-item>
                                 <v-list-item-title class="text-center">
-                                    <h5>Lista de Productos</h5>
+                                    <h5>LISTA DE PRODUCTOS</h5>
                                 </v-list-item-title>
                             </v-list-item>
 
@@ -170,7 +170,7 @@
                         <v-col cols="12">
                             <v-list-item>
                                 <v-list-item-title class="text-center">
-                                    <h5>Detalle Venta</h5>
+                                    <h5>DETALLE VENTA</h5>
                                 </v-list-item-title>
                             </v-list-item>
                         </v-col>
@@ -290,7 +290,7 @@ export default {
                 { text: "MATERNO", value: "mat", sortable: true },
                 { text: "NIT", value: "nitcli", sortable: true },
                 { text: "CELULAR", value: "cel", sortable: true },
-                { text: "TELEFONO", value: "tel", sortable: true },
+                { text: "TELÉFONO", value: "tel", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -304,14 +304,14 @@ export default {
             datosProductos: [],
             headersProductos: [
                 { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
-                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
+                { text: "CÓDIGO DE PRODUCTO", value: "codprod", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
             datosProductoInh: [],
             headersProductoInh: [
                 { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
-                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
+                { text: "CÓDIGO DE PRODUCTO", value: "codprod", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -326,7 +326,7 @@ export default {
             totalVenta: 0,
             datosCarrito: [],
             headersCarrito: [
-                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
+                { text: "CÓDIGO DE PRODUCTO", value: "codprod", sortable: false },
                 { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
                 { text: "CANTIDAD", value: "cant", sortable: false },
                 { text: "PRECIO UNITARIO", value: "precuni", sortable: false },

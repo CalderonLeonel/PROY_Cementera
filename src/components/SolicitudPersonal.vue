@@ -144,7 +144,7 @@
                                             mdi-close-octagon
                                         </v-icon>
                                         <v-icon v-if="item.act == 'PENDIENTE' && user.tipo == 'COMUN'" large class="mr-2" color="#0A628F" @click="showEditSolicitud(item)"
-                                            title="EDITAR INFORMACION">
+                                            title="EDITAR INFORMACIÓN">
                                             mdi-pencil
                                         </v-icon>
                                         <v-icon v-if="item.act != 'PENDIENTE'" large color="#BF120A" class="mr-2" @click="deleteSolicitudPersonal(item)"
@@ -232,8 +232,8 @@ export default {
         headersSolicitud: [
             { text: "SOLICITUD", value: "pues" },
             { text: "REQUERIMIENTOS", value: "des", sortable: false },
-            { text: "FECHA CREACION", value: "credte" },
-            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte" },
+            { text: "FECHA CREACIÓN", value: "credte" },
+            { text: "ÚLTIMA ACTUALIZACIÓN", value: "upddte" },
             { text: "ESTADO", value: "act", sortable: false },
             { text: "OPCIONES", value: "actions", sortable: false },
         ],

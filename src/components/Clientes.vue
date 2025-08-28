@@ -45,7 +45,7 @@
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="telefono" label="TELEFONO CLIENTE" :counter="100"
+                                    <v-text-field v-model="telefono" label="TELÉFONO CLIENTE" :counter="100"
                                         :rules="telefonoRules" @input="telefono = telefono.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -139,7 +139,7 @@
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field disabled v-model="telefono" label="TELEFONO CLIENTE" :counter="100"
+                                    <v-text-field disabled v-model="telefono" label="TELÉFONO CLIENTE" :counter="100"
                                         :rules="telefonoRules" @input="telefono = telefono.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -209,7 +209,7 @@
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="telefono" label="TELEFONO CLIENTE" :counter="100"
+                                    <v-text-field v-model="telefono" label="TELÉFONO CLIENTE" :counter="100"
                                         :rules="telefonoRules" @input="telefono = telefono.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -268,13 +268,13 @@
                                 <v-col cols="12">
                                     <v-list-item>
                                         <v-list-item-title class="text-center">
-                                            <h5>ClienteS</h5>
+                                            <h5>CLIENTES</h5>
                                         </v-list-item-title>
                                     </v-list-item>
 
                                     <v-card-title>
                                         <v-text-field v-model="buscarClientes" append-icon="mdi-magnify"
-                                            label="BUSCAR ClienteS" single-line hide-details></v-text-field>
+                                            label="BUSCAR CLIENTES" single-line hide-details></v-text-field>
                                     </v-card-title>
                                     <v-data-table :headers="headersClientesInh" :items="datosClientesInh"
                                         :search="buscarClientes" :items-per-page="5" class="elevation-1" id="tableId">
@@ -401,23 +401,23 @@ export default {
             telefono: "",
             datosClientes: [],
             headersClientes: [
-                { text: "NOMBRES CLIENTE", value: "nom", sortable: true },
+                { text: "NOMBRES", value: "nom", sortable: true },
                 { text: "PATERNO", value: "pat", sortable: true },
                 { text: "MATERNO", value: "mat", sortable: true },
                 { text: "NIT", value: "nitcli", sortable: true },
                 { text: "CELULAR", value: "cel", sortable: true },
-                { text: "TELEFONO", value: "tel", sortable: true },
+                { text: "TELÉFONO", value: "tel", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
             datosClientesInh: [],
             headersClientesInh: [
-                { text: "NOMBRES CLIENTE", value: "nom", sortable: true },
+                { text: "NOMBRES", value: "nom", sortable: true },
                 { text: "PATERNO", value: "pat", sortable: true },
                 { text: "MATERNO", value: "mat", sortable: true },
                 { text: "NIT", value: "nitcli", sortable: true },
                 { text: "CELULAR", value: "cel", sortable: true },
-                { text: "TELEFONO", value: "tel", sortable: true },
+                { text: "TELÉFONO", value: "tel", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],

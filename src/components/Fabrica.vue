@@ -3,7 +3,7 @@
         <v-dialog v-model="agregarFabricaModal" max-width="900px" lazy-validation>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>AGREGAR FABRICA</span>
+                    <span>AGREGAR FÁBRICA</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -33,7 +33,7 @@
         <v-dialog v-model="editarFabricaModal" persistent max-width="900px" lazy-validation>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>EDITAR FABRICA</span>
+                    <span>EDITAR FÁBRICA</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -41,25 +41,25 @@
                             <v-row>
                                 <v-col cols="12" md="1"></v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="nombreFabrica" label="NOMBRE FABRICA" :counter="100"
+                                    <v-text-field v-model="nombreFabrica" label="NOMBRE FÁBRICA" :counter="100"
                                         :rules="nombreFabricaRules" @input="nombreFabrica = nombreFabrica.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1"></v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="codigoFabrica" label="CODIGO FABRICA" :counter="100"
+                                    <v-text-field v-model="codigoFabrica" label="CÓDIGO FÁBRICA" :counter="100"
                                         :rules="codigoFabricaRules" @input="codigoFabrica = codigoFabrica.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" @click="showPaises()"
-                                        style="float: right" title="BUSCAR PAISES">
+                                        style="float: right" title="BUSCAR PAÍSES">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="pais" label="NOMBRE PAIS" :counter="50" :rules="paisRules"
+                                    <v-text-field v-model="pais" label="NOMBRE PAÍS" :counter="50" :rules="paisRules"
                                         @input="pais = pais.toUpperCase()" disabled required></v-text-field>
                                 </v-col>
 
@@ -88,7 +88,7 @@
                                 <v-col cols="12" md="5"></v-col>
 
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="direccionFabrica" label="DIRECCION FABRICA" :counter="100"
+                                    <v-text-field v-model="direccionFabrica" label="DIRECCIÓN FÁBRICA" :counter="100"
                                         :rules="codigoFabricaRules" @input="codigoFabrica = codigoFabrica.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -103,11 +103,11 @@
                                         </v-toolbar-title>
                                         <v-btn icon large v-if="botonact == 1" color="#0A62BF" @click="editarFabricas()"
                                             class="mx-2" fab dark x-small style="float: left"
-                                            title="ACTUALIZAR FABRICA">
+                                            title="ACTUALIZAR FÁBRICA">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
                                         <v-btn icon large v-if="botonact == 0" color="#0ABF55" @click="registroFabrica()"
-                                            class="mx-2" fab dark x-small style="float: left" title="REGISTRAR FABRICA">
+                                            class="mx-2" fab dark x-small style="float: left" title="REGISTRAR FÁBRICA">
                                             <v-icon dark> mdi-content-save-plus-outline </v-icon>
                                         </v-btn>
                                         <v-btn icon large @click="limpiar()" color="#BF120A" style="float: left" class="mx-2" fab
@@ -138,7 +138,7 @@
         <v-dialog v-model="infoFabricaModal" persistent max-width="900px" lazy-validation>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>INFORMACION DE LA FABRICA</span>
+                    <span>INFORMACIÓN DE LA FÁBRICA</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -146,13 +146,13 @@
                             <v-row>
                                 <v-col cols="12" md="1"></v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="nombreFabrica" disabled label="NOMBRE FABRICA" :counter="100"
+                                    <v-text-field v-model="nombreFabrica" disabled label="NOMBRE FÁBRICA" :counter="100"
                                         :rules="nombreFabricaRules" @input="nombreFabrica = nombreFabrica.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1"></v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="codigoFabrica" disabled label="CODIGO FABRICA" :counter="100"
+                                    <v-text-field v-model="codigoFabrica" disabled label="CÓDIGO FÁBRICA" :counter="100"
                                         :rules="codigoFabricaRules" @input="codigoFabrica = codigoFabrica.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -169,7 +169,7 @@
                                     
                                 </v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="pais" label="NOMBRE PAIS" :counter="50"
+                                    <v-text-field v-model="pais" label="NOMBRE PAÍS" :counter="50"
                                         @input="pais = pais.toUpperCase()" disabled required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
@@ -186,7 +186,7 @@
                                     
                                 </v-col>
                                 <v-col cols="12" md="11">
-                                    <v-text-field v-model="direccionFabrica" disabled label="DIRECCION FABRICA" :counter="100"
+                                    <v-text-field v-model="direccionFabrica" disabled label="DIRECCIÓN FÁBRICA" :counter="100"
                                         :rules="direccionRules"
                                         @input="direccionFabrica = direccionFabrica.toUpperCase()"
                                         required></v-text-field>
@@ -213,7 +213,7 @@
         <v-dialog v-model="paisesModal" max-width="900px" lazy-validation persistent>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>PAISES</span>
+                    <span>PAÍSES</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -222,13 +222,13 @@
                                 <v-col cols="12">
                                     <v-list-item>
                                         <v-list-item-title class="text-center">
-                                            <h5>PAISES</h5>
+                                            <h5>PAÍSES</h5>
                                         </v-list-item-title>
                                     </v-list-item>
                                     <v-col cols="12">
                                         <v-card-title>
                                             <v-text-field v-model="buscarPaises" append-icon="mdi-magnify"
-                                                label="BUSCAR PAISES" single-line hide-details></v-text-field>
+                                                label="BUSCAR PAÍSES" single-line hide-details></v-text-field>
                                         </v-card-title>
                                     </v-col>
                                     <v-data-table :headers="headersPais" :items="datosPais" :search="buscarPaises"
@@ -236,7 +236,7 @@
 
                                         <template #[`item.actions`]="{ item }">
                                             <v-icon large class="mr-2" @click="seleccionarPais(item)" color="#0091EA"
-                                                title="SELECCIONAR PAIS">
+                                                title="SELECCIONAR PAÍS">
                                                 mdi-check-circle
                                             </v-icon>
                                         </template>
@@ -412,7 +412,7 @@
         <v-dialog v-model="fabricasInhabilitadosModal" max-width="800px" lazy-validation>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>FABRICAS INACTIVAS</span><br>
+                    <span>FÁBRICAS INACTIVAS</span><br>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -440,7 +440,7 @@
 
         <div>
             <v-alert dense color="cyan" style="color: #ffffff">
-                <h5>FABRICAS</h5>
+                <h5>FÁBRICA</h5>
             </v-alert>
         </div>
         <div>
@@ -478,7 +478,7 @@
                                 <v-tab-item v-if="flag == 1">
                                     <v-card elevation="5" outlined shaped>
                                         <v-card-title>
-                                            <span>AGREGAR FABRICA</span>
+                                            <span>AGREGAR FÁBRICA</span>
                                         </v-card-title>
                                         <v-card-text>
                                             <v-form ref="form" v-model="valid" lazy-validation>
@@ -486,14 +486,14 @@
                                                     <v-row>
                                                         <v-col cols="12" md="1"></v-col>
                                                         <v-col cols="12" md="5">
-                                                            <v-text-field v-model="nombreFabrica" label="NOMBRE FABRICA"
+                                                            <v-text-field v-model="nombreFabrica" label="NOMBRE FÁBRICA"
                                                                 :counter="100" :rules="nombreFabricaRules"
                                                                 @input="nombreFabrica = nombreFabrica.toUpperCase()"
                                                                 required></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" md="1"></v-col>
                                                         <v-col cols="12" md="5">
-                                                            <v-text-field v-model="codigoFabrica" label="CODIGO FABRICA"
+                                                            <v-text-field v-model="codigoFabrica" label="CÓDIGO FÁBRICA"
                                                                 :counter="100" :rules="codigoFabricaRules"
                                                                 @input="codigoFabrica = codigoFabrica.toUpperCase()"
                                                                 required></v-text-field>
@@ -502,12 +502,12 @@
                                                         <v-col cols="12" md="1">
                                                             <v-btn class="mx-2" fab dark x-small color="cyan"
                                                                 @click="showPaises()" style="float: right"
-                                                                title="BUSCAR PAISES">
+                                                                title="BUSCAR PAÍSES">
                                                                 <v-icon dark> mdi-magnify </v-icon>
                                                             </v-btn>
                                                         </v-col>
                                                         <v-col cols="12" md="5">
-                                                            <v-text-field v-model="pais" label="NOMBRE PAIS"
+                                                            <v-text-field v-model="pais" label="NOMBRE PAÍS"
                                                                 :counter="50" :rules="nombrePaisRules"
                                                                 @input="nombrePais = nombrePais.toUpperCase()"
                                                                 disabled required></v-text-field>
@@ -543,7 +543,7 @@
 
                                                         <v-col cols="12" md="12">
                                                             <v-text-field v-model="direccionFabrica"
-                                                                label="DIRECCION FABRICA" :counter="100"
+                                                                label="DIRECCIÓN FÁBRICA" :counter="100"
                                                                 :rules="codigoFabricaRules"
                                                                 @input="codigoFabrica = codigoFabrica.toUpperCase()"
                                                                 required></v-text-field>
@@ -559,12 +559,12 @@
                                                                 </v-toolbar-title>
                                                                 <v-btn icon v-if="botonact == 1" color="#0A62BF"
                                                                     @click="editarFabricas()" class="mx-2" fab dark
-                                                                    style="float: left" title="ACTUALIZAR FABRICA">
+                                                                    style="float: left" title="ACTUALIZAR FÁBRICA">
                                                                     <v-icon dark> mdi-pencil </v-icon>
                                                                 </v-btn>
                                                                 <v-btn icon v-if="botonact == 0" color="#0ABF55"
                                                                     @click="registroFabrica()" class="mx-2" fab dark
-                                                                    style="float: left" title="REGISTRAR FABRICA">
+                                                                    style="float: left" title="REGISTRAR FÁBRICA">
                                                                     <v-icon dark> mdi-content-save-plus-outline
                                                                     </v-icon>
                                                                 </v-btn>
@@ -585,7 +585,7 @@
                                 <v-tab-item v-if="flag == 1">
                                     <v-card elevation="5" outlined shaped>
                                         <v-card-title>
-                                            <span>LISTA DE FABRICAS</span>
+                                            <span>LISTA DE FÁBRICAS</span>
                                         </v-card-title>
                                         <v-card-text>
                                             <v-form ref="form" v-model="valid" lazy-validation>
@@ -600,7 +600,7 @@
 
                                                             <v-card-title>
                                                                 <v-text-field v-model="buscarFabricas"
-                                                                    append-icon="mdi-magnify" label="BUSCAR FABRICA"
+                                                                    append-icon="mdi-magnify" label="BUSCAR FÁBRICA"
                                                                     single-line hide-details></v-text-field>
                                                             </v-card-title>
 
@@ -629,7 +629,7 @@
                                                                     </v-icon>
                                                                     <v-icon class="mx-2" large color="#0A62BF"
                                                                         @click="showEditFabricaModal(item)"
-                                                                        title="ACTUALIZAR INFORMACION">
+                                                                        title="ACTUALIZAR INFORMACIÓN">
                                                                         mdi-pencil
                                                                     </v-icon>
                                                                     <!--
@@ -653,7 +653,7 @@
                                 <v-tab-item v-if="flag == 1">
                                     <v-card elevation="5" outlined shaped>
                                         <v-card-title>
-                                            <span>LISTA DE FABRICAS INHABILITADAS</span>
+                                            <span>LISTA DE FÁBRICAS INHABILITADAS</span>
                                         </v-card-title>
                                         <v-card-text>
                                             <v-form ref="form" v-model="valid" lazy-validation>
@@ -662,13 +662,13 @@
                                                         <v-col cols="12">
                                                             <v-list-item>
                                                                 <v-list-item-title class="text-center">
-                                                                    <h5>FABRICAS</h5>
+                                                                    <h5>FÁBRICA</h5>
                                                                 </v-list-item-title>
                                                             </v-list-item>
 
                                                             <v-card-title>
                                                                 <v-text-field v-model="buscarFabricas"
-                                                                    append-icon="mdi-magnify" label="BUSCAR FABRICAS"
+                                                                    append-icon="mdi-magnify" label="BUSCAR FÁBRICA"
                                                                     single-line hide-details></v-text-field>
                                                             </v-card-title>
                                                             <v-data-table :headers="headersFabricasInh"
@@ -685,17 +685,17 @@
                                                                 <template #[`item.actions`]="{ item }">
                                                                     <v-icon v-if="item.est == 'INACTIVO'" color="green"
                                                                         large class="mr-2" @click="activar(item)"
-                                                                        title="ACTIVAR FABRICA">
+                                                                        title="ACTIVAR FÁBRICA">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
                                                                     <v-icon v-if="item.est == 'ACTIVO'" color="red"
                                                                         large class="mr-2" @click="desactivar(item)"
-                                                                        title="DESACTIVAR FABRICA">
+                                                                        title="DESACTIVAR FÁBRICA">
                                                                         mdi-cancel
                                                                     </v-icon>
                                                                     <v-icon large class="mr-2" color="#0A62BF"
                                                                         @click="showInfoFabrica(item)"
-                                                                        title="VER INFORMACION">
+                                                                        title="VER INFORMACIÓN">
                                                                         mdi-eye
                                                                     </v-icon>
                                                                 </template>
@@ -774,20 +774,20 @@ export default {
             botonAct: "",
             datosFabricas: [],
             headersFabricas: [
-                { text: "NOMBRE FABRICA", value: "nomfab", sortable: false },
-                { text: "CODIGO FABRICA", value: "codfab", sortable: false },
+                { text: "NOMBRE FÁBRICA", value: "nomfab", sortable: false },
+                { text: "CÓDIGO FÁBRICA", value: "codfab", sortable: false },
                 { text: "CIUDAD", value: "nomciu", sortable: false },
-                { text: "PAIS", value: "nompai", sortable: false },
+                { text: "PAÍS", value: "nompai", sortable: false },
                 { text: "UNIDAD", value: "nomuni", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
             datosFabricasInh: [],
             headersFabricasInh: [
-                { text: "NOMBRE FABRICA", value: "nomfab", sortable: false },
-                { text: "CODIGO FABRICA", value: "codfab", sortable: false },
+                { text: "NOMBRE FÁBRICA", value: "nomfab", sortable: false },
+                { text: "CÓDIGO FÁBRICA", value: "codfab", sortable: false },
                 { text: "CIUDAD", value: "nomciu", sortable: false },
-                { text: "PAIS", value: "nompai", sortable: false },
+                { text: "PAÍS", value: "nompai", sortable: false },
                 { text: "UNIDAD", value: "nomuni", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
@@ -808,28 +808,28 @@ export default {
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
             nombreFabricaRules: [
-                (v) => !!v || "NOMBRE DE LA FABRICA ES REQUERIDO",
+                (v) => !!v || "NOMBRE DE LA FÁBRICA ES REQUERIDO",
                 (v) =>
                     (v && v.length <= 50) ||
-                    "EL NOMBRE DE LA FABRICA DEBE TENER 100 CARACTERES COMO MAXIMO",
+                    "EL NOMBRE DE LA FÁBRICA DEBE TENER 100 CARACTERES COMO MAXIMO",
             ],
             codigoFabricaRules: [
-                (v) => !!v || "CODIGO DE LA FABRICA ES REQUERIDO",
+                (v) => !!v || "CÓDIGO DE LA FÁBRICA ES REQUERIDO",
                 (v) =>
                     (v && v.length <= 50) ||
-                    "EL CODIGO DE LA FABRICA DEBE TENER 25 CARACTERES COMO MAXIMO",
+                    "EL CÓDIGO DE LA FÁBRICA DEBE TENER 25 CARACTERES COMO MAXIMO",
             ],
             paisRules: [
-                (v) => !!v || "PAIS ES REQUERIDO",
+                (v) => !!v || "PAÍS ES REQUERIDO",
             ],
             nombreCiudadRules: [
-                (v) => !!v || "CODIGO DE LA FABRICA ES REQUERIDO",
+                (v) => !!v || "CÓDIGO DE LA FÁBRICA ES REQUERIDO",
             ],
             direccionRules: [
-                (v) => !!v || "DIRECCION DE LA FABRICA ES REQUERIDO",
+                (v) => !!v || "DIRECCIÓN DE LA FÁBRICA ES REQUERIDO",
                 (v) =>
                     (v && v.length <= 50) ||
-                    "LA DIRECCION DE LA FABRICA DEBE TENER 250 CARACTERES COMO MAXIMO",
+                    "LA DIRECCIÓN DE LA FÁBRICA DEBE TENER 250 CARACTERES COMO MAXIMO",
             ],
 
             //#endregion

@@ -4,7 +4,7 @@
         <v-dialog v-model="infoLineaModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>INFORMACION DE LA LINEA:</span><br>
+                    <span>INFORMACIÓN DE LA LÍNEA:</span><br>
                     <span>{{ nombreLinea }}</span>
                 </v-card-title>
                 <v-card-text>
@@ -13,7 +13,7 @@
                             <v-row>
                                 <v-col cols="12" md="2"></v-col>
                                 <v-col cols="12" md="8">
-                                    <v-text-field v-model="nombreLinea" label="NOMBRE LINEA" :counter="100"
+                                    <v-text-field v-model="nombreLinea" label="NOMBRE LÍNEA" :counter="100"
                                         :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()"
                                         disabled></v-text-field>
                                 </v-col>
@@ -21,7 +21,7 @@
 
                                 <v-col cols="12" md="2"></v-col>
                                 <v-col cols="12" md="8">
-                                    <v-text-field v-model="codigoLinea" label="CODIGO LINEA" :counter="100"
+                                    <v-text-field v-model="codigoLinea" label="CÓDIGO LÍNEA" :counter="100"
                                         :rules="codigoLineaRules" @input="codigoLinea = codigoLinea.toUpperCase()"
                                         disabled></v-text-field>
                                 </v-col>
@@ -49,7 +49,7 @@
         <v-dialog v-model="editLineaModal"  max-width="700px" persistent>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>EDITAR LINEA</span>
+                    <span>EDITAR LÍNEA</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -57,7 +57,7 @@
                             <v-row>
                                 <v-col cols="12" md="4"></v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="nombreLinea" label="NOMBRE LINEA" :counter="100"
+                                    <v-text-field v-model="nombreLinea" label="NOMBRE LÍNEA" :counter="100"
                                         :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -65,7 +65,7 @@
 
                                 <v-col cols="12" md="4"></v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="codigoLinea" label="CODIGO LINEA" :counter="100"
+                                    <v-text-field v-model="codigoLinea" label="CÓDIGO LÍNEA" :counter="100"
                                         :rules="codigoLineaRules" @input="codigoLinea = codigoLinea.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -84,7 +84,7 @@
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
                                         <v-btn class="mx-2" fab dark small icon v-if="botonact == 0" color="#0ABF55"
-                                            @click="registrarLinea()" style="float: left" title="REGISTRAR LINEA">
+                                            @click="registrarLinea()" style="float: left" title="REGISTRAR LÍNEA">
                                             <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
                                         <v-btn class="mx-2" fab dark small icon color="#BF120A" @click="limpiar()"
@@ -114,7 +114,7 @@
 
         <div>
             <v-alert dense color="cyan" style="color: #ffffff">
-                <h5>LINEAS</h5>
+                <h5>LÍNEAS</h5>
             </v-alert>
         </div>
         <div>
@@ -129,27 +129,27 @@
                                         mdi-package-variant-closed-plus
                                     </v-icon>
                                     FORM
-                                    LINEA.
+                                    LÍNEA.
                                 </v-tab>
                                 <v-tab>
                                     <v-icon left>
                                         mdi-list-box
                                     </v-icon>
                                     LIST
-                                    LINEAS.
+                                    LÍNEAS.
                                 </v-tab>
                                 <v-tab>
                                     <v-icon left>
                                         mdi-list-box
                                     </v-icon>
-                                    LINEAS
+                                    LÍNEAS
                                     INACT.
                                 </v-tab>
 
                                 <v-tab-item v-if="flag == 1">
                                     <v-card elevation="5" outlined shaped>
                                         <v-card-title>
-                                            <span>AGREGAR LINEAS</span>
+                                            <span>AGREGAR LÍNEAS</span>
                                         </v-card-title>
                                         <v-card-text>
                                             <v-form ref="form" v-model="valid" lazy-validation>
@@ -157,7 +157,7 @@
                                                     <v-row>
                                                         <v-col cols="12" md="4"></v-col>
                                                         <v-col cols="12" md="4">
-                                                            <v-text-field v-model="nombreLinea" label="NOMBRE LINEA"
+                                                            <v-text-field v-model="nombreLinea" label="NOMBRE LÍNEA"
                                                                 :counter="100" :rules="nombreLineaRules"
                                                                 @input="nombreLinea = nombreLinea.toUpperCase()"
                                                                 required></v-text-field>
@@ -166,7 +166,7 @@
 
                                                         <v-col cols="12" md="4"></v-col>
                                                         <v-col cols="12" md="4">
-                                                            <v-text-field v-model="codigoLinea" label="CODIGO LINEA"
+                                                            <v-text-field v-model="codigoLinea" label="CÓDIGO LÍNEA"
                                                                 :counter="100" :rules="codigoLineaRules"
                                                                 @input="codigoLinea = codigoLinea.toUpperCase()"
                                                                 required></v-text-field>
@@ -188,7 +188,7 @@
                                                                 </v-btn>
                                                                 <v-btn icon v-if="botonact == 0" class="mx-2" fab dark
                                                                     color="#0ABF55" @click="registrarLinea()"
-                                                                    style="float: left" title="REGISTRAR LINEA">
+                                                                    style="float: left" title="REGISTRAR LÍNEA">
                                                                     <v-icon dark> mdi-content-save
                                                                     </v-icon>
                                                                 </v-btn>
@@ -209,7 +209,7 @@
                                 <v-tab-item v-if="flag == 1">
                                     <v-card elevation="5" outlined shaped>
                                         <v-card-title>
-                                            <span>LISTA DE LINEAS</span>
+                                            <span>LISTA DE LLÍNEAS</span>
                                         </v-card-title>
                                         <v-card-text>
                                             <v-form ref="form" v-model="valid" lazy-validation>
@@ -218,13 +218,13 @@
                                                         <v-col cols="12">
                                                             <v-list-item>
                                                                 <v-list-item-title class="text-center">
-                                                                    <h5>LINEAS</h5>
+                                                                    <h5>LÍNEAS</h5>
                                                                 </v-list-item-title>
                                                             </v-list-item>
 
                                                             <v-card-title>
                                                                 <v-text-field v-model="buscarLineas"
-                                                                    append-icon="mdi-magnify" label="BUSCAR LINEAS"
+                                                                    append-icon="mdi-magnify" label="BUSCAR LÍNEAS"
                                                                     single-line hide-details></v-text-field>
                                                             </v-card-title>
 
@@ -254,22 +254,22 @@
                                                                 <template #[`item.actions`]="{ item }">
                                                                     <v-icon v-if="item.est == 'INACTIVO'" color="green"
                                                                         class="mx-2" large @click="activar(item)"
-                                                                        title="ACTIVAR LINEAS">
+                                                                        title="ACTIVAR LÍNEAS">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
                                                                     <v-icon v-if="item.est == 'ACTIVO'" color="red"
                                                                         class="mx-2" large @click="desactivar(item)"
-                                                                        title="DESACTIVAR LINEAS">
+                                                                        title="DESACTIVAR LÍNEAS">
                                                                         mdi-cancel
                                                                     </v-icon>
                                                                     <v-icon sclass="mx-2" large color="#0A62BF"
                                                                         @click="showEditLineaModal(item)"
-                                                                        title="ACTUALIZAR INFORMACION">
+                                                                        title="ACTUALIZAR INFORMACIÓN">
                                                                         mdi-pencil
                                                                     </v-icon>
                                                                     <v-icon class="mx-2" large color="#0A62BF"
                                                                         @click="showInfoLinea(item)"
-                                                                        title="VER INFORMACION">
+                                                                        title="VER INFORMACIÓN">
                                                                         mdi-eye
                                                                     </v-icon>
                                                                 </template>
@@ -286,7 +286,7 @@
                                 <v-tab-item v-if="flag == 1">
                                     <v-card elevation="5" outlined shaped>
                                         <v-card-title>
-                                            <span>LINEAS INACTIVAS</span><br>
+                                            <span>LÍNEAS INACTIVAS</span><br>
                                         </v-card-title>
                                         <v-card-text>
                                             <v-form ref="form" v-model="valid" lazy-validation>
@@ -295,13 +295,13 @@
                                                         <v-col cols="12">
                                                             <v-list-item>
                                                                 <v-list-item-title class="text-center">
-                                                                    <h5>LINEAS</h5>
+                                                                    <h5>LÍNEAS</h5>
                                                                 </v-list-item-title>
                                                             </v-list-item>
 
                                                             <v-card-title>
                                                                 <v-text-field v-model="buscarLineas"
-                                                                    append-icon="mdi-magnify" label="BUSCAR LINEAS"
+                                                                    append-icon="mdi-magnify" label="BUSCAR LÍNEAS"
                                                                     single-line hide-details></v-text-field>
                                                             </v-card-title>
                                                             <v-data-table :headers="headersLineasInh"
@@ -318,17 +318,17 @@
                                                                 <template #[`item.actions`]="{ item }">
                                                                     <v-icon v-if="item.est == 'INACTIVO'" color="green"
                                                                         large class="mr-2" @click="activar(item)"
-                                                                        title="ACTIVAR LINEAS">
+                                                                        title="ACTIVAR LÍNEA">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
                                                                     <v-icon v-if="item.est == 'ACTIVO'" color="red"
                                                                         large class="mr-2" @click="desactivar(item)"
-                                                                        title="DESACTIVAR LINEAS">
+                                                                        title="DESACTIVAR LÍNEA">
                                                                         mdi-cancel
                                                                     </v-icon>
                                                                     <v-icon large class="mr-2" color="#0A62BF"
                                                                         @click="showInfoLinea(item)"
-                                                                        title="VER INFORMACION">
+                                                                        title="VER INFORMACIÓN">
                                                                         mdi-eye
                                                                     </v-icon>
                                                                 </template>
@@ -403,15 +403,15 @@ export default {
             buscarLineas: "",
             datosLineas: [],
             headersLineas: [
-                { text: "NOMBRE LINEA", value: "nomlin", sortable: true },
-                { text: "CODIGO LINEA", value: "codlin", sortable: true },
+                { text: "NOMBRE LÍNEA", value: "nomlin", sortable: true },
+                { text: "CÓDIGO LÍNEA", value: "codlin", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
             datosLineasInh: [],
             headersLineasInh: [
-                { text: "NOMBRE LINEA", value: "nomlin", sortable: true },
-                { text: "CODIGO LINEA", value: "codlin", sortable: true },
+                { text: "NOMBRE LÍNEA", value: "nomlin", sortable: true },
+                { text: "CÓDIGO LÍNEA", value: "codlin", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
