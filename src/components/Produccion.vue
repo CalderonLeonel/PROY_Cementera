@@ -425,7 +425,7 @@ export default {
             //#endregion
             //#region Fabrica 
             idFabrica: 1,
-            nombreFabrica: "",
+            nombreFabrica: "FABRICA 1",
             codigoFabrica: "",
             direccionFabrica: "",
             latitud: "",
@@ -476,10 +476,37 @@ export default {
             //#endregion
 
             //#region Rules
+            codigoProduccionRules: [
+                v => !!v || "El código de producción es obligatorio",
+                v => (v && v.length >= 3) || "Debe tener al menos 3 caracteres",
+                v => (v && v.length <= 50) || "No debe exceder 50 caracteres",
+                v => /^[A-Za-z0-9\-]+$/.test(v) || "Solo letras, números y guiones",
+            ],
+            nombreProductoRules: [
+                v => !!v || "Debe seleccionar un producto",
+                v => (v && v.length <= 100) || "El nombre del producto no debe exceder 100 caracteres",
+            ],
+            cantidadProduccionRules: [
+                v => !!v || "Debe ingresar una cantidad",
+                v => /^[0-9]+$/.test(v) || "Solo se permiten números enteros",
+                v => parseInt(v) > 0 || "La cantidad debe ser mayor a 0",
+                v => parseInt(v) <= 1000000 || "La cantidad no puede superar 1,000,000",
+            ],
+            nombreFabricaRules: [
+                v => !!v || "Debe seleccionar una fábrica",
+                v => (v && v.length <= 100) || "El nombre de la fábrica no debe exceder 100 caracteres",
+            ],
             fechaVencimientoRules: [
-                v => !!v || "La fecha de vencimiento es obligatoria"
+                v => !!v || "Debe seleccionar una fecha de vencimiento",
+                v => {
+                    if (!v) return true
+                    const hoy = new Date().setHours(0, 0, 0, 0)
+                    const fechaSel = new Date(v).setHours(0, 0, 0, 0)
+                    return fechaSel > hoy || "La fecha debe ser futura"
+                },
             ],
             //#endregion
+
         }
     },
     created: function () {

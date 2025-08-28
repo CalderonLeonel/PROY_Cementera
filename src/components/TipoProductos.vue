@@ -1,5 +1,6 @@
 <template>
     <v-card elevation="5" outlined shaped>
+
         <v-dialog v-model="agregarTipoModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
@@ -41,13 +42,12 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeAgregarTipo()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeAgregarTipo()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
-                                   
+
                                 </v-col>
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="12" md="4">
@@ -108,9 +108,8 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeInfoTipoModal()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeInfoTipoModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -184,13 +183,12 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeEditTipoModal()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeEditTipoModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
-                                 
+
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -212,13 +210,12 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeInfoTipoModal()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeInfoTipoModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
-                                   
+
                                 </v-col>
 
                             </v-row>
@@ -270,12 +267,11 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeLineaModal()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeLineaModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
-                                    </v-btn>                              
+                                    </v-btn>
                                 </v-col>
 
                             </v-row>
@@ -633,6 +629,26 @@ export default {
             mensajeSnackbarError: "REGISTRO FALLIDO",
             timeout: 2000,
             //#endregion
+
+            //#region Rules
+            nombreTipoRules: [
+                v => !!v || "El nombre del tipo es obligatorio",
+                v => (v && v.trim().length >= 3) || "Debe tener al menos 3 caracteres",
+                v => (v && v.length <= 100) || "No debe exceder 100 caracteres",
+                v => /^[A-Za-zÁÉÍÓÚÑÜ\s]+$/.test(v) || "Solo se permiten letras y espacios",
+            ],
+            codigoTipoRules: [
+                v => !!v || "El código del tipo es obligatorio",
+                v => (v && v.trim().length >= 2) || "Debe tener al menos 2 caracteres",
+                v => (v && v.length <= 20) || "No debe exceder 20 caracteres",
+                v => /^[A-Za-z0-9\-]+$/.test(v) || "Solo puede contener letras, números o guiones",
+            ],
+            nombreLineaRules: [
+                v => !!v || "Debe seleccionar una línea",
+                v => (v && v.length <= 50) || "El nombre de la línea no debe exceder 50 caracteres",
+            ],
+            //#endregion
+            
         }
     },
 
@@ -852,7 +868,7 @@ export default {
             this.lineasModal = true;
         },
 
-        closeLineaModal(){
+        closeLineaModal() {
             this.lineasModal = false;
         },
         //#endregion

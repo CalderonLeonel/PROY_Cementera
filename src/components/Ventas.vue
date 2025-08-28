@@ -368,6 +368,7 @@ export default {
             idCuentaContable: "",
             montoDebito: "",
             montoCredito: "",
+            montoAsiento: "",
             //#endregion
 
             //#region Cuenta Contables
@@ -650,20 +651,21 @@ export default {
                 this.descripcionAsiento,
                 this.idCuentaContable,
                 this.montoDebito,
-                nuevoMontoCredito
+                totalVenta
             );
 
             await this.aumentarSaldo();
         },
 
-        async registrarAsientoContable(numeroReferencia, descripcionAsiento, idCuentaContable, montoDebito, montoCredito) {
+        async registrarAsientoContable(numeroReferencia, descripcionAsiento, idCuentaContable, montoDebito, montoCredito, totalVenta) {
             try {
                 const response = await axios.post("/contabilidad/addasiento/" +
                     numeroReferencia + "," +
                     descripcionAsiento + "," +
                     idCuentaContable + "," +
                     montoDebito + "," +
-                    montoCredito
+                    montoCredito + "," +
+                    totalVenta
                 );
                 this.mensajeSnackbar = response.data.message;
                 this.snackbarOK = true;

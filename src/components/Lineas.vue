@@ -29,13 +29,12 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeInfoLineaModal()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeInfoLineaModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
-                                 
+
                                 </v-col>
 
                             </v-row>
@@ -46,7 +45,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="editLineaModal"  max-width="700px" persistent>
+        <v-dialog v-model="editLineaModal" max-width="700px" persistent>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>EDITAR LINEA</span>
@@ -96,9 +95,8 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeEditLineaModal()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeEditLineaModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -175,7 +173,7 @@
 
                                                         <v-col cols="12" md="8"> </v-col>
                                                         <v-col cols="12" md="4">
-                                                            <v-toolbar dense shaped >
+                                                            <v-toolbar dense shaped>
                                                                 <v-toolbar-title>
                                                                     <h6>
                                                                         OPCIONES
@@ -429,6 +427,22 @@ export default {
             snackbarError: false,
             mensajeSnackbarError: "REGISTRO FALLIDO",
             timeout: 2000,
+            //#endregion
+
+            //#endregion
+            //#region Rules
+            nombreLineaRules: [
+                v => !!v || "El nombre de la línea es obligatorio",
+                v => (v && v.trim().length >= 3) || "El nombre debe tener al menos 3 caracteres",
+                v => (v && v.length <= 100) || "El nombre no debe exceder 100 caracteres",
+                v => /^[A-Za-zÁÉÍÓÚÑÜ\s]+$/.test(v) || "Solo se permiten letras y espacios",
+            ],
+            codigoLineaRules: [
+                v => !!v || "El código de la línea es obligatorio",
+                v => (v && v.trim().length >= 2) || "El código debe tener al menos 2 caracteres",
+                v => (v && v.length <= 20) || "El código no debe exceder 20 caracteres",
+                v => /^[A-Za-z0-9\-]+$/.test(v) || "El código solo puede contener letras, números o guiones",
+            ],
             //#endregion
         }
     },
