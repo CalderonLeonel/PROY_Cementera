@@ -434,7 +434,7 @@
                 >
 
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn icon v-bind="attrs" v-on="on">
+                    <v-btn icon v-bind="attrs" v-on="on" @click="listarAlerta()" title="VER ALERTAS" color="white">
                       <v-icon>mdi-bell</v-icon>
 
                     </v-btn>
@@ -580,10 +580,10 @@ export default {
                 .then(function (response) {
                     if (response.data == null) {
                         me.datosAlerta = [];
-                        console.log(response.data.resultado);
+                        
                     } else {
                         console.log(response.data);
-                        me.datosAlerta = response.data.resultado;
+                        me.datosAlerta = response.data.resultado.reverse();
                     }
                 })
                 .catch(function (error) {
