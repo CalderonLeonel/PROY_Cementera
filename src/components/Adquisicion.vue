@@ -477,7 +477,7 @@
         <v-dialog v-model="agregarCotizacionItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>GESTIÓN DE COTIZACIÓN DE UN ITEM</span>
+                    <span>GESTIÓN DE COTIZACIÓN DE UN ÍTEM</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -500,12 +500,12 @@
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" v-if="botonactCotIt == 0" fab dark x-small color="cyan" :disabled='nombreCotizacion==null' 
                                          @click="openItemModal()" style="float: right"
-                                        title="BUSCAR ITEM">
+                                        title="BUSCAR ÍTEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="11">
-                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM" :counter="60" :disabled='nombreCotizacion==null'
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ÍTEM" :counter="60" :disabled='nombreCotizacion==null'
                                         :rules="nombreItemRules" @input="val => nombreItem  = (val ?? '').toString().toUpperCase()" disabled
                                         required></v-text-field>
                                 </v-col>
@@ -537,7 +537,7 @@
                                             </v-btn>
                                             <v-btn icon v-if="botonactCotIt == 0" color="#0ABF55" :disabled='nombreCotizacion==null'
                                                 @click="registrarCotizacionIt()" style="float: left"
-                                                title="REGISTRAR COTIZACIÓN DE ITEM" class="mx-2" large>
+                                                title="REGISTRAR COTIZACIÓN DE ÍTEM" class="mx-2" large>
                                                 <v-icon dark> mdi-playlist-plus </v-icon>
                                             </v-btn>
                                          
@@ -611,7 +611,7 @@
                             <v-col cols="3"></v-col>
                             <v-col cols="3">
                                 <v-btn class="mx-2" dark x-big color="#BF120A" @click="anularCotizacionItem()"
-                                    style="float: right" title="QUITAR ITEM">
+                                    style="float: right" title="QUITAR ÍTEM">
                                     <v-icon dark> mdi-close-circle-outline </v-icon>
                                     ANULAR
                                 </v-btn>
@@ -727,10 +727,10 @@ export default {
             ],
 
             nombreItemRules: [
-                (v) => !!v || "SE REQUIERE EL NOMBRE DEL ITEM.",
+                (v) => !!v || "SE REQUIERE EL NOMBRE DEL ÍTEM.",
                 (v) =>
                     (v && v.length <= 60) ||
-                    "EL NOMBRE DEL ITEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+                    "EL NOMBRE DEL ÍTEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
             ],
 
             nombreRules: [
@@ -802,9 +802,9 @@ export default {
 
             datosCotizacionItem: [],
             headerCotizacionItem: [
-                { text: "COTIZACIÓN ITEM", value: "idCotizacionItem", sortable: true },
+                { text: "COTIZACIÓN ÍTEM", value: "idCotizacionItem", sortable: true },
                 { text: "COTIZACIÓN", value: "nombrecotizacion", sortable: true },
-                { text: "ITEM", value: "nombreitem", sortable: true },
+                { text: "ÍTEM", value: "nombreitem", sortable: true },
                 //{ text: "UNIDAD", value: "unidad", sortable: false },
                 { text: "PRECIO UNITARIO", value: "precioUnitario", sortable: true },
                 { text: "CANTIDAD", value: "cantidad", sortable: false },
@@ -826,7 +826,7 @@ export default {
             datosItem: [],
             headerItem: [
                  { text: "CÓDIGO SKU", value: "sku", sortable: true },
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "CATEGORÍA", value: "categoria", sortable: true },
@@ -885,9 +885,9 @@ export default {
 
 
             header2: [
-                { text: "COTIZACIÓN ITEM", value: "idCotizacionItem" },
+                { text: "COTIZACIÓN ÍTEM", value: "idCotizacionItem" },
                 { text: "COTIZACIÓN", value: "nombrecotizacion" },
-                { text: "ITEM", value: "nombreitem" },
+                { text: "ÍTEM", value: "nombreitem" },
                 { text: "UNIDAD", value: "unidad" },
                 { text: "PRECIO UNITARIO", value: "precioUnitario" },
                 { text: "CANTIDAD", value: "cantidad" },
@@ -1932,7 +1932,7 @@ export default {
                     doc.text(item.nombreCotizacion, 10, 30)
                     doc.text("Proveedor: "+ item.nombreProveedor, 10, 40);
                     doc.text("Fecha: "+ this.getFormattedDate(item.fechaVencimiento), 10,50);
-                    doc.autoTable({ head: [["Item", "Unidad", "Precio Unitario", "Cantidad"]], body: bodyData, startY: 60 });
+                    doc.autoTable({ head: [["Ítem", "Unidad", "Precio Unitario", "Cantidad"]], body: bodyData, startY: 60 });
                     let finalY = doc.previousAutoTable.finalY;
                     doc.text("Total: "+total.toFixed(2)+" Bs.", 150, 10 + finalY)
 
