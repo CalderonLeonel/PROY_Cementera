@@ -423,42 +423,47 @@
 
     <v-app-bar color="#00A1B1" app>
       <v-app-bar-nav-icon  v-if="logueado" color="white" @click="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-menu
-        left
-        bottom
-        offset-y
-        :close-on-content-click="false"
-        transition="scale-transition"
-        content-class="notif-menu"  
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon>mdi-bell</v-icon>
-          </v-btn>
-        </template>
+        <div text-h6 ml-2>
+          <v-menu 
+                  left
+                  bottom
+                  offset-y
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  content-class="notif-menu"  
+                >
 
-        <v-card width="400" class="rounded-lg">
-          <v-card-title class="text-subtitle-1 font-weight-bold">ALERTAS</v-card-title>
-          <v-divider />
-          <v-list two-line style="max-height: 380px; overflow-y: auto;">
-            <v-list-item v-for="(data,i) in datosAlerta" :key="i">
-              <v-list-item-avatar size="128">
-                <v-img :src="axios.defaults.baseURL+'documento/descargarImagen/'+data.nombredoc" cover />
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title class="font-weight-medium">{{ data.title }}</v-list-item-title>
-                <v-list-item-subtitle>{{ data.description }}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn icon v-bind="attrs" v-on="on">
+                      <v-icon>mdi-bell</v-icon>
 
-            <v-list-item v-if="!datosAlerta || !datosAlerta.length">
-              <v-list-item-content>
-                <v-list-item-title class="text-grey--text">NO SE TIENEN ALERTAS</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-card>
-      </v-menu>
+                    </v-btn>
+                  </template>
+
+                  <v-card width="400" class="rounded-lg">
+                    <v-card-title class="text-subtitle-1 font-weight-bold">ALERTAS</v-card-title>
+                    <v-divider />
+                    <v-list two-line style="max-height: 380px; overflow-y: auto;">
+                      <v-list-item v-for="(data,i) in datosAlerta" :key="i">
+                        <v-list-item-avatar size="128">
+                          <v-img :src="axios.defaults.baseURL+'documento/descargarImagen/'+data.nombredoc" cover />
+                        </v-list-item-avatar>
+                        <v-list-item-content>
+                          <v-list-item-title class="font-weight-medium">{{ data.title }}</v-list-item-title>
+                          <v-list-item-subtitle>{{ data.description }}</v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item v-if="!datosAlerta || !datosAlerta.length">
+                        <v-list-item-content>
+                          <v-list-item-title class="text-grey--text">NO SE TIENEN ALERTAS</v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                  </v-card>
+                </v-menu>
+        </div>
+       
       <v-spacer></v-spacer>
       <v-btn v-if="logueado" class="mx-6"  dark x-medium color="#007B88" @click="salir()" style="float:left;" variant="text"
        title="CERRAR SESIÓN">
