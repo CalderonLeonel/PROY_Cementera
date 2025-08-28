@@ -496,6 +496,7 @@ export default {
         generarDatosUsuario(item) {
             let min = Math.ceil(1000);
             let max = Math.floor(10000);
+
             const letters  = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
             const numbers = "0123456789";
             this.nombreUsuario = item.nom[0] + item.pat[0] + (Math.floor(Math.random() * (max - min) + min));
@@ -510,6 +511,7 @@ export default {
 
             //Contraseña aleatoria
             this.password = pass.split('').sort(() => Math.random() - 0.5).join('');
+
 
 
             console.log(this.nombreUsuario);
