@@ -19,7 +19,7 @@
 
                                 <v-col cols="12" md="4"></v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="codigoFormato" label="CODIGO FORMATO" :counter="100"
+                                    <v-text-field v-model="codigoFormato" label="CÓDIGO FORMATO" :counter="100"
                                         :rules="codigoFormatoRules" @input="codigoFormato = codigoFormato.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -85,7 +85,7 @@
 
                                 <v-col cols="12" md="2"></v-col>
                                 <v-col cols="12" md="8">
-                                    <v-text-field v-model="codigoFormato" label="CODIGO Formato" :counter="100"
+                                    <v-text-field v-model="codigoFormato" label="CÓDIGO FORMATO" :counter="100"
                                         :rules="codigoFormatoRules" @input="codigoFormato = codigoFormato.toUpperCase()"
                                         disabled></v-text-field>
                                 </v-col>
@@ -128,7 +128,7 @@
 
                                 <v-col cols="12" md="4"></v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="codigoFormato" label="CODIGO FORMATO" :counter="100"
+                                    <v-text-field v-model="codigoFormato" label="CÓDIGO FORMATO" :counter="100"
                                         :rules="codigoFormatoRules" @input="codigoFormato = codigoFormato.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -295,7 +295,7 @@
 
                                                         <v-col cols="12" md="4"></v-col>
                                                         <v-col cols="12" md="4">
-                                                            <v-text-field v-model="codigoFormato" label="CODIGO FORMATO"
+                                                            <v-text-field v-model="codigoFormato" label="CÓDIGO FORMATO"
                                                                 :counter="100" :rules="codigoFormatoRules"
                                                                 @input="codigoFormato = codigoFormato.toUpperCase()"
                                                                 required></v-text-field>
@@ -424,7 +424,7 @@
                                                         <v-col cols="12">
                                                             <v-list-item>
                                                                 <v-list-item-title class="text-center">
-                                                                    <h5>Formatos</h5>
+                                                                    <h5>FORMATOS INNACTIVOS</h5>
                                                                 </v-list-item-title>
                                                             </v-list-item>
 
@@ -530,14 +530,14 @@ export default {
             datosFormatos: [],
             headersFormatos: [
                 { text: "NOMBRE FORMATO", value: "nomforma", sortable: false },
-                { text: "CODIGO FORMATO", value: "codforma", sortable: false },
+                { text: "CÓDIGO FORMATO", value: "codforma", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
             datosFormatosInh: [],
             headersFormatosInh: [
                 { text: "NOMBRE FORMATO", value: "nomforma", sortable: false },
-                { text: "CODIGO FORMATO", value: "codforma", sortable: false },
+                { text: "CÓDIGO FORMATO", value: "codforma", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],

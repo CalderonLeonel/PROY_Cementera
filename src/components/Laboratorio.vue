@@ -108,15 +108,15 @@
                             <v-row>
 
                                 <v-col cols="12">
-                                    <v-text-field v-model="nombreProducto" label="Nombre de Producto"
+                                    <v-text-field v-model="nombreProducto" label="NOMBRE DE PRODUCTO"
                                         readonly></v-text-field>
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-text-field v-model="codigoProducto" label="Código de Producto"
+                                    <v-text-field v-model="codigoProducto" label="CÓDIGO DE PRODUCTO"
                                         readonly></v-text-field>
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-textarea v-model="observaciones" label="Comentarios"></v-textarea>
+                                    <v-textarea v-model="observaciones" label="COMENTARIOS"></v-textarea>
                                 </v-col>
 
 
@@ -214,7 +214,7 @@
                                                         </v-col>
                                                         <v-col cols="12" md="4">
                                                             <v-text-field v-model="codigoProducto"
-                                                                label="CODIGO PRODUCTO" :counter="100"
+                                                                label="CÓDIGO PRODUCTO" :counter="100"
                                                                 :rules="codigoProductoRules"
                                                                 @input="codigoProducto = codigoProducto.toUpperCase()"
                                                                 required></v-text-field>
@@ -307,7 +307,7 @@
 
                                                             <v-list-item>
                                                                 <v-list-item-title class="text-center">
-                                                                    <h5>Prod. Laboratorio</h5>
+                                                                    <h5>PRODUCCIÓN DEL LABORATORIO</h5>
                                                                 </v-list-item-title>
                                                             </v-list-item>
 
@@ -386,7 +386,7 @@
                                             <v-col cols="12">
                                                 <v-list-item>
                                                     <v-list-item-title class="text-center">
-                                                        <h5>Observaciones Laboratorio</h5>
+                                                        <h5>OBSERVACIONES LABORATORIO</h5>
                                                     </v-list-item-title>
                                                 </v-list-item>
 
@@ -492,13 +492,13 @@ export default {
             datosProdLabo: [],
             headersProdLabo: [
                 { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
-                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
+                { text: "CÓDIGO DE PRODUCTO", value: "codprod", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
             datosObservaciones: [],
             headersObservaciones: [
-                { text: "DESCRIPCION", value: "des", sortable: false },
+                { text: "DESCRIPCIÓN", value: "des", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -510,7 +510,7 @@ export default {
             datosFormatos: [],
             headersFormatos: [
                 { text: "NOMBRE FORMATO", value: "nomforma", sortable: false },
-                { text: "CODIGO FORMATO", value: "codforma", sortable: false },
+                { text: "CÓDIGO FORMATO", value: "codforma", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -524,7 +524,7 @@ export default {
             datosTipos: [],
             headersTipos: [
                 { text: "NOMBRE T.PRODUCTO", value: "nomtipo", sortable: false },
-                { text: "CODIGO T.PRODUCTO", value: "codtipo", sortable: false },
+                { text: "CÓDIGO T.PRODUCTO", value: "codtipo", sortable: false },
                 { text: "NOMBRE producto", value: "nomlin", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },

@@ -227,7 +227,7 @@
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-container>
                             <v-row>
-                                <v-col cols="12" md="1">
+                                <v-col cols="12" md="1" v-if="botonactCot != 1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
                                         @click="openProveedorModal()" style="float: right" title="BUSCAR PROVEEDOR">
                                         <v-icon dark> mdi-magnify </v-icon>
@@ -235,13 +235,13 @@
                                 </v-col>
                                 <v-col cols="12" md="3">
                                     <v-text-field v-model="nombreProveedor" label="NOMBRE PROVEEDOR" :counter="60"
-                                        :rules="nombreRules" @input="nombreProveedor = nombreProveedor.toUpperCase()"
+                                        :rules="nombreRules" @input="val => nombreProveedor  = (val ?? '').toString().toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="8">
                                     <v-text-field v-model="nombreCotizacion" label="NOMBRE DE LA COTIZACIÓN"
-                                        :counter="100" @input="nombreCotizacion = nombreCotizacion.toUpperCase()"
+                                        :counter="100" @input="val => nombreCotizacion  = (val ?? '').toString().toUpperCase()"
                                         :rules="nombreCotizacionRules" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
@@ -477,7 +477,7 @@
         <v-dialog v-model="agregarCotizacionItemModal" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
-                    <span>GESTIÓN DE COTIZACIÓN DE UN ITEM</span>
+                    <span>GESTIÓN DE COTIZACIÓN DE UN ÍTEM</span>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -499,14 +499,14 @@
 
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" v-if="botonactCotIt == 0" fab dark x-small color="cyan" :disabled='nombreCotizacion==null' 
-                                        :rules="nombreRules" @click="openItemModal()" style="float: right"
-                                        title="BUSCAR ITEM">
+                                         @click="openItemModal()" style="float: right"
+                                        title="BUSCAR ÍTEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="11">
-                                    <v-text-field v-model="nombreItem" label="NOMBRE ITEM" :counter="60" :disabled='nombreCotizacion==null'
-                                        :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()" disabled
+                                    <v-text-field v-model="nombreItem" label="NOMBRE ÍTEM" :counter="60" :disabled='nombreCotizacion==null'
+                                        :rules="nombreItemRules" @input="val => nombreItem  = (val ?? '').toString().toUpperCase()" disabled
                                         required></v-text-field>
                                 </v-col>
 
@@ -537,7 +537,7 @@
                                             </v-btn>
                                             <v-btn icon v-if="botonactCotIt == 0" color="#0ABF55" :disabled='nombreCotizacion==null'
                                                 @click="registrarCotizacionIt()" style="float: left"
-                                                title="REGISTRAR COTIZACIÓN DE ITEM" class="mx-2" large>
+                                                title="REGISTRAR COTIZACIÓN DE ÍTEM" class="mx-2" large>
                                                 <v-icon dark> mdi-playlist-plus </v-icon>
                                             </v-btn>
                                          
@@ -611,7 +611,7 @@
                             <v-col cols="3"></v-col>
                             <v-col cols="3">
                                 <v-btn class="mx-2" dark x-big color="#BF120A" @click="anularCotizacionItem()"
-                                    style="float: right" title="QUITAR ITEM">
+                                    style="float: right" title="QUITAR ÍTEM">
                                     <v-icon dark> mdi-close-circle-outline </v-icon>
                                     ANULAR
                                 </v-btn>
@@ -727,10 +727,10 @@ export default {
             ],
 
             nombreItemRules: [
-                (v) => !!v || "SE REQUIERE EL NOMBRE DEL ITEM.",
+                (v) => !!v || "SE REQUIERE EL NOMBRE DEL ÍTEM.",
                 (v) =>
                     (v && v.length <= 60) ||
-                    "EL NOMBRE DEL ITEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
+                    "EL NOMBRE DEL ÍTEM NO DEBE SOBREPASAR LOS 60 CARACTERES.",
             ],
 
             nombreRules: [
@@ -779,7 +779,7 @@ export default {
                 { text: "FECHA VENCIMIENTO", value: "fechaVencimiento", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ARCHIVO", value: "archivo", sortable: false },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
@@ -796,19 +796,19 @@ export default {
                 { text: "FECHA VENCIMIENTO", value: "fechaVencimiento", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ARCHIVO", value: "archivo", sortable: false },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
             datosCotizacionItem: [],
             headerCotizacionItem: [
-                { text: "COTIZACIÓN ITEM", value: "idCotizacionItem", sortable: true },
+                { text: "COTIZACIÓN ÍTEM", value: "idCotizacionItem", sortable: true },
                 { text: "COTIZACIÓN", value: "nombrecotizacion", sortable: true },
-                { text: "ITEM", value: "nombreitem", sortable: true },
+                { text: "ÍTEM", value: "nombreitem", sortable: true },
                 //{ text: "UNIDAD", value: "unidad", sortable: false },
                 { text: "PRECIO UNITARIO", value: "precioUnitario", sortable: true },
                 { text: "CANTIDAD", value: "cantidad", sortable: false },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
@@ -826,7 +826,7 @@ export default {
             datosItem: [],
             headerItem: [
                  { text: "CÓDIGO SKU", value: "sku", sortable: true },
-                 { text: "NOMBRE ITEM", value: "nombreitem", sortable: true },
+                 { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "CATEGORÍA", value: "categoria", sortable: true },
@@ -837,7 +837,7 @@ export default {
                  { text: "PROVEEDOR", value: "proveedor", sortable: true },
                  { text: "FECHA EXP.", value: "fechaexp", sortable: true },
                  { text: "COSTO REF", value: "costoref", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
@@ -861,7 +861,7 @@ export default {
                 { text: "CONTACTO SECUNDARIO DE PROVEEDOR", value: "cto2pro", sortable: true },
                 { text: "CORREO DE PROVEEDOR", value: "croprov", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
@@ -885,9 +885,9 @@ export default {
 
 
             header2: [
-                { text: "COTIZACIÓN ITEM", value: "idCotizacionItem" },
+                { text: "COTIZACIÓN ÍTEM", value: "idCotizacionItem" },
                 { text: "COTIZACIÓN", value: "nombrecotizacion" },
-                { text: "ITEM", value: "nombreitem" },
+                { text: "ÍTEM", value: "nombreitem" },
                 { text: "UNIDAD", value: "unidad" },
                 { text: "PRECIO UNITARIO", value: "precioUnitario" },
                 { text: "CANTIDAD", value: "cantidad" },
@@ -1058,7 +1058,10 @@ export default {
         async listarItems() {
             let me = this;
             await axios
-                .get("/inventario/listaritemactivo/")
+                .get("/adquisicion/listaritemcotizacion/"+
+                    this.idCotizacion +
+                    "," +
+                    this.idProveedor)
                 .then(function (response) {
                     if (response.data.resultado == null) {
                         me.datosItem = [];
@@ -1696,7 +1699,7 @@ export default {
         agregarItem(item){
             this.idCotizacion = item.idCotizacion;
             this.nombreCotizacion = item.nombreCotizacion;
-         
+            this.idProveedor = item.idProveedor;
             this.agregarCotizacionItemModal = true;
         },
 
@@ -1929,7 +1932,7 @@ export default {
                     doc.text(item.nombreCotizacion, 10, 30)
                     doc.text("Proveedor: "+ item.nombreProveedor, 10, 40);
                     doc.text("Fecha: "+ this.getFormattedDate(item.fechaVencimiento), 10,50);
-                    doc.autoTable({ head: [["Item", "Unidad", "Precio Unitario", "Cantidad"]], body: bodyData, startY: 60 });
+                    doc.autoTable({ head: [["Ítem", "Unidad", "Precio Unitario", "Cantidad"]], body: bodyData, startY: 60 });
                     let finalY = doc.previousAutoTable.finalY;
                     doc.text("Total: "+total.toFixed(2)+" Bs.", 150, 10 + finalY)
 

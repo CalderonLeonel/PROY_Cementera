@@ -373,7 +373,7 @@
                                     label="MOTIVO"
                                     :rules='motivoRules'
                                     :disabled='movimiento==null'
-                                    
+                                    required
                                     solo
                                     hint="ELIGE UN MOTIVO O ESCRIBE UNO NUEVO"
                                     persistent-hint
@@ -388,8 +388,8 @@
                                         disabled required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null'
+                                <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'  && motivo!=''">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null && motivo!=""'
                                         @click="openItemDispModal()" style="float: right" title="BUSCAR ÍTEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -401,19 +401,29 @@
                                         disabled required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null' 
+                                <v-col cols="12" md="1" v-if="movimiento=='ENTRADA'  && motivo!=''">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null && motivo!=""' 
                                         @click="openAlmacenModal()" style="float: right" title="BUSCAR ALMACÉN">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>  
-                                <v-col cols="12" md="4" v-if="movimiento=='ENTRADA'">
-                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadEntradaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
+                                <v-col cols="12" md="4" v-if="movimiento=='ENTRADA' && motivo.value=='RECEPCIÓN'">
+                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadEntradaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem=="" && motivo!=""'
                                          @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
-                                </v-col>      
+                                </v-col>   
+                                  <v-col cols="12" md="4" v-if="movimiento=='ENTRADA'  && motivo.value!='RECEPCIÓN'">
+                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem=="" && motivo!=""'
+                                         @input="cantidad = cantidad.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>         
                                 
                                 
+                                <v-col cols="12" md="6" v-if="movimiento=='ENTRADA' && motivo.value!='RECEPCIÓN' && motivo.value!=''">
+                                    <v-text-field v-model="valor" type="number" label="COSTO UNITARIO" :disabled='movimiento==null && motivo=="" && motivo.value!="RECEPCIÓN"'
+                                        :rules="costoRules" @input="valor = valor.toUpperCase()"
+                                        required></v-text-field>
+                                </v-col>
 
 
                              
@@ -424,8 +434,8 @@
                                         disabled required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="1" v-if="movimiento=='SALIDA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null' 
+                                <v-col cols="12" md="1" v-if="movimiento=='SALIDA' && motivo!='' && motivo!=null">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules" :disabled='movimiento==null && motivo!=""' 
                                         @click="openAlmacenConStockModal()" style="float: right" title="BUSCAR ALMACENES CON STOCK">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -437,8 +447,8 @@
                                         disabled required></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="1" v-if="movimiento=='SALIDA'">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreAlmacenRules" :disabled='movimiento==null || nombreAlmacen==""' 
+                                <v-col cols="12" md="1" v-if="movimiento=='SALIDA'  && motivo!=''">
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreAlmacenRules" :disabled='movimiento==null || nombreAlmacen=="" && motivo==""' 
                                         @click="openItemAlmacenModal()" style="float: right" title="BUSCAR ÍTEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -448,17 +458,17 @@
 
                                 <v-col cols="12" md="12" v-if="movimiento!=null"">
                                     <v-text-field v-model="lote" label="LOTE O SERIE (SI SE REQUIERE)"
-                                        :rules="loteRules" @input="lote = lote.toUpperCase()" :disabled='nombreItem==null' hint="EJM: 2025-LOTE01"
+                                        :rules="loteRules" @input="lote = lote.toUpperCase()" :disabled='nombreItem=="" && motivo==""' hint="EJM: 2025-LOTE01"
                                          ></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="11" v-if="movimiento!=null">
                                     <v-text-field v-model="referencia" label="REFERENCIA"
-                                        :rules="referenciaRules" @input="referencia = referencia.toUpperCase()" :disabled='nombreItem==null' hint="EJM: FA-3458014 - NUMERO DE FACTURA O GUIA, ETC"
+                                        :rules="referenciaRules" @input="referencia = referencia.toUpperCase()" :disabled='nombreItem=="" && motivo==""' hint="EJM: FA-3458014 - NÚMERO DE FACTURA O GUIA, ETC"
                                          required></v-text-field>
                                 </v-col>
                                
                                 <v-col cols="12" md="4" v-if="movimiento=='SALIDA'">
-                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadSalidaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem==""'
+                                    <v-text-field v-model="cantidad" label="CANTIDAD" type="number" :rules="cantidadSalidaRules" :disabled='movimiento==null ||nombreAlmacen=="" || nombreItem=="" && motivo==""'
                                          @input="cantidad = cantidad.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>  
@@ -679,13 +689,13 @@
                                     </v-btn>
                                 </v-col> 
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="limitecritico" label="LIMITE CRÍTICO" type="number" :counter="25"
+                                    <v-text-field v-model="limitecritico" label="LÍMITE CRÍTICO" type="number" :counter="25"
                                          @input="limitecritico = limitecritico" :rules="limiteRules"
                                         required></v-text-field>
                                 </v-col> 
                                 <v-col cols="12" md="4">
                                     <v-select
-                                    label="METODO VALUACION" v-model="metodoValuacion" @input="metodoValuacion = metodoValuacion.toUpperCase()" required
+                                    label="MÉTODO VALUACION" v-model="metodoValuacion" @input="metodoValuacion = metodoValuacion.toUpperCase()" required
                                     :items="['PEPS', 'UEPS', 'PROMEDIO PONDERADO']"
                                     :rules="[v => !!v || 'El Metodo de Valuación es requerido']"
                                     ></v-select>
@@ -1055,6 +1065,7 @@
 
  import jsPDF from "jspdf";
  import 'jspdf-autotable';
+import Alerta from "./Alerta.vue";
 
  export default {
      data() {
@@ -1083,22 +1094,15 @@
 
              nombreItem:"",
              descripcion:"",
-             referencia:"",
+             referencia:'',
+             cantidad: null,
              motivo:"",
+        
 
 
-            motivoSugerencias: [
-                'RECEPCIÓN',
-                'AJUSTE DE INVENTARIO',
-                'DEVOLUCIÓN',
-                'TRASLADO INTERNO',
-                'CONTEO CÍCLICO/AUDITORÍA',
-                'DAÑO',
-                'VENCIMIENTO',
-                'REGULARIZACIÓN',
-            ],
+           
 
-             lote:" ",
+             lote:'',
              medida:"",
              estIt:"",
 
@@ -1132,13 +1136,22 @@
                (v && v.length <= 60) ||
                  "EL NOMBRE DEL ALMACÉN NO DEBE SOBREPASAR LOS 60 CARACTERES.",
              ],
+
+             cantidadRules: [
+               (v) => !!v || "SE REQUIERE LA CANTIDAD.",
+               (v) => Number(v) >= 0 || "LA CANTIDAD DEBE SER MAYOR A 0."
+             ],
+
+
              cantidadSalidaRules: [
                (v) => !!v || "SE REQUIERE LA CANTIDAD.",
+               (v) => Number(v) >= 0 || "LA CANTIDAD DEBE SER MAYOR A 0.",
                (v) => ( Number(v) >= 1 && Number(v) <= this.cantidadMaximaItem ) || 'EL NÚMERO NO DEBE SOBREPASAR '+ this.cantidadMaximaItem,
              ],
 
              cantidadEntradaRules: [
                (v) => !!v || "SE REQUIERE LA CANTIDAD.",
+               (v) => Number(v) >= 0 || "LA CANTIDAD DEBE SER MAYOR A 0.",
                (v) => ( Number(v) >= 1 && Number(v) <= this.cantidadMaxima ) || 'EL NÚMERO NO DEBE SOBREPASAR '+ this.cantidadMaxima,
              ],
 
@@ -1149,14 +1162,18 @@
             ],
 
             limiteRules: [
-                (v) => !!v || "EL LIMITE ES OBLIGATORIO.",
-                (v) => parseFloat(v) >= 0 || "EL LIMITE DEBE SER MAYOR A 0.",
+                (v) => !!v || "EL LÍMITE ES OBLIGATORIO.",
+                (v) => parseFloat(v) >= 0 || "EL LÍMITE DEBE SER MAYOR A 0.",
                 (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO."
             ],
                         
             descripcionRules: [
                 (v) => !!v || "SE REQUIERE LA DESCRIPCIÓN.",
                 (v) => (v === null || v.length <= 150) || "LA DESCRIPCIÓN NO DEBE SUPERAR LOS 150 CARACTERES.",
+            ],
+            motivoRules: [
+                (v) => !!v || "EL MOTIVO ES OBLIGATORIO PARA CONTINUAR CON EL FORMULARIO.",
+             
             ],
             referenciaRules: [
                 (v) => !!v || "SE REQUIERE LA REFERENCIA.",
@@ -1166,7 +1183,7 @@
                 (v) => (v === null || v.length <= 100) || "LA REFERENCIA NO DEBE SUPERAR LOS 100 CARACTERES.",
             ],
              phone1Rules: [
-               (v) => !!v || "SE REQUIERE UN NUMERO TELEFONICO O CELULAR.",
+               (v) => !!v || "SE REQUIERE UN NÚMERO TELEFONICO O CELULAR.",
                (v) =>
                (v && v.length <= 10) ||
                  "EL TELEPHONO PRINCIPAL DEBE TENER HASTA 10 CARACTERES.",
@@ -1180,17 +1197,31 @@
                (v) => !!v || "SE REQUIERE EL CORREO ELECTRONICO DEL PROVEEDOR.",
                (v) => /.+@.+\..+/.test(v) || "DEBE SER UN CORREO ELECTRONICO VALIDO.",
               ],
+
+            costoRules: [
+                (v) => !!v || "EL COSTO UNITARIO ES REQUERIDO.",
+                (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO.",
+                (v) => v > 0 || "EL COSTO UNITARIO DEBE SER MAYOR QUE 0.",
+            ],
              datosInventario: [],
              headerInventario: [
                  
-                 { text: "NUMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
+                 { text: "NÚMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
+                 { text: "SKU", value: "sku", sortable: true },
                  { text: "ÍTEM", value: "nombreitem", sortable: true },
+                 { text: "CATEGORÍA", value: "nombrecategoria", sortable: true },
+                 { text: "SUBCATEGORÍA", value: "nombresubcategoria", sortable: true },
+                 { text: "PROVEEDOR", value: "nombreproveedor", sortable: true },
+                 { text: "CATEGORÍA DE PROVEEDOR", value: "nombrecategoriaproveedor", sortable: true },
                  { text: "ALMACÉN", value: "nombrealmacen", sortable: true },
                  { text: "MOVIMIENTO", value: "movimiento", sortable: true },
+                 { text: "MOTIVO", value: "motivo", sortable: true },
+                 { text: "REFERENCIA", value: "referencia", sortable: true },
+                 { text: "LOTE", value: "lote", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
-                 { text: "METODO DE VALUACIÓN", value: "metodoValuacion", sortable: true },
+                 { text: "MÉTODO DE VALUACIÓN", value: "metodoValuacion", sortable: true },
                  //{ text: "ESTADO", value: "estado", sortable: true },
-                 //{ text: "ACCIONES", value: "actions", sortable: false }
+                 //{ text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
@@ -1202,7 +1233,7 @@
                 { text: "DESCRIPCIÓN DE ALMACÉN", value: "descripcion", sortable: true },
                 { text: "CÓDIGO ALMACÉN", value: "codigo", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
             searchAlmacen: "",
@@ -1218,8 +1249,8 @@
                 { text: "CÓDIGO ALMACÉN", value: "codigo", sortable: true },
                 { text: "NOMBRE DE ALMACÉN", value: "nombrealmacen", sortable: true },
                 { text: "TOTAL", value: "total", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false },
-                //{ text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false },
+                //{ text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
             searchStockAlmacen: "",
@@ -1256,10 +1287,10 @@
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
-                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
-                 { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
+                 { text: "LÍMITE CRÍTICO", value: "limite", sortable: true },
+                 { text: "MÉTODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
  
@@ -1269,7 +1300,7 @@
                  
                  { text: "NOMBRE DE TIPO DE ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
@@ -1281,11 +1312,11 @@
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
-                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
-                 { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
+                 { text: "LÍMITE CRÍTICO", value: "limite", sortable: true },
+                 { text: "MÉTODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
              searchItemDisponibles: "",
@@ -1302,7 +1333,7 @@
                  { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
@@ -1313,10 +1344,10 @@
                  { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
-                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
-                 { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
+                 { text: "LÍMITE CRÍTICO", value: "limite", sortable: true },
+                 { text: "MÉTODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
              searchItemAlmacen: "",
@@ -1362,9 +1393,9 @@
                  { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
-                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
+                 { text: "LÍMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
              ],
              datosSaldoAlmacenItem: [],
              headerSaldoAlmacenItem: [
@@ -1378,7 +1409,33 @@
              //#endregion
          }
      },
-     created: function (){
+     computed:{
+        motivoSugerencias() {
+            if (this.movimiento === 'ENTRADA') {
+            return [
+                { text: 'RECEPCIÓN COMPRAS', value: 'RECEPCIÓN COMPRAS' },
+                { text: 'RECEPCIÓN', value: 'RECEPCIÓN' },
+                { text: 'DEVOLUCIÓN CLIENTE', value: 'DEVOLUCIÓN CLIENTE' },
+                { text: 'AJUSTE DE INVENTARIO (+)', value: 'AJUSTE DE INVENTARIO (+)' },
+                { text: 'TRASLADO INTERNO (ENTRADA)', value: 'TRASLADO INTERNO (ENTRADA)' },
+                { text: 'REGULARIZACIÓN', value: 'REGULARIZACIÓN' },
+            ]
+            }
+            if (this.movimiento === 'SALIDA') {
+            return [
+                { text: 'DEVOLUCIÓN PROVEEDOR', value: 'DEVOLUCIÓN PROVEEDOR' },
+                { text: 'AJUSTE DE INVENTARIO (-)', value: 'AJUSTE DE INVENTARIO (-)' },
+                { text: 'TRASLADO INTERNO (SALIDA)', value: 'TRASLADO INTERNO (SALIDA)' },
+                { text: 'CONSUMO / PRODUCCIÓN', value: 'CONSUMO / PRODUCCIÓN' },
+                { text: 'VENCIMIENTO / DAÑO', value: 'VENCIMIENTO / DAÑO' },
+                { text: 'REGULARIZACIÓN', value: 'REGULARIZACIÓN' },
+            ]
+            }
+            return []
+        }
+    },
+    
+    created: function (){
        this.listarInventario();
        this.listarItem();
        this.listarTipoItem();
@@ -1483,18 +1540,19 @@
              });
          },
 
-
-         
-
-         registrarInv() {
-           /* if(this.movimiento == 'SALIDA'){
-                this.registrarInventarioSalida(this.idItem, this.movimiento,this.cantidad,this.metodovaluacion, this.estado);
-            }
-            else{*/
-                if (this.$refs.form.validate()) {
-                this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
+        registrarInv() {
+            if (this.$refs.form.validate()) {
+                if (this.motivo.value == 'RECEPCIÓN') {
+                    this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
                 }
-            //}
+                else{
+                    this.registarRevalorarizacionItem(this.idItem, this.valor)
+                    .then(() => {
+                        this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
+                    })
+                }
+               
+            }
         },
         async registrarInventarioEntrada(
             idItem,
@@ -1517,11 +1575,11 @@
                     "," +
                     this.estado +
                     "," +
-                    this.refencia +
+                    this.referencia +
                     "," +
-                    this.lote +
+                    this.motivo.value +
                     "," +
-                    this.motivo
+                    this.lote
                 )
                 .then(function (response) {
 
@@ -1561,7 +1619,7 @@
                     "," +
                     this.estado +
                     "," +
-                    this.refencia +
+                    this.referencia +
                     "," +
                     this.lote +
                     "," +
@@ -1679,7 +1737,6 @@
                     me.snackbarOK = true;
                     me.closeRevalorizarInventarioModal();
                     me.listaritemactivo();
-                    me.limpiar();
                 })
                 .catch(function (error) {
                     me.snackbarError = true;
@@ -1761,9 +1818,18 @@
              this.listarItemsDisponibles();
          },
          async listarItemsDisponibles() {
+            let response = "";
+            if (this.movimiento == 'ENTRADA') {
+                if(this.motivo.value == 'RECEPCIÓN'){
+                    response = "/inventario/listaritemdisponibles/";
+                }
+                else{
+                    response = "/inventario/listaritemdisponiblesInventario/";
+                }
+            }
            let me = this;
            await axios
-             .get("/inventario/listaritemdisponibles/")
+             .get(response)
              .then(function (response) {
                if (response.data.resultado == null) {
                  me.datosItemDisponibles = [];
@@ -2322,7 +2388,6 @@
 
         closeRevalorizarInventarioModal(){
             this.revalorizarInventario = false;
-            this.limpiar();
         },
 
 
@@ -2496,7 +2561,8 @@
 
 
         limpiar () {
-            this.$refs.form.reset()
+            this.$refs.form.reset();
+            this.motivo='';
         },
 
 

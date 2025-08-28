@@ -327,11 +327,7 @@
               <h6>ADQUISICIONES</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'AprobarAdquisicion' }"v-if="checkAccess(9, 'GERENTE')">
-            <v-list-item-title>
-              <h6>REVISAR ADQUISICIONES</h6>
-            </v-list-item-title>
-          </v-list-item>
+      
         </v-list-group>
         
         <v-list-group no-action color="light-blue darken-4" value="true" v-if="checkAccess(10, '0') || checkAccess(10, 'GERENTE')">
@@ -423,6 +419,48 @@
 
     <v-app-bar color="#00A1B1" app>
       <v-app-bar-nav-icon  v-if="logueado" color="white" @click="drawer = !drawer"></v-app-bar-nav-icon>
+        <div text-h6 ml-2>
+          <v-menu 
+                  left
+                  bottom
+                  offset-y
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  content-class="notif-menu"  
+                >
+
+                  <template  v-if="logueado" v-slot:activator="{ on, attrs }">
+                    <v-btn icon v-bind="attrs" v-on="on" @click="listarAlerta()" title="VER ALERTAS" color="white">
+                      <v-icon>mdi-bell</v-icon>
+
+                    </v-btn>
+                  </template>
+
+                  <v-card width="400" class="rounded-lg">
+                    <v-card-title class="text-subtitle-1 font-weight-bold">ALERTAS</v-card-title>
+                    <v-divider />
+                    <v-list two-line style="max-height: 380px; overflow-y: auto;">
+                      <v-list-item v-for="(data,i) in datosAlerta" :key="i">
+                        <v-list-item-avatar size="128">
+                          <v-img :src="axios.defaults.baseURL+'documento/descargarImagen/'+data.nombredoc" cover />
+                        </v-list-item-avatar>
+                        <v-list-item-content>
+                          <v-list-item-title class="font-weight-medium">{{ data.title }}</v-list-item-title>
+                          <v-list-item-subtitle>{{ data.description }}</v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item v-if="!datosAlerta || !datosAlerta.length">
+                        <v-list-item-content>
+                          <v-list-item-title class="text-grey--text">NO SE TIENEN ALERTAS</v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                  </v-card>
+                </v-menu>
+        </div>
+       
+      <v-spacer></v-spacer>
       <v-btn v-if="logueado" class="mx-6"  dark x-medium color="#007B88" @click="salir()" style="float:left;" variant="text"
        title="CERRAR SESIÓN">
         <v-icon dark>mdi-door-closed-lock</v-icon>
@@ -461,13 +499,21 @@
 
 <script>
 import Login from './components/Login.vue';
-
+import axios from "axios";
 export default {
   name: 'App',
   data: () => ({
     loginModal: false,
     drawer: false,
-    user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '', id_fabrica: 0, }
+    user: { id_usuario: 0, usuario: '', accesos: [], tipo: '', nombres: '', paterno: '', materno: '', id_fabrica: 0, },
+
+    datosAlerta: [],
+    searchAlerta: '',
+    headerAlerta: [
+      { text: "TITULO", value: "title", sortable: true },
+      { text: "DESCRIPCIÓN", value: "description", sortable: true },
+      { text: "IMAGEN", value: "iddoc", sortable: true },
+    ],
   }),
   components: {
     Login
@@ -481,7 +527,7 @@ export default {
     }
   },
   created: function () {
-
+    this.listarAlertas();
     if (this.user != null) {
       this.user = JSON.parse(sessionStorage.getItem('session'));
     }
@@ -520,6 +566,27 @@ export default {
       }
 
     },
+     listarAlerta() {
+            this.listarAlertas();
+        },
+        async listarAlertas() {
+            let me = this;
+            await axios
+                .get("/empleado/listarAlertas/")
+                .then(function (response) {
+                    if (response.data == null) {
+                        me.datosAlerta = [];
+                        
+                    } else {
+                        console.log(response.data);
+                        me.datosAlerta = response.data.resultado.reverse();
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+    },
+
     salir() {
       sessionStorage.clear();
       this.user = null;

@@ -283,8 +283,7 @@ export default {
                 const response = await axios.get(`/venta/listardetalle/` + item.idven);
                 const jsonData = response.data.resultado || [];
 
-                const qrUrl = await QRCode.toDataURL(
-                `https://siat.impuestos.gob.bo/consulta/QR`,{ margin: 1, width: 40 * 4 } )
+             
 
                 var total = 0
                 jsonData.forEach(detalle => {
@@ -301,7 +300,7 @@ export default {
                 const doc = new jsPDF();
 
                 doc.setFontSize(12);
-                doc.text("Proforma", 105, 20, { align: "center" });
+                doc.text("PROFORMA", 105, 20, { align: "center" });
                 doc.text("CON DERECHO A CREDITO FISCAL", 105, 30, { align: "center" });
                 doc.text("Drymix Bolivia SRL.", 105, 40, { align: "center" });
                 doc.setFontSize(11);
@@ -344,17 +343,13 @@ export default {
                 startY += 40;
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "normal");
-                doc.text("ESTA Proforma CONTRIBUYE AL DESARROLLO DE NUESTRO PAÍS, EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LEY", 105, startY, { align: "center" });
-                doc.text("Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los servicios que utilices.", 105, startY + 10, { align: "center" });
+               
                 
                 var pageWidth = doc.internal.pageSize.getWidth();                     
                 var qrX = (pageWidth - 40) / 2;          
                 startY += 20;  
                 
-                doc.addImage(qrUrl,
-                'PNG',
-                qrX,
-                startY );
+
 
                 doc.save("Proforma_" + this.getFormattedDateTime(item.creadate) + ".pdf");
             } catch (error) {

@@ -95,7 +95,7 @@
         <v-dialog v-model="fabricasModal" persistent max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE FABRICAS</span>
+                    <span>LISTA DE FÁBRICAS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -103,13 +103,13 @@
                             <v-col cols="12">
                                 <v-list-item>
                                     <v-list-item-title class="text-center">
-                                        <h5>FABRICAS</h5>
+                                        <h5>FÁBRICAS</h5>
                                     </v-list-item-title>
                                 </v-list-item>
 
                                 <v-card-title>
                                     <v-text-field v-model="buscarFabricas" append-icon="mdi-magnify"
-                                        label="BUSCAR FABRICAS" single-line hide-details></v-text-field>
+                                        label="BUSCAR FÁBRICAS" single-line hide-details></v-text-field>
                                 </v-card-title>
 
 
@@ -148,7 +148,7 @@
         <v-dialog v-model="infoProductoModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>INFORMACION DEL PRODUCTO:</span><br>
+                    <span>INFORMACIÓN DEL PRODUCTO:</span><br>
                     <span>{{ nombreProducto }}</span>
                 </v-card-title>
                 <v-card-text>
@@ -162,7 +162,7 @@
                                         disabled></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="codigoProducto" label="CODIGO PRODUCTO" :counter="100"
+                                    <v-text-field v-model="codigoProducto" label="CÓDIGO PRODUCTO" :counter="100"
                                         :rules="codigoProductoRules"
                                         @input="codigoProducto = codigoProducto.toUpperCase()" required
                                         disabled></v-text-field>
@@ -179,7 +179,7 @@
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="nombreFabrica" label="NOMBRE FABRICAS" :counter="50"
+                                    <v-text-field v-model="nombreFabrica" label="NOMBRE FÁBRICA" :counter="50"
                                         :rules="nombreFabricaRules" @input="nombreFabrica = nombreFabrica.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
@@ -217,7 +217,7 @@
                                         @input="nombreProducto = nombreProducto.toUpperCase()" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="codigoProducto" label="CODIGO PRODUCTO" :counter="100"
+                                    <v-text-field v-model="codigoProducto" label="CÓDIGO PRODUCTO" :counter="100"
                                         :rules="codigoProductoRules"
                                         @input="codigoProducto = codigoProducto.toUpperCase()" required></v-text-field>
                                 </v-col>
@@ -247,14 +247,13 @@
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" :disabled="botonAct == 1" fab dark x-small color="cyan"
-                                        :rules="fabricaRules" @click="showFabricas()" style="float: right"
-                                        title="BUSCAR FABRICAS">
+                                    <v-btn class="mx-2" :disabled="botonAct == 1" fab dark x-small color="cyan" :rules="fabricaRules"
+                                        @click="showFabricas()" style="float: right" title="BUSCAR FÁBRICAS">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="3">
-                                    <v-text-field v-model="nombreFabrica" label="NOMBRE FABRICAS" :counter="50"
+                                    <v-text-field v-model="nombreFabrica" label="NOMBRE FÁBRICAS" :counter="50"
                                         :rules="nombreFabricaRules" @input="nombreFabrica = nombreFabrica.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
@@ -356,7 +355,7 @@
                                                         </v-col>
                                                         <v-col cols="12" md="4">
                                                             <v-text-field v-model="codigoProducto"
-                                                                label="CODIGO PRODUCTO" :counter="100"
+                                                                label="CÓDIGO PRODUCTO" :counter="100"
                                                                 :rules="codigoProductoRules"
                                                                 @input="codigoProducto = codigoProducto.toUpperCase()"
                                                                 required></v-text-field>
@@ -391,13 +390,13 @@
                                                         <v-col cols="12" md="1">
                                                             <v-btn class="mx-2" fab dark x-small color="cyan"
                                                                 :rules="fabricaRules" @click="showFabricas()"
-                                                                style="float: right" title="BUSCAR FABRICAS">
+                                                                style="float: right" title="BUSCAR FÁBRICA">
                                                                 <v-icon dark> mdi-magnify </v-icon>
                                                             </v-btn>
                                                         </v-col>
                                                         <v-col cols="12" md="3">
                                                             <v-text-field v-model="nombreFabrica"
-                                                                label="NOMBRE FABRICAS" :counter="50"
+                                                                label="NOMBRE FÁBRICA" :counter="50"
                                                                 :rules="nombreFabricaRules"
                                                                 @input="nombreFabrica = nombreFabrica.toUpperCase()"
                                                                 disabled required></v-text-field>
@@ -501,12 +500,12 @@
                                                                     </v-icon>
                                                                     <v-icon class="mx-2" large color="#0A62BF"
                                                                         @click="showEditarProducto(item)"
-                                                                        title="ACTUALIZAR INFORMACION">
+                                                                        title="ACTUALIZAR INFORMACIÓN">
                                                                         mdi-pencil
                                                                     </v-icon>
                                                                     <v-icon class="mx-2" large color="#0A62BF"
                                                                         @click="showInfoProducto(item)"
-                                                                        title="VER INFORMACION">
+                                                                        title="VER INFORMACIÓN">
                                                                         mdi-eye
                                                                     </v-icon>
                                                                 </template>
@@ -538,7 +537,7 @@
 
                                                             <v-card-title>
                                                                 <v-text-field v-model="buscarproductos"
-                                                                    append-icon="mdi-magnify" label="BUSCAR productoS"
+                                                                    append-icon="mdi-magnify" label="BUSCAR PRODUCTOS"
                                                                     single-line hide-details></v-text-field>
                                                             </v-card-title>
                                                             <v-data-table :headers="headersProductoInh"
@@ -555,17 +554,17 @@
                                                                 <template #[`item.actions`]="{ item }">
                                                                     <v-icon v-if="item.est == 'INACTIVO'" color="green"
                                                                         large class="mr-2" @click="activar(item)"
-                                                                        title="ACTIVAR productoS">
+                                                                        title="ACTIVAR PRODUCTO">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
                                                                     <v-icon v-if="item.est == 'ACTIVO'" color="red"
                                                                         large class="mr-2" @click="desactivar(item)"
-                                                                        title="DESACTIVAR productoS">
+                                                                        title="DESACTIVAR PRODUCTO">
                                                                         mdi-cancel
                                                                     </v-icon>
                                                                     <v-icon large class="mr-2" color="#0A62BF"
                                                                         @click="showInfoProducto(item)"
-                                                                        title="VER INFORMACION">
+                                                                        title="VER INFORMACIÓN">
                                                                         mdi-eye
                                                                     </v-icon>
                                                                 </template>
@@ -640,14 +639,14 @@ export default {
             datosProducto: [],
             headersProducto: [
                 { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
-                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
+                { text: "CÓDIGO DE PRODUCTO", value: "codprod", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
             datosProductoInh: [],
             headersProductoInh: [
                 { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
-                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
+                { text: "CÓDIGO DE PRODUCTO", value: "codprod", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -660,7 +659,7 @@ export default {
             datosFormatos: [],
             headersFormatos: [
                 { text: "NOMBRE FORMATO", value: "nomforma", sortable: false },
-                { text: "CODIGO FORMATO", value: "codforma", sortable: false },
+                { text: "CÓDIGO FORMATO", value: "codforma", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -674,8 +673,8 @@ export default {
             datosTipos: [],
             headersTipos: [
                 { text: "NOMBRE T.PRODUCTO", value: "nomtipo", sortable: false },
-                { text: "CODIGO T.PRODUCTO", value: "codtipo", sortable: false },
-                { text: "NOMBRE producto", value: "nomlin", sortable: false },
+                { text: "CÓDIGO T.PRODUCTO", value: "codtipo", sortable: false },
+                { text: "NOMBRE PRODUCTO", value: "nomlin", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -687,8 +686,8 @@ export default {
             codigoFabrica: "",
             datosFabrica: [],
             headersFabrica: [
-                { text: "NOMBRE FABRICA", value: "nomfab", sortable: false },
-                { text: "CODIGO FABRICA", value: "codfab", sortable: false },
+                { text: "NOMBRE FÁBRICA", value: "nomfab", sortable: false },
+                { text: "CÓDIGO FÁBRICA", value: "codfab", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
