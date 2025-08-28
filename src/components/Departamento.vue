@@ -256,10 +256,10 @@ export default {
         headersDepartamento: [
             { text: "DEPARTAMENTO", value: "nom" },
             { text: "UNIDAD", value: "unid" },
-            { text: "AREA", value: "area" },
+            { text: "ÁREA", value: "area" },
             { text: "ESTADO", value: "act" },
-            { text: "FECHA CREACION", value: "credte" },
-            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte" },
+            { text: "FECHA CREACIÓN", value: "credte" },
+            { text: "ÚLTIMA ACTUALIZACIÓN", value: "upddte" },
             { text: "OPCIONES", value: "actions", sortable: false },
         ],
 

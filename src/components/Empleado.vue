@@ -30,8 +30,8 @@
         <v-dialog v-model="empleadoModal" max-width="1080px" lazy-validation persistent> <!-- Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nuevo Empleado</span>
-                    <span v-if="botonAct == 1">Editar Empleado</span>
+                    <span v-if="botonAct == 0">NUEVO EMPLEADO</span>
+                    <span v-if="botonAct == 1">EDITAR EMPLEADO</span>
                 </v-card-title>
                 <v-card-text>
 
