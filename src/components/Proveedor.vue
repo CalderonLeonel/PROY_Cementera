@@ -527,7 +527,7 @@ export default {
                 { text: "CORREO DE PROVEEDOR", value: "croprov", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
                 { text: "ARCHIVO", value: "arch", sortable: false },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
@@ -543,7 +543,7 @@ export default {
             datoscategoria: [],
             headerCategoria: [  
                  { text: "CATEGORÍA", value: "categoria", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 

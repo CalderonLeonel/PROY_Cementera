@@ -779,7 +779,7 @@ export default {
                 { text: "FECHA VENCIMIENTO", value: "fechaVencimiento", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ARCHIVO", value: "archivo", sortable: false },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
@@ -796,7 +796,7 @@ export default {
                 { text: "FECHA VENCIMIENTO", value: "fechaVencimiento", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
                 { text: "ARCHIVO", value: "archivo", sortable: false },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
@@ -808,7 +808,7 @@ export default {
                 //{ text: "UNIDAD", value: "unidad", sortable: false },
                 { text: "PRECIO UNITARIO", value: "precioUnitario", sortable: true },
                 { text: "CANTIDAD", value: "cantidad", sortable: false },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
@@ -837,7 +837,7 @@ export default {
                  { text: "PROVEEDOR", value: "proveedor", sortable: true },
                  { text: "FECHA EXP.", value: "fechaexp", sortable: true },
                  { text: "COSTO REF", value: "costoref", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
@@ -861,7 +861,7 @@ export default {
                 { text: "CONTACTO SECUNDARIO DE PROVEEDOR", value: "cto2pro", sortable: true },
                 { text: "CORREO DE PROVEEDOR", value: "croprov", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 
