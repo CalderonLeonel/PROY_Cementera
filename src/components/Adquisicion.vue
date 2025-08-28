@@ -227,7 +227,7 @@
                     <v-form ref="form" v-model="valid" lazy-validation>
                         <v-container>
                             <v-row>
-                                <v-col cols="12" md="1">
+                                <v-col cols="12" md="1" v-if="botonactCot != 1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreRules"
                                         @click="openProveedorModal()" style="float: right" title="BUSCAR PROVEEDOR">
                                         <v-icon dark> mdi-magnify </v-icon>
@@ -235,13 +235,13 @@
                                 </v-col>
                                 <v-col cols="12" md="3">
                                     <v-text-field v-model="nombreProveedor" label="NOMBRE PROVEEDOR" :counter="60"
-                                        :rules="nombreRules" @input="nombreProveedor = nombreProveedor.toUpperCase()"
+                                        :rules="nombreRules" @input="val => nombreProveedor  = (val ?? '').toString().toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="12" md="8">
                                     <v-text-field v-model="nombreCotizacion" label="NOMBRE DE LA COTIZACIÓN"
-                                        :counter="100" @input="nombreCotizacion = nombreCotizacion.toUpperCase()"
+                                        :counter="100" @input="val => nombreCotizacion  = (val ?? '').toString().toUpperCase()"
                                         :rules="nombreCotizacionRules" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
@@ -276,12 +276,12 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-col cols="2">
-                                            <v-btn icon v-if="botonactCot == 1 && checkAccess(9, 'SUPERVISOR')" color="#0A62BF"
+                                            <v-btn icon v-if="botonactCot == 1" color="#0A62BF"
                                                 @click="editarCotizacionAdq()" style="float: left"
                                                 title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
-                                            <v-btn icon v-if="botonactCot == 0 && checkAccess(9, 'SUPERVISOR')" color="#0ABF55"
+                                            <v-btn icon v-if="botonactCot == 0" color="#0ABF55"
                                                 @click="registrarCotizacionAdq()" style="float: left"
                                                 title="REGISTRAR COTIZACIÓN DE ADQUISICIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
@@ -435,7 +435,7 @@
         <v-dialog v-model="proveedorModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE TIPO DE PROVEEDORES ACTIVOS</span>
+                    <span>LISTA PROVEEDORES ACTIVOS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -499,14 +499,14 @@
 
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" v-if="botonactCotIt == 0" fab dark x-small color="cyan" :disabled='nombreCotizacion==null' 
-                                        :rules="nombreRules" @click="openItemModal()" style="float: right"
+                                         @click="openItemModal()" style="float: right"
                                         title="BUSCAR ITEM">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="11">
                                     <v-text-field v-model="nombreItem" label="NOMBRE ITEM" :counter="60" :disabled='nombreCotizacion==null'
-                                        :rules="nombreItemRules" @input="nombreItem = nombreItem.toUpperCase()" disabled
+                                        :rules="nombreItemRules" @input="val => nombreItem  = (val ?? '').toString().toUpperCase()" disabled
                                         required></v-text-field>
                                 </v-col>
 
@@ -1058,7 +1058,10 @@ export default {
         async listarItems() {
             let me = this;
             await axios
-                .get("/inventario/listaritemactivo/")
+                .get("/adquisicion/listaritemcotizacion/"+
+                    this.idCotizacion +
+                    "," +
+                    this.idProveedor)
                 .then(function (response) {
                     if (response.data.resultado == null) {
                         me.datosItem = [];
@@ -1683,6 +1686,7 @@ export default {
 
 
         showModalAgregarCotizacionAdquisicion() {
+            this.botonactCot = 0;
             this.agregarCotizacionAdquisicionModal = true;
         },
         closeModalAgregarCotizacionAdquisicion() {
@@ -1695,7 +1699,7 @@ export default {
         agregarItem(item){
             this.idCotizacion = item.idCotizacion;
             this.nombreCotizacion = item.nombreCotizacion;
-         
+            this.idProveedor = item.idProveedor;
             this.agregarCotizacionItemModal = true;
         },
 
