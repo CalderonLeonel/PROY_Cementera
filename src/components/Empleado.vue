@@ -79,8 +79,8 @@
 
                                             </v-text-field>
                                         </template>
-                                        <v-date-picker v-model="fechaNacimiento"
-                                            @input="datePicker = false"></v-date-picker>
+                                        <v-date-picker v-model="fechaNacimiento" locale="es" :picker-date="fechaNacimiento || getMinWorkAge()"
+                                            @input="datePicker = false" :max="getMinWorkAge()"></v-date-picker>
                                     </v-menu>
                                 </v-col>
                                 <v-col cols="12" md="12">
@@ -377,6 +377,20 @@ export default {
     },
 
     methods: {
+
+        getMinWorkAge(){
+            const today = new Date();
+
+            const minBirthdate = new Date(
+                today.getFullYear() - 18,
+                today.getMonth(),
+                today.getDate()
+            );
+
+            const minDate = minBirthdate.toISOString().split("T")[0]
+            return minDate;
+        },
+
         goToEmpleadoPerfil(item) {
             this.$router.push({ name: 'Perfil', params: item })
         },
