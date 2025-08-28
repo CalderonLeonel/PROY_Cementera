@@ -496,8 +496,10 @@ export default {
         generarDatosUsuario(item) {
             let min = Math.ceil(1000);
             let max = Math.floor(10000);
+            let min2 = Math.ceil(10000000);
+            let max2 = Math.floor(100000000);
             this.nombreUsuario = item.nom[0] + item.pat[0] + (Math.floor(Math.random() * (max - min) + min));
-            this.password = (Math.floor(Math.random() * (max - min) + min)) + Math.floor(Math.random() * (max - min) + min);
+            this.password = (Math.floor(Math.random() * (max2 - min2) + min2));
             console.log(this.nombreUsuario);
             console.log(this.password);
         },
