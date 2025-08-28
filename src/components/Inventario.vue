@@ -463,7 +463,7 @@
                                 </v-col>
                                 <v-col cols="12" md="11" v-if="movimiento!=null">
                                     <v-text-field v-model="referencia" label="REFERENCIA"
-                                        :rules="referenciaRules" @input="referencia = referencia.toUpperCase()" :disabled='nombreItem=="" && motivo==""' hint="EJM: FA-3458014 - NUMERO DE FACTURA O GUIA, ETC"
+                                        :rules="referenciaRules" @input="referencia = referencia.toUpperCase()" :disabled='nombreItem=="" && motivo==""' hint="EJM: FA-3458014 - NÚMERO DE FACTURA O GUIA, ETC"
                                          required></v-text-field>
                                 </v-col>
                                
@@ -689,13 +689,13 @@
                                     </v-btn>
                                 </v-col> 
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="limitecritico" label="LIMITE CRÍTICO" type="number" :counter="25"
+                                    <v-text-field v-model="limitecritico" label="LÍMITE CRÍTICO" type="number" :counter="25"
                                          @input="limitecritico = limitecritico" :rules="limiteRules"
                                         required></v-text-field>
                                 </v-col> 
                                 <v-col cols="12" md="4">
                                     <v-select
-                                    label="METODO VALUACION" v-model="metodoValuacion" @input="metodoValuacion = metodoValuacion.toUpperCase()" required
+                                    label="MÉTODO VALUACION" v-model="metodoValuacion" @input="metodoValuacion = metodoValuacion.toUpperCase()" required
                                     :items="['PEPS', 'UEPS', 'PROMEDIO PONDERADO']"
                                     :rules="[v => !!v || 'El Metodo de Valuación es requerido']"
                                     ></v-select>
@@ -1162,8 +1162,8 @@ import Alerta from "./Alerta.vue";
             ],
 
             limiteRules: [
-                (v) => !!v || "EL LIMITE ES OBLIGATORIO.",
-                (v) => parseFloat(v) >= 0 || "EL LIMITE DEBE SER MAYOR A 0.",
+                (v) => !!v || "EL LÍMITE ES OBLIGATORIO.",
+                (v) => parseFloat(v) >= 0 || "EL LÍMITE DEBE SER MAYOR A 0.",
                 (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO."
             ],
                         
@@ -1183,7 +1183,7 @@ import Alerta from "./Alerta.vue";
                 (v) => (v === null || v.length <= 100) || "LA REFERENCIA NO DEBE SUPERAR LOS 100 CARACTERES.",
             ],
              phone1Rules: [
-               (v) => !!v || "SE REQUIERE UN NUMERO TELEFONICO O CELULAR.",
+               (v) => !!v || "SE REQUIERE UN NÚMERO TELEFONICO O CELULAR.",
                (v) =>
                (v && v.length <= 10) ||
                  "EL TELEPHONO PRINCIPAL DEBE TENER HASTA 10 CARACTERES.",
@@ -1206,7 +1206,7 @@ import Alerta from "./Alerta.vue";
              datosInventario: [],
              headerInventario: [
                  
-                 { text: "NUMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
+                 { text: "NÚMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
                  { text: "SKU", value: "sku", sortable: true },
                  { text: "ÍTEM", value: "nombreitem", sortable: true },
                  { text: "CATEGORÍA", value: "nombrecategoria", sortable: true },
@@ -1219,9 +1219,9 @@ import Alerta from "./Alerta.vue";
                  { text: "REFERENCIA", value: "referencia", sortable: true },
                  { text: "LOTE", value: "lote", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
-                 { text: "METODO DE VALUACIÓN", value: "metodoValuacion", sortable: true },
+                 { text: "MÉTODO DE VALUACIÓN", value: "metodoValuacion", sortable: true },
                  //{ text: "ESTADO", value: "estado", sortable: true },
-                 //{ text: "ACCIONES", value: "actions", sortable: false }
+                 //{ text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
@@ -1233,7 +1233,7 @@ import Alerta from "./Alerta.vue";
                 { text: "DESCRIPCIÓN DE ALMACÉN", value: "descripcion", sortable: true },
                 { text: "CÓDIGO ALMACÉN", value: "codigo", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
             searchAlmacen: "",
@@ -1249,8 +1249,8 @@ import Alerta from "./Alerta.vue";
                 { text: "CÓDIGO ALMACÉN", value: "codigo", sortable: true },
                 { text: "NOMBRE DE ALMACÉN", value: "nombrealmacen", sortable: true },
                 { text: "TOTAL", value: "total", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false },
-                //{ text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false },
+                //{ text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
             searchStockAlmacen: "",
@@ -1287,10 +1287,10 @@ import Alerta from "./Alerta.vue";
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
-                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
-                 { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
+                 { text: "LÍMITE CRÍTICO", value: "limite", sortable: true },
+                 { text: "MÉTODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
  
@@ -1300,7 +1300,7 @@ import Alerta from "./Alerta.vue";
                  
                  { text: "NOMBRE DE TIPO DE ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
@@ -1312,11 +1312,11 @@ import Alerta from "./Alerta.vue";
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
-                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
-                 { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
+                 { text: "LÍMITE CRÍTICO", value: "limite", sortable: true },
+                 { text: "MÉTODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
              searchItemDisponibles: "",
@@ -1333,7 +1333,7 @@ import Alerta from "./Alerta.vue";
                  { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
@@ -1344,10 +1344,10 @@ import Alerta from "./Alerta.vue";
                  { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
-                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
-                 { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
+                 { text: "LÍMITE CRÍTICO", value: "limite", sortable: true },
+                 { text: "MÉTODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
              searchItemAlmacen: "",
@@ -1393,9 +1393,9 @@ import Alerta from "./Alerta.vue";
                  { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "TIPO ÍTEM", value: "nombretipoitem", sortable: true },
-                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
+                 { text: "LÍMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
              ],
              datosSaldoAlmacenItem: [],
              headerSaldoAlmacenItem: [

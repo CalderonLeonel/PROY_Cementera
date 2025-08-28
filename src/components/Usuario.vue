@@ -408,7 +408,7 @@ export default {
             { text: "ESTADO", value: "act" },
             { text: "FECHA CREACIÓN", value: "credte", sortable: false },
             { text: "ÚLTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
-            { text: "OPTIONS", value: "actions", sortable: false },
+            { text: "OPCIONES", value: "actions", sortable: false },
         ],
         headersEmpleado: [
             { text: "NOMBRES", value: "nom" },
