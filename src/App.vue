@@ -433,7 +433,7 @@
                   content-class="notif-menu"  
                 >
 
-                  <template v-slot:activator="{ on, attrs }">
+                  <template  v-if="logueado" v-slot:activator="{ on, attrs }">
                     <v-btn icon v-bind="attrs" v-on="on" @click="listarAlerta()" title="VER ALERTAS" color="white">
                       <v-icon>mdi-bell</v-icon>
 
