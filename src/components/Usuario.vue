@@ -496,8 +496,22 @@ export default {
         generarDatosUsuario(item) {
             let min = Math.ceil(1000);
             let max = Math.floor(10000);
+            const letters  = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            const numbers = "0123456789";
             this.nombreUsuario = item.nom[0] + item.pat[0] + (Math.floor(Math.random() * (max - min) + min));
-            this.password = (Math.floor(Math.random() * (max - min) + min)) + Math.floor(Math.random() * (max - min) + min);
+
+
+            let pass = ""
+            //10 caracteres entre letras y numeros
+            const complement = letters  + numbers;
+            for (let i = 0; i < 8; i++) {
+                pass += complement.charAt(Math.floor(Math.random() * complement.length));
+            }
+
+            //Contraseña aleatoria
+            this.password = pass.split('').sort(() => Math.random() - 0.5).join('');
+
+
             console.log(this.nombreUsuario);
             console.log(this.password);
         },
