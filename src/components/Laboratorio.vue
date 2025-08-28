@@ -551,6 +551,36 @@ export default {
             //#endregion
 
 
+            //#region Rules
+            nombreProductoRules: [
+                v => !!v || "El nombre del producto es obligatorio",
+                v => (v && v.length >= 3) || "Debe tener al menos 3 caracteres",
+                v => (v && v.length <= 100) || "No debe exceder 100 caracteres",
+            ],
+            codigoProductoRules: [
+                v => !!v || "El código del producto es obligatorio",
+                v => (v && v.length >= 2) || "Debe tener al menos 2 caracteres",
+                v => (v && v.length <= 50) || "No debe exceder 50 caracteres",
+                v => /^[A-Za-z0-9\-]+$/.test(v) || "Solo letras, números y guiones",
+            ],
+            nombreFormatoRules: [
+                v => !!v || "Debe seleccionar un formato",
+                v => (v && v.length <= 50) || "El nombre del formato no debe exceder 50 caracteres",
+            ],
+            nombreTipoProductoRules: [
+                v => !!v || "Debe seleccionar un tipo de producto",
+                v => (v && v.length <= 50) || "El nombre del tipo no debe exceder 50 caracteres",
+            ],
+            faseSeleccionadaRules: [
+                v => !!v || "Debe seleccionar una fase antes de listar productos",
+            ],
+            observacionesRules: [
+                v => !!v || "Debe ingresar una observación",
+                v => (v && v.length >= 5) || "Debe tener al menos 5 caracteres",
+                v => (v && v.length <= 500) || "No debe exceder 500 caracteres",
+            ],
+            //#endregion
+
         }
     },
 
