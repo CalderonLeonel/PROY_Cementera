@@ -180,9 +180,9 @@
                                                                 @input="medidad = medidad.toUpperCase()"></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" md="12">
-                                                            <v-textarea v-model="descripcion" filled label="DESCRIPCION"
+                                                            <v-textarea v-model="descripcion" filled label="DESCRIPCIÓN"
                                                                 auto-grow
-                                                                value="Ingrese la descripcion de la materia prima"></v-textarea>
+                                                                value="INGRESE LA DESCRIPCIÓN"></v-textarea>
                                                         </v-col>
                                                         <v-col cols="12" md="8"></v-col>
                                                         <v-col cols="12" md="4">
@@ -231,7 +231,7 @@
                                                         <v-col cols="12">
                                                             <v-list-item>
                                                                 <v-list-item-title class="text-center">
-                                                                    <h5> Materias Primas</h5>
+                                                                    <h5> MATERIAS PRIMAS</h5>
                                                                 </v-list-item-title>
                                                             </v-list-item>
 
@@ -293,7 +293,7 @@
                                                         <v-col cols="12">
                                                             <v-list-item>
                                                                 <v-list-item-title class="text-center">
-                                                                    <h5> Materias Primas</h5>
+                                                                    <h5> MATERIAS PRIMAS</h5>
                                                                 </v-list-item-title>
                                                             </v-list-item>
 
@@ -353,12 +353,12 @@
                                                 <v-container>
                                                     <v-row>
                                                         <v-col cols="12">
-                                                            <h2>Registrar Uso de Materias Primas por Producto</h2>
+                                                            <h2>REGISTRAR USO DE MATERIAS PRIMAS POR PRODUCTO</h2>
                                                         </v-col>
                                                         <v-col cols="12">
                                                             <v-list-item>
                                                                 <v-list-item-title class="text-center">
-                                                                    <h5>Lista de Productos</h5>
+                                                                    <h5>LISTA DE PRODUCTOS</h5>
                                                                 </v-list-item-title>
                                                             </v-list-item>
 
@@ -411,7 +411,7 @@
                                                 <v-container>
                                                     <v-row>
                                                         <v-col cols="12">
-                                                            <h2>Registrar Uso de Materias Primas por Producto</h2>
+                                                            <h2>REGISTRAR USO DE MATERIAS PRIMAS POR PRODUCTO</h2>
                                                         </v-col>
                                                         <v-col cols="12">
                                                             <v-list-item>
@@ -552,7 +552,7 @@ export default {
             datosMateriaP: [],
             headersMateriaP: [
                 { text: "NOMBRE MATERIA PRIMA", value: "nom", sortable: false },
-                { text: "DESCRIPCION", value: "des", sortable: false },
+                { text: "DESCRIPCIÓN", value: "des", sortable: false },
                 { text: "CANTIDAD", value: "cant", sortable: false },
                 { text: "MEDIDA", value: "med", sortable: false },
                 { text: "PROVEEDOR", value: "nomprov", sortable: false },
@@ -577,7 +577,7 @@ export default {
             datosProductos: [],
             headersProductos: [
                 { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
-                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
+                { text: "CÓDIGO DE PRODUCTO", value: "codprod", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -929,7 +929,7 @@ export default {
 
         agregarMateriaPrimaSeleccionada() {
             if (!this.cantidadSeleccionada || !this.medidaSeleccionada) {
-                console.error("Error: Debes ingresar cantidad y medida.");
+                console.error("ERROR: CANTIDAD O MEDIDA SON REQUERIDOS");
                 return;
             }
 
