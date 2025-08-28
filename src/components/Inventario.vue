@@ -1207,6 +1207,7 @@ import Alerta from "./Alerta.vue";
              headerInventario: [
                  
                  { text: "NUMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
+                 { text: "SKU", value: "sku", sortable: true },
                  { text: "ÍTEM", value: "nombreitem", sortable: true },
                  { text: "CATEGORÍA", value: "nombrecategoria", sortable: true },
                  { text: "SUBCATEGORÍA", value: "nombresubcategoria", sortable: true },

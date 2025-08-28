@@ -224,6 +224,7 @@
 import axios from "axios";
 import jsPDF from "jspdf";
 import QRCode from 'qrcode';
+import imgLogo from "./../assets/logodrymix.png";
 
 export default {
     data() {
@@ -323,58 +324,107 @@ export default {
     },
 
     methods: {
-        async generarPDFCarnet(empleadoData) {
-    try {
-        const doc = new jsPDF();
+        async generarPDFCarnet(empleadoData) { 
+            try {
+                const doc = new jsPDF({
+                    orientation: "landscape",
+                    unit: "mm",
+                    format: [85, 54] // tamaño estándar tarjeta ID
+                });
+                // Convertidor de Image to base64
+                const toBase64 = async (url) => {
+                    const response = await fetch(url);
+                    const blob = await response.blob();
+                    return new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result);
+                        reader.readAsDataURL(blob);
+                    });
+                };
 
-   
-        const primaryColor = [0, 161, 177]; 
-        const secondaryColor = [0, 0, 0];  
+                // Colores
+                const primaryColor = [0, 161, 177];
+                const secondaryColor = [255, 255, 255];
 
+                // Fondo con bordes redondeados
+                doc.setFillColor(...primaryColor);
+                doc.roundedRect(0, 0, 85, 54, 5, 5, "F");
 
-        doc.setFillColor(...primaryColor);
-        doc.rect(0, 0, 210, 20, 'F');
+                // Header blanco
+                doc.setFillColor(255, 255, 255);
+                doc.rect(0, 0, 85, 12, "F");
 
+                // Logo empresa en el encabezado
+                const base64Logo = await toBase64(imgLogo);
 
-        doc.setTextColor(...secondaryColor);
-        doc.setFontSize(14);
-        doc.text("CARNET DE EMPLEADO", 105, 10, { align: "center" });
+                // Insertar logo en PDF
+                doc.addImage(base64Logo, "PNG", 4, 2, 17, 8);
+                // Texto del Header
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(10);
+                doc.setTextColor(...primaryColor);
+                doc.text("CARNET DE EMPLEADO", 50, 8, { align: "center" });
 
+                // Foto del empleado 
+                const imgData = this.urlFoto;
+                if (!imgData) throw new Error("La Foto del empleado no está disponible.");
+                if (imgData) {
+                    doc.addImage(imgData, "JPEG", 3, 15, 26, 30);
+                }
 
-        const imgData = this.urlFoto;
-        if (!imgData) {
-            throw new Error("La URL de la foto no está disponible.");
-        }
-        await doc.addImage(imgData, 'JPEG', 15, 25, 60, 60);
+                // Datos de empleado
+                doc.setTextColor(...secondaryColor);
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(9);
 
+                doc.text("Nombres:", 33, 18);
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(7);
+                doc.text(`${empleadoData.paterno} ${empleadoData.materno || ""} ${empleadoData.nombres}`, 33, 22, { maxWidth: 45 });
 
-        doc.setTextColor(...secondaryColor);
-        doc.setFontSize(12);
-        doc.text(`Documento: ${empleadoData.ci}`, 80, 40);
-        doc.text(`Empleado: ${empleadoData.paterno} ${empleadoData.materno ? ' ' + empleadoData.materno : ''} ${empleadoData.nombres}`, 80, 50);
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(9);
+                doc.text("Número de Carnet:", 33, 30);
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(7);
+                doc.text(`${empleadoData.ci}`, 33, 34);
 
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(9);
+                doc.text("Teléfonos:", 33, 38);
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(7);
+                doc.text(`${empleadoData.telefono}`, 33, 42);
 
-        const qrData = JSON.stringify(empleadoData.id);
-        const qrCanvas = await QRCode.toCanvas(qrData);
-        const qrImage = qrCanvas.toDataURL('image/png');
+                // QR Empleado
+                const qrData = JSON.stringify(empleadoData.id);
+                const qrCanvas = await QRCode.toCanvas(qrData);
+                const qrImage = qrCanvas.toDataURL("image/png");
+                doc.addImage(qrImage, "PNG", 63, 30, 18, 18);
 
- 
-        doc.addImage(qrImage, 'PNG', 15, 90, 40, 40);
+                // Footer
+                doc.setFillColor(255, 255, 255);
+                doc.rect(0, 48, 85, 6, "F");
 
-   
-                const nombrePDF = 'carnet_empleado.pdf';
-                const pdfBlob = doc.output('blob');
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(7);
+                doc.setTextColor(...primaryColor);
+                doc.text("DRYMIX BOLIVIA - www.drymixbolivia.com", 42.5, 52, { align: "center" });
+
+                // 📄 Exportar PDF
+                const pdfBlob = doc.output("blob");
                 const pdfUrl = URL.createObjectURL(pdfBlob);
 
-                const printWindow = window.open(pdfUrl, '_blank');
+                const printWindow = window.open(pdfUrl, "_blank");
                 if (printWindow) {
                     setTimeout(() => {
                         printWindow.print();
-                        URL.revokeObjectURL(pdfUrl); 
+                        URL.revokeObjectURL(pdfUrl);
                     }, 1500);
                 } else {
                     console.warn("El navegador bloqueó la ventana emergente. Habilita las ventanas emergentes para continuar.");
                 }
+
             } catch (error) {
                 console.error("Error al generar el carnet del empleado:", error);
             }
@@ -384,10 +434,11 @@ export default {
         imprimirCarnet() {
             const empleadoData = {
                 id: this.idEmpleado,
-                ci: this.ci,
+                nombres: this.nombres,
                 paterno: this.paterno,
                 materno: this.materno,
-                nombres: this.nombres,
+                ci: this.ci,
+                telefono: this.telefono,
                 nombreCargo: this.nombreCargo,
                 gestionActual: this.gestionActual,
             };
