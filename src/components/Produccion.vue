@@ -189,7 +189,7 @@
                                                                 </template>
                                                                 <v-date-picker v-model="fechaVencimiento"
                                                                     @input="menuFechaVencimiento = false"
-                                                                    locale="es"></v-date-picker>
+                                                                    locale="es" :min="getDate()"></v-date-picker>
                                                             </v-menu>
                                                         </v-col>
                                                         <v-col cols="12" md="8"></v-col>
@@ -506,6 +506,10 @@ export default {
         this.generarCodigoProduccion();
     },
     methods: {
+          getDate() {
+            var fecha = new Date().toISOString();
+            return fecha;
+        },
         generarCodigoProduccion() {
             // Prefijo fijo
             const prefijo = "PROD";
