@@ -45,7 +45,7 @@
                 <v-container>
 
                     <v-row>
-                        <v-col cols="12" md="4">
+                        <v-col cols="12" md="4" v-if="checkAccess(9, 'SUPERVISOR')">
                             <v-btn color="success" @click="showModalAgregarCotizacionAdquisicion()">NUEVA COTIZACIÓN</v-btn>
                         </v-col>
                         <v-col cols="12">
@@ -87,7 +87,7 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.estado == 'PENDIENTE'" class="mr-2" color="primary" x-large
+                                    <v-icon v-if="item.estado == 'PENDIENTE' " class="mr-2" color="primary" x-large
                                         @click="llenarCamposCotizacionAdquisicion(item)" title="ACTUALIZAR INFORMACION">
                                         mdi-eye
                                     </v-icon>
@@ -276,12 +276,12 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-col cols="2">
-                                            <v-btn icon v-if="botonactCot == 1" color="#0A62BF"
+                                            <v-btn icon v-if="botonactCot == 1 && checkAccess(9, 'SUPERVISOR')" color="#0A62BF"
                                                 @click="editarCotizacionAdq()" style="float: left"
                                                 title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
-                                            <v-btn icon v-if="botonactCot == 0" color="#0ABF55"
+                                            <v-btn icon v-if="botonactCot == 0 && checkAccess(9, 'SUPERVISOR')" color="#0ABF55" 
                                                 @click="registrarCotizacionAdq()" style="float: left"
                                                 title="REGISTRAR COTIZACIÓN DE ADQUISICIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
@@ -309,8 +309,8 @@
                                                 <v-icon dark> mdi-eye </v-icon>
                                             </v-btn>
                                         </v-col>
-                                        <v-col cols="2" icon v-if="botonactCot == 1 || cotizacionItem.estado == 'PENDIENTE' && checkAccess(9, 'SUPERVISOR')"">
-                                              <v-btn icon color="primary"
+                                        <v-col cols="2" icon v-if="botonactCot == 1 || cotizacionItem.estado == 'PENDIENTE' && checkAccess(9, 'SUPERVISOR')">
+                                              <v-btn icon color="primary" v-if="checkAccess(9, 'SUPERVISOR')"
                                                 @click="agregarItem(cotizacionItem)" style="float: left"
                                                 title="AGREGAR ITEMS" class="mx-2" large>
                                                 <v-icon dark> mdi-playlist-plus </v-icon>
@@ -320,7 +320,7 @@
 
                                                
                                         <v-col cols="2">
-                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large
+                                            <v-btn icon color="#BF120A" @click="limpiar()" style="float: left" large v-if="checkAccess(9, 'SUPERVISOR')"
                                                 class="mx-2" title="LIMPIAR FORMULARIO">
                                                 <v-icon dark> mdi-eraser </v-icon>
                                             </v-btn>
@@ -641,7 +641,7 @@
             <v-card>
                 <v-data-table :headers="headerCotizacionItem" :items="datosDetalleCotizacion" :items-per-page="5"
                     class="elevation-1">
-                    <template #[`item.actions`]="{ item }">
+                    <template #[`item.actions`]="{ item }" v-if="botonactCot == 1 && checkAccess(9, 'SUPERVISOR')">
                         <v-icon class="mr-2" v-if="estadoCotizacion!='ACTIVO'" color="primary" x-large
                             @click="llenarCamposCotizacionItem(item)" title="ACTUALIZAR INFORMACION">
                              mdi-pencil
