@@ -30,8 +30,8 @@
         <v-dialog v-model="empleadoModal" max-width="1080px" lazy-validation persistent> <!-- Modal-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span v-if="botonAct == 0">Nuevo Empleado</span>
-                    <span v-if="botonAct == 1">Editar Empleado</span>
+                    <span v-if="botonAct == 0">NUEVO EMPLEADO</span>
+                    <span v-if="botonAct == 1">EDITAR EMPLEADO</span>
                 </v-card-title>
                 <v-card-text>
 
@@ -79,8 +79,8 @@
 
                                             </v-text-field>
                                         </template>
-                                        <v-date-picker v-model="fechaNacimiento"
-                                            @input="datePicker = false"></v-date-picker>
+                                        <v-date-picker v-model="fechaNacimiento" locale="es" :picker-date="fechaNacimiento || getMinWorkAge()"
+                                            @input="datePicker = false" :max="getMinWorkAge()"></v-date-picker>
                                     </v-menu>
                                 </v-col>
                                 <v-col cols="12" md="12">
@@ -377,6 +377,20 @@ export default {
     },
 
     methods: {
+
+        getMinWorkAge(){
+            const today = new Date();
+
+            const minBirthdate = new Date(
+                today.getFullYear() - 18,
+                today.getMonth(),
+                today.getDate()
+            );
+
+            const minDate = minBirthdate.toISOString().split("T")[0]
+            return minDate;
+        },
+
         goToEmpleadoPerfil(item) {
             this.$router.push({ name: 'Perfil', params: item })
         },

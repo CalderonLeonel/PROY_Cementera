@@ -215,9 +215,9 @@ export default {
         datosArea: [],
 
         headersArea: [
-            { text: "AREA", value: "nom", sortable: false },
-            { text: "FECHA CREACION", value: "credte", sortable: false },
-            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
+            { text: "ÁREA", value: "nom", sortable: false },
+            { text: "FECHA CREACIÓN", value: "credte", sortable: false },
+            { text: "ÚLTIMA ACTUALIZACIÓN", value: "upddte", sortable: false },
             { text: "ESTADO", value: "act", sortable: false },
             { text: "OPCIONES", value: "actions", sortable: false },
         ],

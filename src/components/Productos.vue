@@ -1,5 +1,6 @@
 <template>
     <v-card elevation="5" outlined shaped>
+
         <v-dialog v-model="formatoModal" persistent max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
@@ -35,10 +36,10 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn iconv dark color="#00A1B1" @click="closeFormato()"
-                                        style="float: right" title="SALIR">
+                                <v-btn iconv dark color="#00A1B1" @click="closeFormato()" style="float: right"
+                                    title="SALIR">
                                     <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
+                                    SALIR
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -79,10 +80,10 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn iconv dark color="#00A1B1" @click="closeTipos()"
-                                        style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
+                                <v-btn iconv dark color="#00A1B1" @click="closeTipos()" style="float: right"
+                                    title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    SALIR
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -94,7 +95,7 @@
         <v-dialog v-model="fabricasModal" persistent max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE FABRICAS</span>
+                    <span>LISTA DE FÁBRICAS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -102,13 +103,13 @@
                             <v-col cols="12">
                                 <v-list-item>
                                     <v-list-item-title class="text-center">
-                                        <h5>FABRICAS</h5>
+                                        <h5>FÁBRICAS</h5>
                                     </v-list-item-title>
                                 </v-list-item>
 
                                 <v-card-title>
                                     <v-text-field v-model="buscarFabricas" append-icon="mdi-magnify"
-                                        label="BUSCAR FABRICAS" single-line hide-details></v-text-field>
+                                        label="BUSCAR FÁBRICAS" single-line hide-details></v-text-field>
                                 </v-card-title>
 
 
@@ -132,10 +133,10 @@
                             </v-col>
                             <v-col cols="10"></v-col>
                             <v-col cols="2">
-                                <v-btn iconv dark color="#00A1B1" @click="closeFabricas()"
-                                        style="float: right" title="SALIR">
-                                        <v-icon dark> mdi-close-circle-outline </v-icon>
-                                        SALIR
+                                <v-btn iconv dark color="#00A1B1" @click="closeFabricas()" style="float: right"
+                                    title="SALIR">
+                                    <v-icon dark> mdi-close-circle-outline </v-icon>
+                                    SALIR
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -147,7 +148,7 @@
         <v-dialog v-model="infoProductoModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>INFORMACION DEL PRODUCTO:</span><br>
+                    <span>INFORMACIÓN DEL PRODUCTO:</span><br>
                     <span>{{ nombreProducto }}</span>
                 </v-card-title>
                 <v-card-text>
@@ -161,7 +162,7 @@
                                         disabled></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="codigoProducto" label="CODIGO PRODUCTO" :counter="100"
+                                    <v-text-field v-model="codigoProducto" label="CÓDIGO PRODUCTO" :counter="100"
                                         :rules="codigoProductoRules"
                                         @input="codigoProducto = codigoProducto.toUpperCase()" required
                                         disabled></v-text-field>
@@ -178,20 +179,19 @@
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="nombreFabrica" label="NOMBRE FABRICAS" :counter="50"
+                                    <v-text-field v-model="nombreFabrica" label="NOMBRE FÁBRICA" :counter="50"
                                         :rules="nombreFabricaRules" @input="nombreFabrica = nombreFabrica.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeInfoProductoModal()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeInfoProductoModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
-                                   
+
                                 </v-col>
 
                             </v-row>
@@ -202,7 +202,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="editarProductoModal" persistent max-width="1000px" >
+        <v-dialog v-model="editarProductoModal" persistent max-width="1000px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>EDITAR PRODUCTO</span>
@@ -217,13 +217,14 @@
                                         @input="nombreProducto = nombreProducto.toUpperCase()" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="codigoProducto" label="CODIGO PRODUCTO" :counter="100"
+                                    <v-text-field v-model="codigoProducto" label="CÓDIGO PRODUCTO" :counter="100"
                                         :rules="codigoProductoRules"
                                         @input="codigoProducto = codigoProducto.toUpperCase()" required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" :disabled="botonAct == 1" fab dark x-small color="cyan" :rules="ProductoRules"
-                                        @click="showFormato()" style="float: right" title="BUSCAR FORMATO">
+                                    <v-btn class="mx-2" :disabled="botonAct == 1" fab dark x-small color="cyan"
+                                        :rules="ProductoRules" @click="showFormato()" style="float: right"
+                                        title="BUSCAR FORMATO">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -233,8 +234,9 @@
                                         disabled required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" :disabled="botonAct == 1" fab dark x-small color="cyan" :rules="tipoRules"
-                                        @click="showTipos()" style="float: right" title="BUSCAR TIPO PRODUCTO">
+                                    <v-btn class="mx-2" :disabled="botonAct == 1" fab dark x-small color="cyan"
+                                        :rules="tipoRules" @click="showTipos()" style="float: right"
+                                        title="BUSCAR TIPO PRODUCTO">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
@@ -246,12 +248,12 @@
                                 </v-col>
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" :disabled="botonAct == 1" fab dark x-small color="cyan" :rules="fabricaRules"
-                                        @click="showFabricas()" style="float: right" title="BUSCAR FABRICAS">
+                                        @click="showFabricas()" style="float: right" title="BUSCAR FÁBRICAS">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="3">
-                                    <v-text-field v-model="nombreFabrica" label="NOMBRE FABRICAS" :counter="50"
+                                    <v-text-field v-model="nombreFabrica" label="NOMBRE FÁBRICAS" :counter="50"
                                         :rules="nombreFabricaRules" @input="nombreFabrica = nombreFabrica.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
@@ -264,17 +266,18 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon large v-if="botonAct == 1" class="mx-2" fab dark x-small color="#0A62BF"
-                                            @click="editarProductos()" style="float: left"
+                                        <v-btn icon large v-if="botonAct == 1" class="mx-2" fab dark x-small
+                                            color="#0A62BF" @click="editarProductos()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn icon large v-if="botonAct == 0" class="mx-2" fab dark x-small color="#0ABF55"
-                                            @click="registrarProducto()" style="float: left" title="REGISTRAR PRODUCTO">
+                                        <v-btn icon large v-if="botonAct == 0" class="mx-2" fab dark x-small
+                                            color="#0ABF55" @click="registrarProducto()" style="float: left"
+                                            title="REGISTRAR PRODUCTO">
                                             <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
-                                        <v-btn icon large color="#BF120A" class="mx-2" fab dark x-small @click="limpiar()"
-                                            style="float: left" title="LIMPIAR FORMULARIO">
+                                        <v-btn icon large color="#BF120A" class="mx-2" fab dark x-small
+                                            @click="limpiar()" style="float: left" title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
                                     </v-toolbar>
@@ -282,13 +285,12 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeEditarProducto()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeEditarProducto()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
-                                   
+
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -353,7 +355,7 @@
                                                         </v-col>
                                                         <v-col cols="12" md="4">
                                                             <v-text-field v-model="codigoProducto"
-                                                                label="CODIGO PRODUCTO" :counter="100"
+                                                                label="CÓDIGO PRODUCTO" :counter="100"
                                                                 :rules="codigoProductoRules"
                                                                 @input="codigoProducto = codigoProducto.toUpperCase()"
                                                                 required></v-text-field>
@@ -388,13 +390,13 @@
                                                         <v-col cols="12" md="1">
                                                             <v-btn class="mx-2" fab dark x-small color="cyan"
                                                                 :rules="fabricaRules" @click="showFabricas()"
-                                                                style="float: right" title="BUSCAR FABRICAS">
+                                                                style="float: right" title="BUSCAR FÁBRICA">
                                                                 <v-icon dark> mdi-magnify </v-icon>
                                                             </v-btn>
                                                         </v-col>
                                                         <v-col cols="12" md="3">
                                                             <v-text-field v-model="nombreFabrica"
-                                                                label="NOMBRE FABRICAS" :counter="50"
+                                                                label="NOMBRE FÁBRICA" :counter="50"
                                                                 :rules="nombreFabricaRules"
                                                                 @input="nombreFabrica = nombreFabrica.toUpperCase()"
                                                                 disabled required></v-text-field>
@@ -498,12 +500,12 @@
                                                                     </v-icon>
                                                                     <v-icon class="mx-2" large color="#0A62BF"
                                                                         @click="showEditarProducto(item)"
-                                                                        title="ACTUALIZAR INFORMACION">
+                                                                        title="ACTUALIZAR INFORMACIÓN">
                                                                         mdi-pencil
                                                                     </v-icon>
                                                                     <v-icon class="mx-2" large color="#0A62BF"
                                                                         @click="showInfoProducto(item)"
-                                                                        title="VER INFORMACION">
+                                                                        title="VER INFORMACIÓN">
                                                                         mdi-eye
                                                                     </v-icon>
                                                                 </template>
@@ -535,7 +537,7 @@
 
                                                             <v-card-title>
                                                                 <v-text-field v-model="buscarproductos"
-                                                                    append-icon="mdi-magnify" label="BUSCAR productoS"
+                                                                    append-icon="mdi-magnify" label="BUSCAR PRODUCTOS"
                                                                     single-line hide-details></v-text-field>
                                                             </v-card-title>
                                                             <v-data-table :headers="headersProductoInh"
@@ -552,17 +554,17 @@
                                                                 <template #[`item.actions`]="{ item }">
                                                                     <v-icon v-if="item.est == 'INACTIVO'" color="green"
                                                                         large class="mr-2" @click="activar(item)"
-                                                                        title="ACTIVAR productoS">
+                                                                        title="ACTIVAR PRODUCTO">
                                                                         mdi-check-circle-outline
                                                                     </v-icon>
                                                                     <v-icon v-if="item.est == 'ACTIVO'" color="red"
                                                                         large class="mr-2" @click="desactivar(item)"
-                                                                        title="DESACTIVAR productoS">
+                                                                        title="DESACTIVAR PRODUCTO">
                                                                         mdi-cancel
                                                                     </v-icon>
                                                                     <v-icon large class="mr-2" color="#0A62BF"
                                                                         @click="showInfoProducto(item)"
-                                                                        title="VER INFORMACION">
+                                                                        title="VER INFORMACIÓN">
                                                                         mdi-eye
                                                                     </v-icon>
                                                                 </template>
@@ -637,14 +639,14 @@ export default {
             datosProducto: [],
             headersProducto: [
                 { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
-                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
+                { text: "CÓDIGO DE PRODUCTO", value: "codprod", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
             datosProductoInh: [],
             headersProductoInh: [
                 { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
-                { text: "CODIGO DE PRODUCTO", value: "codprod", sortable: false },
+                { text: "CÓDIGO DE PRODUCTO", value: "codprod", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -657,7 +659,7 @@ export default {
             datosFormatos: [],
             headersFormatos: [
                 { text: "NOMBRE FORMATO", value: "nomforma", sortable: false },
-                { text: "CODIGO FORMATO", value: "codforma", sortable: false },
+                { text: "CÓDIGO FORMATO", value: "codforma", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -671,8 +673,8 @@ export default {
             datosTipos: [],
             headersTipos: [
                 { text: "NOMBRE T.PRODUCTO", value: "nomtipo", sortable: false },
-                { text: "CODIGO T.PRODUCTO", value: "codtipo", sortable: false },
-                { text: "NOMBRE producto", value: "nomlin", sortable: false },
+                { text: "CÓDIGO T.PRODUCTO", value: "codtipo", sortable: false },
+                { text: "NOMBRE PRODUCTO", value: "nomlin", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -684,8 +686,8 @@ export default {
             codigoFabrica: "",
             datosFabrica: [],
             headersFabrica: [
-                { text: "NOMBRE FABRICA", value: "nomfab", sortable: false },
-                { text: "CODIGO FABRICA", value: "codfab", sortable: false },
+                { text: "NOMBRE FÁBRICA", value: "nomfab", sortable: false },
+                { text: "CÓDIGO FÁBRICA", value: "codfab", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -712,6 +714,40 @@ export default {
             mensajeSnackbarError: "REGISTRO FALLIDO",
             timeout: 2000,
             //#endregion
+
+            //#region Rules
+            nombreProductoRules: [
+                v => !!v || "El nombre del producto es obligatorio",
+                v => (v && v.trim().length >= 3) || "Debe tener al menos 3 caracteres",
+                v => (v && v.length <= 100) || "No debe exceder 100 caracteres",
+                v => /^[A-Za-zÁÉÍÓÚÑÜ0-9\s\-]+$/.test(v) || "Solo se permiten letras, números y guiones",
+            ],
+            codigoProductoRules: [
+                v => !!v || "El código del producto es obligatorio",
+                v => (v && v.trim().length >= 2) || "Debe tener al menos 2 caracteres",
+                v => (v && v.length <= 20) || "No debe exceder 20 caracteres",
+                v => /^[A-Za-z0-9\-]+$/.test(v) || "Solo puede contener letras, números o guiones",
+            ],
+            nombreFormatoRules: [
+                v => !!v || "Debe seleccionar un formato",
+                v => (v && v.length <= 50) || "El nombre del formato no debe exceder 50 caracteres",
+            ],
+            nombreTipoProductoRules: [
+                v => !!v || "Debe seleccionar un tipo de producto",
+                v => (v && v.length <= 50) || "El nombre del tipo no debe exceder 50 caracteres",
+            ],
+            nombreFabricaRules: [
+                v => !!v || "Debe seleccionar una fábrica",
+                v => (v && v.length <= 50) || "El nombre de la fábrica no debe exceder 50 caracteres",
+            ],
+            precioUnitarioRules: [
+                v => !!v || "El precio del producto es obligatorio",
+                v => !isNaN(parseFloat(v)) || "Debe ser un número válido",
+                v => parseFloat(v) > 0 || "El precio debe ser mayor a 0",
+                v => /^\d+(\.\d{1,2})?$/.test(v) || "Formato inválido. Máximo 2 decimales",
+            ],
+            //#endregion
+
         }
     },
     created: function () {

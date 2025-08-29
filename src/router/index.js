@@ -182,11 +182,6 @@ const routes = [
     component: () => import("@/components/Adquisicion.vue"),
   },
   {
-    path: "/aprobaradquisicion",
-    name: "AprobarAdquisicion",
-    component: () => import("@/components/AprobacionAdquisicion.vue"),
-  },
-  {
     path: "/archivos",
     name: "Archivos",
     component: () => import("@/components/Archivos.vue"),

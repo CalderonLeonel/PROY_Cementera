@@ -23,8 +23,9 @@
                                             </h6>
                                         </v-toolbar-title>
 
-                                        <v-btn icon large class="mx-2" fab dark x-small color="#0ABF55" @click="registrarCuenta()"
-                                            style="float: left" title="REGISTRAR CUENTA CONTABLE">
+                                        <v-btn icon large class="mx-2" fab dark x-small color="#0ABF55"
+                                            @click="registrarCuenta()" style="float: left"
+                                            title="REGISTRAR CUENTA CONTABLE">
                                             <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
 
@@ -72,7 +73,7 @@
                                 <v-divider></v-divider>
 
                                 <v-col cols="12" md="12">
-                                    <v-textarea v-model="descripcion" label="DESCRIPCION" :counter="255"
+                                    <v-textarea v-model="descripcion" label="DESCRIPCIÓN" :counter="255"
                                         :rules="descripcionRules" @input="descripcion = descripcion.toUpperCase()" required
                                         textarea></v-textarea>
                                 </v-col>
@@ -83,12 +84,14 @@
                                         <v-toolbar-title style="color:#000000">
                                             <h6>OPCIONES</h6>
                                         </v-toolbar-title>
-                                        <v-btn icon large v-if="botonact == 1" @click="registrarSaldo()" class="mx-2" fab dark x-small
-                                            color="#0ABF55" title="REGISTRAR CUENTA CONTABLE" style="float: left">
+                                        <v-btn icon large v-if="botonact == 1" @click="registrarSaldo()" class="mx-2"
+                                            fab dark x-small color="#0ABF55" title="REGISTRAR CUENTA CONTABLE"
+                                            style="float: left">
                                             <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
-                                        <v-btn icon large v-if="botonact == 0" @click="editarCuenta()" class="mx-2" fab dark x-small
-                                            color="#0A62BF" title="ACTUALIZAR CUENTA CONTABLE" style="float: left">
+                                        <v-btn icon large v-if="botonact == 0" @click="editarCuenta()" class="mx-2" fab
+                                            dark x-small color="#0A62BF" title="ACTUALIZAR CUENTA CONTABLE"
+                                            style="float: left">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
                                     </v-toolbar>
@@ -97,7 +100,7 @@
                                 <v-col cols="12">
                                     <v-list-item>
                                         <v-list-item-title class="text-center">
-                                            <h5>Cuentas Contables</h5>
+                                            <h5>CUENTAS CONTABLES</h5>
                                         </v-list-item-title>
                                     </v-list-item>
 
@@ -107,13 +110,13 @@
                                     </v-card-title>
 
 
-                                    <v-data-table :headers="headersCuentas" :items="datosCuentas" :search="buscarCuentas"
-                                        :items-per-page="5" class="elevation-1" id="tableId">
+                                    <v-data-table :headers="headersCuentas" :items="datosCuentas"
+                                        :search="buscarCuentas" :items-per-page="5" class="elevation-1" id="tableId">
 
                                         <template #[`item.actions`]="{ item }">
 
                                             <v-icon small class="mr-2" @click="seleccionarCuenta(item)"
-                                                title="ACTUALIZAR INFORMACION">
+                                                title="ACTUALIZAR INFORMACIÓN">
                                                 mdi-text-box-edit-outline
                                             </v-icon>
 
@@ -132,7 +135,8 @@
 
                                 <v-col cols="12" md="3"> </v-col>
                                 <v-col cols="12" md="3">
-                                    <v-text-field v-model="fechaInicio" label="FECHA INICIAL" type="date"></v-text-field>
+                                    <v-text-field v-model="fechaInicio" label="FECHA INICIAL"
+                                        type="date"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1"></v-col>
                                 <v-col cols="12" md="3">
@@ -163,8 +167,8 @@
                                             title="LISTAR ASIENTOS POR CUENTAS">
                                             <v-icon dark> mdi-account </v-icon>
                                         </v-btn>
-                                        <v-btn icon large class="mx-2" fab dark x-small color="secondary" @click="generarReportePDF()"
-                                            title="GENERAR PDF">
+                                        <v-btn icon large class="mx-2" fab dark x-small color="secondary"
+                                            @click="generarReportePDF()" title="GENERAR PDF">
                                             <v-icon dark>mdi-printer</v-icon>
                                         </v-btn>
                                     </v-toolbar>
@@ -182,8 +186,8 @@
                                             label="BUSCAR ASIENTO" single-line hide-details></v-text-field>
                                     </v-card-title>
 
-                                    <v-data-table :headers="headersAsientos" :items="datosAsientos" :search="searchAsiento"
-                                        :items-per-page="5" class="elevation-1" id="tableId">
+                                    <v-data-table :headers="headersAsientos" :items="datosAsientos"
+                                        :search="searchAsiento" :items-per-page="5" class="elevation-1" id="tableId">
                                         <template #[`item.actions`]="{ item }">
                                             <v-icon small class="mr-2" @click="infoAsiento(item)" color="#0091EA">
                                                 mdi-eye
@@ -254,7 +258,7 @@ export default {
             headersCuentas: [
                 { text: "NUM. CUENTA", value: "numcnt", sortable: true },
                 { text: "NOM. CUENTA", value: "nom", sortable: true },
-                { text: "DESCRIPCION", value: "des", sortable: true },
+                { text: "DESCRIPCIÓN", value: "des", sortable: true },
                 { text: "TIPO CUENTA", value: "tipoc", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
                 { text: "OPCIONES", value: "actions", sortable: false },
@@ -273,6 +277,7 @@ export default {
                 { text: "CUENTA CONT.", value: "nom", sortable: true },
                 { text: "MONT. DEB", value: "mondeb", sortable: true },
                 { text: "MONT.CRED", value: "moncre", sortable: true },
+                { text: "MONT ASIENTO", value: "monasi", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -300,6 +305,37 @@ export default {
             //#region Modals
             saldoModal: 0,
             //#endregion
+
+            //#region Rules
+            numeroCuentaRules: [
+                v => !!v || "El número de cuenta es obligatorio",
+                v => (v && v.length >= 2) || "Debe tener al menos 2 caracteres",
+                v => (v && v.length <= 100) || "No debe exceder 100 caracteres",
+                v => /^[A-Za-z0-9\-]+$/.test(v) || "Solo se permiten números, letras y guiones",
+            ],
+            nombreCuentaRules: [
+                v => !!v || "El nombre de la cuenta es obligatorio",
+                v => (v && v.length >= 3) || "Debe tener al menos 3 caracteres",
+                v => (v && v.length <= 100) || "No debe exceder 100 caracteres",
+                v => /^[A-Za-zÁÉÍÓÚÑÜ\s]+$/.test(v) || "Solo se permiten letras y espacios",
+            ],
+            tipoCuentaRules: [
+                v => !!v || "Debe seleccionar un tipo de cuenta",
+            ],
+            descripcionRules: [
+                v => !!v || "La descripción es obligatoria",
+                v => (v && v.length >= 5) || "Debe tener al menos 5 caracteres",
+                v => (v && v.length <= 255) || "No debe exceder 255 caracteres",
+            ],
+            fechaInicioRules: [
+                v => !!v || "Debe seleccionar una fecha inicial",
+            ],
+            fechaFinRules: [
+                v => !!v || "Debe seleccionar una fecha final",
+                v => (!this.fechaInicio || v >= this.fechaInicio) || "La fecha final debe ser mayor o igual a la inicial",
+            ],
+            //#endregion
+            
         }
     },
 

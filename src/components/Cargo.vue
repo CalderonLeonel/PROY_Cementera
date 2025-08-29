@@ -189,7 +189,7 @@ export default {
         descripcionRules: [
             (v) =>
                 (v && v.length <= 200) ||
-                "LA DESCRIPCION DEBE TENER 200 CARACTERES COMO MAXIMO",
+                "LA DESCRIPCIÓN DEBE TENER 200 CARACTERES COMO MAXIMO",
         ],
 
         salarioRules: [
@@ -200,7 +200,7 @@ export default {
 
         headersCargo: [
             { text: "CARGO", value: "carg"},
-            { text: "DESCRIPCION", value: "descrip", sortable: false },
+            { text: "DESCRIPCIÓN", value: "descrip", sortable: false },
             { text: "SALARIO", value: "salar", sortable: false },
             { text: "ESTADO", value: "act"},
             //{ text: "FECHA CREACION", value: "credte", sortable: false },

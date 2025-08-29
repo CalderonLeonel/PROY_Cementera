@@ -88,11 +88,11 @@
                                          mdi-pencil
                                      </v-icon>
                                      <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
-                                         title="ACTIVAR SECCION">
+                                         title="ACTIVAR SECCIÓN">
                                          mdi-check-circle-outline
                                      </v-icon>
                                      <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionIt(item)"
-                                         title="DESACTIVAR SECCION">
+                                         title="DESACTIVAR SECCIÓN">
                                          mdi-close-circle
                                      </v-icon>             
                                  </template>
@@ -107,9 +107,7 @@
                          <v-col cols="12" md="2">
                              <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA CATEGORÍA</v-btn>  
                          </v-col>
-                         <v-col cols="12" md="12">
-                            <v-btn color="primary" @click="showModalActivarCategoria()">LISTA DE ÍTEMS DESACTIVADOS</v-btn>
-                         </v-col>
+                        
                          <v-col cols="12">
                              <v-list-item>
                                  <v-list-item-title class="text-center">
@@ -513,13 +511,13 @@
                                     </v-btn>
                                 </v-col> 
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="limitecritico" label="LIMITE CRÍTICO" type="number" :counter="25"
+                                    <v-text-field v-model="limitecritico" label="LÍMITE CRÍTICO" type="number" :counter="25"
                                          @input="limitecritico = limitecritico" :rules="limiteRules"
                                         required></v-text-field>
                                 </v-col> 
                                 <v-col cols="12" md="4">
                                     <v-select
-                                    label="METODO VALUACION" v-model="metodoValuacion" @input="metodoValuacion = metodoValuacion.toUpperCase()" required
+                                    label="MÉTODO VALUACIÓN" v-model="metodoValuacion" @input="metodoValuacion = metodoValuacion.toUpperCase()" required
                                     :items="['PEPS', 'UEPS', 'PROMEDIO PONDERADO']"
                                     :rules="[v => !!v || 'El Metodo de Valuación es requerido']"
                                     ></v-select>
@@ -959,8 +957,8 @@
             ],
 
             limiteRules: [
-                (v) => !!v || "EL LIMITE ES OBLIGATORIO.",
-                (v) => parseFloat(v) > 0 || "EL LIMITE DEBE SER MAYOR A 0.",
+                (v) => !!v || "EL LÍMITE ES OBLIGATORIO.",
+                (v) => parseFloat(v) > 0 || "EL LÍMITE DEBE SER MAYOR A 0.",
                 (v) => !isNaN(parseFloat(v)) && isFinite(v) || "INGRESA UN VALOR NUMÉRICO VÁLIDO."
             ],
                         
@@ -969,15 +967,15 @@
                 (v) => (v === null || v.length <= 150) || "LA DESCRIPCIÓN NO DEBE SUPERAR LOS 150 CARACTERES.",
             ],
              phone1Rules: [
-               (v) => !!v || "SE REQUIERE UN NUMERO TELEFONICO O CELULAR.",
+               (v) => !!v || "SE REQUIERE UN NÚMERO TELEFONICO O CELULAR.",
                (v) =>
                (v && v.length <= 10) ||
-                 "EL TELEPHONO PRINCIPAL DEBE TENER HASTA 10 CARACTERES.",
+                "EL TELÉFONO PRINCIPAL DEBE TENER HASTA 10 CARACTERES.",
              ],
              phone2Rules: [
                (v) =>
                (v && v===null || v.length <= 10) ||
-                 "EL TELEPHONO SECUNDARIO DEBE TENER HASTA 10 CARACTERES.",
+                 "EL TELÉFONO SECUNDARIO DEBE TENER HASTA 10 CARACTERES.",
              ],
              emailRules: [
                (v) => !!v || "SE REQUIERE EL CORREO ELECTRONICO DEL PROVEEDOR.",
@@ -993,14 +991,14 @@
              datosInventario: [],
              headerInventario: [
                  
-                 { text: "NUMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
+                 { text: "NÚMERO TRANSACCIÓN", value: "idTransaccion", sortable: true },
                  { text: "ÍTEM", value: "nombreitem", sortable: true },
                  { text: "ALMACÉN", value: "nombrealmacen", sortable: true },
                  { text: "MOVIMIENTO", value: "movimiento", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
-                 { text: "METODO DE VALUACIÓN", value: "metodoValuacion", sortable: true },
+                 { text: "MÉTODO DE VALUACIÓN", value: "metodoValuacion", sortable: true },
                  //{ text: "ESTADO", value: "estado", sortable: true },
-                 //{ text: "ACCIONES", value: "actions", sortable: false }
+                 //{ text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
@@ -1012,7 +1010,7 @@
                 { text: "DESCRIPCIÓN DE ALMACÉN", value: "descripcion", sortable: true },
                 { text: "CÓDIGO ALMACÉN", value: "codigo", sortable: true },
                 { text: "ESTADO", value: "estado", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
             searchAlmacen: "",
@@ -1028,8 +1026,8 @@
                 { text: "CÓDIGO ALMACÉN", value: "codigo", sortable: true },
                 { text: "NOMBRE DE ALMACÉN", value: "nombrealmacen", sortable: true },
                 { text: "TOTAL", value: "total", sortable: true },
-                { text: "ACCIONES", value: "actions", sortable: false },
-                //{ text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false },
+                //{ text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
             searchStockAlmacen: "",
@@ -1066,19 +1064,19 @@
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "CATEGORÍA", value: "nombrecategoria", sortable: true },
                  { text: "SUBCATEGORÍA", value: "nombresubcategoria", sortable: true },
-                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
-                 { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
+                 { text: "LÍMITE CRÍTICO", value: "limite", sortable: true },
+                 { text: "MÉTODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "ESTADO", value: "estado", sortable: true },
                  { text: "PROVEEDOR", value: "nombreProveedor", sortable: true },
                  { text: "FECHA EXP.", value: "fechaExpiracion", sortable: true },
                  { text: "COSTO REF", value: "costoReferencia", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
             headerCategoria: [  
                  { text: "CATEGORÍA", value: "categoria", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
@@ -1086,7 +1084,7 @@
             headersubcategoria: [  
                  { text: "SUBCATEGORÍA", value: "subcategoria", sortable: true },
                  { text: "CATEGORÍA", value: "categoria", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
  
@@ -1102,11 +1100,11 @@
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "MEDIDA", value: "medida", sortable: true },
                  { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
-                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
-                 { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
+                 { text: "LÍMITE CRÍTICO", value: "limite", sortable: true },
+                 { text: "MÉTODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "cantidad", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
              searchItemDisponibles: "",
@@ -1123,7 +1121,7 @@
                  { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
                  { text: "PRECIO UNITARIO", value: "valor", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
 
@@ -1134,10 +1132,10 @@
                  { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
-                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
-                 { text: "METODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
+                 { text: "LÍMITE CRÍTICO", value: "limite", sortable: true },
+                 { text: "MÉTODO DE VALUACIÓN", value: "metodovaluacion", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
                  //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
              ],
              searchItemAlmacen: "",
@@ -1188,9 +1186,9 @@
                  { text: "NOMBRE ÍTEM", value: "nombreitem", sortable: true },
                  { text: "DESCRIPCIÓN", value: "descripcion", sortable: true },
                  { text: "CATEGORÍA", value: "nombreCategoria", sortable: true },
-                 { text: "LIMITE CRÍTICO", value: "limite", sortable: true },
+                 { text: "LÍMITE CRÍTICO", value: "limite", sortable: true },
                  { text: "CANTIDAD", value: "total", sortable: true },
-                 { text: "ACCIONES", value: "actions", sortable: false }
+                 { text: "OPCIONES", value: "actions", sortable: false }
              ],
              datosSaldoAlmacenItem: [],
              headerSaldoAlmacenItem: [
@@ -1214,7 +1212,7 @@
                 { text: "CORREO DE PROVEEDOR", value: "croprov", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
                 { text: "ARCHIVO", value: "arch", sortable: false },
-                { text: "ACCIONES", value: "actions", sortable: false }
+                { text: "OPCIONES", value: "actions", sortable: false }
                 //{ text: "FECHA MODIFICACION", value: "fechmod", sortable: false },
             ],
 

@@ -77,7 +77,7 @@
 
                                 </v-col>
                                 <v-col cols="12" md="12">
-                                    <v-text-field v-model="tituloAlerta" type="text" label="TITULO" :counter="60"
+                                    <v-text-field v-model="tituloAlerta" type="text" label="TÍTULO" :counter="60"
                                         :rules="tituloRules" @input="tituloAlerta = tituloAlerta.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -153,7 +153,7 @@ export default {
             searchAlerta: '',
             headerAlerta: [
 
-                { text: "TITULO", value: "title", sortable: true },
+                { text: "TÍTULO", value: "title", sortable: true },
                 { text: "DESCRIPCIÓN", value: "description", sortable: true },
                 { text: "IMAGEN", value: "iddoc", sortable: true },
                 { text: "FECHA", value: "fecha", sortable: true },
@@ -172,10 +172,10 @@ export default {
 
 
             tituloRules: [
-                (v) => !!v || "SE REQUIERE UN TITULO PARA LA ALERTA.",
+                (v) => !!v || "SE REQUIERE UN TÍTULO PARA LA ALERTA.",
                 (v) =>
                     (v && v.length <= 60) ||
-                    "EL TITULO NO DEBE SOBREPASAR LOS 25 CARACTERES.",
+                    "EL TÍTULO NO DEBE SOBREPASAR LOS 25 CARACTERES.",
             ],
 
             descripcionRules: [

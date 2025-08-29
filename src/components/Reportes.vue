@@ -18,7 +18,7 @@
                                 <v-icon left>
                                     mdi-truck
                                 </v-icon>
-                                PRODUCCION
+                                PRODUCCIÓN
                             </v-tab>
                             <v-tab v-if="checkAccess(3, '0') || checkAccess(0, 'GERENTE')">
                                 <v-icon left>

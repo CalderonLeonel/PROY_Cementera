@@ -1,5 +1,6 @@
 <template>
     <v-card elevation="5" outlined shaped>
+
         <v-dialog v-model="agregarTipoModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
@@ -19,7 +20,7 @@
 
                                 <v-col cols="12" md="4"></v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="codigoTipo" label="CODIGO TIPO" :counter="100"
+                                    <v-text-field v-model="codigoTipo" label="CÓDIGO TIPO" :counter="100"
                                         :rules="codigoTipoRules" @input="codigoTipo = codigoTipo.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -28,12 +29,12 @@
                                 <v-col cols="12" md="3"></v-col>
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="lineaRules"
-                                        @click="showLineas()" style="float: right" title="BUSCAR LINEAS">
+                                        @click="showLineas()" style="float: right" title="BUSCAR LÍNEAS">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="nombreLinea" label="NOMBRE LINEA" :counter="50"
+                                    <v-text-field v-model="nombreLinea" label="NOMBRE LÍNEA" :counter="50"
                                         :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
@@ -41,13 +42,12 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeAgregarTipo()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeAgregarTipo()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
-                                   
+
                                 </v-col>
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="12" md="4">
@@ -83,7 +83,7 @@
         <v-dialog v-model="infoTipoModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>INFORMACION DEL TIPO:</span><br>
+                    <span>INFORMACIÓN DEL TIPO:</span><br>
                     <span>{{ nombreTipo }}</span>
                 </v-card-title>
                 <v-card-text>
@@ -100,7 +100,7 @@
 
                                 <v-col cols="12" md="2"></v-col>
                                 <v-col cols="12" md="8">
-                                    <v-text-field v-model="codigoTipo" label="CODIGO TIPO" :counter="100"
+                                    <v-text-field v-model="codigoTipo" label="CÓDIGO TIPO" :counter="100"
                                         :rules="codigoTipoRules" @input="codigoTipo = codigoTipo.toUpperCase()"
                                         disabled></v-text-field>
                                 </v-col>
@@ -108,9 +108,8 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeInfoTipoModal()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeInfoTipoModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -143,7 +142,7 @@
 
                                 <v-col cols="12" md="4"></v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="codigoTipo" label="CODIGO TIPO" :counter="100"
+                                    <v-text-field v-model="codigoTipo" label="CÓDIGO TIPO" :counter="100"
                                         :rules="codigoTipoRules" @input="codigoTipo = codigoTipo.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -152,12 +151,12 @@
                                 <v-col cols="12" md="3"></v-col>
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" fab dark x-small color="cyan" :rules="lineaRules"
-                                        @click="showLineas()" style="float: right" title="BUSCAR LINEAS">
+                                        @click="showLineas()" style="float: right" title="BUSCAR LÍNEAS">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="nombreLinea" label="NOMBRE LINEA" :counter="50"
+                                    <v-text-field v-model="nombreLinea" label="NOMBRE LÍNEA" :counter="50"
                                         :rules="nombreLineaRules" @input="nombreLinea = nombreLinea.toUpperCase()"
                                         disabled required></v-text-field>
                                 </v-col>
@@ -172,7 +171,7 @@
                                             </h6>
                                         </v-toolbar-title>
                                         <v-btn class="mx-2" fab dark small icon v-if="botonact == 1" color="primary"
-                                            @click="editarTipos()" style="float: left" title="ACTUALIZAR INFORMACION">
+                                            @click="editarTipos()" style="float: left" title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
                                         <v-btn class="mx-2" fab dark small icon color="error" @click="limpiar()"
@@ -184,13 +183,12 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeEditTipoModal()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeEditTipoModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
-                                 
+
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -212,13 +210,12 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeInfoTipoModal()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeInfoTipoModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
-                                   
+
                                 </v-col>
 
                             </v-row>
@@ -232,7 +229,7 @@
         <v-dialog v-model="lineasModal" persistent max-width="800px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LINEAS</span><br>
+                    <span>LÍNEAS</span><br>
                 </v-card-title>
                 <v-card-text>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -241,13 +238,13 @@
                                 <v-col cols="12">
                                     <v-list-item>
                                         <v-list-item-title class="text-center">
-                                            <h5>Lineas</h5>
+                                            <h5>LÍNEAS</h5>
                                         </v-list-item-title>
                                     </v-list-item>
 
                                     <v-card-title>
                                         <v-text-field v-model="buscarLineas" append-icon="mdi-magnify"
-                                            label="BUSCAR LINEAS" single-line hide-details></v-text-field>
+                                            label="BUSCAR LÍNEAS" single-line hide-details></v-text-field>
                                     </v-card-title>
                                     <v-data-table :headers="headersLineas" :items="datosLineas" :search="buscarLineas"
                                         :items-per-page="5" class="elevation-1" id="tableId">
@@ -261,7 +258,7 @@
 
                                         <template #[`item.actions`]="{ item }">
                                             <v-icon large class="mr-2" color="#0A62BF" @click="seleccionarLinea(item)"
-                                                title="SELECCIONAR LINEA">
+                                                title="SELECCIONAR LÍNEA">
                                                 mdi-check-circle
                                             </v-icon>
                                         </template>
@@ -270,12 +267,11 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeLineaModal()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeLineaModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
-                                    </v-btn>                              
+                                    </v-btn>
                                 </v-col>
 
                             </v-row>
@@ -342,7 +338,7 @@
 
                                                         <v-col cols="12" md="4"></v-col>
                                                         <v-col cols="12" md="4">
-                                                            <v-text-field v-model="codigoTipo" label="CODIGO TIPO"
+                                                            <v-text-field v-model="codigoTipo" label="CÓDIGO TIPO"
                                                                 :counter="100" :rules="codigoTipoRules"
                                                                 @input="codigoTipo = codigoTipo.toUpperCase()"
                                                                 required></v-text-field>
@@ -353,12 +349,12 @@
                                                         <v-col cols="12" md="1">
                                                             <v-btn class="mx-2" fab dark x-small color="cyan"
                                                                 :rules="lineaRules" @click="showLineas()"
-                                                                style="float: right" title="BUSCAR LINEAS">
+                                                                style="float: right" title="BUSCAR LÍNEAS">
                                                                 <v-icon dark> mdi-magnify </v-icon>
                                                             </v-btn>
                                                         </v-col>
                                                         <v-col cols="12" md="4">
-                                                            <v-text-field v-model="nombreLinea" label="NOMBRE LINEA"
+                                                            <v-text-field v-model="nombreLinea" label="NOMBRE LÍNEA"
                                                                 :counter="50" :rules="nombreLineaRules"
                                                                 @input="nombreLinea = nombreLinea.toUpperCase()"
                                                                 disabled required></v-text-field>
@@ -458,12 +454,12 @@
                                                                     </v-icon>
                                                                     <v-icon class="mx-2" large color="#0A62BF"
                                                                         @click="showEditTipoModal(item)"
-                                                                        title="ACTUALIZAR INFORMACION">
+                                                                        title="ACTUALIZAR INFORMACIÓN">
                                                                         mdi-pencil
                                                                     </v-icon>
                                                                     <v-icon class="mx-2" large color="#0A62BF"
                                                                         @click="showInfoTipo(item)"
-                                                                        title="VER INFORMACION">
+                                                                        title="VER INFORMACIÓN">
                                                                         mdi-eye
                                                                     </v-icon>
                                                                 </template>
@@ -518,12 +514,12 @@
                                                                     </v-icon>
                                                                     <v-icon v-if="item.est == 'ACTIVO'" color="red"
                                                                         large class="mr-2" @click="desactivar(item)"
-                                                                        title="DESACTIVAR TipoS">
+                                                                        title="DESACTIVAR TIPO">
                                                                         mdi-cancel
                                                                     </v-icon>
                                                                     <v-icon large class="mr-2" color="#0A62BF"
                                                                         @click="showInfoTipo(item)"
-                                                                        title="VER INtipoCION">
+                                                                        title="VER INFORMACIÓN">
                                                                         mdi-eye
                                                                     </v-icon>
                                                                 </template>
@@ -590,16 +586,16 @@ export default {
             datosTipos: [],
             headersTipos: [
                 { text: "NOMBRE T.PRODUCTO", value: "nomtipo", sortable: false },
-                { text: "CODIGO T.PRODUCTO", value: "codtipo", sortable: false },
-                { text: "NOMBRE LINEA", value: "nomlin", sortable: false },
+                { text: "CÓDIGO T.PRODUCTO", value: "codtipo", sortable: false },
+                { text: "NOMBRE LÍNEA", value: "nomlin", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
             datosTiposInh: [],
             headersTiposInh: [
                 { text: "NOMBRE T.PRODUCTO", value: "nomtipo", sortable: false },
-                { text: "CODIGO T.PRODUCTO", value: "codtipo", sortable: false },
-                { text: "NOMBRE LINEA", value: "nomlin", sortable: false },
+                { text: "CÓDIGO T.PRODUCTO", value: "codtipo", sortable: false },
+                { text: "NOMBRE LÍNEA", value: "nomlin", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -612,8 +608,8 @@ export default {
 
             datosLineas: [],
             headersLineas: [
-                { text: "NOMBRE DE LINEA", value: "nomlin", sortable: false },
-                { text: "CODIGO DE LINEA", value: "codlin", sortable: false },
+                { text: "NOMBRE DE LÍNEA", value: "nomlin", sortable: false },
+                { text: "CÓDIGO DE LÍNEA", value: "codlin", sortable: false },
                 { text: "ESTADO", value: "act", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -633,6 +629,26 @@ export default {
             mensajeSnackbarError: "REGISTRO FALLIDO",
             timeout: 2000,
             //#endregion
+
+            //#region Rules
+            nombreTipoRules: [
+                v => !!v || "El nombre del tipo es obligatorio",
+                v => (v && v.trim().length >= 3) || "Debe tener al menos 3 caracteres",
+                v => (v && v.length <= 100) || "No debe exceder 100 caracteres",
+                v => /^[A-Za-zÁÉÍÓÚÑÜ\s]+$/.test(v) || "Solo se permiten letras y espacios",
+            ],
+            codigoTipoRules: [
+                v => !!v || "El código del tipo es obligatorio",
+                v => (v && v.trim().length >= 2) || "Debe tener al menos 2 caracteres",
+                v => (v && v.length <= 20) || "No debe exceder 20 caracteres",
+                v => /^[A-Za-z0-9\-]+$/.test(v) || "Solo puede contener letras, números o guiones",
+            ],
+            nombreLineaRules: [
+                v => !!v || "Debe seleccionar una línea",
+                v => (v && v.length <= 50) || "El nombre de la línea no debe exceder 50 caracteres",
+            ],
+            //#endregion
+            
         }
     },
 
@@ -852,7 +868,7 @@ export default {
             this.lineasModal = true;
         },
 
-        closeLineaModal(){
+        closeLineaModal() {
             this.lineasModal = false;
         },
         //#endregion

@@ -19,20 +19,19 @@
 
                                 <v-col cols="12" md="4"></v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="codigoFormato" label="CODIGO FORMATO" :counter="100"
+                                    <v-text-field v-model="codigoFormato" label="CÓDIGO FORMATO" :counter="100"
                                         :rules="codigoFormatoRules" @input="codigoFormato = codigoFormato.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4"></v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeAgregarFormato()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeAgregarFormato()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
-                                  
+
                                 </v-col>
                                 <v-col cols="12" md="8"> </v-col>
                                 <v-col cols="12" md="4">
@@ -42,13 +41,14 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon large v-if="botonact == 1" color="primary" @click="actualizarFormato()"
-                                            style="float: left" title="ACTUALIZAR INFORMACIÓN" width="28px"
-                                            height="28px">
+                                        <v-btn icon large v-if="botonact == 1" color="primary"
+                                            @click="actualizarFormato()" style="float: left"
+                                            title="ACTUALIZAR INFORMACIÓN" width="28px" height="28px">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn icon large v-if="botonact == 0" color="success" @click="registrarFormato()"
-                                            style="float: left" title="REGISTRAR Formato" width="28px" height="28px">
+                                        <v-btn icon large v-if="botonact == 0" color="success"
+                                            @click="registrarFormato()" style="float: left" title="REGISTRAR Formato"
+                                            width="28px" height="28px">
                                             <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
                                         <v-btn icon large color="#BF120A" @click="limpiar()" style="float: left"
@@ -85,7 +85,7 @@
 
                                 <v-col cols="12" md="2"></v-col>
                                 <v-col cols="12" md="8">
-                                    <v-text-field v-model="codigoFormato" label="CODIGO Formato" :counter="100"
+                                    <v-text-field v-model="codigoFormato" label="CÓDIGO FORMATO" :counter="100"
                                         :rules="codigoFormatoRules" @input="codigoFormato = codigoFormato.toUpperCase()"
                                         disabled></v-text-field>
                                 </v-col>
@@ -93,13 +93,12 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeInfoFormatoModal()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeInfoFormatoModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
-                                  
+
                                 </v-col>
 
                             </v-row>
@@ -129,7 +128,7 @@
 
                                 <v-col cols="12" md="4"></v-col>
                                 <v-col cols="12" md="4">
-                                    <v-text-field v-model="codigoFormato" label="CODIGO FORMATO" :counter="100"
+                                    <v-text-field v-model="codigoFormato" label="CÓDIGO FORMATO" :counter="100"
                                         :rules="codigoFormatoRules" @input="codigoFormato = codigoFormato.toUpperCase()"
                                         required></v-text-field>
                                 </v-col>
@@ -143,16 +142,17 @@
                                                 OPCIONES
                                             </h6>
                                         </v-toolbar-title>
-                                        <v-btn icon large class="mx-2" fab dark small v-if="botonact == 1" color="#0A62BF"
-                                            @click="editarFormatos()" style="float: left"
+                                        <v-btn icon large class="mx-2" fab dark small v-if="botonact == 1"
+                                            color="#0A62BF" @click="editarFormatos()" style="float: left"
                                             title="ACTUALIZAR INFORMACIÓN">
                                             <v-icon dark> mdi-pencil </v-icon>
                                         </v-btn>
-                                        <v-btn icon large class="mx-2" fab dark small  v-if="botonact == 0" color="#0ABF55"
-                                            @click="registrarFormato()" style="float: left" title="REGISTRAR FORMATO">
+                                        <v-btn icon large class="mx-2" fab dark small v-if="botonact == 0"
+                                            color="#0ABF55" @click="registrarFormato()" style="float: left"
+                                            title="REGISTRAR FORMATO">
                                             <v-icon dark> mdi-content-save </v-icon>
                                         </v-btn>
-                                        <v-btn icon large class="mx-2" fab dark small  color="#BF120A" @click="limpiar()"
+                                        <v-btn icon large class="mx-2" fab dark small color="#BF120A" @click="limpiar()"
                                             style="float: left" title="LIMPIAR FORMULARIO">
                                             <v-icon dark> mdi-eraser </v-icon>
                                         </v-btn>
@@ -161,9 +161,8 @@
 
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeEditFormatoModal()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeEditFormatoModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -225,9 +224,8 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeInfoFormatoModal()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeInfoFormatoModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -297,7 +295,7 @@
 
                                                         <v-col cols="12" md="4"></v-col>
                                                         <v-col cols="12" md="4">
-                                                            <v-text-field v-model="codigoFormato" label="CODIGO FORMATO"
+                                                            <v-text-field v-model="codigoFormato" label="CÓDIGO FORMATO"
                                                                 :counter="100" :rules="codigoFormatoRules"
                                                                 @input="codigoFormato = codigoFormato.toUpperCase()"
                                                                 required></v-text-field>
@@ -312,20 +310,20 @@
                                                                         OPCIONES
                                                                     </h6>
                                                                 </v-toolbar-title>
-                                                                <v-btn icon large  v-if="botonact == 1" class="mx-2" fab dark
-                                                                    color="#0A62BF" @click="actualizarFormato()"
+                                                                <v-btn icon large v-if="botonact == 1" class="mx-2" fab
+                                                                    dark color="#0A62BF" @click="actualizarFormato()"
                                                                     style="float: left" title="ACTUALIZAR INFORMACIÓN">
                                                                     <v-icon dark> mdi-pencil </v-icon>
                                                                 </v-btn>
-                                                                <v-btn icon large  v-if="botonact == 0" class="mx-2" fab dark
-                                                                    color="#0ABF55" @click="registrarFormato()"
+                                                                <v-btn icon large v-if="botonact == 0" class="mx-2" fab
+                                                                    dark color="#0ABF55" @click="registrarFormato()"
                                                                     style="float: left" title="REGISTRAR FORMATO">
                                                                     <v-icon dark> mdi-content-save
                                                                     </v-icon>
                                                                 </v-btn>
-                                                                <v-btn icon large class="mx-2" fab dark x-small color="#BF120A"
-                                                                    @click="limpiar()" style="float: left"
-                                                                    title="LIMPIAR FORMULARIO">
+                                                                <v-btn icon large class="mx-2" fab dark x-small
+                                                                    color="#BF120A" @click="limpiar()"
+                                                                    style="float: left" title="LIMPIAR FORMULARIO">
                                                                     <v-icon dark> mdi-eraser </v-icon>
                                                                 </v-btn>
                                                             </v-toolbar>
@@ -426,7 +424,7 @@
                                                         <v-col cols="12">
                                                             <v-list-item>
                                                                 <v-list-item-title class="text-center">
-                                                                    <h5>Formatos</h5>
+                                                                    <h5>FORMATOS INNACTIVOS</h5>
                                                                 </v-list-item-title>
                                                             </v-list-item>
 
@@ -532,14 +530,14 @@ export default {
             datosFormatos: [],
             headersFormatos: [
                 { text: "NOMBRE FORMATO", value: "nomforma", sortable: false },
-                { text: "CODIGO FORMATO", value: "codforma", sortable: false },
+                { text: "CÓDIGO FORMATO", value: "codforma", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
             datosFormatosInh: [],
             headersFormatosInh: [
                 { text: "NOMBRE FORMATO", value: "nomforma", sortable: false },
-                { text: "CODIGO FORMATO", value: "codforma", sortable: false },
+                { text: "CÓDIGO FORMATO", value: "codforma", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
@@ -558,6 +556,21 @@ export default {
             snackbarError: false,
             mensajeSnackbarError: "REGISTRO FALLIDO",
             timeout: 2000,
+            //#endregion
+
+            //#region Rules
+            nombreFormatoRules: [
+                v => !!v || "El nombre del formato es obligatorio",
+                v => (v && v.trim().length >= 3) || "El nombre debe tener al menos 3 caracteres",
+                v => (v && v.length <= 100) || "El nombre no debe exceder 100 caracteres",
+                v => /^[A-Za-zÁÉÍÓÚÑÜ\s]+$/.test(v) || "Solo se permiten letras y espacios",
+            ],
+            codigoFormatoRules: [
+                v => !!v || "El código del formato es obligatorio",
+                v => (v && v.trim().length >= 2) || "El código debe tener al menos 2 caracteres",
+                v => (v && v.length <= 20) || "El código no debe exceder 20 caracteres",
+                v => /^[A-Za-z0-9\-]+$/.test(v) || "El código solo puede contener letras, números o guiones",
+            ],
             //#endregion
         }
     },
@@ -726,7 +739,7 @@ export default {
             this.nombreFormato = item.nomforma;
             this.codigoFormato = item.codforma;
         },
-        closeEditFormatoModal(){
+        closeEditFormatoModal() {
             this.editFormatoModal = false;
         },
         showFormatosInhabilitados() {

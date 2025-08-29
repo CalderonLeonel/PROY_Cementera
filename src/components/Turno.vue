@@ -67,7 +67,7 @@
                                     <v-icon large class="mr-2" color="#0A62BF" @click="showListarHorario(item)" title="VER HORARIOS">
                                         mdi-clock
                                     </v-icon>
-                                    <v-icon large class="mr-2" color="#0A628F" @click="showEditTurno(item)" title="ACTUALIZAR INFORMACION">
+                                    <v-icon large class="mr-2" color="#0A628F" @click="showEditTurno(item)" title="ACTUALIZAR INFORMACIÓN">
                                         mdi-pencil
                                     </v-icon>
                                     <v-icon v-if="item.act == 'INACTIVO'" large class="mr-2" color="#0ABF55" @click="activarTurno(item)"
@@ -346,7 +346,7 @@
                                             </template>
                                             <template #[`item.actions`]="{ item }">
                                                 <v-icon large class="mr-2" color="#0A628F" @click="showEditHorario(item)"
-                                                    title="EDITAR INFORMACION">
+                                                    title="EDITAR INFORMACIÓN">
                                                     mdi-pencil
                                                 </v-icon>
                                                 <v-icon large class="mr-2" color="#BF120A" @click="deleteHorario(item)"
@@ -424,8 +424,8 @@ export default {
 
         headersTurno: [
             { text: "TURNO", value: "turn" },
-            { text: "FECHA CREACION", value: "credte" },
-            { text: "ULTIMA ACTUALIZACION", value: "upddte" },
+            { text: "FECHA CREACIÓN", value: "credte" },
+            { text: "ULTIMA ACTUALIZACIÓN", value: "upddte" },
             { text: "ESTADO", value: "act" },
             { text: "OPCIONES", value: "actions", sortable: false, align: 'end' },
         ],
@@ -564,7 +564,7 @@ export default {
                     me.closeTurno();
                 })
                 .catch(function (error) {
-                    me.mensajeSnackbarError = "ACTUALIZACION FALLIDA",
+                    me.mensajeSnackbarError = "ACTUALIZACIÓN FALLIDA",
                         me.snackbarError = true;
                 });
         },
@@ -642,7 +642,7 @@ export default {
                     me.closeHorario();
                 })
                 .catch(function (error) {
-                    me.mensajeSnackbarError = "ACTUALIZACION FALLIDA",
+                    me.mensajeSnackbarError = "ACTUALIZACIÓN FALLIDA",
                         me.snackbarError = true;
                 });
         },
