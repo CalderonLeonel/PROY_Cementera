@@ -95,7 +95,7 @@
 
                               
 
-                                <template #[`item.actions`]="{ item }">
+                                <template #[`item.actions`]="{ item }" v-if="checkAccess(9, 'SUPERVISOR')">
                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposProveedor(item)"
                                         title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
@@ -117,11 +117,11 @@
                         </v-col>
                     </v-row>
                       <v-row >
-                                <v-col cols="12" md="2">
+                                <v-col cols="12" md="2" v-if="checkAccess(9, 'SUPERVISOR')">
                                     <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA CATEGORÍA</v-btn>  
                                 </v-col>
                                
-                                <v-col cols="12">
+                                <v-col cols="12" v-if="checkAccess(9, 'SUPERVISOR') ">
                                     <v-list-item>
                                         <v-list-item-title class="text-center">
                                             <h5>CATEGORÍAS</h5>
