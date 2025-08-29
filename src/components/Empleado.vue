@@ -79,7 +79,7 @@
 
                                             </v-text-field>
                                         </template>
-                                        <v-date-picker v-model="fechaNacimiento" locale="es" :picker-date="fechaNacimiento || getMinWorkAge()"
+                                        <v-date-picker v-model="fechaNacimiento" locale="es"
                                             @input="datePicker = false" :max="getMinWorkAge()"></v-date-picker>
                                     </v-menu>
                                 </v-col>
