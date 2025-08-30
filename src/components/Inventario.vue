@@ -54,7 +54,7 @@
              <v-form ref="form" v-model="valid" lazy-validation>
                  <v-container>
                      <v-row>
-                         <v-col cols="3" md="2">
+                         <v-col cols="3" md="2" v-if="checkAccess(10, 'SUPERVISOR')">
                              <v-btn color="success" @click="showModalAgregarTransaccion()">NUEVO INVENTARIO</v-btn>
                          </v-col>
                          <!--<v-col cols="3" md="3" v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE') ">

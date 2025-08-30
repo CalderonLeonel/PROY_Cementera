@@ -352,12 +352,12 @@
               <h6>STOCK</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Item' }" v-if="checkAccess(10, 'GERENTE')">
+          <v-list-item :to="{ name: 'Item' }" v-if="checkAccess(10, 'SUPERVISOR')">
             <v-list-item-title>
               <h6>ITEMS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Almacen' }" v-if="checkAccess(10, 'GERENTE')">
+          <v-list-item :to="{ name: 'Almacen' }" v-if="checkAccess(10, 'SUPERVISOR')">
             <v-list-item-title>
               <h6>ALMACEN</h6>
             </v-list-item-title>
