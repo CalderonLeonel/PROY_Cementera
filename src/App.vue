@@ -317,8 +317,8 @@
             </v-list-item-content>
           </template>
 
-          <v-list-item :to="{ name: 'Proveedor' }" v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
-            <v-list-item-title>
+          <v-list-item :to="{ name: 'Proveedor' }" v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE') || checkAccess(9, 'SECRETARIO')">
+            <v-list-item-title >
               <h6>PROVEEDOR</h6>
             </v-list-item-title>
           </v-list-item>
@@ -347,17 +347,17 @@
               <h6>INVENTARIO</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Stock' }">
+          <v-list-item :to="{ name: 'Stock' }"  v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
             <v-list-item-title>
               <h6>STOCK</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Item' }" v-if="checkAccess(10, 'SUPERVISOR')">
+          <v-list-item :to="{ name: 'Item' }" v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'SECRETARIO')">
             <v-list-item-title>
               <h6>ITEMS</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Almacen' }" v-if="checkAccess(10, 'SUPERVISOR')">
+          <v-list-item :to="{ name: 'Almacen' }" v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'SECRETARIO')">
             <v-list-item-title>
               <h6>ALMACEN</h6>
             </v-list-item-title>

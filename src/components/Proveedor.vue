@@ -1,5 +1,5 @@
 <template>
-   <v-card elevation="5" outlined v-if="checkAccess(9, 'SUPERVISOR' ) || checkAccess(9, 'GERENTE')">
+   <v-card elevation="5" outlined v-if="checkAccess(9, 'SUPERVISOR' ) || checkAccess(9, 'GERENTE') || checkAccess(9, 'SECRETARIO')">
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
@@ -116,7 +116,7 @@
                             </v-data-table>
                         </v-col>
                     </v-row>
-                    <v-row >
+                    <v-row v-if="!checkAccess(9, 'SECRETARIO')">
                                 <v-col cols="12" md="2" v-if="checkAccess(9, 'SUPERVISOR')">
                                     <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA CATEGORÍA</v-btn>  
                                 </v-col>

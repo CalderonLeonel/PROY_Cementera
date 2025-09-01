@@ -40,12 +40,12 @@
                 <h3>COTIZACIONES</h3>
             </v-alert>
         </div>
-        <div v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
+        <div v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')|| checkAccess(9, 'SECRETARIO')">
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-container>
 
                     <v-row>
-                        <v-col cols="12" md="4" v-if="checkAccess(9, 'SUPERVISOR')">
+                        <v-col cols="12" md="4" v-if="checkAccess(9, 'SUPERVISOR')|| checkAccess(9, 'SECRETARIO')">
                             <v-btn color="success" @click="showModalAgregarCotizacionAdquisicion()">NUEVA COTIZACIÓN</v-btn>
                         </v-col>
                         <v-col cols="12">
@@ -87,7 +87,7 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.estado == 'PENDIENTE' " class="mr-2" color="primary" x-large
+                                    <v-icon v-if="item.estado == 'PENDIENTE' && !checkAccess(9, 'SECRETARIO')" class="mr-2" color="primary" x-large
                                         @click="llenarCamposCotizacionAdquisicion(item)" title="ACTUALIZAR INFORMACION">
                                         mdi-eye
                                     </v-icon>
@@ -281,7 +281,7 @@
                                                 title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
-                                            <v-btn icon v-if="botonactCot == 0 && checkAccess(9, 'SUPERVISOR')" color="#0ABF55" 
+                                            <v-btn icon v-if="botonactCot == 0 && checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'SECRETARIO')" color="#0ABF55" 
                                                 @click="registrarCotizacionAdq()" style="float: left"
                                                 title="REGISTRAR COTIZACIÓN DE ADQUISICIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
