@@ -59,7 +59,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" md="5">
-                                    <v-text-field v-model="pais" label="NOMBRE PAÍS" :counter="50" :rules="paisRules"
+                                    <v-text-field v-model="pais" label="NOMBRE PAÍS" :counter="50" :rules="nombrePaisRules"
                                         @input="pais = pais.toUpperCase()" disabled required></v-text-field>
                                 </v-col>
 
@@ -751,6 +751,7 @@ import { async } from "regenerator-runtime";
 export default {
     data() {
         return {
+            valid: true,
             flag: 1,
             //#region Fabrica 
             idFabrica: "",
@@ -819,11 +820,14 @@ export default {
                     (v && v.length <= 50) ||
                     "EL CÓDIGO DE LA FÁBRICA DEBE TENER 25 CARACTERES COMO MAXIMO",
             ],
-            paisRules: [
-                (v) => !!v || "PAÍS ES REQUERIDO",
-            ],
             nombreCiudadRules: [
                 (v) => !!v || "CÓDIGO DE LA FÁBRICA ES REQUERIDO",
+            ],
+            nombrePaisRules: [
+                (v) => !!v || "PAIS ES REQUERIDO",
+            ],
+            unidadRules: [
+                (v) => !!v || "ASIGNAR UNIDAD DE LA FÁBRICA ES REQUERIDO",
             ],
             direccionRules: [
                 (v) => !!v || "DIRECCIÓN DE LA FÁBRICA ES REQUERIDO",
