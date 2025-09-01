@@ -505,7 +505,7 @@ export default {
             let pass = ""
             //10 caracteres entre letras y numeros
             const complement = letters  + numbers;
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < 16; i++) {
                 pass += complement.charAt(Math.floor(Math.random() * complement.length));
             }
 
