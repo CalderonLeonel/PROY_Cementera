@@ -551,11 +551,11 @@ export default {
 
         actualizarSector() {
             if (this.$refs.form.validate()) {
-                this.actualizarsector();
+                this.actualizarSectores();
             }
             
         },
-        async actualizarsector() {
+        async actualizarSectores() {
             let me = this;
 
             await axios
@@ -619,17 +619,12 @@ export default {
         },
         registrarSector() {
             if (this.$refs.form.validate()) {
-                this.registrarSector(
-                    this.sector,
-                    this.idDepartamento
-                );
+                this.registrarSectores();
             }
         },
-        async registrarSector(
-            sector,
-            idDepartamento
-        ) {
+        async registrarSectores() {
             let me = this;
+
             await axios
                 .post(
                     "/sector/addsector/" +

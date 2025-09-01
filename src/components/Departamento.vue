@@ -355,7 +355,7 @@ export default {
 
         actualizarDepartamento() {
             if (this.$refs.form.validate()) {
-                this.actualizardepartamento(
+                this.actualizarDepartamentos(
                     this.idDepartamento,
                     this.departamento,
                     this.idunid,
@@ -366,12 +366,7 @@ export default {
         },
 
 
-        async actualizardepartamento(
-            idDepartamento,
-            departamento,
-            idUnidad,
-            idArea
-        ) {
+        async actualizarDepartamentos() {
             let me = this;
 
             await axios
@@ -455,19 +450,11 @@ export default {
         },
         registrarDepartamento() {
             if (this.$refs.form.validate()) {
-                this.registrarDepartamento(
-                    this.departamento,
-                    this.idUnidad,
-                    this.idArea
-                );
+                this.registrarDepartamentos();
             }
             
         },
-        async registrarDepartamento(
-            departamento,
-            idUnidad,
-            idArea
-        ) {
+        async registrarDepartamentos() {
             let me = this;
 
             await axios
