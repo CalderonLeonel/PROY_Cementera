@@ -287,14 +287,14 @@
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn> 
                                         </v-col> 
-                                        <v-col cols="2" v-if="botonactCot == 1 && checkAccess(9, 'GERENTE')">
+                                        <v-col cols="2" v-if="botonactCot == 1 || cotizacionItem.estado == 'PENDIENTE' && checkAccess(9, 'GERENTE')">
                                              <v-btn icon  color="green"
                                                 @click="aprobarAdquisicion(cotizacionItem)" style="float: left"
                                                 title="APROBAR" class="mx-2" large>
                                                 <v-icon dark> mdi-check-circle </v-icon>
                                             </v-btn>
                                         </v-col> 
-                                        <v-col cols="2" v-if="botonactCot == 1 && checkAccess(9, 'GERENTE')">
+                                        <v-col cols="2" v-if="botonactCot == 1 || cotizacionItem.estado == 'PENDIENTE' && checkAccess(9, 'GERENTE')">
                                              <v-btn icon  color="red"
                                                 @click="denegarAdquisicion(cotizacionItem)" style="float: left"
                                                 title="DENEGAR" class="mx-2" large>
@@ -1803,30 +1803,26 @@ export default {
             let me = this;
             if (contenido == null) {
                 contenido = [];
-                me.mensajeSnackbarError = "NO SE PUEDE APROBAR UNA COTIZACIÓN SIN ITEMS, POR FAVOR AGREGUE EL DETALLE DE LA COTIZACIÓN";
+                me.mensajeSnackbarError = "NO SE PUEDE APROBAR UNA COTIZACIÓN SIN ITEMS, POR FAVOR SOLICITE QUE GUARDE EL DETALLE DE LA COTIZACIÓN";
                 me.snackbarError = true;
             } else {
-                this.idCotizacion = item.idCotizacion;
-                this.idUsuario = item.idUsuario;
-                this.idProveedor = item.idProveedor;
-                this.nombreCotizacion = item.nombreCotizacion;
-                this.fechaVencimiento = item.fechaVencimiento;
-                this.limpiar();
                 this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'ACTIVO');
-                
             }
           
 
         },
-        denegarAdquisicion(item) {
-            this.idCotizacion = item.idCotizacion;
-            this.idUsuario = item.idUsuario;
-            this.idProveedor = item.idProveedor;
-            this.nombreCotizacion = item.nombreCotizacion;
-            this.fechaVencimiento = item.fechaVencimiento;
-            this.limpiar();
-            this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'INACTIVO');
+       async denegarAdquisicion(item) {
             
+            const response = await axios.get(`/adquisicion/listardetallecotizacion/` + item.idCotizacion);
+            var contenido = response.data.resultado;
+            let me = this;
+            if (contenido == null) {
+                contenido = [];
+                me.mensajeSnackbarError = "NO SE PUEDE DENEGAR UNA COTIZACIÓN SIN ITEMS, POR FAVOR SOLICITE QUE GUARDE EL DETALLE DE LA COTIZACIÓN";
+                me.snackbarError = true;
+            } else {
+                this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'INACTIVO');
+            }
         },
 
 

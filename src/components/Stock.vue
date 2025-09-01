@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="5" outlined v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'COMUN') || checkAccess(10, 'GERENTE')">
+    <v-card elevation="5" outlined v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'SECRETARIA') || checkAccess(10, 'GERENTE')">
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>

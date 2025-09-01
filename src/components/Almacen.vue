@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="5" outlined>
+    <v-card elevation="5" outlined v-if="checkAccess(10, 'SUPERVISOR')">
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
