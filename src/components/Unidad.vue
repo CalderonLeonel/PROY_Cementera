@@ -303,19 +303,12 @@ export default {
 
         actualizarUnidad() {
             if (this.$refs.form.validate()) {
-                this.actualizarunidad(
-                    this.idUnidad,
-                    this.unidad
-                );
+                this.actualizarUnidades();
             }
-            
         },
 
 
-        async actualizarunidad(
-            idUnidad,
-            unidad
-        ) {
+        async actualizarUnidades() {
             let me = this;
 
             await axios
@@ -324,7 +317,6 @@ export default {
                     this.idUnidad +
                     "," +
                     this.unidad
-
                 )
                 .then(function (response) {
 
@@ -360,23 +352,17 @@ export default {
         },
         registrarUnidad() {
             if (this.$refs.form.validate()) {
-                this.registrarUnidad(
-                this.unidad
-                );
+                this.registrarUnidades();
             }
             
         },
-        async registrarUnidad(
-            unidad
-        ) {
+        async registrarUnidades() {
             let me = this;
 
-            //let me=this;
             await axios
                 .post(
                     "/unidad/addunidad/" +
                     this.unidad
-
                 )
                 .then(function (response) {
 

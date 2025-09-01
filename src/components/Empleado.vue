@@ -284,7 +284,8 @@ export default {
                 "EL NOMBRE DEL EMPLEADO DEBE TENER 50 CARACTERES COMO MAXIMO",
         ],
         sexoRules: [
-            (v) => v !== null && v !== undefined || "ASIGNAR UN SEXO ES REQUERIDO"
+            (v) => !!v || "ASIGNAR UN SEXO ES REQUERIDO",
+            (v) => (v != undefined),
         ],
         estadoCivilRules: [
             (v) => !!v || "ASIGNAR UN ESTADO CIVIL ES REQUERIDO",

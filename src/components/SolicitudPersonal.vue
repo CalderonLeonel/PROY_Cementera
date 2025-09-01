@@ -342,7 +342,7 @@ export default {
         
         actualizarSolicitud() {
             if (this.$refs.form.validate()) {
-                this.actualizarsolicitud(
+                this.actualizarSolicitudes(
                     this.idSolicitud,
                     this.puesto,
                     this.descripcion
@@ -352,11 +352,7 @@ export default {
         },
         
        
-        async actualizarsolicitud(
-            idSolicitud,
-            puesto,
-            descripcion
-        ) {
+        async actualizarSolicitudes() {
             let me = this;
 
             await axios
@@ -406,21 +402,13 @@ export default {
         },
         registrarSolicitud() {
             if (this.$refs.form.validate()) {
-                this.registrarSolicitud(
-                    this.puesto,
-                    this.descripcion
-                );
+                this.registrarSolicitudes();
             }
             
         },
-        async registrarSolicitud(
-            puesto,
-            descripcion,
-            idUsuario
-        ) {
+        async registrarSolicitudes() {
             let me = this;
 
-            //let me=this;
             await axios
                 .post(
                     "/solicitud/addsolicitud/" +
