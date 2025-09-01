@@ -305,10 +305,10 @@ export default {
 
         actualizarArea() {
             if (this.$refs.form.validate()) {
-                this.actualizararea();
+                this.actualizarAreas();
             }
         },
-        async actualizararea() {
+        async actualizarAreas() {
             let me = this;
             await axios
                 .post(
@@ -350,20 +350,17 @@ export default {
         },
         registrarArea() {
             if (this.$refs.form.validate()) {
-                this.registrarArea();
+                this.registrarAreas();
             }
         },
-        async registrarArea(
-            nombre,
+        async registrarAreas(
         ) {
             let me = this;
 
-            //let me=this;
             await axios
                 .post(
                     "/area/addarea/" +
                     this.nombre
-
                 )
                 .then(function (response) {
 

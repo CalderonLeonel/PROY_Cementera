@@ -585,7 +585,9 @@ export default {
                 });
         },
         registrarHorario() {
-            this.registrarHorarios()
+            if (this.$refs.form.validate()) {
+                this.registrarHorarios();
+            }
         },
         async registrarHorarios() {
             let me = this;
@@ -616,7 +618,9 @@ export default {
                 });
         },
         actualizarHorario() {
-            this.actualizarHorarios()
+            if (this.$refs.form.validate()) {
+                this.actualizarHorarios();
+            }
         },
         async actualizarHorarios() {
             let me = this;
