@@ -205,40 +205,9 @@
               <v-list-item-title>RRHH</v-list-item-title>
             </v-list-item-content>
           </template>
-
-          <v-list-item :to="{ name: 'Empleados' }">
-            <v-list-item-title>
-              <h6>EMPLEADOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Asistencias' }">
-            <v-list-item-title>
-              <h6>ASISTENCIA</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Alerta' }">
-            <v-list-item-title>
-              <h6>ALERTAS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Cargos' }">
-            <v-list-item-title>
-              <h6>CARGOS</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Turnos' }">
-            <v-list-item-title>
-              <h6>TURNOS</h6>
-            </v-list-item-title>
-          </v-list-item>
           <v-list-item :to="{ name: 'Unidades' }" v-if="checkAccess(0, 'GERENTE')">
             <v-list-item-title>
               <h6>UNIDADES</h6>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item :to="{ name: 'Areas' }" v-if="checkAccess(0, 'GERENTE')">
-            <v-list-item-title>
-              <h6>AREAS</h6>
             </v-list-item-title>
           </v-list-item>
           <v-list-item :to="{ name: 'Departamentos' }" v-if="checkAccess(0, 'GERENTE')">
@@ -246,12 +215,44 @@
               <h6>DEPARTAMENTOS</h6>
             </v-list-item-title>
           </v-list-item>
+          <v-list-item :to="{ name: 'Empleados' }">
+            <v-list-item-title>
+              <h6>EMPLEADOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Cargos' }">
+            <v-list-item-title>
+              <h6>CARGOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Asistencias' }">
+            <v-list-item-title>
+              <h6>ASISTENCIA</h6>
+            </v-list-item-title>
+          </v-list-item>
           <v-list-item :to="{ name: 'Carnet' }">
             <v-list-item-title>
               <h6>CARNET</h6>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ name: 'Solicitudes' }">
+          <v-list-item :to="{ name: 'Alerta' }">
+            <v-list-item-title>
+              <h6>ALERTAS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          
+          <v-list-item :to="{ name: 'Turnos' }" v-if="!checkAccess(0, 'SECRETARIO')">
+            <v-list-item-title>
+              <h6>TURNOS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          
+          <v-list-item :to="{ name: 'Areas' }" v-if="checkAccess(0, 'GERENTE')">
+            <v-list-item-title>
+              <h6>AREAS</h6>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ name: 'Solicitudes' }" v-if="checkAccess(0, 'GERENTE')">
             <v-list-item-title>
               <h6>SOLICITUDES DE PERSONAL</h6>
             </v-list-item-title>
