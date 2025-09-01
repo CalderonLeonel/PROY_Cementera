@@ -21,7 +21,7 @@
                 </template>
             </v-snackbar>
         </div>
-        <v-alert v-if="existencias == false" type="error" color="red darken-2" icon="mdi-alert-circle" dense prominent>
+        <v-alert v-if="existencias == false && checkAccess(9, 'SUPERVISOR')" type="error" color="red darken-2" icon="mdi-alert-circle" dense prominent>
             <div class="text-h6">
                 SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
             </div>
@@ -29,7 +29,7 @@
             EL
             FUNCIONAMIENTO DE LA FABRICA
         </v-alert>
-        <v-alert v-if="existencias == true" type="success" color="green darken-2" dismissible dense prominent>
+        <v-alert v-if="existencias == true && checkAccess(9, 'SUPERVISOR')" type="success" color="green darken-2" dismissible dense prominent>
             <div class="text-h5">
                 SE TIENEN LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
             </div>
