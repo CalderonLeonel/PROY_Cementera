@@ -524,7 +524,7 @@ export default {
             pass += this.randomCase(paterno) + String(Math.floor(Math.random() * 100)).padStart(3, '0');
             pass += this.randomCase(materno);
 
-            
+
             //Contraseña aleatoria
             this.password = pass;
 
