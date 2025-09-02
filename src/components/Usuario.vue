@@ -312,7 +312,7 @@
                     <div class="text-center">
                         <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
                             outlined>
-                            <strong>{{ mensajeSnackbar }}</strong>
+                            <strong>{{ mensajeSnackbar.toUpperCase()  }}</strong>
 
 
                             <template v-slot:action="{ attrs }">
@@ -326,7 +326,7 @@
 
                         <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error"
                             outlined>
-                            <strong>{{ mensajeSnackbarError }}</strong>
+                            <strong>{{ mensajeSnackbarError.toUpperCase() }}</strong>
 
                             <template v-slot:action="{ attrs }">
                                 <v-icon right v-bind="attrs" @click="snackbarError = false">
