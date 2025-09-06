@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="5" outline shaped>
 
-        <v-dialog v-model="proveedoresModal" max-width="1000px">
+        <v-dialog v-model="proveedoresModal" persistent max-width="1000px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>PROVEEDORES</span><br>
@@ -44,10 +44,12 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeClienteModal()" style="float: right" title="SALIR">
+                                      <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeProvedorModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
+                                   
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -480,13 +482,7 @@
                                                         </v-col>
 
                                                         <v-col cols="10"></v-col>
-                                                        <v-col cols="2">
-                                                            <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                                                @click="closeCantidadMateriaPrima()"
-                                                                style="float: right" title="SALIR">
-                                                                <v-icon dark> mdi-close-circle-outline </v-icon>
-                                                            </v-btn>
-                                                        </v-col>
+                                                       
                                                     </v-row>
                                                 </v-container>
                                             </v-form>
@@ -880,6 +876,10 @@ export default {
         },
         closeCantidadMedida() {
             this.cantidadMedida = false;
+        },
+
+         closeProvedorModal() {
+            this.proveedoresModal = false;
         },
         //#endregion
         //#region Cambios Estado
