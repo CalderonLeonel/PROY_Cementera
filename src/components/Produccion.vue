@@ -923,7 +923,7 @@ export default {
                 )
                 .then(function (response) {
 
-                    me.mensajeSnackbar = "PRODUCTO CORRECTAMENTE REGISTRADO EN EL INVENTARIO";
+                    me.mensajeSnackbar = "PRODUCTO CORRECTAMENTE ACTUALIZADO EN EL INVENTARIO";
                     me.snackbarOK = true;
 
                 })
