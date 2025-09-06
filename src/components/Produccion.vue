@@ -815,9 +815,6 @@ export default {
 
         //#region ITEM
 
-//ITEM
-       
-
          registrarIt() {
             if (this.$refs.form.validate()) {
             this.registrarItem(this.nombreItem, this.descripcion,this.medida,this.idSubcategoria,this.limitecritico, this.metodoValuacion, this.estado,this.codigoProducto, this.idProveedor,this.costoReferencia, this.fechaVencimiento);
