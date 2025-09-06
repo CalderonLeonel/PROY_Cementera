@@ -985,6 +985,53 @@ export default {
             this.almacenesModal = false;
         },
         //#endregion
+
+
+         //#region Inventory
+        async registrarInventario(
+            idItem,
+            idAlmacen,
+            movimiento,
+            cantidad,
+            estado,
+            referencia,
+            motivo,
+            lote
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/agregarinventario/" +
+                    idItem +
+                    "," +
+                    idAlmacen +
+                    "," +
+                    movimiento +
+                    "," +
+                    cantidad +
+                    "," +
+                    estado +
+                    "," +
+                    referencia +
+                    "," +
+                    motivo +
+                    "," +
+                    lote
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = "PRODUCTO CORRECTAMENTE REGISTRADO EN EL INVENTARIO";
+                    me.snackbarOK = true;
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+                
+
+        },
+        //#endregion
+
     },
 }
 </script>
