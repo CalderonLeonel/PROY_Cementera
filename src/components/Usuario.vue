@@ -312,7 +312,7 @@
                     <div class="text-center">
                         <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="#00FF00"
                             outlined>
-                            <strong>{{ mensajeSnackbar }}</strong>
+                            <strong>{{ mensajeSnackbar.toUpperCase()  }}</strong>
 
 
                             <template v-slot:action="{ attrs }">
@@ -326,7 +326,7 @@
 
                         <v-snackbar v-model="snackbarError" :timeout="timeout" top right shaped dense color="error"
                             outlined>
-                            <strong>{{ mensajeSnackbarError }}</strong>
+                            <strong>{{ mensajeSnackbarError.toUpperCase() }}</strong>
 
                             <template v-slot:action="{ attrs }">
                                 <v-icon right v-bind="attrs" @click="snackbarError = false">
@@ -493,24 +493,40 @@ export default {
             this.closeEmpleado();
         },
 
+        randomCase(text) {
+            let newText = "";
+            for (let i = 0; i < text.length; i++) {
+                let character = text[i];
+                let number = Math.random();
+
+                if (number > 0.5) {
+                newText += character.toUpperCase();
+                } else {
+                newText += character.toLowerCase();
+                }
+            }
+            return newText;
+        },
+
         generarDatosUsuario(item) {
+            const paterno =  item.pat.substring(0, 2).toUpperCase();
+            const materno = item.mat.substring(0, 2).toUpperCase();
+            const nombre = item.nom.substring(0, 2).toUpperCase();
             let min = Math.ceil(1000);
             let max = Math.floor(10000);
 
-            const letters  = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-            const numbers = "0123456789";
+           
             this.nombreUsuario = item.nom[0] + item.pat[0] + (Math.floor(Math.random() * (max - min) + min));
 
+            
+            let pass = "";
+            pass += this.randomCase(nombre) + String(Math.floor(Math.random() * 100)).padStart(2, '0');
+            pass += this.randomCase(paterno) + String(Math.floor(Math.random() * 100)).padStart(3, '0');
+            pass += this.randomCase(materno);
 
-            let pass = ""
-            //10 caracteres entre letras y numeros
-            const complement = letters  + numbers;
-            for (let i = 0; i < 8; i++) {
-                pass += complement.charAt(Math.floor(Math.random() * complement.length));
-            }
 
             //Contraseña aleatoria
-            this.password = pass.split('').sort(() => Math.random() - 0.5).join('');
+            this.password = pass;
 
 
 

@@ -21,7 +21,7 @@
                 </template>
             </v-snackbar>
         </div>
-            <v-alert  v-if="existencias==false" 
+            <v-alert  v-if="existencias==false && checkAccess(10, 'SUPERVISOR')"
                 type="error"
                 color="red darken-2"
                 dense
@@ -33,7 +33,7 @@
                 </div>
                 POR FAVOR, NOTIFIQUE A ADQUISICIONES PARA ADQUIRIR EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong>   
             </v-alert>
-            <v-alert     v-if="existencias==true"      
+            <v-alert     v-if="existencias==true && checkAccess(10, 'SUPERVISOR')"    
                 type="success"
                 color="green darken-2"
                 dismissible
@@ -47,7 +47,7 @@
             </v-alert>
          <div>
              <v-alert dense style="color: #ffffff;" color="indigo">
-                 <h3>INVENTARIO</h3>
+                 <h3>STOCK</h3>
              </v-alert>
          </div>
          <div>

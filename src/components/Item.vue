@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="5" outlined v-if="checkAccess(10, 'SUPERVISOR')")>
+    <v-card elevation="5" outlined >
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
@@ -21,7 +21,7 @@
                 </template>
             </v-snackbar>
         </div>
-            <v-alert  v-if="existencias==false" 
+            <v-alert  v-if="existencias==false && checkAccess(10, 'SUPERVISOR')"
                 type="error"
                 color="red darken-2"
                 dense
@@ -33,7 +33,7 @@
                 </div>
                 POR FAVOR, NOTIFIQUE A ADQUISICIONES PARA ADQUIRIR EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong>   
             </v-alert>
-            <v-alert     v-if="existencias==true"      
+            <v-alert     v-if="existencias==true && checkAccess(10, 'SUPERVISOR')"   
                 type="success"
                 color="green darken-2"
                 dismissible
@@ -50,7 +50,7 @@
                  <h3>ÍTEMS</h3>
              </v-alert>
          </div>
-         <div>
+         <div >
              <v-form ref="form" v-model="valid" lazy-validation>
                  <v-container>
                      <v-row >
@@ -83,15 +83,15 @@
                                     </template>
  
                                  <template #[`item.actions`]="{ item }">
-                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposItem(item)"
+                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposItem(item)" v-if="!checkAccess(10, 'SECRETARIO')"
                                          title="ACTUALIZAR INFORMACIÓN">
                                          mdi-pencil
                                      </v-icon>
-                                     <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
+                                     <v-icon v-if="item.estado == 'INACTIVO' && !checkAccess(10, 'SECRETARIO')" x-large color="success" class="mr-2" @click="activar(item)"
                                          title="ACTIVAR SECCIÓN">
                                          mdi-check-circle-outline
                                      </v-icon>
-                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionIt(item)"
+                                     <v-icon v-if="item.estado == 'ACTIVO' && !checkAccess(10, 'SECRETARIO')" x-large color="error" class="mr-2" @click="confirmacionAnulacionIt(item)"
                                          title="DESACTIVAR SECCIÓN">
                                          mdi-close-circle
                                      </v-icon>             
@@ -103,7 +103,7 @@
                              </v-data-table>
                          </v-col>
                      </v-row>
-                     <v-row >
+                     <v-row v-if="checkAccess(10, 'SUPERVISOR')">
                          <v-col cols="12" md="2">
                              <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA CATEGORÍA</v-btn>  
                          </v-col>
@@ -130,15 +130,15 @@
                                  </template>
  
                                  <template #[`item.actions`]="{ item }">
-                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposCategoria(item)"
+                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposCategoria(item)" v-if="checkAccess(10, 'SUPERVISOR')"
                                          title="ACTUALIZAR INFORMACIÓN">
                                          mdi-pencil
                                      </v-icon>
-                                     <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
+                                     <v-icon v-if="item.estado == 'INACTIVO' && checkAccess(10, 'SUPERVISOR')" x-large color="success" class="mr-2" @click="activar(item)"
                                          title="ACTIVAR CATEGORÍA">
                                          mdi-check-circle-outline
                                      </v-icon>
-                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionCat(item)"
+                                     <v-icon v-if="item.estado == 'ACTIVO'&& checkAccess(10, 'SUPERVISOR')" x-large color="error" class="mr-2" @click="confirmacionAnulacionCat(item)"
                                          title="DESACTIVAR CATEGORÍA">
                                          mdi-close-circle
                                      </v-icon>             
@@ -151,7 +151,7 @@
                          </v-col>
                      </v-row>
 
-                     <v-row >
+                     <v-row v-if="checkAccess(10, 'SUPERVISOR')">
                          <v-col cols="12" md="2">
                              <v-btn color="success" @click="showModalAgregarSubcategoria()">NUEVA SUBCATEGORÍA</v-btn>  
                          </v-col>
@@ -2782,7 +2782,7 @@
 
                     //Si CategoriaCorrecto es '0', no se requiere ningun Categoria de cuenta para acceder
                     if (CategoriaCorrecto != '0') {
-                    if (this.user['Categoria'] == CategoriaCorrecto) {
+                    if (this.user['tipo'] == CategoriaCorrecto) {
                         checkedType = true;
                     }
                     } else checkedType = true;

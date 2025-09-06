@@ -1,5 +1,5 @@
 <template>
-   <v-card elevation="5" outlined v-if="checkAccess(9, 'SUPERVISOR' ) || checkAccess(9, 'GERENTE')">
+   <v-card elevation="5" outlined v-if="checkAccess(9, 'SUPERVISOR' ) || checkAccess(9, 'GERENTE') || checkAccess(9, 'SECRETARIO')">
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
@@ -21,7 +21,7 @@
                 </template>
             </v-snackbar>
         </div>
-        <v-alert v-if="existencias==false"          
+        <v-alert v-if="existencias==false && checkAccess(9, 'SUPERVISOR')"         
                 type="error"
                 color="red darken-2"
                 icon="mdi-alert"
@@ -33,7 +33,7 @@
                 </div>
                 POR FAVOR, COTICE UNA ADQUISICION PARA TENER EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong> NECESARIAS PARA EL FUNCIONAMIENTO DE LA FABRICA 
         </v-alert>
-        <v-alert    v-if="existencias==true"       
+        <v-alert    v-if="existencias==true && checkAccess(9, 'SUPERVISOR')"     
                 type="success"
                 color="green darken-2"
                 dismissible
@@ -116,7 +116,7 @@
                             </v-data-table>
                         </v-col>
                     </v-row>
-                      <v-row >
+                    <v-row v-if="!checkAccess(9, 'SECRETARIO')">
                                 <v-col cols="12" md="2" v-if="checkAccess(9, 'SUPERVISOR')">
                                     <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA CATEGORÍA</v-btn>  
                                 </v-col>
