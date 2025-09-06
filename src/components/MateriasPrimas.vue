@@ -971,6 +971,79 @@ export default {
             this.datosMateriaP.push(item);
         },
 
+
+
+        
+        //#region Inventory
+        async registrarInventario(
+            idItem,
+            idAlmacen,
+            movimiento,
+            cantidad,
+            estado,
+            referencia,
+            motivo,
+            lote
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/agregarinventario/" +
+                    idItem +
+                    "," +
+                    idAlmacen +
+                    "," +
+                    movimiento +
+                    "," +
+                    cantidad +
+                    "," +
+                    estado +
+                    "," +
+                    referencia +
+                    "," +
+                    motivo +
+                    "," +
+                    lote
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = "PRODUCTO CORRECTAMENTE REGISTRADO EN EL INVENTARIO";
+                    me.snackbarOK = true;
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+                
+
+        },
+        //#endregion
+
+
+        //#region ITEM
+
+        listarItem() {
+             this.listarItems();
+         },
+         async listarItems() {
+           let me = this;
+           await axios
+             .get("/inventario/listaritemactivo/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datosItem = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datosItem = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+        //#endregion
+
     },
 }
 </script>
