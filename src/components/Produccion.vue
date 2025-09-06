@@ -767,6 +767,55 @@ export default {
             this.fechaVencimiento = "";
         },
 
+        //#region Inventory
+        async registrarInventario(
+            idItem,
+            idAlmacen,
+            movimiento,
+            cantidad,
+            estado,
+            referencia,
+            motivo,
+            lote
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/agregarinventario/" +
+                    idItem +
+                    "," +
+                    idAlmacen +
+                    "," +
+                    movimiento +
+                    "," +
+                    cantidad +
+                    "," +
+                    estado +
+                    "," +
+                    referencia +
+                    "," +
+                    motivo +
+                    "," +
+                    lote
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = response.data.message;
+                    me.snackbarOK = true;
+                    me.closeModalAgregarTransaccion();
+                    me.listarInventarios();
+                    me.listarStockAlmacen();
+                    me.limpiar();
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+                
+
+        },
+        //#endregion
+
     },
 }
 </script>
