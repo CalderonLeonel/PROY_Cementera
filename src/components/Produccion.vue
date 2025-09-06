@@ -800,7 +800,7 @@ export default {
                 )
                 .then(function (response) {
 
-                    me.mensajeSnackbar = response.data.message;
+                    me.mensajeSnackbar = "PRODUCTO CORRECTAMENTE REGISTRADO EN EL INVENTARIO";
                     me.snackbarOK = true;
                 })
                 .catch(function (error) {
@@ -864,7 +864,7 @@ export default {
                 ) 
                 .then(function (response) {
 
-                    me.mensajeSnackbar = "Producto Correctamente Registrado en Inventarios";
+                    me.mensajeSnackbar = "PRODUCTO CORRECTAMENTE REGISTRADO EN EL INVENTARIO";
                     me.snackbarOK = true;
                 })
                 .catch(function (error) {
@@ -923,7 +923,7 @@ export default {
                 )
                 .then(function (response) {
 
-                    me.mensajeSnackbar = "Producto Actualizado en el Inventario";
+                    me.mensajeSnackbar = "PRODUCTO CORRECTAMENTE REGISTRADO EN EL INVENTARIO";
                     me.snackbarOK = true;
 
                 })
