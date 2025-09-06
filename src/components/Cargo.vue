@@ -293,17 +293,12 @@ export default {
 
         actualizarCargo() {
             if (this.$refs.form.validate()) {
-                this.actualizarcargo();
+                this.actualizarCargos();
             }
         },
 
 
-        async actualizarcargo(
-            idCargo,
-            nombreCargo,
-            descripcion,
-            salario,
-        ) {
+        async actualizarCargos() {
             let me = this;
 
             await axios
@@ -354,10 +349,10 @@ export default {
         },
         registrarCargo() {
             if (this.$refs.form.validate()) {
-            this.registrarCargo();
+                this.registrarCargos();
             }
         },
-        async registrarCargo() {
+        async registrarCargos() {
             let me = this;
 
             await axios

@@ -175,7 +175,7 @@
 
                                 <v-col cols="12" md="4">
                                     <v-text-field v-model="nombreTipo" label="NOMBRE TIPO PRODUCTO" :counter="50"
-                                        :rules="nombreTipoRules" @input="nombreTipo = nombreTipo.toUpperCase()" disabled
+                                        :rules="nombreTipoProductoRules" @input="nombreTipo = nombreTipo.toUpperCase()" disabled
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="4">
@@ -223,7 +223,7 @@
                                 </v-col>
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" :disabled="botonAct == 1" fab dark x-small color="cyan"
-                                        :rules="ProductoRules" @click="showFormato()" style="float: right"
+                                        @click="showFormato()" style="float: right"
                                         title="BUSCAR FORMATO">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -235,7 +235,7 @@
                                 </v-col>
                                 <v-col cols="12" md="1">
                                     <v-btn class="mx-2" :disabled="botonAct == 1" fab dark x-small color="cyan"
-                                        :rules="tipoRules" @click="showTipos()" style="float: right"
+                                        @click="showTipos()" style="float: right"
                                         title="BUSCAR TIPO PRODUCTO">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -247,7 +247,7 @@
                                         required></v-text-field>
                                 </v-col>
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" :disabled="botonAct == 1" fab dark x-small color="cyan" :rules="fabricaRules"
+                                    <v-btn class="mx-2" :disabled="botonAct == 1" fab dark x-small color="cyan"
                                         @click="showFabricas()" style="float: right" title="BUSCAR FÁBRICAS">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -362,7 +362,7 @@
                                                         </v-col>
                                                         <v-col cols="12" md="1">
                                                             <v-btn class="mx-2" fab dark x-small color="cyan"
-                                                                :rules="ProductoRules" @click="showFormato()"
+                                                                @click="showFormato()"
                                                                 style="float: right" title="BUSCAR FORMATO">
                                                                 <v-icon dark> mdi-magnify </v-icon>
                                                             </v-btn>
@@ -375,7 +375,7 @@
                                                         </v-col>
                                                         <v-col cols="12" md="1">
                                                             <v-btn class="mx-2" fab dark x-small color="cyan"
-                                                                :rules="tipoRules" @click="showTipos()"
+                                                                @click="showTipos()"
                                                                 style="float: right" title="BUSCAR TIPO PRODUCTO">
                                                                 <v-icon dark> mdi-magnify </v-icon>
                                                             </v-btn>
@@ -389,7 +389,7 @@
                                                         </v-col>
                                                         <v-col cols="12" md="1">
                                                             <v-btn class="mx-2" fab dark x-small color="cyan"
-                                                                :rules="fabricaRules" @click="showFabricas()"
+                                                                @click="showFabricas()"
                                                                 style="float: right" title="BUSCAR FÁBRICA">
                                                                 <v-icon dark> mdi-magnify </v-icon>
                                                             </v-btn>
@@ -536,12 +536,12 @@
                                                             </v-list-item>
 
                                                             <v-card-title>
-                                                                <v-text-field v-model="buscarproductos"
+                                                                <v-text-field v-model="searchProductos"
                                                                     append-icon="mdi-magnify" label="BUSCAR PRODUCTOS"
                                                                     single-line hide-details></v-text-field>
                                                             </v-card-title>
                                                             <v-data-table :headers="headersProductoInh"
-                                                                :items="datosProductoInh" :search="buscarproductos"
+                                                                :items="datosProductoInh" :search="searchProductos"
                                                                 :items-per-page="5" class="elevation-1" id="tableId">
 
                                                                 <template #[`item.est`]="{ item }">
@@ -628,6 +628,7 @@ import 'jspdf-autotable';
 export default {
     data() {
         return {
+            valid: true,
             flag: 1,
 
             //#region Productos
@@ -636,6 +637,7 @@ export default {
             codigoProducto: "",
             precioUnitario: "",
             searchProductos: "",
+            nombreTipoProducto: "",
             datosProducto: [],
             headersProducto: [
                 { text: "NOMBRE DE PRODUCTO", value: "nomprod", sortable: false },
@@ -657,6 +659,7 @@ export default {
             codigoFormato: "",
             nombreFormato: "",
             datosFormatos: [],
+            buscarFormato: "",
             headersFormatos: [
                 { text: "NOMBRE FORMATO", value: "nomforma", sortable: false },
                 { text: "CÓDIGO FORMATO", value: "codforma", sortable: false },
@@ -669,7 +672,7 @@ export default {
             idTipo: "",
             nombreTipo: "",
             codigoTipo: "",
-            buscarTipos: "",
+            buscarTipo: "",
             datosTipos: [],
             headersTipos: [
                 { text: "NOMBRE T.PRODUCTO", value: "nomtipo", sortable: false },
@@ -685,6 +688,7 @@ export default {
             nombreFabrica: "",
             codigoFabrica: "",
             datosFabrica: [],
+            buscarFabricas: "",
             headersFabrica: [
                 { text: "NOMBRE FÁBRICA", value: "nomfab", sortable: false },
                 { text: "CÓDIGO FÁBRICA", value: "codfab", sortable: false },

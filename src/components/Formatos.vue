@@ -521,6 +521,7 @@ import 'jspdf-autotable';
 export default {
     data() {
         return {
+            valid: true,
             flag: 1,
             //#region Formato
             idFormato: "",
