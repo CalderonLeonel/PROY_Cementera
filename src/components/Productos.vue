@@ -1184,6 +1184,127 @@ export default {
             }
 
         },
+
+
+        //ITEM
+
+         registrarIt() {
+            if (this.$refs.form.validate()) {
+            this.generateSKU();
+            this.registrarItem(this.nombreItem, this.descripcion,this.medida,this.idSubcategoria,this.limitecritico, this.metodoValuacion, this.estado, this.idProveedor,this.costoReferencia, this.fechaVencimiento);
+            }
+        },
+        async registrarItem(
+            nombreItem,
+            descripcion,
+            medida,
+            idCategoria,
+            limitecritico,
+            metodoValuacion,
+            SKU,
+            idProveedor,
+            fechaVencimiento,
+            costoReferencia,
+            estado
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/agregaritem/" +
+                    nombreItem +
+                    "," +
+                    descripcion +
+                    "," +
+                    medida +
+                    "," +
+                    estado +
+                    "," +
+                    idCategoria +
+                    "," +
+                    limitecritico +
+                    "," +
+                    metodoValuacion+
+                    "," +
+                    SKU +
+                    "," +
+                    idProveedor +
+                    "," +
+                    fechaVencimiento+
+                    "," +
+                    costoReferencia
+                ) 
+                .then(function (response) {
+
+                    me.mensajeSnackbar = "Producto Correctamente Registrado en Inventarios";
+                    me.snackbarOK = true;
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                });
+
+        },
+
+        editarIt() {
+            if (this.$refs.form.validate()) {
+            this.editarItem(this.idItem, this.nombreItem, this.descripcion, this.estado, this.limitecritico, this.metodoValuacion);
+            }
+        },
+        async editarItem(
+            idItem,
+            nombreItem,
+            descripcion,
+            medida,
+            idCategoria,
+            limitecritico,
+            metodoValuacion,
+            SKU,
+            idProveedor,
+            fechaVencimiento,
+            costoReferencia,
+            estado
+            
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/actualizaritem/" +
+                    idItem +
+                    "," +
+                     nombreItem +
+                    "," +
+                    descripcion +
+                    "," +
+                    medida +
+                    "," +
+                    estado +
+                    "," +
+                    idCategoria +
+                    "," +
+                    limitecritico +
+                    "," +
+                    metodoValuacion+
+                    "," +
+                    SKU +
+                    "," +
+                    idProveedor +
+                    "," +
+                    fechaVencimiento+
+                    "," +
+                    costoReferencia
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = "Producto Actualizado en el Inventario";
+                    me.snackbarOK = true;
+
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+                    alert('error');
+                });
+
+        },
+
         limpiar() {
             this.nombreProducto = "";
             this.codigoProducto = "";
