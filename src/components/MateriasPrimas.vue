@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="5" outline shaped>
 
-        <v-dialog v-model="proveedoresModal" max-width="1000px">
+        <v-dialog v-model="proveedoresModal" persistent max-width="1000px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>PROVEEDORES</span><br>
@@ -44,10 +44,12 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                        @click="closeClienteModal()" style="float: right" title="SALIR">
+                                      <v-btn class="mx-2" iconv dark color="#00A1B1"
+                                        @click="closeProvedorModal()" style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
                                     </v-btn>
+                                   
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -480,13 +482,7 @@
                                                         </v-col>
 
                                                         <v-col cols="10"></v-col>
-                                                        <v-col cols="2">
-                                                            <v-btn class="mx-2" fab dark x-small color="red darken-1"
-                                                                @click="closeCantidadMateriaPrima()"
-                                                                style="float: right" title="SALIR">
-                                                                <v-icon dark> mdi-close-circle-outline </v-icon>
-                                                            </v-btn>
-                                                        </v-col>
+                                                       
                                                     </v-row>
                                                 </v-container>
                                             </v-form>
@@ -881,6 +877,10 @@ export default {
         closeCantidadMedida() {
             this.cantidadMedida = false;
         },
+
+         closeProvedorModal() {
+            this.proveedoresModal = false;
+        },
         //#endregion
         //#region Cambios Estado
         activar(item) {
@@ -970,6 +970,79 @@ export default {
             );
             this.datosMateriaP.push(item);
         },
+
+
+
+        
+        //#region Inventory
+        async registrarInventario(
+            idItem,
+            idAlmacen,
+            movimiento,
+            cantidad,
+            estado,
+            referencia,
+            motivo,
+            lote
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/agregarinventario/" +
+                    idItem +
+                    "," +
+                    idAlmacen +
+                    "," +
+                    movimiento +
+                    "," +
+                    cantidad +
+                    "," +
+                    estado +
+                    "," +
+                    referencia +
+                    "," +
+                    motivo +
+                    "," +
+                    lote
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = "PRODUCTO CORRECTAMENTE REGISTRADO EN EL INVENTARIO";
+                    me.snackbarOK = true;
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+                
+
+        },
+        //#endregion
+
+
+        //#region ITEM
+
+        listarItem() {
+             this.listarItems();
+         },
+         async listarItems() {
+           let me = this;
+           await axios
+             .get("/inventario/listaritemactivo/")
+             .then(function (response) {
+               if (response.data.resultado == null) {
+                 me.datosItem = [];
+                 console.log(response.data);
+               } else {
+                 console.log(response.data);
+                 me.datosItem = response.data.resultado;
+               }
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+         },
+        //#endregion
 
     },
 }
