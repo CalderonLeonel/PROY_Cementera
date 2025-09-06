@@ -1187,11 +1187,11 @@ export default {
 
 
         //ITEM
+       
 
          registrarIt() {
             if (this.$refs.form.validate()) {
-            this.generateSKU();
-            this.registrarItem(this.nombreItem, this.descripcion,this.medida,this.idSubcategoria,this.limitecritico, this.metodoValuacion, this.estado, this.idProveedor,this.costoReferencia, this.fechaVencimiento);
+            this.registrarItem(this.nombreItem, this.descripcion,this.medida,this.idSubcategoria,this.limitecritico, this.metodoValuacion, this.estado,this.codigoProducto, this.idProveedor,this.costoReferencia, this.fechaVencimiento);
             }
         },
         async registrarItem(
@@ -1246,7 +1246,7 @@ export default {
 
         editarIt() {
             if (this.$refs.form.validate()) {
-            this.editarItem(this.idItem, this.nombreItem, this.descripcion, this.estado, this.limitecritico, this.metodoValuacion);
+            this.editarItem(this.idItem,this.nombreItem, this.descripcion,this.medida,this.idSubcategoria,this.limitecritico, this.metodoValuacion, this.estado,this.codigoProducto, this.idProveedor,this.costoReferencia, this.fechaVencimiento);
             }
         },
         async editarItem(
