@@ -378,9 +378,18 @@ export default {
 
                 ]);
                 const doc = new jsPDF();
-
-                doc.setFontSize(14);
-                doc.text("RECIBO", 105, 10, { align: "center" });
+                const imageWidth = 40;
+                const imageHeight = 20;
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const xImage = (pageWidth - imageWidth) / 2;
+                const yImage = 10;
+                const yTitle = yImage + imageHeight + 10; 
+                doc.addImage(logo, "PNG", xImage, yImage, imageWidth, imageHeight);
+                doc.setFontSize(12);
+                doc.setFont("helvetica", "bold");
+                doc.text("RECIBO", 105, yTitle, { align: "center",  });
+                doc.text("DRYMIX BOLIVIA SRL.", 105, 20, { align: "center" });
+                doc.setFontSize(11);
                 doc.text("Drymix Bolivia SRL.", 105, 20, { align: "center" });
                 doc.setFontSize(12);
 
