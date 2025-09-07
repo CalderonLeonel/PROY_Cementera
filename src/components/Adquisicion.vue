@@ -680,7 +680,7 @@
 import axios from "axios";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-
+import logo from "@/assets/logodrymix.png";
 export default {
     data() {
         return {
@@ -1918,7 +1918,15 @@ export default {
 
                 ]);
                 const doc = new jsPDF();
-                    let titulo = 'Detalle de Adquisición'
+                const imageWidth = 30;
+                    const imageHeight = 15;
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const xImage = pageWidth - imageWidth - 10;
+                    const yImage = 10;
+                    doc.addImage(logo, "PNG", xImage, yImage, imageWidth, imageHeight);
+                    doc.setFontSize(16);
+                    doc.setFont("helvetica", "bold");
+                    let titulo = 'DETALLE DE ADQUISICIÓN'
                     doc.setFont('helvetica', 'bold'); 
                     const textWidth = doc.getStringUnitWidth(titulo) * doc.internal.getFontSize() / doc.internal.scaleFactor;
                     const textOffset = (doc.internal.pageSize.width - textWidth) / 2;
@@ -1926,8 +1934,8 @@ export default {
                     doc.setFont('helvetica', 'normal');
                     doc.setFontSize(12);
                     doc.text(item.nombreCotizacion, 10, 30)
-                    doc.text("Proveedor: "+ item.nombreProveedor, 10, 40);
-                    doc.text("Fecha: "+ this.getFormattedDate(item.fechaVencimiento), 10,50);
+                    doc.text("PROVEEDOR: "+ item.nombreProveedor, 10, 40);
+                    doc.text("FECHA LÍMITE: "+ this.getFormattedDate(item.fechaVencimiento), 10,50);
                     doc.autoTable({ head: [["Ítem", "Unidad", "Precio Unitario", "Cantidad"]], body: bodyData, startY: 60 });
                     let finalY = doc.previousAutoTable.finalY;
                     doc.text("Total: "+total.toFixed(2)+" Bs.", 150, 10 + finalY)
