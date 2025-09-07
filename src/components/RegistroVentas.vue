@@ -74,9 +74,8 @@
 <script>
 import axios from "axios";
 import jsPDF from 'jspdf';
-import QRCode from 'qrcode'
 import 'jspdf-autotable';
-
+import logo from "@/assets/logodrymix.png";
 export default {
     data() {
         return {
@@ -298,9 +297,15 @@ export default {
 
                 ]);
                 const doc = new jsPDF();
-
+                const imageWidth = 30;
+                const imageHeight = 15;
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const xImage = (pageWidth - imageWidth) / 2;
+                const yImage = 10;
+                const yTitle = yImage + imageHeight + 10; 
+                doc.addImage(logo, "PNG", xImage, yImage, imageWidth, imageHeight);
                 doc.setFontSize(12);
-                doc.text("PROFORMA", 105, 20, { align: "center" });
+                doc.text("PROFORMA", 105, yTitle, { align: "center" });
                 doc.text("Drymix Bolivia SRL.", 105, 40, { align: "center" });
                 doc.setFontSize(11);
                 doc.text(`NIT: 8456748562`, 105, 50, { align: "center" });
