@@ -796,9 +796,11 @@ export default {
                 const yTitle = yImage + imageHeight + 10; 
                 doc.addImage(logo, "PNG", xImage, yImage, imageWidth, imageHeight);
                 doc.setFontSize(12);
+                doc.setFont("helvetica", "bold");
                 doc.text("PROFORMA", 105, yTitle, { align: "center" });
                 doc.text("DRYMIX BOLIVIA SRL.", 105, 40, { align: "center" });
                 doc.setFontSize(11);
+                doc.setFont("helvetica", "normal");
                 doc.text(`NIT: 8456748562`, 105, 50, { align: "center" });
                 doc.text(`N°: ${idventa}`, 105, 60, { align: "center" });
                 doc.text(`FECHA: ${this.getFormattedDate(this.getDate())}`, 105, 70, { align: "center" });
@@ -807,7 +809,7 @@ export default {
                 doc.setFont("helvetica", "bold");
                 doc.text(`DETALLE`, 105, 100, { align: "center" })
                 doc.setFontSize(9);
-                let startY = 130;
+                let startY = 110;
                 doc.autoTable({
                     startY: startY,
                     styles: {
