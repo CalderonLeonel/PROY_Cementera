@@ -832,7 +832,7 @@ export default {
                 doc.setFont("helvetica", "bold");
 
                 doc.text("TOTAL: " + total.toFixed(2) + " Bs.", 20, 10 + startY)
-                doc.text("SON: "+this.transformToBolivianos(total.toFixed(2)), 20, 20 + startY )
+                doc.text("SON: "+this.transformToBolivianos(total.toFixed(2)).toUpperCase(), 20, 20 + startY )
 
                 startY += 40;
                 doc.setFontSize(8);
@@ -895,7 +895,7 @@ export default {
                 startY += 20;
                 doc.setFont("helvetica", "bold");
                 doc.text("TOTAL: "+total.toFixed(2)+" Bs.", 20, 10 + startY)
-                doc.text("SON: "+this.transformToBolivianos(total.toFixed(2)), 20, 20 + startY )
+                doc.text("SON: "+this.transformToBolivianos(total.toFixed(2)).toUpperCase(), 20, 20 + startY )
 
 
                 doc.save("recibo_" + this.getFormattedDateTime(this.getDate()) + ".pdf");
