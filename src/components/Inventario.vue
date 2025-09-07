@@ -2613,16 +2613,16 @@ import Alerta from "./Alerta.vue";
                 const jsonData = response.data.resultado || [];
                 console.log(jsonData)
                 const bodyData = jsonData.map(item => [
-                    item.idTransaccion, 
+                    item.sku, 
                     item.nombreitem,
                     item.nombrealmacen,
                     item.movimiento,
                     item.cantidad,
-                    item.metodoValuacion
+                    item.motivo
                 ]);
                 const doc = new jsPDF();
                     doc.text("Detalle de Inventario", 10, 10);
-                    doc.autoTable({ head: [["Número de Transacción", "Item", "Almacén", "Movimiento", "Cantidad", "Método de Valuación"]], body: bodyData });
+                    doc.autoTable({ head: [["SKU", "Item", "Almacén", "Movimiento", "Cantidad", "Motivo"]], body: bodyData });
                     doc.save("inventario.pdf");
             } catch (error) {
                 console.error(error);
