@@ -301,7 +301,6 @@ export default {
 
                 doc.setFontSize(12);
                 doc.text("PROFORMA", 105, 20, { align: "center" });
-                doc.text("CON DERECHO A CREDITO FISCAL", 105, 30, { align: "center" });
                 doc.text("Drymix Bolivia SRL.", 105, 40, { align: "center" });
                 doc.setFontSize(11);
                 doc.text(`NIT: 8456748562`, 105, 50, { align: "center" });
