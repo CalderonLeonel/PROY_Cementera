@@ -1067,6 +1067,8 @@
  import 'jspdf-autotable';
 import Alerta from "./Alerta.vue";
 
+import logo from "@/assets/logodrymix.png";
+
  export default {
      data() {
          return {
@@ -2613,16 +2615,26 @@ import Alerta from "./Alerta.vue";
                 const jsonData = response.data.resultado || [];
                 console.log(jsonData)
                 const bodyData = jsonData.map(item => [
-                    item.idTransaccion, 
+                    item.sku, 
                     item.nombreitem,
                     item.nombrealmacen,
                     item.movimiento,
                     item.cantidad,
-                    item.metodoValuacion
+                    item.motivo
                 ]);
                 const doc = new jsPDF();
-                    doc.text("Detalle de Inventario", 10, 10);
-                    doc.autoTable({ head: [["Número de Transacción", "Item", "Almacén", "Movimiento", "Cantidad", "Método de Valuación"]], body: bodyData });
+                    const imageWidth = 30;
+                    const imageHeight = 15;
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const xImage = pageWidth - imageWidth - 10;
+                    const yImage = 10;
+                    const yTitle = yImage + imageHeight + 10; 
+                    const yTable = yTitle + 10; 
+                    doc.addImage(logo, "PNG", xImage, yImage, imageWidth, imageHeight);
+                    doc.setFontSize(16);
+                    doc.setFont("helvetica", "bold");
+                    doc.text("Detalle de Inventario", 10, yTitle);
+                    doc.autoTable({ head: [["SKU", "Item", "Almacén", "Movimiento", "Cantidad", "Motivo"]], body: bodyData , startY: yTable});
                     doc.save("inventario.pdf");
             } catch (error) {
                 console.error(error);
