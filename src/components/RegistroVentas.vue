@@ -304,8 +304,11 @@ export default {
                 const yImage = 10;
                 const yTitle = yImage + imageHeight + 10; 
                 doc.addImage(logo, "PNG", xImage, yImage, imageWidth, imageHeight);
-                doc.setFontSize(12);
+                 doc.setFont("helvetica", "bold");
+                doc.setFontSize(18);
                 doc.text("PROFORMA", 105, yTitle, { align: "center" });
+                doc.setFontSize(14);
+                doc.setFont("helvetica", "normal");
                 doc.text("Drymix Bolivia SRL.", 105, 40, { align: "center" });
                 doc.setFontSize(11);
                 doc.text(`NIT: 8456748562`, 105, 50, { align: "center" });
@@ -348,9 +351,7 @@ export default {
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "normal");
                
-                
-                var pageWidth = doc.internal.pageSize.getWidth();                     
-                var qrX = (pageWidth - 40) / 2;          
+                                           
                 startY += 20;  
                 
 
