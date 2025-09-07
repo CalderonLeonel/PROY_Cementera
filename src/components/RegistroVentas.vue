@@ -304,24 +304,23 @@ export default {
                 const yImage = 10;
                 const yTitle = yImage + imageHeight + 10; 
                 doc.addImage(logo, "PNG", xImage, yImage, imageWidth, imageHeight);
-                 doc.setFont("helvetica", "bold");
-                doc.setFontSize(18);
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(16);
                 doc.text("PROFORMA", 105, yTitle, { align: "center" });
                 doc.setFontSize(14);
-                doc.setFont("helvetica", "normal");
-                doc.text("Drymix Bolivia SRL.", 105, 40, { align: "center" });
+                doc.text("Drymix Bolivia SRL.", 105, yTitle + 10, { align: "center" });
                 doc.setFontSize(11);
-                doc.text(`NIT: 8456748562`, 105, 50, { align: "center" });
-                doc.text(`Proforma`, 105, 60, { align: "center" });
-                doc.text(`N°: ${item.idven}`, 105, 70, { align: "center" });
+                doc.setFont("helvetica", "normal");
+                doc.text(`NIT: 8456748562`, 105, yTitle + 20, { align: "center" });
+                doc.text(`Proforma`, 105, yTitle + 30, { align: "center" });
+                doc.text(`N°: ${item.idven}`, 105, yTitle + 40, { align: "center" });
 
-                doc.text(`Fecha: ${this.getFormattedDate(item.creadate)}`, 105, 80, { align: "center" });
-                doc.text(`NIT/CI Cliente: ${item.nit}`, 105, 90, { align: "center" });
-                doc.text(`NOMBRE/RAZÓN SOCIAL: ${item.razsoc}`, 105, 100, { align: "center" });
-
-                doc.text(`DETALLE`, 105, 110, { align: "center" })
+                doc.text(`Fecha: ${this.getFormattedDate(item.creadate)}`, 105, yTitle + 50, { align: "center" });
+                doc.text(`NIT/CI Cliente: ${item.nit}`, 105, yTitle + 60, { align: "center" });
+                doc.text(`NOMBRE/RAZÓN SOCIAL: ${item.razsoc}`, 105, yTitle + 70, { align: "center" });
+                doc.text(`DETALLE`, 105, yTitle + 80, { align: "center" })
                 doc.setFontSize(9);
-                let startY = 130;
+                let startY = yTitle + 95;
                 doc.autoTable({
                     startY: startY,
                     styles: {
@@ -388,16 +387,16 @@ export default {
                 doc.setFontSize(12);
                 doc.setFont("helvetica", "bold");
                 doc.text("RECIBO", 105, yTitle, { align: "center",  });
-                doc.text("DRYMIX BOLIVIA SRL.", 105, 20, { align: "center" });
+                doc.text("DRYMIX BOLIVIA SRL.", 105, yTitle + 10, { align: "center" });
                 doc.setFontSize(11);
-                doc.text("Drymix Bolivia SRL.", 105, 20, { align: "center" });
+                doc.text("Drymix Bolivia SRL.", 105, yTitle + 20, { align: "center" });
                 doc.setFontSize(12);
 
-                doc.text(`Fecha: ${this.getFormattedDate(item.creadate)}`, 105, 30, { align: "center" });
-                doc.text(`NOMBRE: ${item.razsoc}`, 105, 40, { align: "center" });
-                doc.text(`DETALLE`, 105, 50, { align: "center" })
+                doc.text(`Fecha: ${this.getFormattedDate(item.creadate)}`, 105, yTitle + 30, { align: "center" });
+                doc.text(`NOMBRE: ${item.razsoc}`, 105, yTitle + 40, { align: "center" });
+                doc.text(`DETALLE`, 105, yTitle + 50, { align: "center" })
                 doc.setFontSize(9);
-                let startY = 60;
+                let startY = yTitle + 60;
                 doc.autoTable({
                     startY: startY,
                     styles: {
