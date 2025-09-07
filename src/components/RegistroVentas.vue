@@ -297,8 +297,8 @@ export default {
 
                 ]);
                 const doc = new jsPDF();
-                const imageWidth = 30;
-                const imageHeight = 15;
+                const imageWidth = 40;
+                const imageHeight = 20;
                 const pageWidth = doc.internal.pageSize.getWidth();
                 const xImage = (pageWidth - imageWidth) / 2;
                 const yImage = 10;
@@ -339,8 +339,6 @@ export default {
                     head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO"]],
                     body: bodyData
                 });
-                                //doc.autoTable({ head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO",]], body: bodyData, startY: 140 });
-                    //let finalY = doc.previousAutoTable.finalY;
                     startY += 20;
                     doc.setFont("helvetica", "bold");
                     doc.text("Total: "+total.toFixed(2)+" Bs.", 20, 10 + startY)
