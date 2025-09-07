@@ -803,7 +803,7 @@ export default {
                 doc.text(`Proforma`, 105, 60, { align: "center" });
                 doc.text(`N°: ${idventa}`, 105, 70, { align: "center" });
 
-                doc.text(`Fecha: ${this.getFormattedDate(fechaVenta)}`, 105, 80, { align: "center" });
+                doc.text(`Fecha: ${this.getFormattedDate(this.getDate())}`, 105, 80, { align: "center" });
                 doc.text(`NIT/CI Cliente: ${nit}`, 105, 90, { align: "center" });
                 doc.text(`NOMBRE/RAZÓN SOCIAL: ${razonSocial}`, 105, 100, { align: "center" });
 
@@ -840,7 +840,7 @@ export default {
                 doc.setFont("helvetica", "normal");
                
 
-                doc.save("proforma_" + this.getFormattedDateTime(fechaVenta) + ".pdf");
+                doc.save("proforma_" + this.getFormattedDateTime(this.getDate()) + ".pdf");
             } catch (error) {
                 console.error(error);
             }
@@ -870,7 +870,7 @@ export default {
                 doc.text("Drymix Bolivia SRL.", 105, 20, { align: "center" });
                 doc.setFontSize(12);
 
-                doc.text(`Fecha: ${this.getFormattedDate(fechaVenta)}`, 105, 30, { align: "center" });
+                doc.text(`Fecha: ${this.getFormattedDate(this.getDate())}`, 105, 30, { align: "center" });
                 doc.text(`NOMBRE: ${razonSocial}`, 105, 40, { align: "center" });
                 doc.text(`DETALLE`, 105, 50, { align: "center" })
                 doc.setFontSize(9);
@@ -900,7 +900,7 @@ export default {
                 doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 20, 20 + startY )
 
 
-                doc.save("recibo_" + this.getFormattedDateTime(fechaVenta) + ".pdf");
+                doc.save("recibo_" + this.getFormattedDateTime(this.getDate()) + ".pdf");
             } catch (error) {
                 console.error(error);
             }
