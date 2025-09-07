@@ -344,7 +344,7 @@ export default {
                     startY += 20;
                     doc.setFont("helvetica", "bold");
                     doc.text("Total: "+total.toFixed(2)+" Bs.", 20, 10 + startY)
-                    doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 20, 20 + startY )
+                    doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)).toUpperCase(), 20, 20 + startY )
 
 
                 startY += 40;
@@ -413,7 +413,7 @@ export default {
                     startY += 20;
                     doc.setFont("helvetica", "bold");
                     doc.text("Total: "+total.toFixed(2)+" Bs.", 20, 10 + startY)
-                    doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 20, 20 + startY )
+                    doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)).toUpperCase(), 20, 20 + startY )
 
 
                 doc.save("recibo_" + this.getFormattedDateTime(item.creadate) + ".pdf");
