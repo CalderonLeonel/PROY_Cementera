@@ -788,8 +788,8 @@ export default {
 
                 ]);
                 const doc = new jsPDF();
-                const imageWidth = 30;
-                const imageHeight = 15;
+                const imageWidth = 40;
+                const imageHeight = 20;
                 const pageWidth = doc.internal.pageSize.getWidth();
                 const xImage = (pageWidth - imageWidth) / 2;
                 const yImage = 10;
