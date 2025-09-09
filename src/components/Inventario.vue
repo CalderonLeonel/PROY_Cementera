@@ -2576,7 +2576,7 @@ import logo from "@/assets/logodrymix.png";
       
         async exportToCSV() {
         try {
-            const response = await axios.get(`/inventario/listarinventarioactivo/`);
+            const response = await axios.get(`/inventario/listarinventarioreporte/`);
             const jsonData = response.data.resultado || [];
 
             const csvData = Papa.unparse(jsonData);
@@ -2594,7 +2594,7 @@ import logo from "@/assets/logodrymix.png";
 
         async exportToExcel() {
         try {
-            const response = await axios.get(`/inventario/listarinventarioactivo/`);
+            const response = await axios.get(`/inventario/listarinventarioreporte/`);
             const jsonData = response.data.resultado || [];
             const worksheet = XLSX.utils.json_to_sheet(jsonData);
             const workbook = XLSX.utils.book_new();
