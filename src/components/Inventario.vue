@@ -2573,6 +2573,19 @@ import logo from "@/assets/logodrymix.png";
             this.getListaExistencias();
         },
 
+        getFormattedDate(oldDate) {
+            let fecha = new Date(oldDate);
+            let dia = fecha.getDate();
+            let mes = fecha.getMonth() + 1;
+            let anio = fecha.getFullYear();
+            if (dia < 10) dia = '0' + dia;
+            if (mes < 10) mes = '0' + mes;
+
+            let fechaFormateada = anio +'-' + mes + '-' + dia;
+
+            return fechaFormateada;
+        },
+
       
         async exportToCSV() {
         try {
