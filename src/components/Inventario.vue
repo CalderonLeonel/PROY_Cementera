@@ -2578,10 +2578,33 @@ import logo from "@/assets/logodrymix.png";
         try {
             const response = await axios.get(`/inventario/listarinventarioreporte/`);
             const jsonData = response.data.resultado || [];
+            
+            const fields = [
+                { label: "Nombre Item", value: "nombreitem" },
+                { label: "ID Subcategoría", value: "id_subcategoria" },
+                { label: "Nombre Subcategoría", value: "nombresubcategoria" },
+                { label: "ID Categoría", value: "id_categoria" },
+                { label: "Nombre Categoría", value: "nombrecategoria" },
+                { label: "ID Almacén", value: "idalmacen" },
+                { label: "Nombre Almacén", value: "nombrealmacen" },
+                { label: "Proveedor", value: "nombreproveedor" },
+                { label: "Categoría Proveedor", value: "nombrecategoriaproveedor" },
+                { label: "Movimiento", value: "movimiento" },
+                { label: "Motivo", value: "motivo" },
+                { label: "Referencia", value: "referencia" },
+                { label: "Lote", value: "lote" },
+                { label: "Cantidad", value: "cantidad" },
+                { label: "Método Valuación", value: "metodoValuacion" },
+                { label: "Estado", value: "estado" },
+                { label: "Fecha", value: "fechaDeCreacion" }
+            ];
 
-            const csvData = Papa.unparse(jsonData);
-
-            const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+            const csvData = Papa.unparse({
+            fields: fields.map(f => f.label),
+            data: jsonData.map(item => fields.map(f => item[f.value]))
+            });
+            const BOM = "\uFEFF";
+            const blob = new Blob([BOM+csvData], { type: "text/csv;charset=utf-8;" });
             const link = document.createElement("a");
             const url = URL.createObjectURL(blob);
             link.href = url;
