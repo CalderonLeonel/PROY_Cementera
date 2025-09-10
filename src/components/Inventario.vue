@@ -2590,60 +2590,106 @@ import logo from "@/assets/logodrymix.png";
 
       
         async exportToCSV() {
-        try {
-            const response = await axios.get(`/inventario/listarinventarioreporte/`);
-            const jsonData = response.data.resultado || [];
-            
-            const fields = [
-                { label: "Nombre Item", value: "nombreitem" },
-                { label: "ID Subcategoría", value: "id_subcategoria" },
-                { label: "Nombre Subcategoría", value: "nombresubcategoria" },
-                { label: "ID Categoría", value: "id_categoria" },
-                { label: "Nombre Categoría", value: "nombrecategoria" },
-                { label: "ID Almacén", value: "idalmacen" },
-                { label: "Nombre Almacén", value: "nombrealmacen" },
-                { label: "Proveedor", value: "nombreproveedor" },
-                { label: "Categoría Proveedor", value: "nombrecategoriaproveedor" },
-                { label: "Movimiento", value: "movimiento" },
-                { label: "Motivo", value: "motivo" },
-                { label: "Referencia", value: "referencia" },
-                { label: "Lote", value: "lote" },
-                { label: "Cantidad", value: "cantidad" },
-                { label: "Método Valuación", value: "metodoValuacion" },
-                { label: "Estado", value: "estado" },
-                { label: "Fecha", value: "fechaDeCreacion", format: (value) => value ? getFormattedDate(value) : "" }
-            ];
+            try {
+                const response = await axios.get(`/inventario/listarinventarioreporte/`);
+                const jsonData = response.data.resultado || [];
+                
+                const fields = [
+                    { label: "Nombre Item", value: "nombreitem" },
+                    { label: "ID Subcategoría", value: "id_subcategoria" },
+                    { label: "Nombre Subcategoría", value: "nombresubcategoria" },
+                    { label: "ID Categoría", value: "id_categoria" },
+                    { label: "Nombre Categoría", value: "nombrecategoria" },
+                    { label: "ID Almacén", value: "idalmacen" },
+                    { label: "Nombre Almacén", value: "nombrealmacen" },
+                    { label: "Proveedor", value: "nombreproveedor" },
+                    { label: "Categoría Proveedor", value: "nombrecategoriaproveedor" },
+                    { label: "Movimiento", value: "movimiento" },
+                    { label: "Motivo", value: "motivo" },
+                    { label: "Referencia", value: "referencia" },
+                    { label: "Lote", value: "lote" },
+                    { label: "Cantidad", value: "cantidad" },
+                    { label: "Método Valuación", value: "metodoValuacion" },
+                    { label: "Estado", value: "estado" },
+                    { label: "Fecha", value: "fechaDeCreacion" }
+                ];
 
-            const csvData = Papa.unparse({
-            fields: fields.map(f => f.label),
-            data: jsonData.map(item => fields.map(f => item[f.value]))
-            });
-            const BOM = "\uFEFF";
-            const blob = new Blob([BOM+csvData], { type: "text/csv;charset=utf-8;" });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.href = url;
-            link.download = "inventario.csv";
-            link.click();
-        } catch (error) {
-            console.error(error);
-        }
+                //Encuentra fechadecreacion para formatear su valor a DDmmYYYY
+                const rows = jsonData.map(item =>
+                fields.map(f => {
+                    if (f.value === "fechaDeCreacion") {
+                    return this.getFormattedDate(item[f.value]);
+                    }
+                    return item[f.value];
+                })
+                );
+
+                const csvData = Papa.unparse({
+                fields: fields.map(f => f.label),
+                data: rows
+                });
+                const BOM = "\uFEFF";
+                const blob = new Blob([BOM+csvData], { type: "text/csv;charset=utf-8;" });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                link.href = url;
+                link.download = "inventario.csv";
+                link.click();
+            } catch (error) {
+                console.error(error);
+            }
         },
 
         async exportToExcel() {
-        try {
-            const response = await axios.get(`/inventario/listarinventarioreporte/`);
-            const jsonData = response.data.resultado || [];
-            const worksheet = XLSX.utils.json_to_sheet(jsonData);
-            const workbook = XLSX.utils.book_new();
+            try {
+                const response = await axios.get(`/inventario/listarinventarioreporte/`);
+                const jsonData = response.data.resultado || [];
 
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Hoja1");
+                 const fields = [
+                    { label: "Nombre Item", value: "nombreitem" },
+                    { label: "ID Subcategoría", value: "id_subcategoria" },
+                    { label: "Nombre Subcategoría", value: "nombresubcategoria" },
+                    { label: "ID Categoría", value: "id_categoria" },
+                    { label: "Nombre Categoría", value: "nombrecategoria" },
+                    { label: "ID Almacén", value: "idalmacen" },
+                    { label: "Nombre Almacén", value: "nombrealmacen" },
+                    { label: "Proveedor", value: "nombreproveedor" },
+                    { label: "Categoría Proveedor", value: "nombrecategoriaproveedor" },
+                    { label: "Movimiento", value: "movimiento" },
+                    { label: "Motivo", value: "motivo" },
+                    { label: "Referencia", value: "referencia" },
+                    { label: "Lote", value: "lote" },
+                    { label: "Cantidad", value: "cantidad" },
+                    { label: "Método Valuación", value: "metodoValuacion" },
+                    { label: "Estado", value: "estado" },
+                    { label: "Fecha", value: "fechaDeCreacion" }
+                ];
 
-            XLSX.writeFile(workbook, "inventario.xlsx", { compression: true });
-           
-        } catch (error) {
-            console.error(error);
-        }
+                //Encuentra fechadecreacion para formatear su valor a DDmmYYYY
+                const rows = jsonData.map(item =>
+                    fields.map(f => {
+                        if (f.value === "fechaDeCreacion") {
+                        return this.getFormattedDate(item[f.value]);
+                        }
+                        return item[f.value];
+                    })
+                );
+
+
+                const worksheet = XLSX.utils.aoa_to_sheet([
+                fields.map(f => f.label), 
+                ...rows                   
+                ]);
+
+                const workbook = XLSX.utils.book_new();
+
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Reporte de inventario");
+
+                XLSX.writeFile(workbook, "inventario.xlsx", { compression: true });
+            
+            } catch (error) {
+                console.error(error);
+            }
         },
 
 
