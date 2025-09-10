@@ -1068,7 +1068,7 @@
 import Alerta from "./Alerta.vue";
 
 import logo from "@/assets/logodrymix.png";
-import { format } from "core-js/core/date";
+
 
  export default {
      data() {
@@ -2575,6 +2575,7 @@ import { format } from "core-js/core/date";
         },
 
         getFormattedDate(oldDate) {
+
             let fecha = new Date(oldDate);
             let dia = fecha.getDate();
             let mes = fecha.getMonth() + 1;
