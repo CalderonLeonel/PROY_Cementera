@@ -1068,6 +1068,7 @@
 import Alerta from "./Alerta.vue";
 
 import logo from "@/assets/logodrymix.png";
+import { format } from "core-js/core/date";
 
  export default {
      data() {
@@ -2609,7 +2610,7 @@ import logo from "@/assets/logodrymix.png";
                 { label: "Cantidad", value: "cantidad" },
                 { label: "Método Valuación", value: "metodoValuacion" },
                 { label: "Estado", value: "estado" },
-                { label: "Fecha", value: "fechaDeCreacion" }
+                { label: "Fecha", value: "fechaDeCreacion", format: (value) => value ? getFormattedDate(value) : "" }
             ];
 
             const csvData = Papa.unparse({
