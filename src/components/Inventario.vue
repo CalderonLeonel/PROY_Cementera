@@ -2611,12 +2611,22 @@ import logo from "@/assets/logodrymix.png";
                 { label: "Cantidad", value: "cantidad" },
                 { label: "Método Valuación", value: "metodoValuacion" },
                 { label: "Estado", value: "estado" },
-                { label: "Fecha", value: "fechaDeCreacion", format: (value) => value ? getFormattedDate(value) : "" }
+                { label: "Fecha", value: "fechaDeCreacion" }
             ];
+
+            //Encuentra fechadecreacion para formatear su valor a DDmmYYYY
+            const rows = jsonData.map(item =>
+            fields.map(f => {
+                if (f.value === "fechaDeCreacion") {
+                return this.getFormattedDate(item[f.value]);
+                }
+                return item[f.value];
+            })
+            );
 
             const csvData = Papa.unparse({
             fields: fields.map(f => f.label),
-            data: jsonData.map(item => fields.map(f => item[f.value]))
+            data: rows
             });
             const BOM = "\uFEFF";
             const blob = new Blob([BOM+csvData], { type: "text/csv;charset=utf-8;" });
