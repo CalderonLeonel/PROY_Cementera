@@ -598,7 +598,7 @@
         <v-dialog v-model="proveedorModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA PROVEEDORES ACTIVOS</span>
+                    <span>LISTA PROVEEDORES</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
