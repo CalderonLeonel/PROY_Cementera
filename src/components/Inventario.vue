@@ -194,7 +194,7 @@
                                 <v-data-table :headers="headerItem" :items="datosItem" :search="searchItem"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon large class="mr-2" @click="seleccionarItem(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarItem(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -236,7 +236,7 @@
                                 <v-data-table :headers="headerItemDisponibles" :items="datosItemDisponibles" :search="searchItemDisponibles"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon large class="mr-2" @click="seleccionarItemDisp(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarItemDisp(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -278,7 +278,7 @@
                                 <v-data-table :headers="headerItemPrecio" :items="datosItemPrecio" :search="searchItemDisponibles"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon large class="mr-2" @click="seleccionarPrecioItem(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarPrecioItem(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -320,7 +320,7 @@
                                 <v-data-table :headers="headerItemAlmacen" :items="datosStock" :search="searchItemAlmacen"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon large class="mr-2" @click="seleccionarItemAlmacen(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarItemAlmacen(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -539,7 +539,7 @@
                                 <v-data-table :headers="headerAlmacen" :items="datosAlmacen" :search="searchAlmacen"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon large class="mr-2" @click="seleccionarAlmacen(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarAlmacen(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -581,7 +581,7 @@
                                 <v-data-table :headers="headerAlmacen" :items="datosAlmacenConStock" :search="searchAlmacenConStock"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon large class="mr-2" @click="seleccionarAlmacen(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarAlmacen(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -626,7 +626,7 @@
                                 <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItem" :search="searchTipoItem"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon large class="mr-2" @click="seleccionarTipo(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarTipo(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
