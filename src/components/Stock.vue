@@ -2509,8 +2509,18 @@
                     data.total
                 ]);
                 const doc = new jsPDF();
-                    doc.text("Reporte de Almacén: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
-                   doc.autoTable({ head: [["Ítem", "Descripción", "Subcategoría", "Precio Unitario", "Stock"]], body: bodyData });
+                    const imageWidth = 30;
+                    const imageHeight = 15;
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const xImage = pageWidth - imageWidth - 10;
+                    const yImage = 10;
+                    const yTitle = yImage + imageHeight + 10; 
+                    const yTable = yTitle + 10; 
+                    doc.addImage(logo, "PNG", xImage, yImage, imageWidth, imageHeight);
+                    doc.setFontSize(20);
+                    doc.setFont("helvetica", "bold");
+                    doc.text("REPORTE DE ALMACÉN: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toUpperCase(), 10, yTitle);
+                    doc.autoTable({ head: [["Ítem", "Descripción", "Subcategoría", "Precio Unitario", "Stock"]], body: bodyData, startY: yTable});
                     doc.save("inventario.pdf");
             } catch (error) {
                 console.error(error);
