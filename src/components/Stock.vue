@@ -1023,6 +1023,8 @@
  import jsPDF from "jspdf";
  import 'jspdf-autotable';
 
+ import logo from "@/assets/logodrymix.png";
+
  export default {
      data() {
          return {
