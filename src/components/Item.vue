@@ -435,7 +435,7 @@
 <v-dialog v-model="SubcategoriaModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE CATEGORIÍAS</span>
+                    <span>LISTA DE SUBCATEGORIÍAS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
