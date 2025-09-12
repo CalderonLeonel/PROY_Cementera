@@ -289,7 +289,7 @@
                                 </v-tab-item>
 
                                 <v-tab-item v-if="flag == 1">
-                                    <v-card elevation="5" outlined shaped>
+                                    <v-card elevation="5" persistent outlined shaped>
                                         <v-card-title>
                                             <span>LISTA DE PRODUCTOS</span>
                                         </v-card-title>
