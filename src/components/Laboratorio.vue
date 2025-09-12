@@ -2,7 +2,7 @@
 
     <v-card elevation="5" outlined shaped>
 
-        <v-dialog v-model="formatoModal" max-width="900px">
+        <v-dialog v-model="formatoModal" persistent max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE FORMATOS</span>
@@ -50,7 +50,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="tipoProductoModal" max-width="900px">
+        <v-dialog v-model="tipoProductoModal" persistent max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE TIPOS</span>
@@ -96,7 +96,7 @@
         </v-dialog>
 
         <!-- Modal para revisión del producto -->
-        <v-dialog v-model="revisionModal" max-width="900px">
+        <v-dialog v-model="revisionModal" persistent max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>REVISAR PRODUCTO</span>
@@ -289,7 +289,7 @@
                                 </v-tab-item>
 
                                 <v-tab-item v-if="flag == 1">
-                                    <v-card elevation="5" outlined shaped>
+                                    <v-card elevation="5" persistent outlined shaped>
                                         <v-card-title>
                                             <span>LISTA DE PRODUCTOS</span>
                                         </v-card-title>
