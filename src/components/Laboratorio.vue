@@ -2,7 +2,7 @@
 
     <v-card elevation="5" outlined shaped>
 
-        <v-dialog v-model="formatoModal" max-width="900px">
+        <v-dialog v-model="formatoModal" persistent max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE FORMATOS</span>
