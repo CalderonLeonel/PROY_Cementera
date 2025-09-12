@@ -101,7 +101,7 @@
         <v-dialog v-model="turnoModal" max-width="1080px"> <!-- Modal Seleccionar Turno-->>
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>Lista de Turnos del Sector</span>
+                    <span>LISTA DE TURNOS</span>
                 </v-card-title>
                 <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Turnos -->
                     <v-container>
