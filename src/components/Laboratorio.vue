@@ -50,7 +50,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="tipoProductoModal" max-width="900px">
+        <v-dialog v-model="tipoProductoModal" persistent max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>LISTA DE TIPOS</span>
@@ -96,7 +96,7 @@
         </v-dialog>
 
         <!-- Modal para revisión del producto -->
-        <v-dialog v-model="revisionModal" max-width="900px">
+        <v-dialog v-model="revisionModal" persistent max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>REVISAR PRODUCTO</span>
