@@ -27,7 +27,7 @@
             </v-snackbar>
         </div>
 
-        <v-dialog v-model="empleadosModal" max-width="1200" class="text-center">
+        <v-dialog v-model="empleadosModal" max-width="1200" persistent class="text-center">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
                     <span>
@@ -53,7 +53,7 @@
                                 <v-data-table :headers="headersEmpleado" :items="datosEmpleado" :search="searchEmpleado"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarEmpleado(item)" color="#0091EA">
+                                        <v-icon large class="mr-2" @click="seleccionarEmpleado(item)" color="#0A62BF">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>

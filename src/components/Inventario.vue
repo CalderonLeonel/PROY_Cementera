@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="5" outlined v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'COMUN') || checkAccess(10, 'GERENTE')">
+    <v-card elevation="5" outlined v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'SECRETARIO') || checkAccess(10, 'GERENTE')">
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
@@ -21,7 +21,7 @@
                 </template>
             </v-snackbar>
         </div>
-            <v-alert  v-if="existencias==false" 
+            <v-alert  v-if="existencias==false && checkAccess(10, 'SUPERVISOR')"  
                 type="error"
                 color="red darken-2"
                 dense
@@ -33,7 +33,7 @@
                 </div>
                 POR FAVOR, NOTIFIQUE A ADQUISICIONES PARA ADQUIRIR EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong>   
             </v-alert>
-            <v-alert     v-if="existencias==true"      
+            <v-alert     v-if="existencias==true && checkAccess(10, 'SUPERVISOR')"      
                 type="success"
                 color="green darken-2"
                 dismissible
@@ -54,7 +54,7 @@
              <v-form ref="form" v-model="valid" lazy-validation>
                  <v-container>
                      <v-row>
-                         <v-col cols="3" md="2">
+                         <v-col cols="3" md="2" v-if="checkAccess(10, 'SUPERVISOR')">
                              <v-btn color="success" @click="showModalAgregarTransaccion()">NUEVO INVENTARIO</v-btn>
                          </v-col>
                          <!--<v-col cols="3" md="3" v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE') ">
@@ -194,7 +194,7 @@
                                 <v-data-table :headers="headerItem" :items="datosItem" :search="searchItem"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarItem(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarItem(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -236,7 +236,7 @@
                                 <v-data-table :headers="headerItemDisponibles" :items="datosItemDisponibles" :search="searchItemDisponibles"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarItemDisp(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarItemDisp(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -278,7 +278,7 @@
                                 <v-data-table :headers="headerItemPrecio" :items="datosItemPrecio" :search="searchItemDisponibles"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarPrecioItem(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarPrecioItem(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -320,7 +320,7 @@
                                 <v-data-table :headers="headerItemAlmacen" :items="datosStock" :search="searchItemAlmacen"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarItemAlmacen(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarItemAlmacen(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -539,7 +539,7 @@
                                 <v-data-table :headers="headerAlmacen" :items="datosAlmacen" :search="searchAlmacen"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarAlmacen(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarAlmacen(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -581,7 +581,7 @@
                                 <v-data-table :headers="headerAlmacen" :items="datosAlmacenConStock" :search="searchAlmacenConStock"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarAlmacen(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarAlmacen(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -626,7 +626,7 @@
                                 <v-data-table :headers="headerTipoDeItem" :items="datosTipoDeItem" :search="searchTipoItem"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarTipo(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarTipo(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -1066,6 +1066,9 @@
  import jsPDF from "jspdf";
  import 'jspdf-autotable';
 import Alerta from "./Alerta.vue";
+
+import logo from "@/assets/logodrymix.png";
+
 
  export default {
      data() {
@@ -2571,39 +2574,122 @@ import Alerta from "./Alerta.vue";
             this.getListaExistencias();
         },
 
+        getFormattedDate(oldDate) {
+
+            let fecha = new Date(oldDate);
+            let dia = fecha.getDate();
+            let mes = fecha.getMonth() + 1;
+            let anio = fecha.getFullYear();
+            if (dia < 10) dia = '0' + dia;
+            if (mes < 10) mes = '0' + mes;
+
+            let fechaFormateada = anio +'-' + mes + '-' + dia;
+
+            return fechaFormateada;
+        },
+
       
         async exportToCSV() {
-        try {
-            const response = await axios.get(`/inventario/listarinventarioactivo/`);
-            const jsonData = response.data.resultado || [];
+            try {
+                const response = await axios.get(`/inventario/listarinventarioreporte/`);
+                const jsonData = response.data.resultado || [];
+                
+                const fields = [
+                    { label: "Nombre Item", value: "nombreitem" },
+                    { label: "ID Subcategoría", value: "id_subcategoria" },
+                    { label: "Nombre Subcategoría", value: "nombresubcategoria" },
+                    { label: "ID Categoría", value: "id_categoria" },
+                    { label: "Nombre Categoría", value: "nombrecategoria" },
+                    { label: "ID Almacén", value: "idalmacen" },
+                    { label: "Nombre Almacén", value: "nombrealmacen" },
+                    { label: "Proveedor", value: "nombreproveedor" },
+                    { label: "Categoría Proveedor", value: "nombrecategoriaproveedor" },
+                    { label: "Movimiento", value: "movimiento" },
+                    { label: "Motivo", value: "motivo" },
+                    { label: "Referencia", value: "referencia" },
+                    { label: "Lote", value: "lote" },
+                    { label: "Cantidad", value: "cantidad" },
+                    { label: "Método Valuación", value: "metodoValuacion" },
+                    { label: "Estado", value: "estado" },
+                    { label: "Fecha", value: "fechaDeCreacion" }
+                ];
 
-            const csvData = Papa.unparse(jsonData);
+                //Encuentra fechadecreacion para formatear su valor a DDmmYYYY
+                const rows = jsonData.map(item =>
+                fields.map(f => {
+                    if (f.value === "fechaDeCreacion") {
+                    return this.getFormattedDate(item[f.value]);
+                    }
+                    return item[f.value];
+                })
+                );
 
-            const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.href = url;
-            link.download = "inventario.csv";
-            link.click();
-        } catch (error) {
-            console.error(error);
-        }
+                const csvData = Papa.unparse({
+                fields: fields.map(f => f.label),
+                data: rows
+                });
+                const BOM = "\uFEFF";
+                const blob = new Blob([BOM+csvData], { type: "text/csv;charset=utf-8;" });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                link.href = url;
+                link.download = "inventario.csv";
+                link.click();
+            } catch (error) {
+                console.error(error);
+            }
         },
 
         async exportToExcel() {
-        try {
-            const response = await axios.get(`/inventario/listarinventarioactivo/`);
-            const jsonData = response.data.resultado || [];
-            const worksheet = XLSX.utils.json_to_sheet(jsonData);
-            const workbook = XLSX.utils.book_new();
+            try {
+                const response = await axios.get(`/inventario/listarinventarioreporte/`);
+                const jsonData = response.data.resultado || [];
 
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Hoja1");
+                 const fields = [
+                    { label: "Nombre Item", value: "nombreitem" },
+                    { label: "ID Subcategoría", value: "id_subcategoria" },
+                    { label: "Nombre Subcategoría", value: "nombresubcategoria" },
+                    { label: "ID Categoría", value: "id_categoria" },
+                    { label: "Nombre Categoría", value: "nombrecategoria" },
+                    { label: "ID Almacén", value: "idalmacen" },
+                    { label: "Nombre Almacén", value: "nombrealmacen" },
+                    { label: "Proveedor", value: "nombreproveedor" },
+                    { label: "Categoría Proveedor", value: "nombrecategoriaproveedor" },
+                    { label: "Movimiento", value: "movimiento" },
+                    { label: "Motivo", value: "motivo" },
+                    { label: "Referencia", value: "referencia" },
+                    { label: "Lote", value: "lote" },
+                    { label: "Cantidad", value: "cantidad" },
+                    { label: "Método Valuación", value: "metodoValuacion" },
+                    { label: "Estado", value: "estado" },
+                    { label: "Fecha", value: "fechaDeCreacion" }
+                ];
 
-            XLSX.writeFile(workbook, "inventario.xlsx", { compression: true });
-           
-        } catch (error) {
-            console.error(error);
-        }
+                //Encuentra fechadecreacion para formatear su valor a DDmmYYYY
+                const rows = jsonData.map(item =>
+                    fields.map(f => {
+                        if (f.value === "fechaDeCreacion") {
+                        return this.getFormattedDate(item[f.value]);
+                        }
+                        return item[f.value];
+                    })
+                );
+
+
+                const worksheet = XLSX.utils.aoa_to_sheet([
+                fields.map(f => f.label), 
+                ...rows                   
+                ]);
+
+                const workbook = XLSX.utils.book_new();
+
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Reporte de inventario");
+
+                XLSX.writeFile(workbook, "inventario.xlsx", { compression: true });
+            
+            } catch (error) {
+                console.error(error);
+            }
         },
 
 
@@ -2613,16 +2699,26 @@ import Alerta from "./Alerta.vue";
                 const jsonData = response.data.resultado || [];
                 console.log(jsonData)
                 const bodyData = jsonData.map(item => [
-                    item.idTransaccion, 
+                    item.sku, 
                     item.nombreitem,
                     item.nombrealmacen,
                     item.movimiento,
                     item.cantidad,
-                    item.metodoValuacion
+                    item.motivo
                 ]);
                 const doc = new jsPDF();
-                    doc.text("Detalle de Inventario", 10, 10);
-                    doc.autoTable({ head: [["Número de Transacción", "Item", "Almacén", "Movimiento", "Cantidad", "Método de Valuación"]], body: bodyData });
+                    const imageWidth = 30;
+                    const imageHeight = 15;
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const xImage = pageWidth - imageWidth - 10;
+                    const yImage = 10;
+                    const yTitle = yImage + imageHeight + 10; 
+                    const yTable = yTitle + 10; 
+                    doc.addImage(logo, "PNG", xImage, yImage, imageWidth, imageHeight);
+                    doc.setFontSize(16);
+                    doc.setFont("helvetica", "bold");
+                    doc.text("Detalle de Inventario", 10, yTitle);
+                    doc.autoTable({ head: [["SKU", "Item", "Almacén", "Movimiento", "Cantidad", "Motivo"]], body: bodyData , startY: yTable});
                     doc.save("inventario.pdf");
             } catch (error) {
                 console.error(error);

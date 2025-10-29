@@ -248,9 +248,9 @@
                                         <v-data-table :headers="headersEmpleado" :items="datosEmpleado"
                                             :search="searchEmpleado" :items-per-page="5" class="elevation-1">
                                             <template #[`item.actions`]="{ item }">
-                                                <v-icon small class="mr-2" @click="seleccionarEmpleado(item)"
+                                                <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarEmpleado(item)"
                                                     title="SELECCIONAR EMPLEADO">
-                                                    mdi-check-circle-outline
+                                                    mdi-check-circle
                                                 </v-icon>
                                             </template>
                                         </v-data-table>

@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="5" outlined>
+    <v-card elevation="5" outlined v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'SECRETARIO')">
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
@@ -21,13 +21,13 @@
                 </template>
             </v-snackbar>
         </div>
-        <v-alert v-if="existencias == false" type="error" color="red darken-2" dense prominent icon="mdi-alert">
+        <v-alert v-if="existencias == false && checkAccess(10, 'SUPERVISOR')" type="error" color="red darken-2" dense prominent icon="mdi-alert">
             <div class="text-h6">
                 SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
             </div>
             POR FAVOR, NOTIFIQUE A ADQUISICIONES PARA ADQUIRIR EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong>
         </v-alert>
-        <v-alert v-if="existencias == true" type="success" color="green darken-2" dismissible dense prominent>
+        <v-alert v-if="existencias == true && checkAccess(10, 'SUPERVISOR')" type="success" color="green darken-2" dismissible dense prominent>
             <div class="text-h5">
                 SE TIENEN LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
             </div>
@@ -38,7 +38,7 @@
                 <h3>ALMACENES</h3>
             </v-alert>
         </div>
-        <div v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'GERENTE')">
+        <div>
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-container>
                     <v-row>
@@ -68,15 +68,15 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon class="mr-2" color="primary" x-large @click="llenarCamposAlmacen(item)"
+                                    <v-icon class="mr-2" color="primary" x-large @click="llenarCamposAlmacen(item)" v-if="checkAccess(10, 'SUPERVISOR')"
                                         title="ACTUALIZAR INFORMACION">
                                         mdi-pencil
                                     </v-icon>
-                                    <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2"
+                                    <v-icon v-if="item.estado == 'INACTIVO' && checkAccess(10, 'SUPERVISOR')" x-large color="success" class="mr-2" 
                                         @click="activar(item)" title="ACTIVAR ALMACÉN">
                                         mdi-check-circle-outline
                                     </v-icon>
-                                    <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2"
+                                    <v-icon v-if="item.estado == 'ACTIVO' && checkAccess(10, 'SUPERVISOR')" x-large color="error" class="mr-2"
                                         @click="confirmacionAnulacionAlmacen(item)" title="DESACTIVAR ALMACÉN">
                                         mdi-close-circle
                                     </v-icon>

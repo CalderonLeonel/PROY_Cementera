@@ -21,7 +21,7 @@
                 </template>
             </v-snackbar>
         </div>
-        <v-alert v-if="existencias == false" type="error" color="red darken-2" icon="mdi-alert-circle" dense prominent>
+        <v-alert v-if="existencias == false && checkAccess(9, 'SUPERVISOR')" type="error" color="red darken-2" icon="mdi-alert-circle" dense prominent>
             <div class="text-h6">
                 SE REQUIERE LA COMPRA DE EXISTENCIAS EN EL INVENTARIO
             </div>
@@ -29,7 +29,7 @@
             EL
             FUNCIONAMIENTO DE LA FABRICA
         </v-alert>
-        <v-alert v-if="existencias == true" type="success" color="green darken-2" dismissible dense prominent>
+        <v-alert v-if="existencias == true && checkAccess(9, 'SUPERVISOR')" type="success" color="green darken-2" dismissible dense prominent>
             <div class="text-h5">
                 SE TIENEN LAS EXISTENCIAS NECESARIAS EN EL INVENTARIO
             </div>
@@ -40,12 +40,12 @@
                 <h3>COTIZACIONES</h3>
             </v-alert>
         </div>
-        <div v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')">
+        <div v-if="checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'GERENTE')|| checkAccess(9, 'SECRETARIO')">
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-container>
 
                     <v-row>
-                        <v-col cols="12" md="4" v-if="checkAccess(9, 'SUPERVISOR')">
+                        <v-col cols="12" md="4" v-if="checkAccess(9, 'SUPERVISOR')|| checkAccess(9, 'SECRETARIO')">
                             <v-btn color="success" @click="showModalAgregarCotizacionAdquisicion()">NUEVA COTIZACIÓN</v-btn>
                         </v-col>
                         <v-col cols="12">
@@ -87,7 +87,7 @@
                                 </template>
 
                                 <template #[`item.actions`]="{ item }">
-                                    <v-icon v-if="item.estado == 'PENDIENTE' " class="mr-2" color="primary" x-large
+                                    <v-icon v-if="item.estado == 'PENDIENTE' && !checkAccess(9, 'SECRETARIO')" class="mr-2" color="primary" x-large
                                         @click="llenarCamposCotizacionAdquisicion(item)" title="ACTUALIZAR INFORMACION">
                                         mdi-eye
                                     </v-icon>
@@ -281,20 +281,20 @@
                                                 title="ACTUALIZAR INFORMACIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-pencil </v-icon>
                                             </v-btn>
-                                            <v-btn icon v-if="botonactCot == 0 && checkAccess(9, 'SUPERVISOR')" color="#0ABF55" 
+                                            <v-btn icon v-if="botonactCot == 0 && checkAccess(9, 'SUPERVISOR') || checkAccess(9, 'SECRETARIO')" color="#0ABF55" 
                                                 @click="registrarCotizacionAdq()" style="float: left"
                                                 title="REGISTRAR COTIZACIÓN DE ADQUISICIÓN" class="mx-2" large>
                                                 <v-icon dark> mdi-content-save </v-icon>
                                             </v-btn> 
                                         </v-col> 
-                                        <v-col cols="2" v-if="botonactCot == 1 && checkAccess(9, 'GERENTE')">
+                                        <v-col cols="2" v-if="botonactCot == 1 || cotizacionItem.estado == 'PENDIENTE' && checkAccess(9, 'GERENTE')">
                                              <v-btn icon  color="green"
                                                 @click="aprobarAdquisicion(cotizacionItem)" style="float: left"
                                                 title="APROBAR" class="mx-2" large>
                                                 <v-icon dark> mdi-check-circle </v-icon>
                                             </v-btn>
                                         </v-col> 
-                                        <v-col cols="2" v-if="botonactCot == 1 && checkAccess(9, 'GERENTE')">
+                                        <v-col cols="2" v-if="botonactCot == 1 || cotizacionItem.estado == 'PENDIENTE' && checkAccess(9, 'GERENTE')">
                                              <v-btn icon  color="red"
                                                 @click="denegarAdquisicion(cotizacionItem)" style="float: left"
                                                 title="DENEGAR" class="mx-2" large>
@@ -680,7 +680,7 @@
 import axios from "axios";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-
+import logo from "@/assets/logodrymix.png";
 export default {
     data() {
         return {
@@ -1803,30 +1803,26 @@ export default {
             let me = this;
             if (contenido == null) {
                 contenido = [];
-                me.mensajeSnackbarError = "NO SE PUEDE APROBAR UNA COTIZACIÓN SIN ITEMS, POR FAVOR AGREGUE EL DETALLE DE LA COTIZACIÓN";
+                me.mensajeSnackbarError = "NO SE PUEDE APROBAR UNA COTIZACIÓN SIN ITEMS, POR FAVOR SOLICITE QUE GUARDE EL DETALLE DE LA COTIZACIÓN";
                 me.snackbarError = true;
             } else {
-                this.idCotizacion = item.idCotizacion;
-                this.idUsuario = item.idUsuario;
-                this.idProveedor = item.idProveedor;
-                this.nombreCotizacion = item.nombreCotizacion;
-                this.fechaVencimiento = item.fechaVencimiento;
-                this.limpiar();
                 this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'ACTIVO');
-                
             }
           
 
         },
-        denegarAdquisicion(item) {
-            this.idCotizacion = item.idCotizacion;
-            this.idUsuario = item.idUsuario;
-            this.idProveedor = item.idProveedor;
-            this.nombreCotizacion = item.nombreCotizacion;
-            this.fechaVencimiento = item.fechaVencimiento;
-            this.limpiar();
-            this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'INACTIVO');
+       async denegarAdquisicion(item) {
             
+            const response = await axios.get(`/adquisicion/listardetallecotizacion/` + item.idCotizacion);
+            var contenido = response.data.resultado;
+            let me = this;
+            if (contenido == null) {
+                contenido = [];
+                me.mensajeSnackbarError = "NO SE PUEDE DENEGAR UNA COTIZACIÓN SIN ITEMS, POR FAVOR SOLICITE QUE GUARDE EL DETALLE DE LA COTIZACIÓN";
+                me.snackbarError = true;
+            } else {
+                this.editarCotizacionAdquisicion(this.idCotizacion, this.idUsuario, this.idProveedor, this.nombreCotizacion, this.fechaVencimiento, 'INACTIVO');
+            }
         },
 
 
@@ -1922,7 +1918,15 @@ export default {
 
                 ]);
                 const doc = new jsPDF();
-                    let titulo = 'Detalle de Adquisición'
+                const imageWidth = 30;
+                    const imageHeight = 15;
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const xImage = pageWidth - imageWidth - 10;
+                    const yImage = 10;
+                    doc.addImage(logo, "PNG", xImage, yImage, imageWidth, imageHeight);
+                    doc.setFontSize(16);
+                    doc.setFont("helvetica", "bold");
+                    let titulo = 'DETALLE DE ADQUISICIÓN'
                     doc.setFont('helvetica', 'bold'); 
                     const textWidth = doc.getStringUnitWidth(titulo) * doc.internal.getFontSize() / doc.internal.scaleFactor;
                     const textOffset = (doc.internal.pageSize.width - textWidth) / 2;
@@ -1930,8 +1934,8 @@ export default {
                     doc.setFont('helvetica', 'normal');
                     doc.setFontSize(12);
                     doc.text(item.nombreCotizacion, 10, 30)
-                    doc.text("Proveedor: "+ item.nombreProveedor, 10, 40);
-                    doc.text("Fecha: "+ this.getFormattedDate(item.fechaVencimiento), 10,50);
+                    doc.text("PROVEEDOR: "+ item.nombreProveedor, 10, 40);
+                    doc.text("FECHA LÍMITE: "+ this.getFormattedDate(item.fechaVencimiento), 10,50);
                     doc.autoTable({ head: [["Ítem", "Unidad", "Precio Unitario", "Cantidad"]], body: bodyData, startY: 60 });
                     let finalY = doc.previousAutoTable.finalY;
                     doc.text("Total: "+total.toFixed(2)+" Bs.", 150, 10 + finalY)

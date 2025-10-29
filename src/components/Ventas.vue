@@ -266,7 +266,7 @@
 import axios from "axios";
 import { async } from "regenerator-runtime";
 import jsPDF from 'jspdf';
-
+import logo from "@/assets/logodrymix.png";
 
 export default {
     data() {
@@ -783,53 +783,59 @@ export default {
 
                 ]);
                 const doc = new jsPDF();
-
-                doc.setFontSize(12);
-                doc.text("Proforma", 105, 20, { align: "center" });
-                doc.text("Drymix Bolivia SRL.", 105, 40, { align: "center" });
+                const imageWidth = 40;
+                const imageHeight = 20;
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const xImage = (pageWidth - imageWidth) / 2;
+                const yImage = 10;
+                const yTitle = yImage + imageHeight + 10; 
+                doc.addImage(logo, "PNG", xImage, yImage, imageWidth, imageHeight);
+                doc.setFontSize(16);
+                doc.setFont("helvetica", "bold");
+                doc.text("PROFORMA", 105, yTitle, { align: "center" });
+                doc.setFontSize(14);
+                doc.text("DRYMIX BOLIVIA SRL.", 105, yTitle + 10, { align: "center" });
                 doc.setFontSize(11);
-                doc.text(`NIT: 8456748562`, 105, 50, { align: "center" });
-                doc.text(`Proforma`, 105, 60, { align: "center" });
-                doc.text(`N°: ${idventa}`, 105, 70, { align: "center" });
-
-                doc.text(`Fecha: ${this.getFormattedDate(fechaVenta)}`, 105, 80, { align: "center" });
-                doc.text(`NIT/CI Cliente: ${nit}`, 105, 90, { align: "center" });
-                doc.text(`NOMBRE/RAZÓN SOCIAL: ${razonSocial}`, 105, 100, { align: "center" });
-
-                doc.text(`DETALLE`, 105, 110, { align: "center" })
+                doc.setFont("helvetica", "normal");
+                doc.text(`NIT: 8456748562`, 105, yTitle + 20, { align: "center" });
+                doc.text(`N°: ${idventa}`, 105, yTitle + 30, { align: "center" });
+                doc.text(`FECHA: ${this.getFormattedDate(this.getDate())}`, 105, yTitle + 40, { align: "center" });
+                doc.text(`NIT/CI CLIENTE: ${nit}`, 105, yTitle + 50, { align: "center" });
+                doc.text(`NOMBRE/RAZÓN SOCIAL: ${razonSocial}`, 105, yTitle + 60, { align: "center" });
+                doc.setFont("helvetica", "bold");
+                doc.text(`DETALLE`, 105, yTitle + 70, { align: "center" })
                 doc.setFontSize(9);
-                let startY = 130;
+                let startY = yTitle + 85;
                 doc.autoTable({
                     startY: startY,
                     styles: {
-                        fillColor: [255, 255, 255], // Fondo blanco
-                        textColor: [0, 0, 0],      // Texto negro
-                        lineColor: [0, 0, 0],      // Bordes negros
-                        lineWidth: 0.1             // Grosor del borde
+                        fillColor: [255, 255, 255], 
+                        textColor: [0, 0, 0],      
+                        lineColor: [0, 0, 0],      
+                        lineWidth: 0.1             
                     },
                     headStyles: {
-                        fillColor: [255, 255, 255], // Fondo blanco para encabezado
-                        textColor: [0, 0, 0],       // Texto negro
-                        lineColor: [0, 0, 0],       // Bordes negros
-                        lineWidth: 0.1              // Grosor del borde
+                        fillColor: [255, 255, 255], 
+                        textColor: [0, 0, 0],       
+                        lineColor: [0, 0, 0],       
+                        lineWidth: 0.1              
                     },
                     head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO"]],
                     body: bodyData
                 });
-                //doc.autoTable({ head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO",]], body: bodyData, startY: 140 });
-                //let finalY = doc.previousAutoTable.finalY;
+
                 startY += 20;
                 doc.setFont("helvetica", "bold");
 
-                doc.text("Total: " + total.toFixed(2) + " Bs.", 20, 10 + startY)
-                doc.text("Son: " + this.transformToBolivianos(total.toFixed(2)), 20, 20 + startY)
+                doc.text("TOTAL: " + total.toFixed(2) + " Bs.", 20, 10 + startY)
+                doc.text("SON: "+this.transformToBolivianos(total.toFixed(2)).toUpperCase(), 20, 20 + startY )
 
                 startY += 40;
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "normal");
 
 
-                doc.save("proforma_" + this.getFormattedDateTime(fechaVenta) + ".pdf");
+                doc.save("proforma_" + this.getFormattedDateTime(this.getDate()) + ".pdf");
             } catch (error) {
                 console.error(error);
             }
@@ -853,43 +859,48 @@ export default {
 
                 ]);
                 const doc = new jsPDF();
-
-                doc.setFontSize(14);
-                doc.text("RECIBO", 105, 10, { align: "center" });
-                doc.text("Drymix Bolivia SRL.", 105, 20, { align: "center" });
+                const imageWidth = 40;
+                const imageHeight = 20;
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const xImage = (pageWidth - imageWidth) / 2;
+                const yImage = 10;
+                const yTitle = yImage + imageHeight + 10; 
+                doc.addImage(logo, "PNG", xImage, yImage, imageWidth, imageHeight);
                 doc.setFontSize(12);
-
-                doc.text(`Fecha: ${this.getFormattedDate(fechaVenta)}`, 105, 30, { align: "center" });
-                doc.text(`NOMBRE: ${razonSocial}`, 105, 40, { align: "center" });
-                doc.text(`DETALLE`, 105, 50, { align: "center" })
+                doc.setFont("helvetica", "bold");
+                doc.text("RECIBO", 105, yTitle, { align: "center",  });
+                doc.text("DRYMIX BOLIVIA SRL.", 105, yTitle + 10, { align: "center" });
+                doc.setFontSize(11);
+                doc.text(`Fecha: ${this.getFormattedDate(this.getDate())}`, 105, yTitle + 20, { align: "center" });
+                doc.text(`NOMBRE: ${razonSocial}`, 105, yTitle + 30, { align: "center" });
+                doc.text(`DETALLE`, 105, yTitle + 40, { align: "center" })
                 doc.setFontSize(9);
-                let startY = 60;
+                let startY = yTitle + 55;
                 doc.autoTable({
                     startY: startY,
                     styles: {
-                        fillColor: [255, 255, 255], // Fondo blanco
-                        textColor: [0, 0, 0],      // Texto negro
-                        lineColor: [0, 0, 0],      // Bordes negros
-                        lineWidth: 0.1             // Grosor del borde
+                        fillColor: [255, 255, 255], 
+                        textColor: [0, 0, 0],      
+                        lineColor: [0, 0, 0],      
+                        lineWidth: 0.1             
                     },
                     headStyles: {
-                        fillColor: [255, 255, 255], // Fondo blanco para encabezado
-                        textColor: [0, 0, 0],       // Texto negro
-                        lineColor: [0, 0, 0],       // Bordes negros
-                        lineWidth: 0.1              // Grosor del borde
+                        fillColor: [255, 255, 255], 
+                        textColor: [0, 0, 0],       
+                        lineColor: [0, 0, 0],       
+                        lineWidth: 0.1              
                     },
                     head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO"]],
                     body: bodyData
                 });
-                //doc.autoTable({ head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO",]], body: bodyData, startY: 140 });
-                //let finalY = doc.previousAutoTable.finalY;
+
                 startY += 20;
                 doc.setFont("helvetica", "bold");
-                doc.text("Total: " + total.toFixed(2) + " Bs.", 20, 10 + startY)
-                doc.text("Son: " + this.transformToBolivianos(total.toFixed(2)), 20, 20 + startY)
+                doc.text("TOTAL: "+total.toFixed(2)+" Bs.", 20, 10 + startY)
+                doc.text("SON: "+this.transformToBolivianos(total.toFixed(2)).toUpperCase(), 20, 20 + startY )
 
 
-                doc.save("recibo_" + this.getFormattedDateTime(fechaVenta) + ".pdf");
+                doc.save("recibo_" + this.getFormattedDateTime(this.getDate()) + ".pdf");
             } catch (error) {
                 console.error(error);
             }

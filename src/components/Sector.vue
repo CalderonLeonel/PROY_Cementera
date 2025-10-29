@@ -98,10 +98,10 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="turnoModal" max-width="1080px"> <!-- Modal Seleccionar Turno-->>
+        <v-dialog v-model="turnoModal" persistent max-width="1080px"> <!-- Modal Seleccionar Turno-->
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>Lista de Turnos del Sector</span>
+                    <span>LISTA DE TURNOS</span>
                 </v-card-title>
                 <v-form ref="form" v-model="valid" lazy-validation> <!-- Listar Turnos -->
                     <v-container>
@@ -120,17 +120,17 @@
                                         :group-by="groupBy" class="elevation-1">
                                         <template #[`item.credte`]="{ item }">
                                             <td>{{ new Date(item.credte).toLocaleDateString('es-ES', {
-            day: 'numeric',
-            month: 'long', year: 'numeric'
-        }) }}</td>
+                                            day: 'numeric',
+                                            month: 'long', year: 'numeric'
+                                        }) }}</td>
                                         </template>
                                         <template #[`item.upddte`]="{ item }">
                                             <td v-if="item.upddte == null">-</td>
                                             <td v-if="item.upddte != null">{{ new
-            Date(item.upddte).toLocaleDateString('es-ES', {
-                day: 'numeric', month:
-                    'long', year: 'numeric'
-            }) }}</td>
+                                            Date(item.upddte).toLocaleDateString('es-ES', {
+                                                day: 'numeric', month:
+                                                    'long', year: 'numeric'
+                                            }) }}</td>
                                         </template>
                                         <template #[`item.actions`]="{ item }">
                                             <v-icon small class="mr-2" @click="removerTurno(item)"
@@ -168,6 +168,13 @@
                             -->
                                 </v-col>
                             </v-col>
+                             <v-col cols="12">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeTurno()"
+                                        style="float: right" title="SALIR">
+                                        <v-icon dark> mdi-close-circle-outline </v-icon>
+                                        SALIR
+                                    </v-btn>
+                                </v-col>
                         </v-row>
                     </v-container>
 
@@ -551,11 +558,11 @@ export default {
 
         actualizarSector() {
             if (this.$refs.form.validate()) {
-                this.actualizarsector();
+                this.actualizarSectores();
             }
             
         },
-        async actualizarsector() {
+        async actualizarSectores() {
             let me = this;
 
             await axios
@@ -619,17 +626,12 @@ export default {
         },
         registrarSector() {
             if (this.$refs.form.validate()) {
-                this.registrarSector(
-                    this.sector,
-                    this.idDepartamento
-                );
+                this.registrarSectores();
             }
         },
-        async registrarSector(
-            sector,
-            idDepartamento
-        ) {
+        async registrarSectores() {
             let me = this;
+
             await axios
                 .post(
                     "/sector/addsector/" +

@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="5" outlined v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'COMUN') || checkAccess(10, 'GERENTE')">
+    <v-card elevation="5" outlined v-if="checkAccess(10, 'SUPERVISOR') || checkAccess(10, 'SECRETARIA') || checkAccess(10, 'GERENTE')">
         <div class="text-center">
             <v-snackbar v-model="snackbarOK" :timeout="timeout" top right shaped dense color="success" outlined>
                 <strong>{{ mensajeSnackbar }}</strong>
@@ -21,7 +21,7 @@
                 </template>
             </v-snackbar>
         </div>
-            <v-alert  v-if="existencias==false" 
+            <v-alert  v-if="existencias==false && checkAccess(10, 'SUPERVISOR')"
                 type="error"
                 color="red darken-2"
                 dense
@@ -33,7 +33,7 @@
                 </div>
                 POR FAVOR, NOTIFIQUE A ADQUISICIONES PARA ADQUIRIR EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong>   
             </v-alert>
-            <v-alert     v-if="existencias==true"      
+            <v-alert     v-if="existencias==true && checkAccess(10, 'SUPERVISOR')"    
                 type="success"
                 color="green darken-2"
                 dismissible
@@ -47,7 +47,7 @@
             </v-alert>
          <div>
              <v-alert dense style="color: #ffffff;" color="indigo">
-                 <h3>INVENTARIO</h3>
+                 <h3>STOCK</h3>
              </v-alert>
          </div>
          <div>
@@ -1022,6 +1022,8 @@
 
  import jsPDF from "jspdf";
  import 'jspdf-autotable';
+
+ import logo from "@/assets/logodrymix.png";
 
  export default {
      data() {
@@ -2507,8 +2509,22 @@
                     data.total
                 ]);
                 const doc = new jsPDF();
-                    doc.text("Reporte de Almacén: "+item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toLowerCase(), 10, 10);
-                   doc.autoTable({ head: [["Ítem", "Descripción", "Subcategoría", "Precio Unitario", "Stock"]], body: bodyData });
+                    const imageWidth = 50;
+                    const imageHeight = 23;
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const xImage = pageWidth - imageWidth - 10;
+                    const yImage = 10;
+                    const yTitle = yImage + imageHeight + 10; 
+                    const yTable = yTitle + 30; 
+                    doc.addImage(logo, "PNG", xImage, yImage, imageWidth, imageHeight);
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
+                    doc.text("REPORTE DE ALMACÉN:", 10, yTitle);
+                    doc.setFontSize(12);
+                    doc.setFont("helvetica", "normal");
+                    doc.text("NOMBRE: "+ item.nombrealmacen.charAt(0).toUpperCase() + item.nombrealmacen.slice(1).toUpperCase(), 15, yTitle+10);
+                    doc.text("CÓDIGO: "+item.codigo, 15, yTitle+20);
+                    doc.autoTable({ head: [["Ítem", "Descripción", "Subcategoría", "Precio Unitario", "Stock"]], body: bodyData, startY: yTable});
                     doc.save("inventario.pdf");
             } catch (error) {
                 console.error(error);

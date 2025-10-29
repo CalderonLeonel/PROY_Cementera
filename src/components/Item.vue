@@ -21,7 +21,7 @@
                 </template>
             </v-snackbar>
         </div>
-            <v-alert  v-if="existencias==false" 
+            <v-alert  v-if="existencias==false && checkAccess(10, 'SUPERVISOR')"
                 type="error"
                 color="red darken-2"
                 dense
@@ -33,7 +33,7 @@
                 </div>
                 POR FAVOR, NOTIFIQUE A ADQUISICIONES PARA ADQUIRIR EXISTENCIAS DE <strong>{{this.itemsCriticos}}</strong>   
             </v-alert>
-            <v-alert     v-if="existencias==true"      
+            <v-alert     v-if="existencias==true && checkAccess(10, 'SUPERVISOR')"   
                 type="success"
                 color="green darken-2"
                 dismissible
@@ -50,7 +50,7 @@
                  <h3>ÍTEMS</h3>
              </v-alert>
          </div>
-         <div>
+         <div >
              <v-form ref="form" v-model="valid" lazy-validation>
                  <v-container>
                      <v-row >
@@ -83,15 +83,15 @@
                                     </template>
  
                                  <template #[`item.actions`]="{ item }">
-                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposItem(item)"
+                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposItem(item)" v-if="!checkAccess(10, 'SECRETARIO')"
                                          title="ACTUALIZAR INFORMACIÓN">
                                          mdi-pencil
                                      </v-icon>
-                                     <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
+                                     <v-icon v-if="item.estado == 'INACTIVO' && !checkAccess(10, 'SECRETARIO')" x-large color="success" class="mr-2" @click="activar(item)"
                                          title="ACTIVAR SECCIÓN">
                                          mdi-check-circle-outline
                                      </v-icon>
-                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionIt(item)"
+                                     <v-icon v-if="item.estado == 'ACTIVO' && !checkAccess(10, 'SECRETARIO')" x-large color="error" class="mr-2" @click="confirmacionAnulacionIt(item)"
                                          title="DESACTIVAR SECCIÓN">
                                          mdi-close-circle
                                      </v-icon>             
@@ -103,7 +103,7 @@
                              </v-data-table>
                          </v-col>
                      </v-row>
-                     <v-row >
+                     <v-row v-if="checkAccess(10, 'SUPERVISOR')">
                          <v-col cols="12" md="2">
                              <v-btn color="success" @click="showModalAgregarCategoria()">NUEVA CATEGORÍA</v-btn>  
                          </v-col>
@@ -130,15 +130,15 @@
                                  </template>
  
                                  <template #[`item.actions`]="{ item }">
-                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposCategoria(item)"
+                                     <v-icon class="mr-2" color="primary" x-large  @click="llenarCamposCategoria(item)" v-if="checkAccess(10, 'SUPERVISOR')"
                                          title="ACTUALIZAR INFORMACIÓN">
                                          mdi-pencil
                                      </v-icon>
-                                     <v-icon v-if="item.estado == 'INACTIVO'" x-large color="success" class="mr-2" @click="activar(item)"
+                                     <v-icon v-if="item.estado == 'INACTIVO' && checkAccess(10, 'SUPERVISOR')" x-large color="success" class="mr-2" @click="activar(item)"
                                          title="ACTIVAR CATEGORÍA">
                                          mdi-check-circle-outline
                                      </v-icon>
-                                     <v-icon v-if="item.estado == 'ACTIVO'" x-large color="error" class="mr-2" @click="confirmacionAnulacionCat(item)"
+                                     <v-icon v-if="item.estado == 'ACTIVO'&& checkAccess(10, 'SUPERVISOR')" x-large color="error" class="mr-2" @click="confirmacionAnulacionCat(item)"
                                          title="DESACTIVAR CATEGORÍA">
                                          mdi-close-circle
                                      </v-icon>             
@@ -151,7 +151,7 @@
                          </v-col>
                      </v-row>
 
-                     <v-row >
+                     <v-row v-if="checkAccess(10, 'SUPERVISOR')">
                          <v-col cols="12" md="2">
                              <v-btn color="success" @click="showModalAgregarSubcategoria()">NUEVA SUBCATEGORÍA</v-btn>  
                          </v-col>
@@ -282,7 +282,7 @@
                                 <v-data-table :headers="headerItem" :items="datosItem" :search="searchItem"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarItem(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarItem(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -324,7 +324,7 @@
                                 <v-data-table :headers="headerItemDisponibles" :items="datosItemDisponibles" :search="searchItemDisponibles"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarItemDisp(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarItemDisp(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -366,7 +366,7 @@
                                 <v-data-table :headers="headerItemPrecio" :items="datosItemPrecio" :search="searchItemDisponibles"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarPrecioItem(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarPrecioItem(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -406,10 +406,10 @@
                                 <v-data-table :headers="headerCategoria" :items="datoscategoria" :search="searchCategoria"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon v-if="seleccionarCategoriaTabla==true" small class="mr-2" @click="seleccionarCategoriaItem(item)">
+                                        <v-icon v-if="seleccionarCategoriaTabla==true" large color="#0A62BF" class="mr-2" @click="seleccionarCategoriaItem(item)">
                                             mdi-eye-circle
                                         </v-icon>
-                                         <v-icon v-if="seleccionarCategoriaTabla==false" small class="mr-2" @click="seleccionarCategoriaSubcategoria(item)">
+                                         <v-icon v-if="seleccionarCategoriaTabla==false" large color="#0A62BF" class="mr-2" @click="seleccionarCategoriaSubcategoria(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -435,7 +435,7 @@
 <v-dialog v-model="SubcategoriaModal" persistent :overlay="false" max-width="900px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA DE CATEGORIÍAS</span>
+                    <span>LISTA DE SUBCATEGORIÍAS</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -451,7 +451,7 @@
                                 <v-data-table :headers="headersubcategoria" :items="datossubcategoria" :search="searchSubcategoria"
                                     :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarSubcategoria(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarSubcategoria(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -595,10 +595,10 @@
         </v-dialog>
 
 
-        <v-dialog v-model="proveedorModal" persistent :overlay="false" max-width="900px">
+        <v-dialog v-model="proveedorModal" persistent :overlay="false" max-width="1400px">
             <v-card elevation="5" outlined shaped>
                 <v-card-title>
-                    <span>LISTA PROVEEDORES ACTIVOS</span>
+                    <span>LISTA PROVEEDORES</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -614,7 +614,7 @@
                                 <v-data-table :headers="headerProveedor" :items="datosProveedor"
                                     :search="searchProveedor" :items-per-page="5" class="elevation-1" id="tableId">
                                     <template #[`item.actions`]="{ item }">
-                                        <v-icon small class="mr-2" @click="seleccionarProveedor(item)">
+                                        <v-icon large color="#0A62BF" class="mr-2" @click="seleccionarProveedor(item)">
                                             mdi-check-circle
                                         </v-icon>
                                     </template>
@@ -2782,7 +2782,7 @@
 
                     //Si CategoriaCorrecto es '0', no se requiere ningun Categoria de cuenta para acceder
                     if (CategoriaCorrecto != '0') {
-                    if (this.user['Categoria'] == CategoriaCorrecto) {
+                    if (this.user['tipo'] == CategoriaCorrecto) {
                         checkedType = true;
                     }
                     } else checkedType = true;

@@ -439,7 +439,7 @@
                                                                 </v-col>
                                                                 <v-col cols="12" md="1">
                                                                     <v-btn class="mx-2" fab dark x-small color="cyan"
-                                                                        :rules="productoRules" @click="showProductos()"
+                                                                        @click="showProductos()"
                                                                         style="float: right" title="BUSCAR PRODUCTOS">
                                                                         <v-icon dark> mdi-magnify </v-icon>
                                                                     </v-btn>
@@ -569,6 +569,7 @@ import axios from "axios";
 export default {
     data() {
         return {
+            valid: true,
             flag: 1,
             //#region Movimiento
             idMovimiento: "",
@@ -661,6 +662,19 @@ export default {
             mensajeSnackbarError: "REGISTRO FALLIDO",
             timeout: 2000,
             //#endregion
+
+            cantidadMovimientoRules: [
+                (v) => !!v || "CANTIDAD DE MOVIMIENTO ES REQUERIDO",
+            ],
+            nombreAlmacenRules: [
+                (v) => !!v || "NOMBRE DE ALMACEN ES REQUERIDO",
+            ],
+            nombreFabricaRules: [
+                (v) => !!v || "NOMBRE DE LA FABRICA ES REQUERIDA",
+            ],
+            nombreProductoRules: [
+                (v) => !!v || "NOMBRE DEL PRODUCTO ES REQUERIDO",
+            ],
 
         }
     },
@@ -971,6 +985,53 @@ export default {
             this.almacenesModal = false;
         },
         //#endregion
+
+
+         //#region Inventory
+        async registrarInventario(
+            idItem,
+            idAlmacen,
+            movimiento,
+            cantidad,
+            estado,
+            referencia,
+            motivo,
+            lote
+        ) {
+            let me = this;
+            await axios
+                .post(
+                    "/inventario/agregarinventario/" +
+                    idItem +
+                    "," +
+                    idAlmacen +
+                    "," +
+                    movimiento +
+                    "," +
+                    cantidad +
+                    "," +
+                    estado +
+                    "," +
+                    referencia +
+                    "," +
+                    motivo +
+                    "," +
+                    lote
+                )
+                .then(function (response) {
+
+                    me.mensajeSnackbar = "PRODUCTO CORRECTAMENTE REGISTRADO EN EL INVENTARIO";
+                    me.snackbarOK = true;
+                })
+                .catch(function (error) {
+                    me.snackbarError = true;
+
+                });
+                
+
+        },
+        //#endregion
+
     },
 }
 </script>

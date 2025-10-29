@@ -28,7 +28,7 @@
 
                                 <v-col cols="12" md="3"></v-col>
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="lineaRules"
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreLineaRules"
                                         @click="showLineas()" style="float: right" title="BUSCAR LÍNEAS">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -150,7 +150,7 @@
 
                                 <v-col cols="12" md="3"></v-col>
                                 <v-col cols="12" md="1">
-                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="lineaRules"
+                                    <v-btn class="mx-2" fab dark x-small color="cyan" :rules="nombreLineaRules"
                                         @click="showLineas()" style="float: right" title="BUSCAR LÍNEAS">
                                         <v-icon dark> mdi-magnify </v-icon>
                                     </v-btn>
@@ -348,7 +348,7 @@
                                                         <v-col cols="12" md="3"></v-col>
                                                         <v-col cols="12" md="1">
                                                             <v-btn class="mx-2" fab dark x-small color="cyan"
-                                                                :rules="lineaRules" @click="showLineas()"
+                                                                :rules="nombreLineaRules" @click="showLineas()"
                                                                 style="float: right" title="BUSCAR LÍNEAS">
                                                                 <v-icon dark> mdi-magnify </v-icon>
                                                             </v-btn>
@@ -577,6 +577,7 @@ import 'jspdf-autotable';
 export default {
     data() {
         return {
+            valid: true,
             flag: 1,
             //#region Tipo Producto
             idTipoProducto: "",
