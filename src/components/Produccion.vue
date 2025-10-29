@@ -416,7 +416,7 @@ export default {
             //#endregion
             //#region Fabrica 
             idFabrica: 1,
-            nombreFabrica: "FABRICA 1",
+            nombreFabrica: "SANTIVAÑEZ",
             codigoFabrica: "",
             direccionFabrica: "",
             latitud: "",
@@ -763,7 +763,6 @@ export default {
             this.codigoProduccion = "";
             this.cantidadProduccion = "";
             this.nombreProducto = "";
-            this.nombreFabrica = "";
             this.fechaVencimiento = "";
         },
 

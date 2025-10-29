@@ -43,13 +43,12 @@
                                 </v-col>
                                 <v-col cols="10"></v-col>
                                 <v-col cols="2">
-                                    <v-btn class="mx-2" iconv dark color="#00A1B1"
-                                        @click="closeClienteModal()" style="float: right"
-                                        title="SALIR">
+                                    <v-btn class="mx-2" iconv dark color="#00A1B1" @click="closeClienteModal()"
+                                        style="float: right" title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
-                                   
+
                                 </v-col>
 
                             </v-row>
@@ -88,8 +87,8 @@
                                     </v-toolbar>
                                 </v-col>
                                 <v-col cols="12" sm="4" md="12">
-                                    <v-btn iconv dark color="#00A1B1" @click="closeCantidad()"
-                                        style="float: right" title="SALIR">
+                                    <v-btn iconv dark color="#00A1B1" @click="closeCantidad()" style="float: right"
+                                        title="SALIR">
                                         <v-icon dark> mdi-close-circle-outline </v-icon>
                                         SALIR
                                     </v-btn>
@@ -353,7 +352,7 @@ export default {
                 cantidad: "",
                 precioUnitario: "",
                 total: "",
-                codigoControl: "ASDASDASDASD",
+                codigoControl: "35884164ASDFQ84",
                 nit: "",
                 razonSocial: "",
                 idCliente: "",
@@ -448,9 +447,9 @@ export default {
                 const response = await axios.get("/venta/ultimaventa");
                 this.datosUltimaVenta = response.data.resultado || [];
                 this.datosUltimaVenta.forEach((venta) => {
-                            this.idUltimaVenta = venta.idven;
-                            this.fechaVenta = venta.creadate;
-                        });
+                    this.idUltimaVenta = venta.idven;
+                    this.fechaVenta = venta.creadate;
+                });
                 console.log(this.idUltimaVenta);
             } catch (error) {
                 console.error("Error al recuperar última venta:", error);
@@ -579,20 +578,15 @@ export default {
                     this.venta.idEmpleado
                 );
 
-                    this.mensajeSnackbar = response.data.message || "Venta registrada exitosamente";
-                    console.log('snackbar positivo');
-                    this.snackbarOK = true;
-                    this.snackbarError = false;
-                    this.recuperarUltimaVenta();
-                    console.log('se registra el carrito')
-                    await this.registrarVentasCarrito()
-                    console.log('se imprime la proforma') 
-                    await this.imprimirDocumentos();
-                    console.log(this.idUltimaVenta)
-                   
-                    console.log('se registran los asientos contables')
-                    this.registrarAsientosContables();
-                    this.resetVenta();
+                this.mensajeSnackbar = response.data.message || "Venta registrada exitosamente";
+                this.snackbarOK = true;
+                this.snackbarError = false;
+                this.recuperarUltimaVenta();
+                await this.registrarVentasCarrito()
+                await this.imprimirDocumentos();
+
+                this.registrarAsientosContables();
+                this.resetVenta();
             } catch (error) {
                 console.error("Error al registrar la venta:", error);
                 this.mensajeSnackbarError = error.response?.data?.message || error.message || "Error al registrar la venta";
@@ -643,14 +637,15 @@ export default {
             this.numeroReferencia = this.generarNumeroReferencia();
             this.idCuentaContable = this.seleccionarCuentaContableVentas();
             const totalVenta = this.calcularTotalVenta();
-           
+
             const nuevoMontoCredito = this.montoCredito + totalVenta;
 
             await this.registrarAsientoContable(
                 this.numeroReferencia,
                 this.descripcionAsiento,
                 this.idCuentaContable,
-                this.montoDebito,
+                0,
+                totalVenta,
                 totalVenta
             );
 
@@ -751,7 +746,7 @@ export default {
             }
         },
 
-        closeCantidad(){
+        closeCantidad() {
             this.cantidadModal = false;
         },
 
@@ -765,7 +760,7 @@ export default {
             }
         },
 
-        async imprimirDocumentos(){
+        async imprimirDocumentos() {
             this.imprimirRecibo(this.razonSocial, this.idUltimaVenta, this.fechaVenta);
             this.imprimirProforma(this.nit, this.razonSocial, this.idUltimaVenta, this.fechaVenta);
         },
@@ -827,12 +822,12 @@ export default {
                 doc.setFont("helvetica", "bold");
 
                 doc.text("Total: " + total.toFixed(2) + " Bs.", 20, 10 + startY)
-                doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 20, 20 + startY )
+                doc.text("Son: " + this.transformToBolivianos(total.toFixed(2)), 20, 20 + startY)
 
                 startY += 40;
                 doc.setFontSize(8);
                 doc.setFont("helvetica", "normal");
-               
+
 
                 doc.save("proforma_" + this.getFormattedDateTime(fechaVenta) + ".pdf");
             } catch (error) {
@@ -890,8 +885,8 @@ export default {
                 //let finalY = doc.previousAutoTable.finalY;
                 startY += 20;
                 doc.setFont("helvetica", "bold");
-                doc.text("Total: "+total.toFixed(2)+" Bs.", 20, 10 + startY)
-                doc.text("Son: "+this.transformToBolivianos(total.toFixed(2)), 20, 20 + startY )
+                doc.text("Total: " + total.toFixed(2) + " Bs.", 20, 10 + startY)
+                doc.text("Son: " + this.transformToBolivianos(total.toFixed(2)), 20, 20 + startY)
 
 
                 doc.save("recibo_" + this.getFormattedDateTime(fechaVenta) + ".pdf");
