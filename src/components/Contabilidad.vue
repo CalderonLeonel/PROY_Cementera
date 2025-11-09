@@ -309,7 +309,7 @@ export default {
             //#region Rules
             numeroCuentaRules: [
                 v => !!v || "El número de cuenta es obligatorio",
-                v => (v && v.length >= 2) || "Debe tener al menos 2 caracteres",
+                v => (v && v.length >= 1) || "Debe tener al menos 1 caracteres",
                 v => (v && v.length <= 100) || "No debe exceder 100 caracteres",
                 v => /^[A-Za-z0-9\-]+$/.test(v) || "Solo se permiten números, letras y guiones",
             ],

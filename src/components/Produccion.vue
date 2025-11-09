@@ -188,8 +188,8 @@
                                                                         required></v-text-field>
                                                                 </template>
                                                                 <v-date-picker v-model="fechaVencimiento"
-                                                                    @input="menuFechaVencimiento = false"
-                                                                    locale="es" :min="getDate()"></v-date-picker>
+                                                                    @input="menuFechaVencimiento = false" locale="es"
+                                                                    :min="getDate()"></v-date-picker>
                                                             </v-menu>
                                                         </v-col>
                                                         <v-col cols="12" md="8"></v-col>
@@ -237,7 +237,7 @@
                                                     <v-row>
 
                                                         <v-col cols="12">
-                                                           
+
 
                                                             <v-card-title>
                                                                 <v-text-field v-model="buscarProducciones"
@@ -295,7 +295,7 @@
                                                 <v-container>
                                                     <v-row>
                                                         <v-col cols="12">
-                                                            
+
                                                             <v-card-title>
                                                                 <v-text-field v-model="buscarProducciones"
                                                                     append-icon="mdi-magnify"
@@ -416,7 +416,7 @@ export default {
             //#endregion
             //#region Fabrica 
             idFabrica: 1,
-            nombreFabrica: "FABRICA 1",
+            nombreFabrica: "SANTIVAÑEZ",
             codigoFabrica: "",
             direccionFabrica: "",
             latitud: "",
@@ -506,7 +506,7 @@ export default {
         this.generarCodigoProduccion();
     },
     methods: {
-          getDate() {
+        getDate() {
             var fecha = new Date().toISOString();
             return fecha;
         },
@@ -723,17 +723,49 @@ export default {
         async terminarProduccion(idProduccion) {
             let me = this;
             await axios
-                .post("/produccion/terminarproduccion/" + this.idProduccion).then(function (response) {
-
+                .post("/produccion/terminarproduccion/" + idProduccion)
+                .then(async function (response) {
+                    // Refrescamos las listas
                     me.listarProduccion();
                     me.listarProduccionT();
 
+                    // Mostramos mensaje
+                    me.mensajeSnackbar = "PRODUCCIÓN TERMINADA CORRECTAMENTE";
+                    me.snackbarOK = true;
+
+                    // 🔹 Buscamos los datos de la producción terminada para registrar en inventario
+                    const produccion = me.datosProduccion.find(p => p.idprodu == idProduccion);
+
+                    if (produccion) {
+                        const idItem = produccion.idprod;
+                        const idAlmacen = produccion.idfab; // o fija el id si es otro
+                        const movimiento = "ENTRADA";
+                        const cantidad = produccion.cant;
+                        const estado = "BUENO";
+                        const referencia = `PRODUCCION-${produccion.codprodu}`;
+                        const motivo = "FINALIZACION DE PRODUCCION";
+                        const lote = null;
+
+                        // 🔹 Llamamos al método que ya tienes para registrar en inventario
+                        await me.registrarInventario(
+                            idItem,
+                            idAlmacen,
+                            movimiento,
+                            cantidad,
+                            estado,
+                            referencia,
+                            motivo,
+                            lote
+                        );
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
+                    me.snackbarError = true;
+                    me.mensajeSnackbarError = "ERROR AL TERMINAR PRODUCCIÓN";
                 });
-
         },
+
         desactivar(item) {
             this.idProduccion = item.idlin;
             this.desactivarProduccion(this.idProduccion);
@@ -763,7 +795,6 @@ export default {
             this.codigoProduccion = "";
             this.cantidadProduccion = "";
             this.nombreProducto = "";
-            this.nombreFabrica = "";
             this.fechaVencimiento = "";
         },
 
@@ -807,130 +838,11 @@ export default {
                     me.snackbarError = true;
 
                 });
-                
+
 
         },
         //#endregion
 
-
-        //#region ITEM
-
-         registrarIt() {
-            if (this.$refs.form.validate()) {
-            this.registrarItem(this.nombreItem, this.descripcion,this.medida,this.idSubcategoria,this.limitecritico, this.metodoValuacion, this.estado,this.codigoProducto, this.idProveedor,this.costoReferencia, this.fechaVencimiento);
-            }
-        },
-        async registrarItem(
-            nombreItem,
-            descripcion,
-            medida,
-            idCategoria,
-            limitecritico,
-            metodoValuacion,
-            SKU,
-            idProveedor,
-            fechaVencimiento,
-            costoReferencia,
-            estado
-        ) {
-            let me = this;
-            await axios
-                .post(
-                    "/inventario/agregaritem/" +
-                    nombreItem +
-                    "," +
-                    descripcion +
-                    "," +
-                    medida +
-                    "," +
-                    estado +
-                    "," +
-                    idCategoria +
-                    "," +
-                    limitecritico +
-                    "," +
-                    metodoValuacion+
-                    "," +
-                    SKU +
-                    "," +
-                    idProveedor +
-                    "," +
-                    fechaVencimiento+
-                    "," +
-                    costoReferencia
-                ) 
-                .then(function (response) {
-
-                    me.mensajeSnackbar = "PRODUCTO CORRECTAMENTE REGISTRADO EN EL INVENTARIO";
-                    me.snackbarOK = true;
-                })
-                .catch(function (error) {
-                    me.snackbarError = true;
-                });
-
-        },
-
-        editarIt() {
-            if (this.$refs.form.validate()) {
-            this.editarItem(this.idItem,this.nombreItem, this.descripcion,this.medida,this.idSubcategoria,this.limitecritico, this.metodoValuacion, this.estado,this.codigoProducto, this.idProveedor,this.costoReferencia, this.fechaVencimiento);
-            }
-        },
-        async editarItem(
-            idItem,
-            nombreItem,
-            descripcion,
-            medida,
-            idCategoria,
-            limitecritico,
-            metodoValuacion,
-            SKU,
-            idProveedor,
-            fechaVencimiento,
-            costoReferencia,
-            estado
-            
-        ) {
-            let me = this;
-            await axios
-                .post(
-                    "/inventario/actualizaritem/" +
-                    idItem +
-                    "," +
-                     nombreItem +
-                    "," +
-                    descripcion +
-                    "," +
-                    medida +
-                    "," +
-                    estado +
-                    "," +
-                    idCategoria +
-                    "," +
-                    limitecritico +
-                    "," +
-                    metodoValuacion+
-                    "," +
-                    SKU +
-                    "," +
-                    idProveedor +
-                    "," +
-                    fechaVencimiento+
-                    "," +
-                    costoReferencia
-                )
-                .then(function (response) {
-
-                    me.mensajeSnackbar = "PRODUCTO CORRECTAMENTE ACTUALIZADO EN EL INVENTARIO";
-                    me.snackbarOK = true;
-
-                })
-                .catch(function (error) {
-                    me.snackbarError = true;
-                    alert('error');
-                });
-
-        },
-        //#endregion
 
     },
 }
