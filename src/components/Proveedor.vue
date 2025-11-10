@@ -51,7 +51,7 @@
             </v-alert>
         </div>
         <div>
-            <v-form ref="form" v-model="valid" lazy-validation>
+            <v-form v-model="valid" lazy-validation>
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="4">
@@ -220,13 +220,13 @@
 
 
           
-        <v-dialog v-model="agregarProveedorModal" persistent :overlay="false" max-width="1000px">
+        <v-dialog v-model="agregarProveedorModal"  :key="proveedorFormKey" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>GESTIÓN DE PROVEEDOR</span>
                 </v-card-title>
                 <v-card-text>
-                    <v-form ref="form" v-model="valid" lazy-validation>
+                    <v-form ref="form" v-model="valid"  lazy-validation>
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="6">
@@ -734,6 +734,7 @@ export default {
                 }
                 
             }
+            this.limpiar();
         },
         async registrarProveedor(
             nombreProveedor,
@@ -1084,6 +1085,7 @@ export default {
 
 
         showModalAgregarProveedor(item) { 
+            this.limpiar();
             this.agregarProveedorModal = true;
             this.botonAct = 0;
         },
@@ -1123,7 +1125,20 @@ export default {
         },
 
         limpiar() {
-            this.$refs.form.reset()
+            this.$refs.form.reset();
+            this.idProveedor = "";
+            this.nombreProveedor = "";
+            this.contactoProveedorPrincipal = "";
+            this.contactoProveedorecundario = "";
+            this.correoProveedor = "";
+            this.estado = "ACTIVO";
+            this.nombreRazon = "";
+            this.numeroNIT = "";
+            this.idPais = 0;
+            this.pais = "";
+            this.idCategoria = 0;
+            this.nombreCategoria = "";
+            this.documentoArchivo = "";
         },
         //#endregion
 
