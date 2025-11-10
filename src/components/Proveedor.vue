@@ -1083,7 +1083,7 @@ export default {
         },
 
 
-        showModalAgregarProveedor(item) {
+        showModalAgregarProveedor(item) { 
             this.agregarProveedorModal = true;
             botonAct = 0;
         },
@@ -1120,7 +1120,7 @@ export default {
                  this.limpiar();
         },
 
-        limpiar () {
+        limpiar() {
             this.$refs.form.reset()
         },
         //#endregion
@@ -1324,6 +1324,8 @@ export default {
             this.estado = item.estado;
             this.agregarCategoriaModal = true;
         },
+
+
 
       },
       
