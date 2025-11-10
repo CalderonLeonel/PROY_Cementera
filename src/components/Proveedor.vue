@@ -1085,7 +1085,7 @@ export default {
 
         showModalAgregarProveedor(item) { 
             this.agregarProveedorModal = true;
-            botonAct = 0;
+            this.botonAct = 0;
         },
         closeModalAgregarProveedor() {
             this.agregarProveedorModal = false;
@@ -1110,14 +1110,16 @@ export default {
 
 
         showModalAgregarCategoria(){
+            this.limpiar();
             this.agregarCategoriaModal = true;
             this.botonActTT = 0;  
         },
 
         closeModalAgregarCategoria(){
+            this.limpiar();
             this.agregarCategoriaModal = false;
             this.botonActTT = 0;
-                 this.limpiar();
+
         },
 
         limpiar() {
@@ -1318,7 +1320,7 @@ export default {
         },
 
          llenarCamposCategoria(item) {
-            this.botonActTT = 1;
+            this.botonAct = 1;
             this.idCategoria = item.id_categoria_proveedor;
             this.nombreCategoria = item.categoria;
             this.estado = item.estado;
