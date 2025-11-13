@@ -54,7 +54,7 @@
             <v-form v-model="valid" lazy-validation>
                 <v-container>
                     <v-row>
-                        <v-col cols="12" md="4">
+                        <v-col cols="12" md="4" v-if="checkAccess(9, 'SUPERVISOR' ) || checkAccess(9, 'SECRETARIO')">
                             <v-btn color="success" @click="showModalAgregarProveedor()">NUEVO PROVEEDOR</v-btn>
                         </v-col>
                         <v-col cols="12">
