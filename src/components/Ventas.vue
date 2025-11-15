@@ -787,7 +787,7 @@ export default {
                 const pageWidth = doc.internal.pageSize.getWidth();
                 const xImage = (pageWidth - imageWidth) / 2;
                 const yImage = 10;
-                const yTitle = yImage + imageHeight + 10; 
+                const yTitle = yImage + imageHeight + 10;
                 doc.addImage(logo, "PNG", xImage, yImage, imageWidth, imageHeight);
                 doc.setFontSize(16);
                 doc.setFont("helvetica", "bold");
@@ -808,16 +808,16 @@ export default {
                 doc.autoTable({
                     startY: startY,
                     styles: {
-                        fillColor: [255, 255, 255], 
-                        textColor: [0, 0, 0],      
-                        lineColor: [0, 0, 0],      
-                        lineWidth: 0.1             
+                        fillColor: [255, 255, 255],
+                        textColor: [0, 0, 0],
+                        lineColor: [0, 0, 0],
+                        lineWidth: 0.1
                     },
                     headStyles: {
-                        fillColor: [255, 255, 255], 
-                        textColor: [0, 0, 0],       
-                        lineColor: [0, 0, 0],       
-                        lineWidth: 0.1              
+                        fillColor: [255, 255, 255],
+                        textColor: [0, 0, 0],
+                        lineColor: [0, 0, 0],
+                        lineWidth: 0.1
                     },
                     head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO"]],
                     body: bodyData
@@ -827,7 +827,7 @@ export default {
                 doc.setFont("helvetica", "bold");
 
                 doc.text("TOTAL: " + total.toFixed(2) + " Bs.", 20, 10 + startY)
-                doc.text("SON: "+this.transformToBolivianos(total.toFixed(2)).toUpperCase(), 20, 20 + startY )
+                doc.text("SON: " + this.transformToBolivianos(total.toFixed(2)).toUpperCase(), 20, 20 + startY)
 
                 startY += 40;
                 doc.setFontSize(8);
@@ -863,11 +863,11 @@ export default {
                 const pageWidth = doc.internal.pageSize.getWidth();
                 const xImage = (pageWidth - imageWidth) / 2;
                 const yImage = 10;
-                const yTitle = yImage + imageHeight + 10; 
+                const yTitle = yImage + imageHeight + 10;
                 doc.addImage(logo, "PNG", xImage, yImage, imageWidth, imageHeight);
                 doc.setFontSize(12);
                 doc.setFont("helvetica", "bold");
-                doc.text("RECIBO", 105, yTitle, { align: "center",  });
+                doc.text("RECIBO", 105, yTitle, { align: "center", });
                 doc.text("DRYMIX BOLIVIA SRL.", 105, yTitle + 10, { align: "center" });
                 doc.setFontSize(11);
                 doc.text(`Fecha: ${this.getFormattedDate(this.getDate())}`, 105, yTitle + 20, { align: "center" });
@@ -878,16 +878,16 @@ export default {
                 doc.autoTable({
                     startY: startY,
                     styles: {
-                        fillColor: [255, 255, 255], 
-                        textColor: [0, 0, 0],      
-                        lineColor: [0, 0, 0],      
-                        lineWidth: 0.1             
+                        fillColor: [255, 255, 255],
+                        textColor: [0, 0, 0],
+                        lineColor: [0, 0, 0],
+                        lineWidth: 0.1
                     },
                     headStyles: {
-                        fillColor: [255, 255, 255], 
-                        textColor: [0, 0, 0],       
-                        lineColor: [0, 0, 0],       
-                        lineWidth: 0.1              
+                        fillColor: [255, 255, 255],
+                        textColor: [0, 0, 0],
+                        lineColor: [0, 0, 0],
+                        lineWidth: 0.1
                     },
                     head: [["PRODUCTO", "CANTIDAD", "PRECIO UNITARIO"]],
                     body: bodyData
@@ -895,8 +895,8 @@ export default {
 
                 startY += 20;
                 doc.setFont("helvetica", "bold");
-                doc.text("TOTAL: "+total.toFixed(2)+" Bs.", 20, 10 + startY)
-                doc.text("SON: "+this.transformToBolivianos(total.toFixed(2)).toUpperCase(), 20, 20 + startY )
+                doc.text("TOTAL: " + total.toFixed(2) + " Bs.", 20, 10 + startY)
+                doc.text("SON: " + this.transformToBolivianos(total.toFixed(2)).toUpperCase(), 20, 20 + startY)
 
 
                 doc.save("recibo_" + this.getFormattedDateTime(this.getDate()) + ".pdf");
