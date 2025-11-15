@@ -1590,10 +1590,10 @@ import logo from "@/assets/logodrymix.png";
                     me.snackbarOK = true;
                     me.closeModalAgregarTransaccion();
                     me.listarInventarios();
-                    me.listarStockAlmacen();
                     me.limpiar();
                 })
                 .catch(function (error) {
+                    console.log(error);
                     me.snackbarError = true;
 
                 });
@@ -1735,13 +1735,10 @@ import logo from "@/assets/logodrymix.png";
                     this.valor
                 )
                 .then(function (response) {
-
-                    me.mensajeSnackbar = response.data.message;
-                    me.snackbarOK = true;
                     me.closeRevalorizarInventarioModal();
-                    me.listaritemactivo();
                 })
                 .catch(function (error) {
+                    console.log(error);
                     me.snackbarError = true;
 
                 });
