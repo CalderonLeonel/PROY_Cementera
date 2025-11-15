@@ -51,10 +51,10 @@
             </v-alert>
         </div>
         <div>
-            <v-form ref="form" v-model="valid" lazy-validation>
+            <v-form v-model="valid" lazy-validation>
                 <v-container>
                     <v-row>
-                        <v-col cols="12" md="4">
+                        <v-col cols="12" md="4" v-if="checkAccess(9, 'SUPERVISOR' ) || checkAccess(9, 'SECRETARIO')">
                             <v-btn color="success" @click="showModalAgregarProveedor()">NUEVO PROVEEDOR</v-btn>
                         </v-col>
                         <v-col cols="12">
@@ -220,13 +220,13 @@
 
 
           
-        <v-dialog v-model="agregarProveedorModal" persistent :overlay="false" max-width="1000px">
+        <v-dialog v-model="agregarProveedorModal"  :key="proveedorFormKey" persistent :overlay="false" max-width="1000px">
             <v-card elevation="5" outlined>
                 <v-card-title>
                     <span>GESTIÓN DE PROVEEDOR</span>
                 </v-card-title>
                 <v-card-text>
-                    <v-form ref="form" v-model="valid" lazy-validation>
+                    <v-form ref="form" v-model="valid"  lazy-validation>
                         <v-container>
                             <v-row>
                                 <v-col cols="12" md="6">
@@ -734,6 +734,7 @@ export default {
                 }
                 
             }
+            this.limpiar();
         },
         async registrarProveedor(
             nombreProveedor,
@@ -1083,9 +1084,10 @@ export default {
         },
 
 
-        showModalAgregarProveedor(item) {
+        showModalAgregarProveedor(item) { 
+            this.limpiar();
             this.agregarProveedorModal = true;
-            botonAct = 0;
+            this.botonAct = 0;
         },
         closeModalAgregarProveedor() {
             this.agregarProveedorModal = false;
@@ -1110,18 +1112,33 @@ export default {
 
 
         showModalAgregarCategoria(){
+            this.limpiar();
             this.agregarCategoriaModal = true;
             this.botonActTT = 0;  
         },
 
         closeModalAgregarCategoria(){
+            this.limpiar();
             this.agregarCategoriaModal = false;
             this.botonActTT = 0;
-                 this.limpiar();
+
         },
 
-        limpiar () {
-            this.$refs.form.reset()
+        limpiar() {
+            this.$refs.form.reset();
+            this.idProveedor = "";
+            this.nombreProveedor = "";
+            this.contactoProveedorPrincipal = "";
+            this.contactoProveedorecundario = "";
+            this.correoProveedor = "";
+            this.estado = "ACTIVO";
+            this.nombreRazon = "";
+            this.numeroNIT = "";
+            this.idPais = 0;
+            this.pais = "";
+            this.idCategoria = 0;
+            this.nombreCategoria = "";
+            this.documentoArchivo = "";
         },
         //#endregion
 
@@ -1318,12 +1335,14 @@ export default {
         },
 
          llenarCamposCategoria(item) {
-            this.botonActTT = 1;
+            this.botonAct = 1;
             this.idCategoria = item.id_categoria_proveedor;
             this.nombreCategoria = item.categoria;
             this.estado = item.estado;
             this.agregarCategoriaModal = true;
         },
+
+
 
       },
       

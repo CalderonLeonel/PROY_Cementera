@@ -331,7 +331,6 @@ export default {
                 { text: "PRECIO UNITARIO", value: "precuni", sortable: false },
                 { text: "TOTAL", value: "total", sortable: false },
                 { text: "ESTADO", value: "est", sortable: false },
-                { text: "OPCIONES", value: "actions", sortable: false },
             ],
             //#endregion
 
