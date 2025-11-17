@@ -637,18 +637,15 @@ export default {
             this.numeroReferencia = this.generarNumeroReferencia();
             this.idCuentaContable = this.seleccionarCuentaContableVentas();
             const totalVenta = this.calcularTotalVenta();
-
-            const nuevoMontoCredito = this.montoCredito + totalVenta;
-
+            console.log(totalVenta)
             await this.registrarAsientoContable(
                 this.numeroReferencia,
                 this.descripcionAsiento,
                 this.idCuentaContable,
                 0,
                 totalVenta,
-                totalVenta
+                this.totalVenta
             );
-
             await this.aumentarSaldo();
         },
 
@@ -658,9 +655,9 @@ export default {
                     numeroReferencia + "," +
                     descripcionAsiento + "," +
                     idCuentaContable + "," +
-                    montoDebito + "," +
-                    montoCredito + "," +
-                    totalVenta
+                    this.montoDebito + "," +
+                    this.montoCredito + "," +
+                    this.totalVenta
                 );
                 this.mensajeSnackbar = response.data.message;
                 this.snackbarOK = true;
