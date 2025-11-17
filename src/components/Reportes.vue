@@ -46,7 +46,7 @@
                             <v-tab-item v-if="flag == 1">
                                 <v-card elevation="5" outlined shaped>
                                     <v-row class="pa-4">
-                                        <iframe title="reporte_empleados" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=91b26683-3915-4c3b-b15b-eb8b693a91c9&autoAuth=true&ctid=77cab36c-76b2-48c3-9c54-cb9e4ee09b72" frameborder="0" allowFullScreen="true"></iframe>
+                                        <iframe title="reporte_empleados" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=649056db-d44f-4336-b351-043309a92c70&autoAuth=true&ctid=77cab36c-76b2-48c3-9c54-cb9e4ee09b72" frameborder="0" allowFullScreen="true"></iframe>
                                     </v-row>
                                 </v-card>
                             </v-tab-item>
