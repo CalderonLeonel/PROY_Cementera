@@ -275,9 +275,7 @@ export default {
             headersAsientos: [
                 { text: "NUM.REF", value: "numref", sortable: true },
                 { text: "CUENTA CONT.", value: "nom", sortable: true },
-                { text: "MONT. DEB", value: "mondeb", sortable: true },
-                { text: "MONT.CRED", value: "moncre", sortable: true },
-                { text: "MONT ASIENTO", value: "monasi", sortable: true },
+                { text: "MONT ASIENTO", value: "montasi", sortable: true },
                 { text: "ESTADO", value: "est", sortable: true },
                 { text: "OPCIONES", value: "actions", sortable: false },
             ],
