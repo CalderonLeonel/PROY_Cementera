@@ -1429,8 +1429,8 @@ import logo from "@/assets/logodrymix.png";
                 { text: 'DEVOLUCIÓN PROVEEDOR', value: 'DEVOLUCIÓN PROVEEDOR' },
                 { text: 'AJUSTE DE INVENTARIO (-)', value: 'AJUSTE DE INVENTARIO (-)' },
                 { text: 'TRASLADO INTERNO (SALIDA)', value: 'TRASLADO INTERNO (SALIDA)' },
-                { text: 'CONSUMO / PRODUCCIÓN', value: 'CONSUMO / PRODUCCIÓN' },
-                { text: 'VENCIMIENTO / DAÑO', value: 'VENCIMIENTO / DAÑO' },
+                { text: 'CONSUMO / PRODUCCIÓN', value: 'CONSUMO o PRODUCCIÓN' },
+                { text: 'VENCIMIENTO / DAÑO', value: 'VENCIMIENTO o DAÑO' },
                 { text: 'REGULARIZACIÓN', value: 'REGULARIZACIÓN' },
             ]
             }
@@ -1544,18 +1544,19 @@ import logo from "@/assets/logodrymix.png";
          },
 
         registrarInv() {
-            if (this.$refs.form.validate()) {
-                if (this.motivo.value == 'RECEPCIÓN') {
-                    this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
-                }
-                else{
-                    this.registarRevalorarizacionItem(this.idItem, this.valor)
-                    .then(() => {
-                        this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
-                    })
-                }
-               
+            if (this.valor == null || this.valor == 0) {
+                this.valor = 0;
             }
+            if (this.motivo.value == 'RECEPCIÓN') {
+                this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
+            }
+            else{
+                this.registarRevalorarizacionItem(this.idItem, this.valor)
+                .then(() => {
+                    this.registrarInventarioEntrada(this.idItem,this.idAlmacen, this.movimiento,this.cantidad, this.estado);
+            })
+            }
+            
         },
         async registrarInventarioEntrada(
             idItem,
