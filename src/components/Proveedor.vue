@@ -1085,8 +1085,9 @@ export default {
 
 
         showModalAgregarProveedor(item) { 
-            this.limpiar();
+
             this.agregarProveedorModal = true;
+            this.limpiar();
             this.botonAct = 0;
         },
         closeModalAgregarProveedor() {
