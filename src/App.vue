@@ -440,17 +440,17 @@
                     </v-btn>
                   </template>
 
-                  <v-card width="400" class="rounded-lg">
+                  <v-card width="600" class="rounded-lg">
                     <v-card-title class="text-subtitle-1 font-weight-bold">ALERTAS</v-card-title>
                     <v-divider />
-                    <v-list two-line style="max-height: 380px; overflow-y: auto;">
+                    <v-list two-line style="max-height: 400px; overflow-y: auto;">
                       <v-list-item v-for="(data,i) in datosAlerta" :key="i">
                         <v-list-item-avatar size="128">
                           <v-img :src="axios.defaults.baseURL+'documento/descargarImagen/'+data.nombredoc" cover />
                         </v-list-item-avatar>
                         <v-list-item-content>
                           <v-list-item-title class="font-weight-medium">{{ data.title }}</v-list-item-title>
-                          <v-list-item-subtitle>{{ data.description }}</v-list-item-subtitle>
+                          <v-list-item-subtitle style="white-space: normal; overflow: visible; text-overflow: unset;">{{ data.description }}</v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
 
